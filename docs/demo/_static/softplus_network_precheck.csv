@@ -1,0 +1,2 @@
+pattern_num,begin_index,end_index,input,output,op_serial
+0,1,1,x.1 16 17 ,18,1(18)aten::softplus

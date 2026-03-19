@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft XRun &#8212; Icraft XRun 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft XRun 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft XRun</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">一 命令行参数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二 使用示例</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 三种输入方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-raw">2.1.1 json + raw</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jr-path-network">2.1.2 jr_path + network</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-snapshot">2.1.3 load_snapshot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2 后端指定</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#socket">2.2.1 Socket</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#axi">2.2.2 Axi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mock">2.2.3 Mock</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.3 多输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.3.1 通过分号隔开</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.3.2 通过文本文件输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.4 记录时间</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#io">2.5 记录io</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump">2.6 dump特征图</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device">2.7 Device配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backend">2.8 Backend配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.9 快照</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-xrun">
+<h1>Icraft XRun<a class="headerlink" href="#icraft-xrun" title="此标题的永久链接">#</a></h1>
+<p>新组件XRun将取代旧的Run（在线运行用）、Simulator（离线仿真用），同时具备两者的功能。</p>
+<p>XRun基于XRT实现，相当于是XRT的可执行程序外壳。</p>
+<p>XRun仅有一个main.cpp组成，不提供头文件，也没有API。</p>
+<p>XRun的产物为icraft-run.exe（Windows）或icraft-run（Linux），但都可以使用icraft-run调用</p>
+<section id="command-line">
+<span id="id1"></span><h2>一 命令行参数<a class="headerlink" href="#command-line" title="此标题的永久链接">#</a></h2>
+<p>本章节主要介绍XRun组件的参数说明。
+XRun组件在使用时必须配置的参数有：待运行的网络文件路径、网络输入文件路径。
+其中待运行的网络文件路径可通过json + raw、jr_path + network、load_snapshot三种方式配置。</p>
+<table class="table" id="id10">
+<caption><span class="caption-text">Table.必须配置的命令行参数</span><a class="headerlink" href="#id10" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>json</p></td>
+<td><p>待运行的json文件路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>raw</p></td>
+<td><p>待运行的raw文件路径</p></td>
+</tr>
+<tr class="row-even"><td><p>jr_path</p></td>
+<td><p>待运行的json和raw文件夹路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>network</p></td>
+<td><p>待运行的json和raw文件名</p></td>
+</tr>
+<tr class="row-even"><td><p>input</p></td>
+<td><p>网络输入文件路径，支持图片或ftmp，支持多输入，多输入以“;”分隔</p></td>
+</tr>
+<tr class="row-odd"><td><p>load_snapshot</p></td>
+<td><p>快照文件路径，由快照文件反序列化得到session</p></td>
+</tr>
+</tbody>
+</table>
+<p>XRun组件在使用时可选配置的参数有：</p>
+<table class="table" id="id11">
+<caption><span class="caption-text">Table.可选配置的命令行参数</span><a class="headerlink" href="#id11" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>log_path</p></td>
+<td><p>log存放路径，默认为.logs；完整路径为log_path/network/*.log</p></td>
+</tr>
+<tr class="row-odd"><td><p>backends</p></td>
+<td><p>指定后端，默认为Host</p></td>
+</tr>
+<tr class="row-even"><td><p>dump_format</p></td>
+<td><p>指定dump特征图使用的格式；支持SFB/SFT/SQB/SQT/HQB/HQT等；默认为空，即不dump</p></td>
+</tr>
+<tr class="row-odd"><td><p>dump_ftmp</p></td>
+<td><p>指定dump哪些特征图；默认为空，即dump所有特征图</p></td>
+</tr>
+<tr class="row-even"><td><p>fake_qf</p></td>
+<td><p>打开fake_qf模式，仅针对HostBackend有效，默认不打开</p></td>
+</tr>
+<tr class="row-odd"><td><p>compress</p></td>
+<td><p>打开内存压缩模式，仅针对BYBackend有效，默认不打开</p></td>
+</tr>
+<tr class="row-even"><td><p>log_time</p></td>
+<td><p>记录每个算子的执行时间信息到屏幕和run_time.log文件中，默认不记录</p></td>
+</tr>
+<tr class="row-odd"><td><p>log_io</p></td>
+<td><p>记录每个算子的输入输出信息到屏幕和run_io.log文件中，默认不记录</p></td>
+</tr>
+<tr class="row-even"><td><p>merge_hardop</p></td>
+<td><p>打开合并硬算子模式，仅对BYBackend有效，默认不打开</p></td>
+</tr>
+<tr class="row-odd"><td><p>lazy_load</p></td>
+<td><p>开启惰性加载，仅对输入模型文件为json和raw时有效，默认不开启</p></td>
+</tr>
+<tr class="row-even"><td><p>precheck</p></td>
+<td><p>开启device预检，包括dma读写检查、寄存器读写检查、位流是否打patch，默认不开启</p></td>
+</tr>
+<tr class="row-odd"><td><p>frequency</p></td>
+<td><p>设置ICore的时钟频率，单位为MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>decode_dll</p></td>
+<td><p>指定网络输入预处理所使用的动态链接库，默认为空</p></td>
+</tr>
+<tr class="row-odd"><td><p>close_mmu</p></td>
+<td><p>关闭mmu模式，默认是不关闭，即开启mmu</p></td>
+</tr>
+<tr class="row-even"><td><p>save_snapshot</p></td>
+<td><p>序列化session生成快照文件，保存在log_path目录下，默认为不开启</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h2>二 使用示例<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<section id="id3">
+<h3>2.1 三种输入方式<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h3>
+<p>待运行的网络文件路径可通过json + raw、jr_path + network、load_snapshot三种方式配置，均支持绝对路径和相对路径。</p>
+</section>
+<section id="json-raw">
+<h3>2.1.1 json + raw<a class="headerlink" href="#json-raw" title="此标题的永久链接">#</a></h3>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png&quot;</span>
+<span class="n">lazy_load</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./images/cat.png&quot;</span><span class="w"> </span>--lazy_load
+<span class="linenos">2</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;E:/jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;E:/jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;E:/images/cat.png&quot;</span><span class="w"> </span>--lazy_load
+</pre></div>
+</div>
+</section>
+<section id="jr-path-network">
+<h3>2.1.2 jr_path + network<a class="headerlink" href="#jr-path-network" title="此标题的永久链接">#</a></h3>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">jr_path</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+<span class="n">network</span> <span class="o">=</span> <span class="s2">&quot;./yolov2_BY&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png&quot;</span>
+<span class="n">lazy_load</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+</section>
+<section id="load-snapshot">
+<h3>2.1.3 load_snapshot<a class="headerlink" href="#load-snapshot" title="此标题的永久链接">#</a></h3>
+<p>使用快照文件作为输入文件，mmu模式、合并算子和内存优化等配置无效，而是与生成快照文件时的配置一致。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">load_snapshot</span> <span class="o">=</span> <span class="s2">&quot;./snapshot/yolov2.snapshot&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png&quot;</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,socket://ql100aiu@192.168.125.141:9981?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+</section>
+<section id="id4">
+<h3>2.2 后端指定<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<p>Xrun目前支持两种后端，
+后端HostBackend支持CPU、Cuda等多种Device，
+后端BYBackend支持Socket、AXI等多种Device，
+不指定后端时，默认为HostCPU。</p>
+<p>以下具体介绍BYBackend后端的参数配置，包含socket、axi、mock三种模式：</p>
+</section>
+<section id="socket">
+<h3>2.2.1 Socket<a class="headerlink" href="#socket" title="此标题的永久链接">#</a></h3>
+<p>socket模式对应的url包含板子IP地址、npu起始地址、dma起始地址，对应连接的板子需开启icraft-serve。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png&quot;</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,socket://ql100aiu@192.168.125.141:9981?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--backends<span class="w"> </span><span class="s2">&quot;BY,socket://ql100aiu@192.168.125.141:9981?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./images/cat.png&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="axi">
+<h3>2.2.2 Axi<a class="headerlink" href="#axi" title="此标题的永久链接">#</a></h3>
+<p>axi模式对应的url包含npu起始地址、dma起始地址。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png&quot;</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--backends<span class="w"> </span><span class="s2">&quot;BY,axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./images/cat.png&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="mock">
+<h3>2.2.3 Mock<a class="headerlink" href="#mock" title="此标题的永久链接">#</a></h3>
+<p>mock模式对应的url包含npu起始地址、dma起始地址，使用该模式无需上板，
+目前仅用于快照功能，与参数–save_snapshot配合使用。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png&quot;</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,mock://ql100ai?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+<span class="n">save_snapshot</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--save_snapshot<span class="w"> </span>--backends<span class="w"> </span><span class="s2">&quot;BY,mock://ql100ai?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./images/cat.png&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>2.3 多输入<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<p>input为必填参数,
+如果输入文件为ftmp，则其格式、大小必须与json中记录的一致,
+多输入有两种配置方式：通过分号隔开，通过文本文件输入。</p>
+</section>
+<section id="id6">
+<h3>2.3.1 通过分号隔开<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h3>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./images/cat.png;./images/elephant.ftmp&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./images/cat.png;./images/elephant.ftmp&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>2.3.2 通过文本文件输入<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<p>文本文件中记录所有输入文件的路径，用换行符隔开。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>2.4 记录时间<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h3>
+<p>记录时间功能由各backend负责实现，有问题可向其开发者反馈。
+目前提供四种时间wall、mem、hard、other，记录结果保存至log_path路径下。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+<span class="n">log_time</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span><span class="w"> </span>--log_time
+</pre></div>
+</div>
+</section>
+<section id="io">
+<h3>2.5 记录io<a class="headerlink" href="#io" title="此标题的永久链接">#</a></h3>
+<p>目前只记录每个算子的所有输入和输出特征图,
+不记录HardOp这种算子内部隐藏了的特征图，记录结果保存至log_path路径下。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+<span class="n">log_io</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span><span class="w"> </span>--log_io
+</pre></div>
+</div>
+</section>
+<section id="dump">
+<h3>2.6 dump特征图<a class="headerlink" href="#dump" title="此标题的永久链接">#</a></h3>
+<p>dump功能由XRT的Tensor提供，有问题可向其开发者反馈。</p>
+<p>Xrun会在指定的log路径下创建ftmp+dump_format的文件夹，将各特征图保存其中，
+无论是二进制还是文本文件，后缀名均为ftmp，用户需要根据文件夹名称判断是否可读。
+若配置了–dump_ftmp，则只会保存指定vid的特征图，用户需自行保证特征图v_id有效，不存在的v_id不会被dump。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+<span class="n">dump_format</span> <span class="o">=</span> <span class="s2">&quot;SFB&quot;</span>
+<span class="n">dump_ftmp</span> <span class="o">=</span> <span class="s2">&quot;5,12,75&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span><span class="w"> </span>--dump_format<span class="w"> </span>SFB<span class="w"> </span>--dump_ftmp<span class="w"> </span><span class="s2">&quot;5,12,75&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="device">
+<h3>2.7 Device配置<a class="headerlink" href="#device" title="此标题的永久链接">#</a></h3>
+<p>Device配置主要是针对BuyiDevice的配置，需绑定Buyibackend后端,
+包括设置ICore的时钟频率、device预检和设置mmu模式，用户可按需配置。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+<span class="n">frequency</span> <span class="o">=</span> <span class="mi">860</span>
+<span class="n">precheck</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">close_mmu</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span><span class="w"> </span>--frequency<span class="w"> </span><span class="m">860</span><span class="w"> </span>--precheck<span class="w"> </span>--backends<span class="w"> </span><span class="s2">&quot;BY,axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="backend">
+<h3>2.8 Backend配置<a class="headerlink" href="#backend" title="此标题的永久链接">#</a></h3>
+<p>Backend配置是针对HostBackend、Buyibackend的配置，包括fake_qf、内存压缩、合并算子，用户可按需配置。
+使用限制和注意事项详见各组件文档说明。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+<span class="n">fake_qf</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">compress</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">merge_hardop</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">close_mmu</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span><span class="w"> </span>--fake_qf<span class="w"> </span>--compress<span class="w"> </span>--merge_hardop<span class="w"> </span>--close_mmu<span class="w"> </span>--backends<span class="w"> </span><span class="s2">&quot;BY,axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>2.9 快照<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h3>
+<p>快照功能对当前session进行序列化，并保存快照文件至log_path下。
+目前只支持BY阶段的网络。</p>
+<p>toml文件中的参数配置示例如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">run</span><span class="p">]</span>
+<span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;./img_list.txt&quot;</span>
+<span class="n">backends</span> <span class="o">=</span> <span class="s2">&quot;BY,mock://ql100ai?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+<span class="n">save_snapshot</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>配置完毕后，在命令行输入 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">run</span> <span class="pre">./sample.toml</span></code> 即可启动XRun。</p>
+<p>在命令行里使用XRun时，其参数配置如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>icraft-run<span class="w"> </span>--json<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.json&quot;</span><span class="w"> </span>--raw<span class="w"> </span><span class="s2">&quot;./jsonraw/yolov2_BY.raw&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./img_list.txt&quot;</span><span class="w"> </span>--save_snapshot<span class="w"> </span>--backends<span class="w"> </span><span class="s2">&quot;BY,mock://ql100ai?npu=0x40000000&amp;dma=0x80000000;Host&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">一 命令行参数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二 使用示例</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 三种输入方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-raw">2.1.1 json + raw</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jr-path-network">2.1.2 jr_path + network</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-snapshot">2.1.3 load_snapshot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2 后端指定</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#socket">2.2.1 Socket</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#axi">2.2.2 Axi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mock">2.2.3 Mock</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.3 多输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.3.1 通过分号隔开</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.3.2 通过文本文件输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.4 记录时间</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#io">2.5 记录io</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dump">2.6 dump特征图</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device">2.7 Device配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backend">2.8 Backend配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.9 快照</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： tangxiao
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

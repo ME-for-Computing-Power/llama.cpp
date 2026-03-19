@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft Demo: Pass &#8212; Icraft Demo  文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/pass/pass';</script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Icraft XRT: 运行时相关用例" href="../xrt/index.html" />
+    <link rel="prev" title="Icraft Demo: 自定义算子" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Demo  文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../customop/index.html">自定义算子</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../customop/activate.html">自定义激活</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../customop/softop.html">自定义软算子</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../customop/hardop.html">自定义硬算子</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customop/others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Pass</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">自定义pass</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../xrt/index.html">xrt运行相关用例</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/yolov5s.html">yolov5s运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/multiNetwork.html">多网络连接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/timeProfile.html">计时</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/snapshot.html">快照</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/samples/pass/pass.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft Demo: Pass</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 文件结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">二 使用流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pass">2.1 定义Pass</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1.1 Pass实现</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1.2 编译链接</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2 调用Pass</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft">2.2.1 通过Icraft调用</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#api">2.2.2 通过API调用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">三 仿真对比</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-demo-pass">
+<h1>Icraft Demo: Pass<a class="headerlink" href="#icraft-demo-pass" title="此标题的永久链接">#</a></h1>
+<p>在Icraft中，针对网络结构的增删查改或者对网络参数的重新赋值均可以通过XIR提供的接口来实现，每一个对网络的修改我们称之为一个Pass，
+因此通过依次调用不同功能的Pass可以实现对网络的优化并最终转变为适配后端硬件的格式。</p>
+<p>该Demo展示了如何定义Pass来实现对网络的转换，同时包含了如何通过配置文件将自定义的Pass嵌入Icraft的编译过程中以及如何通过API对Pass进行调用。
+Demo中包含四个不同功能的Pass实现，下面将以 <code class="docutils literal notranslate"><span class="pre">ConvertDivideScalar2MultiplyPass</span></code> 为例来进行介绍。</p>
+<section id="id1">
+<h2>一 工程配置<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="id2">
+<h3>1.1 文件结构<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<div class="line-block">
+<div class="line">samples/pass/ConvertDivideScalar2MultiplyPass</div>
+<div class="line-block">
+<div class="line">├───images</div>
+<div class="line">├───models</div>
+<div class="line">├───tests</div>
+<div class="line">├───ConvertDivideScalar2MultiplyPass.cpp</div>
+</div>
+</div>
+<p>在上面的工程结构中：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">images</span></code> 存放的是用于量化的图片校准集</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">models</span></code> 存放的是示例模型的相关文件：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">divide_scalar.pt</span></code> : Pytorch框架上导出的示例模型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">divide_scalar.py</span></code> : Pytorch框架上示例模型的源码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">divide_scalar.toml</span></code> : Icraft编译示例模型的配置文件</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests</span></code> 存放的是测试的源文件test.cpp</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ConvertDivideScalar2MultiplyPass.cpp</span></code> 是将除法转换为乘法这个Pass的具体实现</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>1.2 编译生成<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h3>
+<p>以上工程文件属于 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 工程的一部分，具体的编译生成方法请参考 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 的编译生成的说明。</p>
+</section>
+</section>
+<section id="id4">
+<h2>二 使用流程<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<section id="pass">
+<h3>2.1 定义Pass<a class="headerlink" href="#pass" title="此标题的永久链接">#</a></h3>
+<section id="id5">
+<h4>2.1.1 Pass实现<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/pass/ConvertDivideScalar2MultiplyPass/ConvertDivideScalar2MultiplyPass.cpp</span></code> 中完成了Pass的定义与注册，
+该Pass的命名空间为 <code class="docutils literal notranslate"><span class="pre">whatever</span></code>，其生成的动态链接库的名字为 <code class="docutils literal notranslate"><span class="pre">whatever.ConvertDivideScalar2MultiplyPass.dll</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>用户可以根据需要随意选择自定义Pass的命名空间和名称，但是需要保证编译的动态链接库的名称与toml文件中配置的相同，配置文件的介绍见下文。</p>
+</div>
+<p>假如我们现在想要实现一个将除法转换为乘法的功能Pass，那么具体的定义与注册方式如下所示：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">adapter</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">Pass</span><span class="w"> </span><span class="nf">ConvertDivideScalar2MultiplyPass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 声明Pass</span>
+<span class="linenos"> 3</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">pass_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">Network</span><span class="w"> </span><span class="n">network_</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">PassContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">pass_ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Pass的功能函数，包括传入的网络 Network，和表示Pass上下文的引用类 PassContext&amp;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">divide_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IsOp</span><span class="o">&lt;</span><span class="n">DivideScalar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Wildcard</span><span class="p">());</span><span class="w"> </span><span class="c1">// 使用IsOp根据类型查找符合条件的算子，算子的输入使用 Wlidcard()通配符匹配任意输入</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">                    </span><span class="n">network_</span><span class="p">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">divide_p</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">Network</span><span class="o">&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">MatchGroup</span><span class="o">&amp;</span><span class="w"> </span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// 使用network_.rewrite()覆盖查找到的算子</span>
+<span class="linenos"> 8</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">divide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">divide_p</span><span class="p">).</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">DivideScalar</span><span class="o">&gt;</span><span class="p">();</span><span class="w">                                         </span><span class="c1">// 使用at和cast方法将查找到的算子转成对应的类型</span>
+<span class="linenos"> 9</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">divisor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">divide</span><span class="o">-&gt;</span><span class="n">divisor</span><span class="p">;</span><span class="w">                                                                                         </span><span class="c1">// 获取divide算子的除数参数</span>
+<span class="linenos">10</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">multi_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">divisor</span><span class="p">;</span><span class="w">                                                                                          </span><span class="c1">// 根据算法原理构造乘法的乘数参数</span>
+<span class="linenos">11</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">divide_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">divide</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">;</span><span class="w">                                                      </span><span class="c1">// 获取divide算子的输出特征图的形状</span>
+<span class="linenos">12</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">divide_shape</span><span class="p">.</span><span class="n">back</span><span class="p">();</span><span class="w">                                                                                     </span><span class="c1">// 获取divide算子输出特征图的最后一维（通道维度）的大小</span>
+<span class="linenos">13</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">weight_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">channel</span><span class="p">]);</span><span class="w">                        </span><span class="c1">// 构造乘算子的参数</span>
+<span class="linenos">14</span><span class="w">                            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">channel</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="linenos">15</span><span class="w">                                    </span><span class="n">weight_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">multi_data</span><span class="p">;</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">                            </span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">weight_shape</span><span class="p">;</span><span class="w"> </span><span class="c1">// 构造乘算子的参数形状。</span>
+<span class="linenos">18</span><span class="w">                            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">divide</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">19</span><span class="w">                                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">divide</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">                                            </span><span class="n">weight_shape</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">channel</span><span class="p">);</span>
+<span class="linenos">21</span><span class="w">                                    </span><span class="p">}</span>
+<span class="linenos">22</span><span class="w">                                    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">23</span><span class="w">                                            </span><span class="n">weight_shape</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">24</span><span class="w">                                    </span><span class="p">}</span>
+<span class="linenos">25</span><span class="w">                            </span><span class="p">}</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">weights_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;***C&quot;</span><span class="p">);</span><span class="w">                                                                                           </span><span class="c1">// 构造乘算子的参数排布</span>
+<span class="linenos">28</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">weights_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="n">weight_shape</span><span class="p">,</span><span class="w"> </span><span class="n">weights_layout</span><span class="p">);</span><span class="w">        </span><span class="c1">// 构造乘算子的参数格式</span>
+<span class="linenos">29</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Params</span><span class="p">(</span><span class="n">weights_type</span><span class="p">);</span>
+<span class="linenos">30</span><span class="w">                            </span><span class="n">weights</span><span class="p">.</span><span class="n">setData</span><span class="p">(</span><span class="n">weight_data</span><span class="p">);</span><span class="w">                                                                                                           </span><span class="c1">// 给乘算子添加参数值</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">multi_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Multiply</span><span class="p">(</span><span class="n">divide</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">weights</span><span class="p">);</span><span class="w">    </span><span class="c1">// 构造乘算子，其输入就是除算子的输入</span>
+<span class="linenos">33</span><span class="w">                            </span><span class="n">network_</span><span class="p">.</span><span class="n">insertOpById</span><span class="p">(</span><span class="n">divide</span><span class="o">-&gt;</span><span class="n">op_id</span><span class="p">,</span><span class="w"> </span><span class="n">multi_n</span><span class="p">);</span><span class="w">                  </span><span class="c1">// 使用insertOpById方法将构造的乘算子添加至除算子之前</span>
+<span class="linenos">34</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">divide_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network_</span><span class="p">.</span><span class="n">getUsesInfo</span><span class="p">(</span><span class="n">divide</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w">             </span><span class="c1">// 使用getUsesInfo方法获取并保存除算子在网络内的连接关系</span>
+<span class="linenos">35</span><span class="w">                            </span><span class="n">network_</span><span class="p">.</span><span class="n">removeOpById</span><span class="p">(</span><span class="n">divide</span><span class="o">-&gt;</span><span class="n">op_id</span><span class="p">);</span><span class="w">                                   </span><span class="c1">// 使用removeOpById方法将除算子从网络内移除</span>
+<span class="linenos">36</span><span class="w">                            </span><span class="n">network_</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">multi_n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">divide_info</span><span class="p">);</span><span class="w">                              </span><span class="c1">// 使用connect方法将新添加的乘算子与除算子的连接关系相连</span>
+<span class="linenos">37</span><span class="w">                    </span><span class="p">});</span>
+<span class="linenos">38</span><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">network_</span><span class="p">;</span><span class="w"> </span><span class="c1">// 返回修改后的网络</span>
+<span class="linenos">39</span><span class="w">            </span><span class="p">};</span>
+<span class="linenos">40</span><span class="w">            </span><span class="n">Array</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">required_pass</span><span class="p">;</span>
+<span class="linenos">41</span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">NetworkPass</span><span class="p">(</span><span class="n">pass_func</span><span class="p">,</span><span class="w"> </span><span class="n">PassInfo</span><span class="p">(</span><span class="s">&quot;ConvertDivideScalar2MultiplyPass&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">required_pass</span><span class="p">));</span><span class="w"> </span><span class="c1">// 返回Pass</span>
+<span class="linenos">42</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">43</span><span class="w">    </span><span class="n">ICRAFT_REGISTER_PASS</span><span class="p">(</span><span class="s">&quot;whatever.ConvertDivideScalar2MultiplyPass&quot;</span><span class="p">).</span><span class="n">set_creator</span><span class="p">(</span><span class="n">ConvertDivideScalar2MultiplyPass</span><span class="p">);</span><span class="w"> </span><span class="c1">//在Icraft内注册Pass</span>
+<span class="linenos">44</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4>2.1.2 编译链接<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h4>
+<p>Pass的定义完成后，我们需要将源码编译链接为动态链接库，相应的CMake脚本如下：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c"># 根据上文中所述命名规则，创建动态链接库</span>
+<span class="linenos"> 2</span><span class="nb">add_library</span><span class="p">(</span><span class="s">whatever.ConvertDivideScalar2MultiplyPass</span><span class="w"> </span><span class="s">SHARED</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c"># 添加源文件</span>
+<span class="linenos"> 5</span><span class="nb">target_sources</span><span class="p">(</span><span class="s">whatever.ConvertDivideScalar2MultiplyPass</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="s">ConvertDivideScalar2MultiplyPass.cpp</span>
+<span class="linenos"> 7</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c"># 由于源文件中使用了XIR的接口，需要链接相应的库</span>
+<span class="linenos">10</span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">whatever.ConvertDivideScalar2MultiplyPass</span><span class="w"> </span><span class="s">PUBLIC</span><span class="w"> </span><span class="s">Icraft::XIR</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>以上脚本在Windows下编译生成 <code class="docutils literal notranslate"><span class="pre">whatever.ConvertDivideScalar2MultiplyPass</span></code> 文件</p>
+</section>
+</section>
+<section id="id7">
+<h3>2.2 调用Pass<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<section id="icraft">
+<h4>2.2.1 通过Icraft调用<a class="headerlink" href="#icraft" title="此标题的永久链接">#</a></h4>
+<p>运行Icraft之前需要让Icraft能够找到以上生成的 <code class="docutils literal notranslate"><span class="pre">whatever.ConvertDivideScalar2MultiplyPass.dll</span></code>，可通过以下方式实现：</p>
+<ul class="simple">
+<li><p>【不推荐】将以上生成的动态链接库复制到 <code class="docutils literal notranslate"><span class="pre">C:\Icraft\CustomOp_v3.0.0</span></code> 文件夹下</p></li>
+<li><p>【☆推荐】设置环境变量 <code class="docutils literal notranslate"><span class="pre">ICRAFT_CUSTOM_DIR</span></code> ，指向以上动态链接库所在的文件夹。比如在Windows下，可以使用PowerShell命令 <code class="docutils literal notranslate"><span class="pre">$env:ICRAFT_CUSTOM_DIR=&quot;path/to/dll/dir&quot;</span></code> 来实现,如果用户网络还需要用到Icraft提供的customop，可以使用命令 <code class="docutils literal notranslate"><span class="pre">$env:ICRAFT_CUSTOM_DIR=&quot;path/to/dll/dir;C:\Icraft\CustomOp_v3.0.0&quot;</span></code> 将Icraft Customop的路径一并配置到 <code class="docutils literal notranslate"><span class="pre">ICRAFT_CUSTOM_DIR</span></code>。</p></li>
+</ul>
+<p>为了能在Icraft编译过程中调用该Pass，可以在optimize或adapt这两个section中通过 <code class="docutils literal notranslate"><span class="pre">pass_on</span></code> 参数配置Pass的名称从而实现自动调用。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>目前仅支持在optimize和adapt这两个section中配置pass_on</p>
+</div>
+<p>各个编译过程的配置如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">[parse]</span>
+<span class="linenos"> 2</span><span class="n">net_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;divide_scalar&quot;</span>
+<span class="linenos"> 3</span><span class="n">framework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytorch&quot;</span>
+<span class="linenos"> 4</span><span class="n">frame_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.9&quot;</span>
+<span class="linenos"> 5</span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="linenos"> 6</span><span class="n">inputs_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;NHWC&quot;</span>
+<span class="linenos"> 7</span><span class="n">pre_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos"> 8</span><span class="n">pre_mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 9</span><span class="n">pre_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;resize&quot;</span>
+<span class="linenos">10</span><span class="n">channel_swap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span>
+<span class="linenos">11</span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/pass/ConvertDivideScalar2MultiplyPass/model/divide_scalar.pt&quot;</span>
+<span class="linenos">12</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="k">[optimize]</span>
+<span class="linenos">15</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BUYI&quot;</span>
+<span class="linenos">16</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_parsed.json&quot;</span>
+<span class="linenos">17</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_parsed.raw&quot;</span>
+<span class="linenos">18</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">19</span><span class="n">pass_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;whatever.ConvertDivideScalar2MultiplyPass&quot;</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="k">[quantize]</span>
+<span class="linenos">22</span><span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="linenos">23</span><span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;kld&quot;</span>
+<span class="linenos">24</span><span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/pass/ConvertDivideScalar2MultiplyPass/images/&quot;</span>
+<span class="linenos">25</span><span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/pass/ConvertDivideScalar2MultiplyPass/images/pic_list.txt&quot;</span>
+<span class="linenos">26</span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="linenos">27</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_optimized.json&quot;</span>
+<span class="linenos">28</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_optimized.raw&quot;</span>
+<span class="linenos">29</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">30</span><span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="linenos">31</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="k">[adapt]</span>
+<span class="linenos">34</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BUYI&quot;</span>
+<span class="linenos">35</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_quantized.json&quot;</span>
+<span class="linenos">36</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_quantized.raw&quot;</span>
+<span class="linenos">37</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="k">[generate]</span>
+<span class="linenos">40</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_adapted.json&quot;</span>
+<span class="linenos">41</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/divide_scalar_adapted.raw&quot;</span>
+<span class="linenos">42</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+</pre></div>
+</div>
+<p>编译的命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进入build文件夹，避免生成的文件污染源目录</span>
+<span class="nb">cd</span><span class="w"> </span>build/windows-x64-release
+icraft<span class="w"> </span>compile<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\s</span>amples<span class="se">\p</span>ass<span class="se">\C</span>onvertDivideScalar2MultiplyPass<span class="se">\m</span>odel<span class="se">\d</span>ivide_scalar.toml
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h4>2.2.2 通过API调用<a class="headerlink" href="#api" title="此标题的永久链接">#</a></h4>
+<p>除了通过Icraft在编译过程中调用该Pass外，还可以灵活地通过Icraft提供的C++ API进行调用。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>当前的API必须提供 <code class="docutils literal notranslate"><span class="pre">Pass.dll</span></code> 所在的路径才能完成调用，因此建议将 <code class="docutils literal notranslate"><span class="pre">Pass.dll</span></code> 置于 <code class="docutils literal notranslate"><span class="pre">ICRAFT_CUSTOM_DIR</span></code> 所指向的路径下。</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 加载网络</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sim</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">input_tensor</span><span class="p">);</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="c1">//获取ICRAFT_CUSTOM_DIR所指向的路径并调用该路径下的Pass</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">custom_dirs_env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;ICRAFT_CUSTOM_DIR&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">dll_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">custom_dirs_env</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pass_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.dll&quot;</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">execute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pass</span><span class="o">::</span><span class="n">Create</span><span class="p">(</span><span class="n">pass_name</span><span class="p">,</span><span class="w"> </span><span class="n">dll_path</span><span class="p">);</span>
+<span class="linenos">10</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">network_passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">execute</span><span class="p">(</span><span class="n">network</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id8">
+<h2>三 仿真对比<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h2>
+<p>为了验证Pass功能的正确性，我们对经过Pass处理的网络和未经Pass处理的网络进行仿真对比结果。
+由于某些Pass的变换是有数值差异的，因此我们计算两个阶段网络仿真结果的余弦相似度，并分别针对不同Pass设置不同的阈值。</p>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/pass/ConvertDivideScalar2MultiplyPass/tests/test.cpp</span></code> 中完成了结果验证，主要实现如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">JSON_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/divide_scalar_parsed.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">RAW_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/divide_scalar_parsed.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">PASS_NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;whatever.ConvertDivideScalar2MultiplyPass&quot;</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w">            </span><span class="n">testPass</span><span class="p">(</span><span class="n">JSON_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">RAW_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">PASS_NAME</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">JSON_FILE_PASSED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/divide_scalar_optimized.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">RAW_FILE_PASSED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/divide_scalar_optimized.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="n">testCompile</span><span class="p">(</span><span class="n">JSON_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">RAW_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">JSON_FILE_PASSED</span><span class="p">,</span><span class="w"> </span><span class="n">RAW_FILE_PASSED</span><span class="p">);</span>
+<span class="linenos">10</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">13</span><span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">testCompile</span></code> 是对前述icraft compile生成的模型进行仿真对比，
+<code class="docutils literal notranslate"><span class="pre">testPass</span></code> 是通过Icraft的C++ API再次调用Pass完成网络的转换，并计算两个阶段的余弦相似度，
+两个测试共同保证通过Icraft编译调用和通过API调用该Pass的功能均正确。</p>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/pass/ConvertDivideScalar2MultiplyPass/tests/test.py</span></code> 中调用Icraft的Python API完成了结果验证，主要实现如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">JSON_FILE</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;json&amp;raw/divide_scalar_parsed.json&quot;</span>
+<span class="linenos">2</span><span class="n">RAW_FILE</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;json&amp;raw/divide_scalar_parsed.raw&quot;</span>
+<span class="linenos">3</span><span class="n">PASS_NAME</span> <span class="o">=</span> <span class="s2">&quot;whatever.ConvertDivideScalar2MultiplyPass&quot;</span>
+<span class="linenos">4</span><span class="n">TestPass</span><span class="p">(</span><span class="n">JSON_FILE</span><span class="p">,</span> <span class="n">RAW_FILE</span><span class="p">,</span> <span class="n">PASS_NAME</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="n">JSON_FILE_PASSED</span> <span class="o">=</span> <span class="s2">&quot;json&amp;raw/divide_scalar_optimized.json&quot;</span>
+<span class="linenos">7</span><span class="n">RAW_FILE_PASSED</span> <span class="o">=</span> <span class="s2">&quot;json&amp;raw/divide_scalar_optimized.raw&quot;</span>
+<span class="linenos">8</span><span class="n">TestCompile</span><span class="p">(</span><span class="n">JSON_FILE</span><span class="p">,</span> <span class="n">RAW_FILE</span><span class="p">,</span> <span class="n">JSON_FILE_PASSED</span><span class="p">,</span> <span class="n">RAW_FILE_PASSED</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Icraft Demo: 自定义算子</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../xrt/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Icraft XRT: 运行时相关用例</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 文件结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">二 使用流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pass">2.1 定义Pass</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1.1 Pass实现</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1.2 编译链接</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2 调用Pass</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft">2.2.1 通过Icraft调用</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#api">2.2.2 通过API调用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">三 仿真对比</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

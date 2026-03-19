@@ -1,0 +1,1012 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft Demo: 自定义软算子 &#8212; Icraft Demo  文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/customop/softop';</script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Icraft Demo: 自定义硬算子" href="hardop.html" />
+    <link rel="prev" title="Icraft Demo: 自定义激活" href="activate.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Demo  文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">自定义算子</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="activate.html">自定义激活</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">自定义软算子</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="hardop.html">自定义硬算子</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pass/index.html">Pass</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pass/pass.html">自定义pass</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../xrt/index.html">xrt运行相关用例</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/yolov5s.html">yolov5s运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/multiNetwork.html">多网络连接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/timeProfile.html">计时</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xrt/snapshot.html">快照</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/samples/customop/softop.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft Demo: 自定义软算子</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 文件结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">二 适配流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1 尝试解析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2 注册算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2.1 算子定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.2.2 组件接口</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.2.3 编译链接</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.3 自定义解析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.4 再次解析 (编译)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">三 仿真对比</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-demo">
+<h1>Icraft Demo: 自定义软算子<a class="headerlink" href="#icraft-demo" title="此标题的永久链接">#</a></h1>
+<p>在Icraft中， <strong>如果一个算子无法映射到Icraft中算子，此时用户可以通过解析组件的自定义接口将算子解析到自定义算子上；
+本章节阐述自定义算子放到CPU或GPU上运算的情况，即自定义软算子</strong>。</p>
+<p>该Demo展示了如何使用自定义软算子流程来支持Onnx框架中的算子 <code class="docutils literal notranslate"><span class="pre">GroupNorm</span></code>，该算子定义如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">GroupNorm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="err">−</span><span class="mi">5</span><span class="p">):</span>
+<span class="linenos"> 2</span>            <span class="c1"># x: input features with shape [N,C,H,W]</span>
+<span class="linenos"> 3</span>            <span class="c1"># gamma, beta: scale and offset, with shape [1,C,1,1]</span>
+<span class="linenos"> 4</span>            <span class="c1"># G: number of groups for GN</span>
+<span class="linenos"> 5</span>            <span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+<span class="linenos"> 6</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">C</span> <span class="o">//</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">])</span>
+<span class="linenos"> 7</span>            <span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">keep</span> <span class="n">dims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos"> 8</span>            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="err">−</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+<span class="linenos"> 9</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">])</span>
+<span class="linenos">10</span>            <span class="k">return</span> <span class="n">x</span> <span class="err">∗</span> <span class="n">gamma</span> <span class="o">+</span> <span class="n">beta</span>
+</pre></div>
+</div>
+<p><strong>参数：</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num_groups</span> <span class="pre">(int)</span></code> : 分组的数量，默认为1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eps</span> <span class="pre">(double)</span></code> : 为防止方差除零，增加一个很小的值。默认值：1e-05.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">(params)</span></code> : scale.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">(params)</span></code> : offset.</p></li>
+</ul>
+<p><strong>Onnx格式中pattern：</strong></p>
+<img alt="../../_images/groupnorm.png" src="../../_images/groupnorm.png" />
+<section id="id1">
+<h2>一 工程配置<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="id2">
+<h3>1.1 文件结构<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<div class="line-block">
+<div class="line">samples/customop/softop</div>
+<div class="line-block">
+<div class="line">├───models</div>
+<div class="line">├───op</div>
+<div class="line">├───parse</div>
+<div class="line">└───tests</div>
+</div>
+</div>
+<p>在上面的工程结构中：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">models</span></code> 存放的是示例模型的相关文件：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupnorm_network.py</span></code> : PaddlePaddle框架上示例模型的源码，该模型只包含一个算子，即 <code class="docutils literal notranslate"><span class="pre">GroupNorm</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupnorm_network.onnx</span></code> : PaddlePaddle框架上导出的示例模型，该模型保存为了.onnx格式.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupnorm_network.toml</span></code> : Icraft编译示例模型的配置文件.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">images</span></code> : 该文件夹存放了用于量化的图片.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">op</span></code> 存放的是算子注册以及后端等接口实现的源文件，该源文件生成 <code class="docutils literal notranslate"><span class="pre">whatever.GroupNorm</span></code> 动态链接库.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parse</span></code> 存放的是将框架算子解析到XIR的源文件，该源文件生成 <code class="docutils literal notranslate"><span class="pre">icraft.parse.groupnorm.dll</span></code> 动态链接库.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests</span></code> 存放的是测试的源文件，包含C++和Python版本的测试程序，C++源文件生成 <code class="docutils literal notranslate"><span class="pre">test_customop_softop</span></code> 可执行程序.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>1.2 编译生成<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h3>
+<p>以上工程文件属于 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 工程的一部分，具体的编译生成方法请参考 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 的编译生成的说明。</p>
+</section>
+</section>
+<section id="id4">
+<h2>二 适配流程<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<section id="id5">
+<h3>2.1 尝试解析<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<p>首先，调用 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">parse</span></code> 命令尝试解析示例模型文件 <code class="docutils literal notranslate"><span class="pre">groupnorm_network.onnx</span></code> , <code class="docutils literal notranslate"><span class="pre">parse</span></code> 命令的配置如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">[parse]</span>
+<span class="linenos"> 2</span><span class="n">net_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;groupnorm_network&quot;</span>
+<span class="linenos"> 3</span><span class="n">framework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;onnx&quot;</span>
+<span class="linenos"> 4</span><span class="n">frame_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.9&quot;</span>
+<span class="linenos"> 5</span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="linenos"> 6</span><span class="n">inputs_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;NHWC&quot;</span>
+<span class="linenos"> 7</span><span class="n">pre_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos"> 8</span><span class="n">pre_mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos"> 9</span><span class="n">pre_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;resize&quot;</span>
+<span class="linenos">10</span><span class="n">channel_swap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos">11</span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/customop/softop/models/groupnorm_network.onnx&quot;</span>
+<span class="linenos">12</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+</pre></div>
+</div>
+<p>解析的命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进入build文件夹，避免生成的文件污染源目录</span>
+<span class="nb">cd</span><span class="w"> </span>build/windows-x64-release
+icraft<span class="w"> </span>parse<span class="w"> </span>../../samples/customop/softop/models/groupnorm_network.toml
+</pre></div>
+</div>
+<p>由于Icraft不支持模型中的算子 <code class="docutils literal notranslate"><span class="pre">GroupNorm</span></code> 的解析，因此解析会报如下错误：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="hll">please<span class="w"> </span>check<span class="w"> </span>the<span class="w"> </span>pre_check<span class="w"> </span>log,<span class="w"> </span>some<span class="w"> </span>ops<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>supported!
+</span><span class="o">[</span><span class="m">12</span>/12/23<span class="w"> </span><span class="m">14</span>:17:05.022<span class="o">]</span><span class="w"> </span><span class="o">[</span>E<span class="o">]</span><span class="w"> </span>执行以下命令时捕获到错误码1:
+icraft-parse.exe<span class="w"> </span>--channel_swap<span class="w"> </span><span class="m">0</span>,1,2<span class="w"> </span>--frame_version<span class="w"> </span><span class="s2">&quot;1.9&quot;</span><span class="w"> </span>--framework<span class="w"> </span><span class="s2">&quot;onnx&quot;</span><span class="w"> </span>--inputs<span class="w"> </span><span class="m">1</span>,160,160,3<span class="w"> </span>--inputs_layout<span class="w"> </span><span class="s2">&quot;NHWC&quot;</span><span class="w"> </span>--jr_path<span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span><span class="w"> </span>--net_name<span class="w"> </span><span class="s2">&quot;groupnorm_network&quot;</span><span class="w"> </span>--network<span class="w"> </span><span class="s2">&quot;../../samples/customop/softop/models/groupnorm_network.onnx&quot;</span><span class="w"> </span>--pre_mean<span class="w"> </span><span class="s2">&quot;nop&quot;</span><span class="w"> </span>--pre_method<span class="w"> </span><span class="s2">&quot;resize&quot;</span><span class="w"> </span>--pre_scale<span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+</pre></div>
+</div>
+<p>根据提示，打开 <code class="docutils literal notranslate"><span class="pre">.icraft\logs\groupnorm_network\groupnorm_network_precheck.csv</span></code> ，其内容如下：</p>
+<table class="table" id="id15">
+<caption><span class="caption-text">Table Title</span><a class="headerlink" href="#id15" title="此表格的永久链接">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>pattern_num</p></th>
+<th class="head"><p>start_index</p></th>
+<th class="head"><p>end_index</p></th>
+<th class="head"><p>inputs</p></th>
+<th class="head"><p>outputs</p></th>
+<th class="head"><p>op_serial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>p2o.Reshape.1</p></td>
+<td><p>p2o.InstanceNormalization.1</p></td>
+<td><p>InstanceNormalization</p></td>
+</tr>
+</tbody>
+</table>
+<p>以上信息表明，Icraft-Parser无法解析算子 <code class="docutils literal notranslate"><span class="pre">InstanceNormalization</span></code> ，因此我们需要利用Parser的自定义解析接口，将 <code class="docutils literal notranslate"><span class="pre">InstanceNormalization</span></code> 映射到Icraft XIR. <strong>分析GroupNorm的pattern可知，
+GroupNorm是一串小算子的组合，如果仅将InstanceNormalization解析为自定义算子，则在Icraft中是以小粒度的算子进行计算，执行效率较低，因此考虑将算子序列做为一个pattern，解析为一个自定义算子。</strong></p>
+</section>
+<section id="id6">
+<h3>2.2 注册算子<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h3>
+<section id="id7">
+<h4>2.2.1 算子定义<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h4>
+<p>XIR中没有与 <code class="docutils literal notranslate"><span class="pre">Reshape,InstanceNormalization,Shape,Reshape,Mul,Add</span></code> 相对应的算子，因此我们需要自定义一个算子，将其注册到XIR中去。</p>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/customop/softop/op/groupnorm.h</span></code> 中完成了算子的定义和注册，该算子的命名空间为 <code class="docutils literal notranslate"><span class="pre">whatever</span></code> ，类名为 <code class="docutils literal notranslate"><span class="pre">GroupNorm</span></code> ，其生成的动态链接库的名字为 <code class="docutils literal notranslate"><span class="pre">whatever.GroupNorm</span></code> （Windows上文件名为 <code class="docutils literal notranslate"><span class="pre">whatever.GroupNorm.dll</span></code> , Linux上文件名为 <code class="docutils literal notranslate"><span class="pre">libwhatever.GroupNorm.so</span></code> ） 。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>用户可以根据需要对自定义算子的命名空间和类型随意取名，但是需要保证算子编译的动态链接库的名称为 <code class="docutils literal notranslate"><span class="pre">{命名空间}.{类型名}</span></code>。</p>
+</div>
+<p>根据前文框架上 <code class="docutils literal notranslate"><span class="pre">GroupNorm</span></code> 算子的定义，我们给该算子定义了四个属性，分别为 <code class="docutils literal notranslate"><span class="pre">num_groups(int)</span></code> 、 <code class="docutils literal notranslate"><span class="pre">eps(double)</span></code>、 <code class="docutils literal notranslate"><span class="pre">gamma(Optional&lt;Params&gt;)</span></code>、 <code class="docutils literal notranslate"><span class="pre">beta(Optional&lt;Params&gt;)</span></code>. 该算子的具体定义和注册过程如下所示：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 命名空间</span>
+<span class="linenos"> 2</span><span class="k">namespace</span><span class="w"> </span><span class="nn">whatever</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">GroupNormNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpNodeBase</span><span class="o">&lt;</span><span class="n">GroupNormNode</span><span class="p">,</span><span class="w"> </span><span class="n">OneResult</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 6</span><span class="w">            </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">num_groups</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="w">            </span><span class="kt">double</span><span class="w"> </span><span class="n">eps</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Params</span><span class="o">&gt;</span><span class="w"> </span><span class="n">gamma</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Params</span><span class="o">&gt;</span><span class="w"> </span><span class="n">beta</span><span class="p">;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">            </span><span class="n">ICRAFT_DECLARE_ATTRS</span><span class="p">(</span><span class="n">GroupNormNode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">                    </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">num_groups</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">                    </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">eps</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">                    </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">gamma</span><span class="p">);</span>
+<span class="linenos">15</span><span class="w">                    </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">beta</span><span class="p">);</span>
+<span class="linenos">16</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">17</span><span class="w">    </span><span class="p">};</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">GroupNorm</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpBase</span><span class="o">&lt;</span><span class="n">GroupNorm</span><span class="p">,</span><span class="w"> </span><span class="n">GroupNormNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">21</span><span class="w">            </span><span class="n">GroupNorm</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="w">            </span><span class="c1">// 构造函数也可以不提供</span>
+<span class="linenos">24</span><span class="w">            </span><span class="n">GroupNorm</span><span class="p">(</span><span class="n">Value</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">num_groups</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">eps</span><span class="p">,</span><span class="w"> </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Params</span><span class="o">&gt;</span><span class="w"> </span><span class="n">gamma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NullOpt</span><span class="p">,</span><span class="w"> </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Params</span><span class="o">&gt;</span><span class="w"> </span><span class="n">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NullOpt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">25</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">GroupNormNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">26</span><span class="w">                    </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">num_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_groups</span><span class="p">;</span>
+<span class="linenos">27</span><span class="w">                    </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eps</span><span class="p">;</span>
+<span class="linenos">28</span><span class="w">                    </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">gamma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gamma</span><span class="p">;</span>
+<span class="linenos">29</span><span class="w">                    </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta</span><span class="p">;</span>
+<span class="linenos">30</span><span class="w">                    </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="linenos">31</span><span class="w">                    </span><span class="n">addInput</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="linenos">32</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">33</span><span class="w">    </span><span class="p">};</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span><span class="w">    </span><span class="c1">// 调用算子注册宏将算子注册到XIR</span>
+<span class="linenos">36</span><span class="w">    </span><span class="c1">// 注册时可以使用set_tinfer为该算子添加类型推断函数</span>
+<span class="linenos">37</span><span class="w">    </span><span class="c1">// 类型推断函数主要描述给定输入的类型，如何确定输出的类型</span>
+<span class="linenos">38</span><span class="w">    </span><span class="c1">// 对于该算子，输出的类型和输入相同</span>
+<span class="linenos">39</span><span class="w">    </span><span class="n">ICRAFT_REGISTER_OP_NODE</span><span class="p">(</span><span class="n">GroupNormNode</span><span class="p">)</span>
+<span class="linenos">40</span><span class="w">            </span><span class="p">.</span><span class="n">set_tinfer</span><span class="o">&lt;</span><span class="n">GroupNormNode</span><span class="p">,</span><span class="w"> </span><span class="n">HostTarget</span><span class="o">&gt;</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">41</span><span class="w">            </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">validate</span><span class="p">();</span>
+<span class="linenos">42</span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Array</span><span class="o">&lt;</span><span class="n">TensorType</span><span class="o">&gt;</span><span class="p">{</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">().</span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">43</span><span class="w">                    </span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h4>2.2.2 组件接口<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h4>
+<p>算子定义完成后，还需要为算子实现前向等组件的接口。该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/customop/softop/op/groupnorm.cpp</span></code> 中完成了以上接口的实现，具体如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;groupnorm.h&quot;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xir/core/functor.h&gt;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/dev/host_device.h&gt;</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/hostbackend/backend.h&gt;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">namespace</span><span class="w"> </span><span class="nn">whatever</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xrt</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">            </span><span class="c1">// 计算均值</span>
+<span class="linenos">11</span><span class="w">            </span><span class="kt">double</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">                    </span><span class="kt">double</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="linenos">13</span><span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">                            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">                    </span><span class="p">}</span>
+<span class="linenos">16</span><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="linenos">17</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">            </span><span class="c1">// 计算方差</span>
+<span class="linenos">20</span><span class="w">            </span><span class="kt">double</span><span class="w"> </span><span class="nf">variance</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">21</span><span class="w">                    </span><span class="kt">double</span><span class="w"> </span><span class="n">sum_squared_diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="linenos">22</span><span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">23</span><span class="w">                            </span><span class="kt">double</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mean</span><span class="p">;</span>
+<span class="linenos">24</span><span class="w">                            </span><span class="n">sum_squared_diff</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">diff</span><span class="p">;</span>
+<span class="linenos">25</span><span class="w">                    </span><span class="p">}</span>
+<span class="linenos">26</span><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">sum_squared_diff</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="linenos">27</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="w">            </span><span class="c1">// HostBackend中定义了各个算子在CPU/GPU上前向的过程</span>
+<span class="linenos">31</span><span class="w">            </span><span class="c1">// 下面向HostBackend中注册GroupNorm算子的前向过程</span>
+<span class="linenos">32</span><span class="w">            </span><span class="c1">// 一个算子的前向实现包含init和forward两个接口，分别用于初始化以及前向过程</span>
+<span class="linenos">33</span><span class="w">            </span><span class="n">ICRAFT_ADD_OP_TO_BACKEND</span><span class="p">(</span><span class="n">GroupNorm</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="p">)</span>
+<span class="linenos">34</span><span class="w">                    </span><span class="c1">// 初始化过程的实现</span>
+<span class="linenos">35</span><span class="w">                    </span><span class="c1">// 该算子不需要初始化什么，因此该函数为空</span>
+<span class="linenos">36</span><span class="w">                    </span><span class="p">.</span><span class="n">set_init</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">GroupNorm</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{})</span>
+<span class="linenos">37</span><span class="w">                    </span><span class="c1">// 前向实现，根据Softplus的计算公式实现计算过程</span>
+<span class="linenos">38</span><span class="w">                    </span><span class="p">.</span><span class="n">set_forward</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">GroupNorm</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">39</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">num_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">num_groups</span><span class="p">;</span>
+<span class="linenos">40</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">eps</span><span class="p">;</span>
+<span class="linenos">41</span><span class="w">                    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">42</span><span class="w">                    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_tensor</span><span class="p">.</span><span class="n">dtype</span><span class="p">();</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="w">                    </span><span class="kt">bool</span><span class="w"> </span><span class="n">input_is_fp32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="linenos">45</span><span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">stype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_dtype</span><span class="p">.</span><span class="n">getStorageType</span><span class="p">();</span><span class="w"> </span><span class="n">stype</span><span class="p">.</span><span class="n">is</span><span class="o">&lt;</span><span class="n">FloatType</span><span class="o">&gt;</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">46</span><span class="w">                            </span><span class="k">auto</span><span class="w"> </span><span class="n">float_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stype</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">FloatType</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">47</span><span class="w">                            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">float_dtype</span><span class="p">.</span><span class="n">isFP32</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">48</span><span class="w">                                    </span><span class="n">input_is_fp32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">49</span><span class="w">                            </span><span class="p">}</span>
+<span class="linenos">50</span><span class="w">                    </span><span class="p">}</span>
+<span class="linenos">51</span><span class="w">                    </span><span class="n">ICRAFT_CHECK</span><span class="p">(</span><span class="n">input_is_fp32</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Only fp32 is supported!&quot;</span><span class="p">);</span>
+<span class="linenos">52</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">input_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_dtype</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">;</span>
+<span class="linenos">53</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">num_channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">54</span><span class="w">                    </span><span class="c1">// 计算每个group的均值和方差</span>
+<span class="linenos">55</span><span class="w">                    </span><span class="kt">int</span><span class="w"> </span><span class="n">hw_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">input_shape</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">input_shape</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">multiplies</span><span class="p">());</span>
+<span class="linenos">56</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">group_channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_channels</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">num_groups</span><span class="p">;</span>
+<span class="linenos">57</span><span class="w">                    </span><span class="kt">int</span><span class="w"> </span><span class="n">group_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">group_channel</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">hw_size</span><span class="p">;</span>
+<span class="linenos">58</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">input_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">input_tensor</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">cptr</span><span class="p">();</span>
+<span class="linenos">59</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">input_dtype</span><span class="p">).</span><span class="n">mallocOn</span><span class="p">(</span><span class="n">HostDevice</span><span class="o">::</span><span class="n">MemRegion</span><span class="p">());</span>
+<span class="linenos">60</span><span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">output_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">output_tensor</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">cptr</span><span class="p">();</span>
+<span class="linenos">61</span><span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_groups</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">62</span><span class="w">                            </span><span class="kt">int</span><span class="w"> </span><span class="n">start_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">group_size</span><span class="p">;</span>
+<span class="linenos">63</span><span class="w">                            </span><span class="kt">int</span><span class="w"> </span><span class="n">end_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">group_size</span><span class="p">;</span>
+<span class="linenos">64</span>
+<span class="linenos">65</span><span class="w">                            </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">group_data</span><span class="p">;</span>
+<span class="linenos">66</span><span class="w">                            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_idx</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">end_idx</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">67</span><span class="w">                                    </span><span class="n">group_data</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input_data</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+<span class="linenos">68</span><span class="w">                            </span><span class="p">}</span>
+<span class="linenos">69</span>
+<span class="linenos">70</span><span class="w">                            </span><span class="kt">double</span><span class="w"> </span><span class="n">group_mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">group_data</span><span class="p">);</span>
+<span class="linenos">71</span><span class="w">                            </span><span class="kt">double</span><span class="w"> </span><span class="n">group_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">variance</span><span class="p">(</span><span class="n">group_data</span><span class="p">,</span><span class="w"> </span><span class="n">group_mean</span><span class="p">);</span>
+<span class="linenos">72</span>
+<span class="linenos">73</span><span class="w">                            </span><span class="c1">// 对group中的元素进行标准化</span>
+<span class="linenos">74</span><span class="w">                            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">op</span><span class="o">-&gt;</span><span class="n">gamma</span><span class="p">.</span><span class="n">has_value</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">75</span><span class="w">                                    </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">gamma</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">data</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">76</span><span class="w">                                    </span><span class="k">auto</span><span class="w"> </span><span class="n">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">beta</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">data</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">77</span><span class="w">                                    </span><span class="k">auto</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">78</span><span class="w">                                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_idx</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">end_idx</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">79</span><span class="w">                                            </span><span class="k">auto</span><span class="w"> </span><span class="n">c_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">group_channel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">index</span><span class="p">;</span>
+<span class="linenos">80</span><span class="w">                                            </span><span class="n">output_data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">input_data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">group_mean</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">gamma</span><span class="p">[</span><span class="n">c_index</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">group_var</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">eps</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">beta</span><span class="p">[</span><span class="n">c_index</span><span class="p">];</span>
+<span class="linenos">81</span><span class="w">                                            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">group_channel</span><span class="p">)</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">82</span><span class="w">                                    </span><span class="p">}</span>
+<span class="linenos">83</span><span class="w">                            </span><span class="p">}</span>
+<span class="linenos">84</span><span class="w">                            </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">85</span><span class="w">                                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_idx</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">end_idx</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">86</span><span class="w">                                            </span><span class="n">output_data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">input_data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">group_mean</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">group_var</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">eps</span><span class="p">);</span>
+<span class="linenos">87</span><span class="w">                                    </span><span class="p">}</span>
+<span class="linenos">88</span><span class="w">                            </span><span class="p">}</span>
+<span class="linenos">89</span><span class="w">                    </span><span class="p">}</span>
+<span class="linenos">90</span><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">output_tensor</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">91</span><span class="w">                            </span><span class="p">});</span>
+<span class="linenos">92</span><span class="w">            </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h4>2.2.3 编译链接<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h4>
+<p>算子的定义和一些组件接口实现完成后，我们需要将源码编译链接为动态链接库，相应的CMake脚本如下：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">cmake_minimum_required</span><span class="w"> </span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.24</span><span class="p">)</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="nb">add_library</span><span class="p">(</span><span class="s">whatever.GroupNorm</span><span class="w"> </span><span class="s">SHARED</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="nb">target_sources</span><span class="p">(</span><span class="s">whatever.GroupNorm</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="linenos"> 6</span><span class="w">            </span><span class="s">groupnorm.cpp</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="c"># 由于源文件中实现了HostBackend和量化的的接口，需要链接相应的库</span>
+<span class="linenos">10</span><span class="w">    </span><span class="c"># 整个实现中还使用了XIR和XRT的接口，但是二者已经被Icraft::HostBackend公开链接，因此可以不写</span>
+<span class="linenos">11</span><span class="w">    </span><span class="c"># 完整的写法为 target_link_libraries(whatever.GroupNorm PRIVATE Icraft::HostBackend Icraft::XRT Icraft::XIR)</span>
+<span class="linenos">12</span><span class="w">    </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">whatever.GroupNorm</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">Icraft::HostBackend</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>以上脚本在Windows下编译生成 <code class="docutils literal notranslate"><span class="pre">whatever.GroupNorm..dll</span></code> 文件，在Linux下生成 <code class="docutils literal notranslate"><span class="pre">libwhatever.GroupNorm.so</span></code> 文件，其包含了算子的定义、HostBackend等接口的实现。</p>
+</section>
+</section>
+<section id="id10">
+<h3>2.3 自定义解析<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h3>
+<p>算子注册完成后，需要利用自定义解析的接口完成Onnx框架上 <code class="docutils literal notranslate"><span class="pre">Reshape,InstanceNormalization,Shape,Reshape,Mul,Add</span></code> 算子到XIR中 <code class="docutils literal notranslate"><span class="pre">whatever::GroupNorm</span></code> 算子的转换。</p>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/customop/softop/parse</span></code> 文件夹下的 <code class="docutils literal notranslate"><span class="pre">parser.cpp</span></code> 中完成了自定义解析的实现，具体如下：</p>
+<blockquote>
+<div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xir/ops/transpose.h&gt;</span>
+<span class="linenos"> 2</span><span class="w">        </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-onnx/ox_pattern_factory.h&gt;</span>
+<span class="linenos"> 3</span><span class="w">        </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../op/groupnorm.h&quot;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">parser</span><span class="o">::</span><span class="nn">ox</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getParamData</span><span class="p">(</span><span class="n">onnx</span><span class="o">::</span><span class="n">NodeProto</span><span class="w"> </span><span class="n">node</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">                </span><span class="n">onnx</span><span class="o">::</span><span class="n">TensorProto</span><span class="w"> </span><span class="n">tensor</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">op_type</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;Parameter&quot;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">                        </span><span class="n">tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node</span><span class="p">.</span><span class="n">attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">t</span><span class="p">();</span>
+<span class="linenos">12</span><span class="w">                </span><span class="k">else</span>
+<span class="linenos">13</span><span class="w">                        </span><span class="n">tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node</span><span class="p">.</span><span class="n">attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">tensors</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">dim_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tensor</span><span class="p">.</span><span class="n">dims</span><span class="p">();</span>
+<span class="linenos">16</span><span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dim_</span><span class="p">(</span><span class="n">dim_tmp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">dim_tmp</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="linenos">17</span><span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">size_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">dim_</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">dim_</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">multiplies</span><span class="p">());</span>
+<span class="linenos">18</span><span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">size_</span><span class="p">]);</span>
+<span class="linenos">19</span><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tensor</span><span class="p">.</span><span class="n">raw_data</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">flt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">node</span><span class="p">.</span><span class="n">attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">t</span><span class="p">().</span><span class="n">raw_data</span><span class="p">().</span><span class="n">data</span><span class="p">();</span>
+<span class="linenos">21</span><span class="w">                        </span><span class="n">std</span><span class="o">::</span><span class="n">memcpy</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">flt</span><span class="p">,</span><span class="w"> </span><span class="n">size_</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+<span class="linenos">22</span><span class="w">                </span><span class="p">}</span>
+<span class="linenos">23</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="linenos">24</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">parse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">onnx</span><span class="o">::</span><span class="n">NodeProto</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">pattern_nodes</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">onnx</span><span class="o">::</span><span class="n">TensorProto</span><span class="o">*&gt;&amp;</span><span class="w"> </span><span class="n">coef_map</span><span class="p">,</span>
+<span class="linenos">27</span><span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">onnx</span><span class="o">::</span><span class="n">NodeProto</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">const_node_map</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tensor_map</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">28</span><span class="w">                        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Operation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ops</span><span class="p">;</span>
+<span class="linenos">29</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">input</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">30</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern_nodes</span><span class="p">[</span><span class="mi">5</span><span class="p">].</span><span class="n">output</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">31</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">ins_norm_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern_nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">32</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">mul_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern_nodes</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos">33</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">add_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pattern_nodes</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="linenos">34</span><span class="w">                        </span><span class="kt">float</span><span class="w"> </span><span class="n">eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.00001</span><span class="p">;</span>
+<span class="linenos">35</span><span class="w">                        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">attr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ins_norm_node</span><span class="p">.</span><span class="n">attribute</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">36</span><span class="w">                                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;epsilon&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attr</span><span class="p">.</span><span class="n">f</span><span class="p">();</span>
+<span class="linenos">37</span><span class="w">                        </span><span class="p">}</span>
+<span class="linenos">38</span><span class="w">                        </span><span class="c1">//input的layout分为：NHWC和框架原始排布，GroupNorm要求input的layout为框架排布</span>
+<span class="linenos">39</span><span class="w">                        </span><span class="c1">//当input.tensorType()-&gt;layout == Layout::NHWC()时，需要添加transpose算子将input的layout调整为框架排布</span>
+<span class="linenos">40</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tensor_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">input_name</span><span class="p">);</span>
+<span class="linenos">41</span><span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">tensorType</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">layout</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Layout</span><span class="o">::</span><span class="n">NHWC</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">42</span><span class="w">                                </span><span class="k">auto</span><span class="w"> </span><span class="n">transpose_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_transpose&quot;</span><span class="p">;</span>
+<span class="linenos">43</span><span class="w">                                </span><span class="k">auto</span><span class="w"> </span><span class="n">transpose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Transpose</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">clone</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;***C&quot;</span><span class="p">));</span>
+<span class="linenos">44</span><span class="w">                                </span><span class="n">ops</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">transpose</span><span class="p">);</span>
+<span class="linenos">45</span><span class="w">                                </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transpose</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">46</span><span class="w">                        </span><span class="p">}</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">tensorType</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">49</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="o">::</span><span class="n">Init</span><span class="p">().</span><span class="n">O</span><span class="p">());</span>
+<span class="linenos">50</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mul_node</span><span class="p">.</span><span class="n">input</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">51</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">const_node_map</span><span class="p">[</span><span class="n">gamma_name</span><span class="p">];</span>
+<span class="linenos">52</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getParamData</span><span class="p">(</span><span class="n">gamma_node</span><span class="p">);</span>
+<span class="linenos">53</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">beta_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_node</span><span class="p">.</span><span class="n">input</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">54</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">beta_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">const_node_map</span><span class="p">[</span><span class="n">beta_name</span><span class="p">];</span>
+<span class="linenos">55</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">beta_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getParamData</span><span class="p">(</span><span class="n">beta_node</span><span class="p">);</span>
+<span class="linenos">56</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Params</span><span class="p">(</span><span class="n">gamma_type</span><span class="p">);</span>
+<span class="linenos">57</span><span class="w">                        </span><span class="n">gamma</span><span class="p">.</span><span class="n">setData</span><span class="p">(</span><span class="n">gamma_data</span><span class="p">);</span>
+<span class="linenos">58</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">beta_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="o">::</span><span class="n">Init</span><span class="p">().</span><span class="n">O</span><span class="p">());</span>
+<span class="linenos">59</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Params</span><span class="p">(</span><span class="n">gamma_type</span><span class="p">.</span><span class="n">clone</span><span class="p">());</span>
+<span class="linenos">60</span><span class="w">                        </span><span class="n">beta</span><span class="p">.</span><span class="n">setData</span><span class="p">(</span><span class="n">beta_data</span><span class="p">);</span>
+<span class="linenos">61</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">group_norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">GroupNorm</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">eps</span><span class="p">,</span><span class="w"> </span><span class="n">gamma</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">);</span>
+<span class="linenos">62</span><span class="w">                        </span><span class="k">auto</span><span class="w"> </span><span class="n">gamma_data_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">group_norm</span><span class="o">-&gt;</span><span class="n">gamma</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">data</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">63</span><span class="w">                        </span><span class="n">group_norm</span><span class="p">.</span><span class="n">inferResults</span><span class="p">({</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">tensorType</span><span class="p">().</span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">64</span><span class="w">                        </span><span class="n">group_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">setName</span><span class="p">(</span><span class="n">output_name</span><span class="p">);</span>
+<span class="linenos">65</span><span class="w">                        </span><span class="n">ops</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">group_norm</span><span class="p">);</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span><span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">ops</span><span class="p">;</span>
+<span class="linenos">68</span><span class="w">        </span><span class="p">};</span>
+<span class="linenos">69</span><span class="w">        </span><span class="n">ICRAFT_ADD_PATTERN_TO_PARSER</span><span class="p">(</span><span class="s">&quot;Reshape,InstanceNormalization,Shape,Reshape,Mul,Add&quot;</span><span class="p">).</span><span class="n">set_parse</span><span class="p">(</span><span class="n">parse</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>解析 <code class="docutils literal notranslate"><span class="pre">.onnx</span></code> 格式文件需要用到 <code class="docutils literal notranslate"><span class="pre">protobuf</span></code> ，目前仅支持请支持 <code class="docutils literal notranslate"><span class="pre">protobuf3.21</span></code> ，请自行 <code class="docutils literal notranslate"><span class="pre">编译安装protobuf3.21</span></code>。</p>
+</div>
+<p>最后，将以上源文件生成动态链接库：</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">cmake_minimum_required</span> <span class="p">(</span><span class="n">VERSION</span> <span class="mf">3.24</span><span class="p">)</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>    <span class="c1">#protobuf的安装路径</span>
+<span class="linenos"> 4</span>    <span class="nb">set</span><span class="p">(</span><span class="n">PROTC_PACKAGE_PATH</span> <span class="s2">&quot;C:/Program Files&quot;</span><span class="p">)</span>
+<span class="linenos"> 5</span>    <span class="nb">set</span><span class="p">(</span><span class="n">CMAKE_PREFIX_PATH</span> <span class="err">$</span><span class="p">{</span><span class="n">PROTC_PACKAGE_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">protobuf</span><span class="p">)</span>
+<span class="linenos"> 6</span>    <span class="n">message</span><span class="p">(</span><span class="n">STATUS</span> <span class="s2">&quot;CMAKE_PREFIX_PATH: &quot;</span> <span class="err">$</span><span class="p">{</span><span class="n">CMAKE_PREFIX_PATH</span><span class="p">})</span>
+<span class="linenos"> 7</span>    <span class="n">find_package</span><span class="p">(</span><span class="n">protobuf</span> <span class="n">CONFIG</span> <span class="n">REQUIRED</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">add_library</span><span class="p">(</span><span class="n">icraft</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">groupnorm</span> <span class="n">SHARED</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="n">target_sources</span><span class="p">(</span><span class="n">icraft</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">groupnorm</span> <span class="n">PRIVATE</span>
+<span class="linenos">12</span>            <span class="n">parser</span><span class="o">.</span><span class="n">cpp</span>
+<span class="linenos">13</span>            <span class="n">onnx</span><span class="o">.</span><span class="n">proto3</span><span class="o">.</span><span class="n">pb</span><span class="o">.</span><span class="n">cc</span>
+<span class="linenos">14</span>     <span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">target_link_libraries</span><span class="p">(</span><span class="n">icraft</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">groupnorm</span> <span class="n">PRIVATE</span> <span class="n">Icraft</span><span class="o">-</span><span class="n">Onnx</span><span class="o">-</span><span class="n">Opset11Lib</span> <span class="n">protobuf</span><span class="p">::</span><span class="n">libprotobuf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>以上脚本在Windows下编译生成 <code class="docutils literal notranslate"><span class="pre">icraft.parse.groupnorm.dll</span></code> 文件。</p>
+</section>
+<section id="id11">
+<h3>2.4 再次解析 (编译)<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
+<p>再次解析之前需要让Icraft能够找到以上生成的 <code class="docutils literal notranslate"><span class="pre">whatever.GroupNorm.dll</span></code> 和 <code class="docutils literal notranslate"><span class="pre">icraft.parse.groupnorm.dll</span></code> ，有两种方法：</p>
+<ul class="simple">
+<li><p>【不推荐】将以上生成的动态链接库复制到 <code class="docutils literal notranslate"><span class="pre">C:\Icraft\CLI\bin</span></code> 文件夹下。</p></li>
+<li><p>【☆推荐】设置环境变量 <code class="docutils literal notranslate"><span class="pre">ICRAFT_CUSTOM_DIR</span></code> ，指向以上动态链接库所在的文件夹。比如在Windows下，可以使用PowerShell命令 <code class="docutils literal notranslate"><span class="pre">$env:ICRAFT_CUSTOM_DIR=&quot;path/to/dll/dir&quot;</span></code> 来实现，如果用户网络还需要用到Icraft提供的customop，可以使用命令 <code class="docutils literal notranslate"><span class="pre">$env:ICRAFT_CUSTOM_DIR=&quot;path/to/dll/dir;C:\Icraft\CustomOp_v3.0.0&quot;</span></code> 将Icraft Customop的路径一并配置到 <code class="docutils literal notranslate"><span class="pre">ICRAFT_CUSTOM_DIR</span></code>。</p></li>
+</ul>
+<p>然后再次尝试解析、优化、量化和指令生成等编译过程。</p>
+<p>各个编译过程的配置如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">[parse]</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="n">net_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;groupnorm_network&quot;</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="n">framework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;onnx&quot;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="n">frame_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.9&quot;</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="n">inputs_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;NHWC&quot;</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">pre_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">pre_mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">pre_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;resize&quot;</span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">channel_swap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/customop/softop/models/groupnorm_network.onnx&quot;</span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">    </span><span class="k">[optimize]</span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BUYI&quot;</span>
+<span class="linenos">16</span><span class="w">    </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_parsed.json&quot;</span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_parsed.raw&quot;</span>
+<span class="linenos">18</span><span class="w">    </span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">    </span><span class="k">[quantize]</span>
+<span class="linenos">21</span><span class="w">    </span><span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="linenos">22</span><span class="w">    </span><span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;kld&quot;</span>
+<span class="linenos">23</span><span class="w">    </span><span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/customop/softop/models/images/&quot;</span>
+<span class="linenos">24</span><span class="w">    </span><span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../samples/customop/softop/models/images/pic_list.txt&quot;</span>
+<span class="linenos">25</span><span class="w">    </span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="linenos">26</span><span class="w">    </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_optimized.json&quot;</span>
+<span class="linenos">27</span><span class="w">    </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_optimized.raw&quot;</span>
+<span class="linenos">28</span><span class="w">    </span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">29</span><span class="w">    </span><span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="linenos">30</span><span class="w">    </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="w">    </span><span class="k">[adapt]</span>
+<span class="linenos">33</span><span class="w">    </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BUYI&quot;</span>
+<span class="linenos">34</span><span class="w">    </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_quantized.json&quot;</span>
+<span class="linenos">35</span><span class="w">    </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_quantized.raw&quot;</span>
+<span class="linenos">36</span><span class="w">    </span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="w">    </span><span class="k">[generate]</span>
+<span class="linenos">39</span><span class="w">    </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_adapted.json&quot;</span>
+<span class="linenos">40</span><span class="w">    </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/groupnorm_network_adapted.raw&quot;</span>
+<span class="linenos">41</span><span class="w">    </span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+</pre></div>
+</div>
+<p>编译的命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进入build文件夹，避免生成的文件污染源目录</span>
+<span class="nb">cd</span><span class="w"> </span>build/windows-x64-release
+icraft<span class="w"> </span>compile<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\s</span>amples<span class="se">\c</span>ustomop<span class="se">\s</span>oftop<span class="se">\m</span>odels<span class="se">\g</span>roupnorm_network.toml
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h2>三 仿真对比<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h2>
+<p>为了验证自定义软算子的正确性，我们对解析后的网络和指令生成后的网络进行仿真对比结果。因为 <a href="#id13"><span class="problematic" id="id14">``</span></a>GroupNorm``为自定义软算子，采用CPU作为后端，相比于浮点计算，是没有精度损失的。
+由于自定义激活使用定点查找表实现，相比于浮点计算是有精度损失的，因此我们计算两个阶段网络仿真结果的余弦相似度，若其大于0.999则认为结果正确。</p>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/customop/softop/tests/test.cpp</span></code> 中调用Icraft的C++ API完成了结果验证，主要实现如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">random_device</span><span class="w"> </span><span class="n">rd</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">default_random_engine</span><span class="w"> </span><span class="nf">eng</span><span class="p">(</span><span class="n">rd</span><span class="p">());</span>
+<span class="linenos"> 4</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">uniform_real_distribution</span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">distr</span><span class="p">(</span><span class="mf">-1000.f</span><span class="p">,</span><span class="w"> </span><span class="mf">1000.f</span><span class="p">);</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">PARSED_JSON_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/groupnorm_network_parsed.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">PARSED_RAW_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/groupnorm_network_parsed.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">GENERATED_JSON_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/groupnorm_network_quantized.json&quot;</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">GENERATED_RAW_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;json&amp;raw/groupnorm_network_quantized.raw&quot;</span><span class="p">;</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="w">            </span><span class="c1">// 加载解析后的网络</span>
+<span class="linenos">13</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">parsed_network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">PARSED_JSON_FILE</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">            </span><span class="n">parsed_network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">PARSED_RAW_FILE</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="w">            </span><span class="c1">// 加载指令生成后的网络</span>
+<span class="linenos">17</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">generated_network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">GENERATED_JSON_FILE</span><span class="p">);</span>
+<span class="linenos">18</span><span class="w">            </span><span class="n">generated_network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">GENERATED_RAW_FILE</span><span class="p">);</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">            </span><span class="c1">// 构造一个随机Tensor</span>
+<span class="linenos">21</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWC&quot;</span><span class="p">)));</span>
+<span class="linenos">22</span><span class="w">            </span><span class="n">input_tensor</span><span class="p">.</span><span class="n">mallocOn</span><span class="p">(</span><span class="n">HostDevice</span><span class="o">::</span><span class="n">MemRegion</span><span class="p">());</span>
+<span class="linenos">23</span><span class="w">            </span><span class="n">input_tensor</span><span class="p">.</span><span class="n">fill</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">distr</span><span class="p">(</span><span class="n">eng</span><span class="p">);</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="w">            </span><span class="c1">// 仿真以上两个网络，获取输出</span>
+<span class="linenos">26</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">parsed_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sim</span><span class="p">(</span><span class="n">parsed_network</span><span class="p">,</span><span class="w"> </span><span class="n">input_tensor</span><span class="p">);</span>
+<span class="linenos">27</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">generated_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sim</span><span class="p">(</span><span class="n">generated_network</span><span class="p">,</span><span class="w"> </span><span class="n">input_tensor</span><span class="p">);</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="w">            </span><span class="c1">// 获取输出信息，计算余弦相似度</span>
+<span class="linenos">30</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">parsed_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_output</span><span class="p">.</span><span class="n">dtype</span><span class="p">();</span>
+<span class="linenos">31</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">num_elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parsed_dtype</span><span class="p">.</span><span class="n">numElements</span><span class="p">();</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">parsed_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">parsed_output</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">cptr</span><span class="p">();</span>
+<span class="linenos">34</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">generated_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">generated_output</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">cptr</span><span class="p">();</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">cosine_sim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CosineSimilarity</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">,</span><span class="w"> </span><span class="n">generated_data</span><span class="p">,</span><span class="w"> </span><span class="n">num_elements</span><span class="p">);</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="w">            </span><span class="n">ICRAFT_LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;cosine similarity: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cosine_sim</span><span class="p">);</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span><span class="w">            </span><span class="n">assert</span><span class="p">(</span><span class="n">cosine_sim</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">41</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">42</span><span class="w">    </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">43</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">44</span><span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>调用C++ API完成结果验证的测试命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进入build文件夹，避免生成的文件污染源目录</span>
+<span class="nb">cd</span><span class="w"> </span>build/windows-x64-release
+.<span class="se">\t</span>est_customop_softop.exe
+</pre></div>
+</div>
+<p>该Demo在 <code class="docutils literal notranslate"><span class="pre">samples/customop/activate/tests/test.py</span></code> 中调用Icraft的Python API完成了结果验证，主要实现如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">PARSED_JSON_FILE</span> <span class="o">=</span> <span class="s2">&quot;json&amp;raw/groupnorm_network_parsed.json&quot;</span>
+<span class="linenos"> 2</span>    <span class="n">PARSED_RAW_FILE</span> <span class="o">=</span> <span class="s2">&quot;json&amp;raw/groupnorm_network_parsed.raw&quot;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="n">GENERATED_JSON_FILE</span> <span class="o">=</span> <span class="s2">&quot;json&amp;raw/groupnorm_network_BY.json&quot;</span>
+<span class="linenos"> 5</span>    <span class="n">GENERATED_RAW_FILE</span> <span class="o">=</span> <span class="s2">&quot;json&amp;raw/groupnorm_network_BY.raw&quot;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="c1"># 加载解析后的网络</span>
+<span class="linenos"> 8</span>    <span class="n">parsed_network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">PARSED_JSON_FILE</span><span class="p">)</span>
+<span class="linenos"> 9</span>    <span class="n">parsed_network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">PARSED_RAW_FILE</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="c1"># 加载指令生成后的网络</span>
+<span class="linenos">12</span>    <span class="n">generated_network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">GENERATED_JSON_FILE</span><span class="p">)</span>
+<span class="linenos">13</span>    <span class="n">generated_network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">GENERATED_RAW_FILE</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="c1"># 构造一个随机Tensor</span>
+<span class="linenos">16</span>    <span class="n">random_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="linenos">17</span>    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">(</span><span class="n">random_data</span><span class="p">,</span> <span class="n">Layout</span><span class="p">(</span><span class="s2">&quot;NHWC&quot;</span><span class="p">))</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="c1"># 仿真以上两个网络，获取输出</span>
+<span class="linenos">20</span>    <span class="n">parsed_output</span> <span class="o">=</span> <span class="n">Sim</span><span class="p">(</span><span class="n">parsed_network</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="n">generated_output</span> <span class="o">=</span> <span class="n">Sim</span><span class="p">(</span><span class="n">generated_network</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="c1"># 获取输出信息，计算余弦相似度</span>
+<span class="linenos">24</span>    <span class="n">cosine_sim</span> <span class="o">=</span> <span class="n">ConsineSimilarity</span><span class="p">(</span><span class="n">parsed_output</span><span class="p">,</span> <span class="n">generated_output</span><span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cosine similarity: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>调用Python API完成结果验证的测试命令如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进入build文件夹，避免生成的文件污染源目录</span>
+<span class="nb">cd</span><span class="w"> </span>build/windows-x64-release
+python<span class="w"> </span>../../samples/customop/softop/tests/test.py
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="activate.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Icraft Demo: 自定义激活</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hardop.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Icraft Demo: 自定义硬算子</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 文件结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">二 适配流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1 尝试解析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2 注册算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2.1 算子定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.2.2 组件接口</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.2.3 编译链接</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.3 自定义解析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.4 再次解析 (编译)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">三 仿真对比</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

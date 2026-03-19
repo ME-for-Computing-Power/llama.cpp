@@ -7,6 +7,9 @@ Currently llama.cpp could run on it at pure-cpu mode. The next step is to provid
 
 To compile the project to the target, use scripts/build_llama_arm.sh
 
+# Docs
+
+The nessary docs about fmsh backend are shown in ./docs folder
 
 # Reference
 

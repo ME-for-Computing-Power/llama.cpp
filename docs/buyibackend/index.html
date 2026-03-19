@@ -1,0 +1,1422 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft BuyiBackend &#8212; Icraft BuyiBackend 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="API" href="_cppapi/api_root.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft BuyiBackend 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__xir.html">Namespace icraft::xir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__xrt.html">Namespace icraft::xrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_buyi_backend.html">Class BuyiBackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_buyi_backend_node.html">Class BuyiBackendNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_forward_info.html">Class ForwardInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_forward_info_node.html">Class ForwardInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_hard_op_info.html">Class HardOpInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_hard_op_info_node.html">Class HardOpInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_logic_segment.html">Class LogicSegment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_logic_segment_node.html">Class LogicSegmentNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_phy_segment.html">Class PhySegment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_phy_segment_node.html">Class PhySegmentNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_value_info.html">Class ValueInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_value_info_node.html">Class ValueInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/enum_buyibackend_8h_1a02e8200fc8b89f1431ff021142e3ead4.html">Enum Segment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/typedef_buyibackend_8h_1a352d7ab152c537844ba7b442d4f9c5fb.html">Typedef icraft::xrt::ITER_TYPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/typedef_buyibackend_8h_1a114b7183aabd6c95ddb1f1cb7882cb9f.html">Typedef ULL</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft BuyiBackend</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">〇 用户接口</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 快速开始</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyidevice">1.1 构造BuyiDevice</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#buyidevicemmu">1.1.1 构造BuyiDevice并设置为非mmu模式</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.2 构造BuyiDevice并设置为mmu模式</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyibackend">1.2 构造BuyiBackend</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#session-create">1.2.1 Session::Create时构造</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.2.2 直接构造BuyiBackend</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.3 网络部署的功能配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#compressftmp">1.3.1 compressFtmp 压缩中间层</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speedmode">1.3.2 speedMode</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#usersetsegment">1.3.3 userSetSegment</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">二 数据结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valueinfo">2.1 ValueInfo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardopinfo">2.2 HardOpInfo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logicsegment">2.3 LogicSegment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#physegment">2.4 PhySegment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forwardinfo">2.5 ForwardInfo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.6 BuyiBackend</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">三 特殊说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view">3.1 view</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sub">3.2 sub</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">四 索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-buyibackend">
+<h1>Icraft BuyiBackend<a class="headerlink" href="#icraft-buyibackend" title="此标题的永久链接">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 是Icraft运行时的后端之一，
+负责处理指定QL7100AI为计算资源的算子。</p>
+<p>能够绑定到Buyi后端的算子包含：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HardOp</span></code></p></li>
+<li><p>在DTC上执行的 <code class="docutils literal notranslate"><span class="pre">Cast</span></code> 算子</p></li>
+</ul>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>绑定后端的动作由Icraft-XRT完成，具体用法参考XRT的Session章节。</p>
+</div>
+<p>BuyiBackend提供以下功能接口：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compressFtmp</span></code> ：将网络输出的中间层进行优化，可以显著减少网络在ETM上（即PL DDR）的内存占用</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">userSetSegment</span></code> ： 将网络某个分段使用的内存与用户申请的内存相绑定，从而可以实现多网络间的内存复用</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">precheck</span></code>：在部署后检查指令与权重在ETM上的数据与PS内存中的数据是否相同</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getDepolySize</span></code> ：获取session在etm占用的总内存字节大小</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log</span></code>：保存BuyiBackend中相关的逻辑地址、物理地址信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">speedMode</span></code>：将执行序上连续的、相同计算精度的HardOp合并执行，能够降低软件调度产生的时间开销</p></li>
+</ul>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>在实际使用场景中，BuyiBackend的使用依托于 <code class="docutils literal notranslate"><span class="pre">icraft::xrt::Session</span></code> ，
+Session的构造过程中会完成BuyiBackend的初始化，
+Session的apply部署时也会完成BuyiBackend的部署</p>
+</div>
+<p>BuyiBackend和Session之间的关系如下：</p>
+<img alt="_images/buyibackend_session.png" src="_images/buyibackend_session.png" />
+<hr class="docutils" />
+<p>BuyiBackend在完成初始化（Init）和及部署（apply）的过程中会构造一些必要的数据结构：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ValueInfo</span></code> ：与icraft::xir::Value类的对应，包含BuyiBackend中一些补充信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HardOpInfo</span></code> ：与icraft::xir::HardOp类的对应，包含BuyiBackend中一些补充信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LogicSegment</span></code> ：逻辑分段类，在BuyiBackend 初始化时生成，表示对应network_view的各分段的逻辑地址相关数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PhySegment</span></code> ：物理分段类，在BuyiBackend在apply部署后生成，表示对应network_view的各分段的真实物理地址相关数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ForwardInfo</span></code>：前向所需要的信息，包含</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">value_map</span></code>：network_view中包含的所有FTMP（即Value）信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hardop_map</span></code>：network_view中包含的所有HardOp的信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">idx_map</span></code>：network_view中包含的所有算子的同步信息</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>network_view是原网络所有算子的子集，按照原有执行序排列。
+BuyiBackend的输入，即处理的对象，为Session指派的所有以Buyi为后端的算子集合。</p>
+</div>
+<section id="id1">
+<h2>〇 用户接口<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>Icraft 提供了C++ API和Python API作为用户接口。</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#full-api">Full API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="id2">
+<h2>一 快速开始<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<section id="buyidevice">
+<h3>1.1 构造BuyiDevice<a class="headerlink" href="#buyidevice" title="此标题的永久链接">#</a></h3>
+<p>BuyiDevice是与Buyibackend绑定的设备，存在mmu和非mmu两种运行模式。</p>
+<ul class="simple">
+<li><p>在非mmu模式下，网络操作地址都直接针对物理地址，面对多网络地址冲突的情况，运行时需要修改网络指令；</p></li>
+<li><p>在mmu模式下，把网络操作地址看作逻辑地址，运行时根据实际情况构造逻辑地址和物理地址的映射关系，无需修改网络指令。</p></li>
+</ul>
+<p>mmu模式相比于非mmu模式的优势在于优化内存占用，在编译阶段完成合并算子、内存优化的功能配置，可以有效减少运行时占用的内存。
+BuyiDevice默认使用mmu模式，但对于复杂的网络使用情况（例如使用view拆分网络，对子网络进行合并算子和内存优化配置），
+则建议使用非mmu模式。</p>
+<p>两种模式下对合并算子和内存优化的配置存在不同条件，总结如下：</p>
+<ul class="simple">
+<li><p>mmu模式，若在编译阶段进行了合并算子和内存优化配置，则不支持在Buyibackend中配置合并算子和内存优化</p></li>
+<li><p>非mmu模式，编译阶段不能进行合并算子和内存优化的配置，仅支持在Buyibackend中配置合并算子和内存优化</p></li>
+</ul>
+<p>BuyiBackend会对用户的配置以及输入的网络进行检查，
+若出现报错，用户可根据报错信息检查输入网络配置和BuyiDevice的配置，采用正确的使用方法。</p>
+<section id="buyidevicemmu">
+<h4>1.1.1 构造BuyiDevice并设置为非mmu模式<a class="headerlink" href="#buyidevicemmu" title="此标题的永久链接">#</a></h4>
+<section id="c">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#c" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// 1.配置Device启动的url，以axi模式的url配置为例</span>
+<span class="linenos">2</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos">3</span><span class="c1">// 2.打开设备</span>
+<span class="linenos">4</span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+<span class="linenos">5</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">);</span>
+<span class="linenos">6</span><span class="c1">// 关闭mmu模式</span>
+<span class="linenos">7</span><span class="n">device</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiDevice</span><span class="o">&gt;</span><span class="p">().</span><span class="n">mmuModeSwitch</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="python">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#python" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 1.导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1"># 2.打开设备，以axi模式为例</span>
+<span class="linenos"> 8</span><span class="n">dev_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos"> 9</span><span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">)</span>
+<span class="linenos">10</span><span class="c1"># 关闭mmu模式</span>
+<span class="linenos">11</span><span class="n">BuyiDevice</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">mmuModeSwitch</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h4>1.1.2 构造BuyiDevice并设置为mmu模式<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h4>
+<p>BuyiDevice默认开启mmu模式，用户无需显式开启。</p>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>应用工程与之前3.x版本兼容。</p>
+</div>
+<p>如需手动开启，见以下示例：</p>
+<section id="id4">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// 1.配置Device启动的url，以axi模式的url配置为例</span>
+<span class="linenos">2</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos">3</span><span class="c1">// 2.打开设备</span>
+<span class="linenos">4</span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+<span class="linenos">5</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">);</span>
+<span class="linenos">6</span><span class="c1">// 关闭mmu模式</span>
+<span class="linenos">7</span><span class="n">device</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiDevice</span><span class="o">&gt;</span><span class="p">().</span><span class="n">mmuModeSwitch</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 1.导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1"># 2.打开设备，以axi模式为例</span>
+<span class="linenos"> 8</span><span class="n">dev_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos"> 9</span><span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">)</span>
+<span class="linenos">10</span><span class="c1"># 关闭mmu模式</span>
+<span class="linenos">11</span><span class="n">BuyiDevice</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">mmuModeSwitch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="buyibackend">
+<h3>1.2 构造BuyiBackend<a class="headerlink" href="#buyibackend" title="此标题的永久链接">#</a></h3>
+<p>构造BuyiBackend有两种方法：</p>
+<ul class="simple">
+<li><p>Session::Create时构造</p></li>
+<li><p>直接构造BuyiBackend</p></li>
+</ul>
+<section id="session-create">
+<h4>1.2.1 Session::Create时构造<a class="headerlink" href="#session-create" title="此标题的永久链接">#</a></h4>
+<section id="id6">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./SSD_BY.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./SSD_BY.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./ssd300.png&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 打开设备</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">();</span>
+<span class="linenos"> 7</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 加载网络</span>
+<span class="linenos">10</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos">11</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">// 创建Session1</span>
+<span class="linenos">14</span><span class="c1">// 该方法会根据模板参数的顺序，自动创建Backend对象</span>
+<span class="linenos">15</span><span class="c1">// 首先尝试将算子绑定到BuyiBackend上，如果不支持，则绑定到HostBackend上</span>
+<span class="linenos">16</span><span class="k">auto</span><span class="w"> </span><span class="n">sess1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">buyi_device</span><span class="p">,</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1">// 获取sess1所有的Backends</span>
+<span class="linenos">19</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">backends</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess1</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">;</span>
+<span class="linenos">20</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">host_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">from</span> <span class="nn">buyi_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 6</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># 获取一个网络</span>
+<span class="linenos"> 9</span><span class="c1"># Input → Conv2d → Cast → HardOp → Cast → Relu → Maxpool → Output</span>
+<span class="linenos">10</span><span class="n">network</span> <span class="o">=</span> <span class="n">GenerateNetwork</span><span class="p">()</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># 创建Session，按顺序传入想要绑定的后端类型</span>
+<span class="linenos">13</span><span class="n">sess1</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">(),</span> <span class="n">Device</span><span class="p">()</span> <span class="p">])</span>
+<span class="linenos">14</span><span class="n">sess1</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1"># 可选：检验算子是否正确绑定后端</span>
+<span class="linenos">17</span><span class="n">backend_bindings</span> <span class="o">=</span> <span class="n">sess1</span><span class="o">.</span><span class="n">backendBindings</span><span class="p">()</span>
+<span class="linenos">18</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Conv2d</span>
+<span class="linenos">19</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Cast</span>
+<span class="linenos">20</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">))</span> <span class="c1"># HardOp</span>
+<span class="linenos">21</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">))</span> <span class="c1"># Cast</span>
+<span class="linenos">22</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Relu</span>
+<span class="linenos">23</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Maxpool</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="c1"># 也可以使用CreateByOrder方法，将算子按顺序绑定到已有的Backend对象上</span>
+<span class="linenos">26</span><span class="n">sess2</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">BuyiBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">(),</span> <span class="n">HostBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">()],</span> <span class="p">[</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">(),</span> <span class="n">Device</span><span class="p">()</span> <span class="p">])</span>
+<span class="linenos">27</span><span class="n">buyibackend</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">sess2</span><span class="o">.</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h4>1.2.2 直接构造BuyiBackend<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h4>
+<section id="id9">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url_socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">//打开设备</span>
+<span class="linenos"> 5</span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">);</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">//加载网络</span>
+<span class="linenos"> 9</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="s">&quot;E:/test/json&amp;raw/30/seresnet_BY.json&quot;</span><span class="p">);</span>
+<span class="linenos">10</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="s">&quot;E:/test/json&amp;raw/30/seresnet_BY.raw&quot;</span><span class="p">);</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">//初始化BuyiBackend</span>
+<span class="linenos">13</span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Backend</span><span class="w">  </span><span class="n">backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">14</span><span class="n">backend</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1">//类型转换</span>
+<span class="linenos">17</span><span class="k">auto</span><span class="w"> </span><span class="n">by_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backend</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">#打开设备</span>
+<span class="linenos"> 8</span><span class="n">dev_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos"> 9</span><span class="n">dev_url_socket</span> <span class="o">=</span> <span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos">10</span><span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">#加载网络</span>
+<span class="linenos">13</span><span class="n">network</span> <span class="o">=</span> <span class="n">xir</span><span class="o">.</span><span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="s2">&quot;E:/test/json&amp;raw/30/seresnet_BY.json&quot;</span><span class="p">)</span>
+<span class="linenos">14</span><span class="n">network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="s2">&quot;E:/test/json&amp;raw/30/seresnet_BY.raw&quot;</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1">#构造backend</span>
+<span class="linenos">17</span><span class="n">backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">device</span><span class="p">)</span>
+<span class="linenos">18</span><span class="c1">#类型转换</span>
+<span class="linenos">19</span><span class="n">buyibackend</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>当网络部署完成后，只有通过Session的forward接口才能真正执行前向推理，BuyiBackend中不具备该能力。
+如果使用者要搭建真正能前向运行的应用工程，请按照： <strong>构建Session-&gt;初始化各个Backend-&gt;调用forward执行推理</strong> 的流程进行搭建。</p>
+</div>
+</section>
+</section>
+</section>
+<section id="id11">
+<h3>1.3 网络部署的功能配置<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 能够配置一些附加功能以起到优化运行性能、Debug的作用。
+需要注意附加功能的配置时机，按照配置时机可分为</p>
+<ul class="simple">
+<li><p>apply部署前配置：speedMode，compressFtmp，userSetSegment</p></li>
+<li><p>apply部署后配置：precheck，sub</p></li>
+<li><p>前后均可配置：log，getDepolySize</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code>
+中开启compressFtmp或speedMode这两项功能时，有以下两个限制条件：</p>
+<p>1、 当编译阶段的配置为：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">etmopt=1或-1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_mergeops=false</span></code></p></li>
+</ul>
+<p>即网络编译阶段开启合并算子和内存优化，此时，
+<code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code>
+中将不再支持开启这两项功能，否则运行阶段将抛出异常。</p>
+<p>2、 需要关闭mmu模式，具体调用方式见以下示例</p>
+</div>
+<section id="compressftmp">
+<h4>1.3.1 compressFtmp 压缩中间层<a class="headerlink" href="#compressftmp" title="此标题的永久链接">#</a></h4>
+<section id="id12">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 1.配置Device启动的url，以axi模式的url配置为例</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">// 2.打开设备，这里以socket模式为例，若在axi模式下运行，将dev_url_socket替换为dev_url</span>
+<span class="linenos"> 5</span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="c1">// 关闭mmu模式，否则调用compressFtmp接口时会抛出异常</span>
+<span class="linenos"> 8</span><span class="n">device</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiDevice</span><span class="o">&gt;</span><span class="p">().</span><span class="n">mmuModeSwitch</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// 3.构建Network</span>
+<span class="linenos">11</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="s">&quot;./seresnet_BY.json&quot;</span><span class="p">);</span>
+<span class="linenos">12</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="s">&quot;E:/test/json&amp;raw/30/seresnet_BY.raw&quot;</span><span class="p">);</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// 4.构建BuyiBackend</span>
+<span class="linenos">15</span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Backend</span><span class="w"> </span><span class="n">backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">16</span><span class="n">backend</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span>
+<span class="linenos">17</span><span class="k">auto</span><span class="w"> </span><span class="n">by_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backend</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1">// 5.调用compressFtmp接口来打开内存复用功能</span>
+<span class="linenos">20</span><span class="n">by_backend</span><span class="p">.</span><span class="n">compressFtmp</span><span class="p">();</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="c1">// 6.调用apply接口完成网络在设备上的部署</span>
+<span class="linenos">23</span><span class="n">backend</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="c1">// 7.关闭设备</span>
+<span class="linenos">26</span><span class="n">Device</span><span class="o">::</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 1.导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1"># 2.打开设备，以axi模式为例</span>
+<span class="linenos"> 8</span><span class="n">dev_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos"> 9</span><span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">)</span>
+<span class="linenos">10</span><span class="c1"># 关闭mmu模式，否则调用compressFtmp接口时会抛出异常</span>
+<span class="linenos">11</span><span class="n">BuyiDevice</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">mmuModeSwitch</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1"># 3.加载网络</span>
+<span class="linenos">14</span><span class="n">network</span> <span class="o">=</span> <span class="n">xir</span><span class="o">.</span><span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="s2">&quot;E:/test/json&amp;raw/30/seresnet_BY.json&quot;</span><span class="p">)</span>
+<span class="linenos">15</span><span class="n">network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="s2">&quot;E:/test/json&amp;raw/30/seresnet_BY.raw&quot;</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1"># 4.构造BuyiBackend，这里构造两个，分别开启和关闭中间层优化</span>
+<span class="linenos">18</span><span class="n">backend1</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">device</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">backend2</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">device</span><span class="p">)</span>
+<span class="linenos">20</span><span class="n">buyibackend1</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">backend1</span><span class="p">)</span>
+<span class="linenos">21</span><span class="n">buyibackend2</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">backend2</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="c1"># 5.打开优化中间层（在apply之前）</span>
+<span class="linenos">24</span><span class="n">buyibackend2</span><span class="o">.</span><span class="n">compressFtmp</span><span class="p">()</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="c1"># 6.完成两个BuyiBackend的部署</span>
+<span class="linenos">27</span><span class="n">backend1</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">28</span><span class="n">backend2</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="c1"># 7.比较两个BuyiBackend实际部署后所占ETM的大小，buyibackend2的占用会更少、更节省ETM空间</span>
+<span class="linenos">31</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">getDeploySize</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">buyibackend2</span><span class="o">.</span><span class="n">getDeploySize</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="speedmode">
+<h4>1.3.2 speedMode<a class="headerlink" href="#speedmode" title="此标题的永久链接">#</a></h4>
+<section id="id14">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 1.打开设备</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">// 2.加载网络</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 3.构造网络输入</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// 4.构造Session</span>
+<span class="linenos"> 8</span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">buyi_device</span><span class="p">,</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// 5.打开合并硬算子功能</span>
+<span class="linenos">11</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">]..</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">12</span><span class="n">buyibackend</span><span class="p">.</span><span class="n">speedMode</span><span class="p">();</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// 6.部署Session</span>
+<span class="linenos">15</span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">// 7.执行前向</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1">// 8.关闭设备</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>代码示例中的缺省部分参考1.2.1节，这里仅展示必要的接口使用方式和调用位置</p>
+</div>
+</section>
+</section>
+<section id="usersetsegment">
+<h4>1.3.3 userSetSegment<a class="headerlink" href="#usersetsegment" title="此标题的永久链接">#</a></h4>
+<section id="id15">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id15" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url_socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="c1">//开启设备</span>
+<span class="linenos"> 4</span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">//cast得到bydevice方便申请memchunk</span>
+<span class="linenos"> 8</span><span class="k">auto</span><span class="w"> </span><span class="n">bydevice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiDevice</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">//加载网络</span>
+<span class="linenos">11</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="s">&quot;E:/test/json&amp;raw/30/seresnet_BY.json&quot;</span><span class="p">);</span>
+<span class="linenos">12</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="s">&quot;E:/test/json&amp;raw/30/seresnet_BY.raw&quot;</span><span class="p">);</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">//初始化buyibackend</span>
+<span class="linenos">15</span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Backend</span><span class="w"> </span><span class="n">backend1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">16</span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Backend</span><span class="w"> </span><span class="n">backend2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">17</span><span class="n">backend1</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span>
+<span class="linenos">18</span><span class="n">backend2</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">//cast得到BuyiBackend对象</span>
+<span class="linenos">21</span><span class="k">auto</span><span class="w"> </span><span class="n">by_backend1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backend1</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">22</span><span class="k">auto</span><span class="w"> </span><span class="n">by_backend2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backend2</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="c1">//部署前对by_backend2调用中间层优化</span>
+<span class="linenos">25</span><span class="n">by_backend2</span><span class="p">.</span><span class="n">compressFtmp</span><span class="p">();</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="c1">//由于两个buyibackend初始化用的是相同的网络，所以他们对应的指令数据段和权重数据段的逻辑字节大小肯定是相同的</span>
+<span class="linenos">28</span><span class="k">auto</span><span class="w"> </span><span class="n">instr_bytesize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">by_backend1</span><span class="o">-&gt;</span><span class="n">logic_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">INSTR</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">29</span><span class="k">auto</span><span class="w"> </span><span class="n">weight_bytesize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">by_backend1</span><span class="o">-&gt;</span><span class="n">logic_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">WEIGHT</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="c1">//虽然两个buyibackend初始化用的是相同的网络，但是by_backend2调用了中间层优化，此时两个buyibackend的中间层数据段的逻辑字节大小是不一样的</span>
+<span class="linenos">32</span><span class="c1">//这里我们取较大的那个字节大小</span>
+<span class="linenos">33</span><span class="k">auto</span><span class="w"> </span><span class="n">ftmp_bytesize1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">by_backend1</span><span class="o">-&gt;</span><span class="n">logic_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">34</span><span class="k">auto</span><span class="w"> </span><span class="n">ftmp_bytesize2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">by_backend2</span><span class="o">-&gt;</span><span class="n">logic_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">35</span><span class="k">auto</span><span class="w"> </span><span class="n">ftmp_bytesize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ftmp_bytesize1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">ftmp_bytesize2</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">ftmp_bytesize1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ftmp_bytesize2</span><span class="p">;</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="c1">//向bydevice申请etm上的memchunk</span>
+<span class="linenos">38</span><span class="k">auto</span><span class="w"> </span><span class="n">ftmp_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bydevice</span><span class="p">.</span><span class="n">defaultMemRegion</span><span class="p">().</span><span class="n">malloc</span><span class="p">(</span><span class="n">ftmp_bytesize</span><span class="p">);</span>
+<span class="linenos">39</span><span class="k">auto</span><span class="w"> </span><span class="n">weight_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bydevice</span><span class="p">.</span><span class="n">defaultMemRegion</span><span class="p">().</span><span class="n">malloc</span><span class="p">(</span><span class="n">weight_bytesize</span><span class="p">);</span>
+<span class="linenos">40</span><span class="k">auto</span><span class="w"> </span><span class="n">instr_chunk</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">bydevice</span><span class="p">.</span><span class="n">defaultMemRegion</span><span class="p">().</span><span class="n">malloc</span><span class="p">(</span><span class="n">instr_bytesize</span><span class="p">);</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="c1">//对于相同网络的buyibackend，其权重数据是一样的，所以可以通过复用同一片空间来实现内存优化，这时只要传入将申请的memchunk以及对应的分段属性传入接口</span>
+<span class="linenos">43</span><span class="c1">//不同于权重层，指令层的数据即便网络相同，但在真实执行时由于输入输出层物理地址不同，其数据是不一样的，所以不能复用</span>
+<span class="linenos">44</span><span class="n">by_backend1</span><span class="p">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">weight_chunk</span><span class="p">,</span><span class="w"> </span><span class="n">Segment</span><span class="o">::</span><span class="n">WEIGHT</span><span class="p">);</span>
+<span class="linenos">45</span><span class="n">by_backend2</span><span class="p">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">weight_chunk</span><span class="p">,</span><span class="w"> </span><span class="n">Segment</span><span class="o">::</span><span class="n">WEIGHT</span><span class="p">);</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span><span class="c1">//对于中间层数据，我们只要传入较大字节大小的memchunk，即便是不同网络的buyibackend也能够复用内存空间</span>
+<span class="linenos">48</span><span class="n">by_backend1</span><span class="p">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">ftmp_chunk</span><span class="p">,</span><span class="w"> </span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">);</span>
+<span class="linenos">49</span><span class="n">by_backend2</span><span class="p">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">ftmp_chunk</span><span class="p">,</span><span class="w"> </span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">);</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="c1">//在配置完成后进行部署</span>
+<span class="linenos">52</span><span class="n">backend1</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">53</span><span class="n">backend2</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="c1">//此时输出两个buyibackend的log，可以看出相应权重以及中间层的真实物理地址在同一个区域</span>
+<span class="linenos">56</span><span class="n">by_backend1</span><span class="p">.</span><span class="n">log</span><span class="p">();</span>
+<span class="linenos">57</span><span class="n">by_backend2</span><span class="p">.</span><span class="n">log</span><span class="p">();</span>
+<span class="linenos">58</span>
+<span class="linenos">59</span><span class="c1">//通过程序也可以验证两个backend的权重，中间层段是同一个memchunk，指令段是不同的memchunk</span>
+<span class="linenos">60</span><span class="c1">//对于用户自行申请的memchunk，使用完成后用户要记得去释放</span>
+<span class="linenos">61</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">by_backend1</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">INSTR</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">by_backend2</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">INSTR</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="p">);</span>
+<span class="linenos">62</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">by_backend1</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">WEIGHT</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">by_backend2</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">WEIGHT</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="p">);</span>
+<span class="linenos">63</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">by_backend1</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">by_backend2</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="p">);</span>
+<span class="linenos">64</span>
+<span class="linenos">65</span><span class="c1">//部署完成后进行预检</span>
+<span class="linenos">66</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">by_backend1</span><span class="p">.</span><span class="n">precheck</span><span class="p">());</span>
+<span class="linenos">67</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">by_backend2</span><span class="p">.</span><span class="n">precheck</span><span class="p">());</span>
+<span class="linenos">68</span>
+<span class="linenos">69</span><span class="c1">//关闭设备</span>
+<span class="linenos">70</span><span class="n">Device</span><span class="o">::</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id16" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">dev_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos"> 8</span><span class="n">dev_url_socket</span> <span class="o">=</span> <span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span>
+<span class="linenos"> 9</span><span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">)</span>
+<span class="linenos">10</span><span class="n">bydevice</span> <span class="o">=</span> <span class="n">BuyiDevice</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="n">network</span> <span class="o">=</span> <span class="n">xir</span><span class="o">.</span><span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="s2">&quot;E:/test/json&amp;raw/30/seresnet_BY.json&quot;</span><span class="p">)</span>
+<span class="linenos">13</span><span class="n">network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="s2">&quot;E:/test/json&amp;raw/30/seresnet_BY.raw&quot;</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="n">backend1</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">device</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">backend2</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">device</span><span class="p">)</span>
+<span class="linenos">17</span><span class="n">buyibackend1</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">backend1</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">buyibackend2</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">backend2</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">buyibackend2</span><span class="o">.</span><span class="n">compressFtmp</span><span class="p">()</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="n">instr_bytesize</span> <span class="o">=</span> <span class="n">buyibackend1</span><span class="o">.</span><span class="n">logic_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">INSTR</span><span class="p">]</span><span class="o">.</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">22</span><span class="n">weight_bytesize</span> <span class="o">=</span> <span class="n">buyibackend1</span><span class="o">.</span><span class="n">logic_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">WEIGHT</span><span class="p">]</span><span class="o">.</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">23</span><span class="n">ftmp_bytesize1</span> <span class="o">=</span> <span class="n">buyibackend1</span><span class="o">.</span><span class="n">logic_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">FTMP</span><span class="p">]</span><span class="o">.</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">24</span><span class="n">ftmp_bytesize2</span> <span class="o">=</span> <span class="n">buyibackend2</span><span class="o">.</span><span class="n">logic_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">FTMP</span><span class="p">]</span><span class="o">.</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">25</span><span class="n">ftmp_bytesize</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">26</span><span class="k">if</span> <span class="n">ftmp_bytesize1</span> <span class="o">&gt;</span> <span class="n">ftmp_bytesize2</span><span class="p">:</span>
+<span class="linenos">27</span>   <span class="n">ftmp_bytesize</span> <span class="o">=</span> <span class="n">ftmp_bytesize1</span>
+<span class="linenos">28</span><span class="k">else</span><span class="p">:</span>
+<span class="linenos">29</span>   <span class="n">ftmp_bytesize</span> <span class="o">=</span> <span class="n">ftmp_bytesize2</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="n">ftmp_chunk</span> <span class="o">=</span> <span class="n">bydevice</span><span class="o">.</span><span class="n">defaultMemRegion</span><span class="p">()</span><span class="o">.</span><span class="n">malloc</span><span class="p">(</span><span class="n">ftmp_bytesize</span><span class="p">);</span>
+<span class="linenos">32</span><span class="n">weight_chunk</span> <span class="o">=</span> <span class="n">bydevice</span><span class="o">.</span><span class="n">defaultMemRegion</span><span class="p">()</span><span class="o">.</span><span class="n">malloc</span><span class="p">(</span><span class="n">weight_bytesize</span><span class="p">);</span>
+<span class="linenos">33</span><span class="n">instr_chunk</span>  <span class="o">=</span> <span class="n">bydevice</span><span class="o">.</span><span class="n">defaultMemRegion</span><span class="p">()</span><span class="o">.</span><span class="n">malloc</span><span class="p">(</span><span class="n">instr_bytesize</span><span class="p">);</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">weight_chunk</span><span class="p">,</span> <span class="n">Segment</span><span class="o">.</span><span class="n">WEIGHT</span><span class="p">);</span>
+<span class="linenos">36</span><span class="n">buyibackend2</span><span class="o">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">weight_chunk</span><span class="p">,</span> <span class="n">Segment</span><span class="o">.</span><span class="n">WEIGHT</span><span class="p">);</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">ftmp_chunk</span><span class="p">,</span> <span class="n">Segment</span><span class="o">.</span><span class="n">FTMP</span><span class="p">);</span>
+<span class="linenos">39</span><span class="n">buyibackend2</span><span class="o">.</span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">ftmp_chunk</span><span class="p">,</span> <span class="n">Segment</span><span class="o">.</span><span class="n">FTMP</span><span class="p">);</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="n">backend1</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">42</span><span class="n">backend2</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
+<span class="linenos">45</span><span class="n">buyibackend2</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">phy_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">INSTR</span><span class="p">]</span><span class="o">.</span><span class="n">memchunk</span> <span class="o">!=</span> <span class="n">buyibackend2</span><span class="o">.</span><span class="n">phy_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">INSTR</span><span class="p">]</span><span class="o">.</span><span class="n">memchunk</span><span class="p">)</span>
+<span class="linenos">48</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">phy_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">WEIGHT</span><span class="p">]</span><span class="o">.</span><span class="n">memchunk</span> <span class="o">==</span> <span class="n">buyibackend2</span><span class="o">.</span><span class="n">phy_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">WEIGHT</span><span class="p">]</span><span class="o">.</span><span class="n">memchunk</span><span class="p">)</span>
+<span class="linenos">49</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">phy_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">FTMP</span><span class="p">]</span><span class="o">.</span><span class="n">memchunk</span> <span class="o">==</span> <span class="n">buyibackend2</span><span class="o">.</span><span class="n">phy_segment_map</span><span class="p">[</span><span class="n">Segment</span><span class="o">.</span><span class="n">FTMP</span><span class="p">]</span><span class="o">.</span><span class="n">memchunk</span><span class="p">)</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">precheck</span><span class="p">())</span>
+<span class="linenos">52</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">buyibackend1</span><span class="o">.</span><span class="n">precheck</span><span class="p">())</span>
+<span class="linenos">53</span><span class="n">Device</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="id17">
+<h2>二 数据结构<a class="headerlink" href="#id17" title="此标题的永久链接">#</a></h2>
+<section id="valueinfo">
+<h3>2.1 ValueInfo<a class="headerlink" href="#valueinfo" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ValueInfo</span></code> 与icraft::xir::Value类的对应，包含BuyiBackend中一些补充信息。</p>
+<p><code class="docutils literal notranslate"><span class="pre">ValueInfo</span></code> 有以下属性：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Value</span> <span class="pre">value</span></code> ：icraft::xir::Value的引用类，获得对应的Value指针</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_ocm</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true，表示对应的value数据存放在ocm上</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_host</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true，表示对应的value数据存放在host端</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::vector&lt;Value&gt;</span> <span class="pre">real_to</span></code> ：real若为true, 可能包含与其共用etm为false的value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Value</span> <span class="pre">fake_from</span></code> ：real若为false，必定存在预期共用etm地址且为true的value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">logic_addr</span> <span class="pre">=</span> <span class="pre">0</span></code> ：value 在etm分配的逻辑字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">user_used</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true，表示存放value的memchunk为用户申请</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">phy_addr</span> <span class="pre">=</span> <span class="pre">0</span></code> ：value 在etm分配的真实物理字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">byte_size</span> <span class="pre">=</span> <span class="pre">0</span></code> ：value 在etm上占据的字节大小</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Segment</span> <span class="pre">segment</span> <span class="pre">=</span> <span class="pre">Segment::FTMP</span></code> ：value 在etm上地址对应的分段类型</p></li>
+</ul>
+</section>
+<section id="hardopinfo">
+<h3>2.2 HardOpInfo<a class="headerlink" href="#hardopinfo" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">HardOpInfo</span></code> 与icraft::xir::HardOp类的对应，包含BuyiBackend中一些补充信息。</p>
+<p><code class="docutils literal notranslate"><span class="pre">HardOpInfo</span></code> 有以下属性：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">weights_logic_addr</span> <span class="pre">=</span> <span class="pre">0</span></code> ：对应HardOp的权重在etm上分配的逻辑字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">weights_size</span> <span class="pre">=</span> <span class="pre">0</span></code> ：对应HardOp的权重在etm上的字节大小</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">instr_logic_addr</span> <span class="pre">=</span> <span class="pre">0</span></code> ：对应HardOp的指令在etm上分配的逻辑字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">instr_size</span> <span class="pre">=</span> <span class="pre">0</span></code> ：对应HardOp的指令在etm上分配的逻辑字节大小</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">user_used</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true，表示对应HardOp在etm对应的memchunk为用户申请</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">weight_phy_addr</span></code> ：对应HardOp的权重在etm上的真实物理字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">instr_phy_addr</span></code> ：对应HardOp的指令在etm上的真实物理字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HardOp</span> <span class="pre">net_hardop</span></code> ：对应icraft::xir::HardOp类的指针</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::vector&lt;ULL&gt;</span> <span class="pre">instr_data</span></code> ：对应HardOp执行的指令</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::vector&lt;int&gt;</span> <span class="pre">merge_from</span></code> ：如果在speedMode下，表示合并前的hardop op_id集合</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::pair&lt;int,int&gt;</span> <span class="pre">sync_idx</span></code> ：对应HardOp的同步信息</p></li>
+</ul>
+</section>
+<section id="logicsegment">
+<h3>2.3 LogicSegment<a class="headerlink" href="#logicsegment" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LogicSegment</span></code> 逻辑分段类，在BuyiBackend 初始化时生成，表示对应network_view的各分段的逻辑地址相关数据。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LogicSegment</span></code> 有以下属性：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_map&lt;int,</span> <span class="pre">ValueInfo&gt;</span> <span class="pre">info_map</span></code> ：逻辑分段包含的valueInfo信息  &lt;v_id, valueInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_map&lt;int,</span> <span class="pre">HardOpInfo&gt;</span> <span class="pre">hardop_map</span></code> ：逻辑分段包含的hardOp信息  &lt;op_id, hardopInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">logic_addr</span> <span class="pre">=</span> <span class="pre">0</span></code> ：逻辑分段在etm的逻辑字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">byte_size</span> <span class="pre">=</span> <span class="pre">0</span></code> ：逻辑分段在etm的字节大小</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Segment</span> <span class="pre">segment_type</span></code> ：逻辑分段的分段类型</p></li>
+</ul>
+</section>
+<section id="physegment">
+<h3>2.4 PhySegment<a class="headerlink" href="#physegment" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">PhySegment</span></code> 表示某一个内存区域上分配的一块连续内存块。<code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 没有构造函数，所有的 <code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 都是由 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 的 <code class="docutils literal notranslate"><span class="pre">malloc</span></code> 方法分配产生的。</p>
+<p><code class="docutils literal notranslate"><span class="pre">PhySegment</span></code> 有以下属性：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;int,</span> <span class="pre">ValueInfo&gt;</span> <span class="pre">info_map</span></code> ：物理分段包含的valueInfo信息  &lt;v_id, valueInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;int,</span> <span class="pre">HardOpInfo&gt;</span> <span class="pre">hardop_map</span></code> ：物理分段包含的hardOp信息  &lt;op_id, hardopInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">phy_addr</span></code> ：物理分段在etm上的真实物理字节地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">byte_size</span> <span class="pre">=</span> <span class="pre">0</span></code> ：物理分段在etm的字节大小</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Segment</span> <span class="pre">segment_type</span></code> ：物理分段的分段类型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MemChunk</span> <span class="pre">memchunk</span></code> ：物理分段在etm上申请的memchunk</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">user_used</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true，表示物理分段的memchunk是用户申请的</p></li>
+</ul>
+</section>
+<section id="forwardinfo">
+<h3>2.5 ForwardInfo<a class="headerlink" href="#forwardinfo" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ForwardInfo</span></code> 包含前向所需要的信息</p>
+<p><code class="docutils literal notranslate"><span class="pre">ForwardInfo</span></code> 有以下属性：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_map&lt;int,</span> <span class="pre">ValueInfo&gt;&amp;</span> <span class="pre">value_map</span></code> ：物理分段包含的valueInfo信息  &lt;v_id, valueInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_map&lt;int,</span> <span class="pre">HardOpInfo&gt;&amp;</span> <span class="pre">hardop_map</span></code> ：network_view包含的所有hardopInfo的集合 &lt;op_id, HardOpInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;int,</span> <span class="pre">std::pair&lt;int,</span> <span class="pre">int&gt;&gt;&amp;</span> <span class="pre">idx_map</span></code> ：network_view中所有op的同步信息集合     &lt;op_id, sync_idx&gt;</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>2.6 BuyiBackend<a class="headerlink" href="#id18" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 表示执行在BUYI架构7100芯片的后端。</p>
+<p><code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 除了有之前的接口外还有以下属性：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;int64_t,</span> <span class="pre">ValueInfo&gt;</span> <span class="pre">value_info</span></code> ：包含network_view所有valueInfo的信息, &lt;v_id, ValueInfo&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ForwardInfo</span> <span class="pre">forward_info</span></code> ：包含buyibackend所有前向所需要的信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_map&lt;Segment,</span> <span class="pre">LogicSegment&gt;</span> <span class="pre">logic_segment_map</span></code> ：包含buyibackend的所有逻辑分段信息，&lt;segment_type, logicSegment&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_map&lt;Segment,</span> <span class="pre">PhySegment&gt;</span> <span class="pre">phy_segment_map</span></code> ：包含buyibackend的所有物理分段信息, &lt;segment_type, phySegment&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::vector&lt;HardOpInfo&gt;</span> <span class="pre">speed_ops_</span></code>：合并后的算子列表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::list&lt;Value&gt;</span> <span class="pre">value_list</span></code> ：所有在etm上真实分配空间的value的信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_compressftmp_</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true, buyibackend开启compressFtmp功能</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_applied_</span> <span class="pre">=</span> <span class="pre">false</span></code> ：若为true, buyibackend已完成部署</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">int</span> <span class="pre">buyibackend_sid</span></code> ：buyibackend的静态技术，计算当前程序下buyibackend的个数</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">buyibackend_id</span> <span class="pre">=</span> <span class="pre">0</span></code> ：当前buyibackend的id</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SegTable</span> <span class="pre">seg_table_</span></code>：记录段表中的逻辑地址和物理地址等相关数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_speedmode_</span> <span class="pre">=</span> <span class="pre">false</span></code>：若为true，buyibackend开启speedmode</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_compressftmp_</span> <span class="pre">=</span> <span class="pre">false</span></code>：若为true, buyibackend开启compressFtmp功能</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_applied_</span> <span class="pre">=</span> <span class="pre">false</span></code>：若为true, buyibackend已完成部署</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_mmu</span> <span class="pre">=</span> <span class="pre">true</span></code>：若为true, buyibackend开启mmu</p></li>
+</ul>
+<p>以下以 结合icraft::xrt::Session，展示具体的接口和属性使用方法：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//静态函数，通过图片以及dtype构造icraftL::xrt::Tensor</span>
+<span class="linenos"> 2</span><span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">img2Tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">img_path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">TensorType</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dtype</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">logic_error</span><span class="p">(</span><span class="s">&quot;[Error in SimulatorInput::setImageFile] image file not exist, please check.&quot;</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="w"> </span><span class="n">img</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cv</span><span class="o">::</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span><span class="w"> </span><span class="n">cv</span><span class="o">::</span><span class="n">IMREAD_COLOR</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="w"> </span><span class="n">converted</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="n">img</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span><span class="n">converted</span><span class="p">,</span><span class="w"> </span><span class="n">CV_32F</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tensor_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dtype</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">   </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tensor_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dtype</span><span class="o">-&gt;</span><span class="n">layout</span><span class="p">;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converted</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converted</span><span class="p">.</span><span class="n">cols</span><span class="p">;</span>
+<span class="linenos">16</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converted</span><span class="p">.</span><span class="n">channels</span><span class="p">();</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">output_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">H</span><span class="p">,</span><span class="w"> </span><span class="n">W</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">19</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">output_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="n">output_shape</span><span class="p">,</span><span class="w"> </span><span class="n">tensor_layout</span><span class="p">);</span>
+<span class="linenos">20</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">output_type</span><span class="p">).</span><span class="n">mallocOn</span><span class="p">(</span><span class="n">HostDevice</span><span class="o">::</span><span class="n">MemRegion</span><span class="p">());</span>
+<span class="linenos">21</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">output_tptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">output_tensor</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">cptr</span><span class="p">();</span>
+<span class="linenos">22</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">copy_n</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">converted</span><span class="p">.</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">output_tptr</span><span class="p">);</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">output_tensor</span><span class="p">;</span>
+<span class="linenos">25</span><span class="p">};</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="c1">//打开device</span>
+<span class="linenos">28</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos">29</span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url_socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;socket://ql100aiu@192.168.125.77:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="linenos">30</span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+<span class="linenos">31</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">);</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/json&amp;raw/30/nafnet16_BY_int8.json&quot;</span><span class="p">;</span>
+<span class="linenos">35</span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/json&amp;raw/30/nafnet16_BY_int8.raw&quot;</span><span class="p">;</span>
+<span class="linenos">36</span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/images/elephant.jpg&quot;</span><span class="p">;</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="c1">//构造加载网络</span>
+<span class="linenos">39</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos">40</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="c1">//构造session，同时构造BuyiBackend以及HostBakcend并完成算子绑定</span>
+<span class="linenos">43</span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="c1">//从session处得到buyi_backend</span>
+<span class="linenos">46</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="c1">//配置中间层优化</span>
+<span class="linenos">49</span><span class="n">buyi_backend</span><span class="p">.</span><span class="n">compressFtmp</span><span class="p">();</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="c1">//运行前apply部署</span>
+<span class="linenos">52</span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span><span class="c1">//部署完成后进行预检，输出log</span>
+<span class="linenos">55</span><span class="n">buyi_backend</span><span class="p">.</span><span class="n">precheck</span><span class="p">();</span>
+<span class="linenos">56</span><span class="n">buyi_backend</span><span class="p">.</span><span class="n">log</span><span class="p">();</span>
+<span class="linenos">57</span>
+<span class="linenos">58</span><span class="c1">//通过network获得dtype并结合输入图片构造输入tensor</span>
+<span class="linenos">59</span><span class="k">auto</span><span class="w"> </span><span class="n">input_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">inputOp</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">();</span>
+<span class="linenos">60</span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">img2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span><span class="w"> </span><span class="n">input_dtype</span><span class="p">);</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span><span class="c1">//执行forward前向得到输出</span>
+<span class="linenos">63</span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">64</span>
+<span class="linenos">65</span><span class="k">auto</span><span class="w"> </span><span class="n">file_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./logs/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span>
+<span class="linenos">66</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fs</span><span class="o">::</span><span class="n">is_directory</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">fs</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">67</span><span class="w">   </span><span class="n">fs</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="n">file_name</span><span class="p">);</span>
+<span class="linenos">68</span><span class="p">}</span>
+<span class="linenos">69</span>
+<span class="linenos">70</span><span class="c1">//通过buyibackend获得phy_segment_map以及value_map</span>
+<span class="linenos">71</span><span class="c1">//value_map里面有前向所有valueInfo的合集</span>
+<span class="linenos">72</span><span class="k">auto</span><span class="w"> </span><span class="n">phy_segment_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buyi_backend</span><span class="o">-&gt;</span><span class="n">phy_segment_map</span><span class="p">;</span>
+<span class="linenos">73</span><span class="k">auto</span><span class="w"> </span><span class="n">value_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buyi_backend</span><span class="o">-&gt;</span><span class="n">forward_info</span><span class="o">-&gt;</span><span class="n">value_map</span><span class="p">;</span>
+<span class="linenos">74</span>
+<span class="linenos">75</span><span class="c1">//这个循环函数的目的是将session运行过程中保存在etm上的Value全部以二进制文件的形式保存下来</span>
+<span class="linenos">76</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">k_v</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">value_map</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">77</span><span class="w">   </span><span class="c1">//如果value的数据在host或者ocm上就跳过</span>
+<span class="linenos">78</span><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">is_host</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">is_ocm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">79</span><span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="linenos">80</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">81</span><span class="w">   </span><span class="c1">//获取forward_info中value相关数据</span>
+<span class="linenos">82</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">-&gt;</span><span class="n">v_id</span><span class="p">;</span>
+<span class="linenos">83</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">byte_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="linenos">84</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">phy_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">phy_addr</span><span class="p">;</span>
+<span class="linenos">85</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">mem_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phy_segment_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">segment</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">memchunk</span><span class="p">;</span>
+<span class="linenos">86</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;start dump v_id: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">87</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int8_t</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int8_t</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">int8_t</span><span class="p">[</span><span class="n">byte_size</span><span class="p">]{</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">88</span><span class="w">   </span><span class="c1">//将value所在memchunk对应偏移的数据保存到内存中并以二进制的形式保存下来</span>
+<span class="linenos">89</span><span class="w">   </span><span class="n">mem_chunk</span><span class="p">.</span><span class="n">read</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">temp</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">phy_addr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mem_chunk</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">.</span><span class="n">addr</span><span class="p">(),</span><span class="w"> </span><span class="n">byte_size</span><span class="p">);</span>
+<span class="linenos">90</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">out_file</span><span class="p">(</span><span class="n">file_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.ftmp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">binary</span><span class="p">);</span>
+<span class="linenos">91</span><span class="w">   </span><span class="n">out_file</span><span class="p">.</span><span class="n">write</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">temp</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">byte_size</span><span class="p">);</span>
+<span class="linenos">92</span><span class="w">   </span><span class="n">out_file</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="linenos">93</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id19">
+<h2>三 特殊说明<a class="headerlink" href="#id19" title="此标题的永久链接">#</a></h2>
+<p>对于多线程、多网络相连等应用场景，常常需要对网络进行拆分。
+不同mmu模式下，拆分网络的方法也不同，若使用mmu模式，需使用XRT中的sub接口，
+若使用非mmu模式，需使用XIR中的view接口。</p>
+<p>view用于从原网络中创建一个子网络，创建session时buyibackend会重新计算物理分段信息，
+sub用于从原session中创建一个新的session, 这两个session共享相同的backends资源，但是network_view不同。
+view相比于sub的使用场景更为灵活和广泛，但对于只涉及一个网络的情况下，
+sub可以不使用内存复用（userSetSegment）实现输入输出相连，更适用于较为简单的网络拆分场景。</p>
+<section id="view">
+<h3>3.1 view<a class="headerlink" href="#view" title="此标题的永久链接">#</a></h3>
+<p>属于XIR中的接口，从一个网络拆分得到的多个子网络相连时需要使用内存复用将子网络输入段和输出段相连。
+调用方法和时机具体见以下示例。</p>
+<section id="id20">
+<h4><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id20" title="此标题的永久链接">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//构造加载网络</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos"> 3</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">//通过view拆分网络，分别获得两个子网络</span>
+<span class="linenos"> 6</span><span class="c1">//这里的new_network1包含网络执行序的第0~1个算子，new_network2包含网络执行序的第2~最后算子，</span>
+<span class="linenos"> 7</span><span class="c1">//view的使用方法详见XIR接口说明</span>
+<span class="linenos"> 8</span><span class="k">auto</span><span class="w"> </span><span class="n">new_network1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="k">auto</span><span class="w"> </span><span class="n">new_network2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">//使用view后的子网络构造session</span>
+<span class="linenos">12</span><span class="k">auto</span><span class="w"> </span><span class="n">sess1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">new_network1</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos">13</span><span class="k">auto</span><span class="w"> </span><span class="n">sess2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">new_network2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1">//sess1的输出段和sess2的输入段内存复用</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">//运行前apply部署</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1">//执行forward前向得到输出</span>
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h4><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id21" title="此标题的永久链接">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 构造加载网络</span>
+<span class="linenos"> 2</span><span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="n">network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">)</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1"># 通过view拆分网络，分别获得两个子网络</span>
+<span class="linenos"> 6</span><span class="c1"># 这里的new_network1包含网络执行序的第0~1个算子，new_network2包含网络执行序的第2~最后算子</span>
+<span class="linenos"> 7</span><span class="c1"># view的使用方法详见XIR接口说明</span>
+<span class="linenos"> 8</span><span class="n">new_network1</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="n">new_network2</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># 使用view后的子网络构造session</span>
+<span class="linenos">12</span><span class="n">sess1</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">new_network1</span><span class="p">,</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+<span class="linenos">13</span><span class="n">sess2</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">new_network2</span><span class="p">,</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1"># sess1的输出段和sess2的输入段内存复用</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1"># 运行前apply部署</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1"># 执行forward前向得到输出</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>代码示例中的缺省部分参考1.3节，这里仅展示必要的接口使用方式和调用位置</p>
+</div>
+</section>
+</section>
+<section id="sub">
+<h3>3.2 sub<a class="headerlink" href="#sub" title="此标题的永久链接">#</a></h3>
+<p>属于XRT中的接口，两个session的buyibackend使用的是同一个物理分段信息，因此不需要使用内存复用将输入段和输出段相连。
+调用方法和时机具体见以下示例。</p>
+<section id="id22">
+<h4><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id22" title="此标题的永久链接">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//构造加载网络</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos"> 3</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">//构造session</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">//运行前apply部署</span>
+<span class="linenos"> 9</span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">//通过sub拆分网络，分别获得两个子session，</span>
+<span class="linenos">12</span><span class="c1">//这里的sub_sess1使用的network_view是网络执行序的第0~1个算子，sub_sess2使用的network_view是网络执行序的第2~最后算子，</span>
+<span class="linenos">13</span><span class="c1">//sub的使用方法详见XRT接口说明</span>
+<span class="linenos">14</span><span class="k">auto</span><span class="w"> </span><span class="n">sub_sess1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos">15</span><span class="k">auto</span><span class="w"> </span><span class="n">sub_sess2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">//分别执行forward前向得到输出，不需要使用内存复用将sub_sess1的输出与sub_sess2的输入放在同一个内存段</span>
+<span class="linenos">18</span><span class="k">auto</span><span class="w"> </span><span class="n">input_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">);</span>
+<span class="linenos">19</span><span class="k">auto</span><span class="w"> </span><span class="n">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sub_sess1</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_type</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">20</span><span class="k">auto</span><span class="w"> </span><span class="n">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sub_sess2</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="w"> </span><span class="n">result1</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id23">
+<h4><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id23" title="此标题的永久链接">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 构造加载网络</span>
+<span class="linenos"> 2</span><span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="n">network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">)</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1"># 构造session</span>
+<span class="linenos"> 6</span><span class="n">sess1</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">network</span><span class="p">,</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># 通过sub拆分网络，分别获得两个子session，</span>
+<span class="linenos"> 9</span><span class="c1"># 这里的sub_sess1使用的network_view是网络执行序的第0~1个算子，sub_sess2使用的network_view是网络执行序的第2~最后算子，</span>
+<span class="linenos">10</span><span class="c1"># sub的使用方法详见XRT接口说明</span>
+<span class="linenos">11</span><span class="n">sub_sess1</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="linenos">12</span><span class="n">sub_sess2</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1"># 分别执行forward前向得到输出</span>
+<span class="linenos">15</span><span class="n">input_type</span> <span class="o">=</span> <span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">result1</span> <span class="o">=</span> <span class="n">sub_sess1</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span> <span class="p">[</span> <span class="n">input_type</span> <span class="p">]</span> <span class="p">)</span>
+<span class="linenos">17</span><span class="n">result2</span> <span class="o">=</span> <span class="n">sub_sess2</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span> <span class="n">result1</span> <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id24">
+<h2>四 索引<a class="headerlink" href="#id24" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="_cppapi/api_root.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">〇 用户接口</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 快速开始</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyidevice">1.1 构造BuyiDevice</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#buyidevicemmu">1.1.1 构造BuyiDevice并设置为非mmu模式</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.2 构造BuyiDevice并设置为mmu模式</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyibackend">1.2 构造BuyiBackend</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#session-create">1.2.1 Session::Create时构造</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.2.2 直接构造BuyiBackend</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.3 网络部署的功能配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#compressftmp">1.3.1 compressFtmp 压缩中间层</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#speedmode">1.3.2 speedMode</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#usersetsegment">1.3.3 userSetSegment</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">二 数据结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valueinfo">2.1 ValueInfo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardopinfo">2.2 HardOpInfo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logicsegment">2.3 LogicSegment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#physegment">2.4 PhySegment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forwardinfo">2.5 ForwardInfo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.6 BuyiBackend</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">三 特殊说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view">3.1 view</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sub">3.2 sub</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">四 索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： zhangfengyu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

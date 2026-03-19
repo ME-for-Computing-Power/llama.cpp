@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>索引 &#8212; Icraft Utils 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="索引" href="#" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Utils 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+
+<h1 id="index">索引</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#I"><strong>I</strong></a>
+ 
+</div>
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/classicraft_1_1_back_trace.html#_CPPv4N6icraft9BackTrace3GetEi">icraft::BackTrace::Get（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_back_trace.html#_CPPv4N6icraft9BackTraceE">icraft::BackTrace（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_basic_sink.html#_CPPv4NK6icraft9BasicSink5levelEv">icraft::BasicSink::level（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_basic_sink.html#_CPPv4N6icraft9BasicSink8setColorE8LogLevel8LogColor">icraft::BasicSink::setColor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_basic_sink.html#_CPPv4N6icraft9BasicSink8setLevelE8LogLevel">icraft::BasicSink::setLevel（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_basic_sink.html#_CPPv4N6icraft9BasicSink10setPatternEPKc">icraft::BasicSink::setPattern（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_basic_sink.html#_CPPv4N6icraft9BasicSinkE">icraft::BasicSink（C++ class）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName5BLACKE">icraft::ColorName::BLACK（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName4BLUEE">icraft::ColorName::BLUE（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName4CYANE">icraft::ColorName::CYAN（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName5GREENE">icraft::ColorName::GREEN（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName7MAGENTAE">icraft::ColorName::MAGENTA（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName3REDE">icraft::ColorName::RED（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName5WHITEE">icraft::ColorName::WHITE（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorName6YELLOWE">icraft::ColorName::YELLOW（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#_CPPv4N6icraft9ColorNameE">icraft::ColorName（C++ enum）</a>
+</li>
+      <li><a href="_cppapi/function_string_8h_1a3ded0ce7a8fc07119ab1d8ec24f8affc.html#_CPPv4N6icraft11DecoTypeKeyENSt11string_viewE">icraft::DecoTypeKey（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_dynamic_progress_bars.html#_CPPv4N6icraft19DynamicProgressBars6appendER11ProgressBar">icraft::DynamicProgressBars::append（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_dynamic_progress_bars.html#_CPPv4N6icraft19DynamicProgressBars19DynamicProgressBarsENSt6vectorI11ProgressBarEE">icraft::DynamicProgressBars::DynamicProgressBars（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_dynamic_progress_bars.html#_CPPv4N6icraft19DynamicProgressBars19hideBarWhenCompleteEb">icraft::DynamicProgressBars::hideBarWhenComplete（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_dynamic_progress_bars.html#_CPPv4N6icraft19DynamicProgressBarsixE6size_t">icraft::DynamicProgressBars::operator[]（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_dynamic_progress_bars.html#_CPPv4N6icraft19DynamicProgressBarsE">icraft::DynamicProgressBars（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_error.html#_CPPv4N6icraft5Error5ErrorERKNSt6stringE">icraft::Error::Error（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_error.html#_CPPv4N6icraft5ErrorE">icraft::Error（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_file_sink.html#_CPPv4N6icraft8FileSink8FileSinkERKNSt10filesystem4pathE">icraft::FileSink::FileSink（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_file_sink.html#_CPPv4N6icraft8FileSinkE">icraft::FileSink（C++ class）</a>
+</li>
+      <li><a href="_cppapi/function_shape_8h_1a245edefb80524293599ff303f221caaa.html#_CPPv4N6icraft17getBroadcastShapeENSt6vectorI7int64_tEENSt6vectorI7int64_tEE">icraft::getBroadcastShape（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_string_8h_1a0c8f776bdb5fb77a9dce83686a60a07c.html#_CPPv4N6icraft4getCEi">icraft::getC（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_dll_8h_1a8224fbfe84daac1dec4e6d2b2bf5a7a5.html#_CPPv4N6icraft9GetDLLDirEv">icraft::GetDLLDir（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_dll_8h_1a48634b6a5b70a4e370e38deebd5891b6.html#_CPPv4N6icraft14GetDLLFileNameERKNSt6stringE">icraft::GetDLLFileName（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError9backtraceEv">icraft::InternalError::backtrace（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError9errorCodeEv">icraft::InternalError::errorCode（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError4fileEv">icraft::InternalError::file（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError7fullMsgEv">icraft::InternalError::fullMsg（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4N6icraft13InternalError13InternalErrorENSt6stringEiNSt6stringEiN12system_clock10time_pointENSt6stringE">icraft::InternalError::InternalError（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError6linenoEv">icraft::InternalError::lineno（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError3msgEv">icraft::InternalError::msg（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4N6icraft13InternalError7rethrowENSt6stringENSt6stringEii">icraft::InternalError::rethrow（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError4timeEv">icraft::InternalError::time（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4NK6icraft13InternalError4whatEv">icraft::InternalError::what（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_internal_error.html#_CPPv4N6icraft13InternalErrorE">icraft::InternalError（C++ class）</a>
+</li>
+      <li><a href="_cppapi/function_shape_8h_1aa4d512eebaace3931e8d3c434fa4e8ac.html#_CPPv4N6icraft15isBroadcastableEKNSt6vectorI7int64_tEENSt6vectorI7int64_tEE">icraft::isBroadcastable（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_dll_8h_1a731f70286eb978a94d035c1ad8459cc9.html#_CPPv4N6icraft13LoadDLLByPathERKNSt10filesystem4pathE">icraft::LoadDLLByPath（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_dll_8h_1a7073206e0044c3ccfe31805e2f3c53ee.html#_CPPv4N6icraft15LoadDLLInBinDirERKNSt6stringE">icraft::LoadDLLInBinDir（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_log_color.html#_CPPv4N6icraft8LogColor10BackgroundE9ColorName">icraft::LogColor::Background（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_log_color.html#_CPPv4N6icraft8LogColor9ForegroudE9ColorName">icraft::LogColor::Foregroud（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_log_color.html#_CPPv4N6icraft8LogColor8LogColorE9ColorName9ColorName">icraft::LogColor::LogColor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_log_color.html#_CPPv4N6icraft8LogColorE">icraft::LogColor（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4IDpEN6icraft6Logger5debugEvNSt6stringEDpRR4Args">icraft::Logger::debug（C++ function）</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger5debugERKNSt11string_viewE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4IDpEN6icraft6Logger5errorEvNSt6stringEDpRR4Args">icraft::Logger::error（C++ function）</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger5errorERKNSt11string_viewE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4IDpEN6icraft6Logger5fatalEvNSt6stringEDpRR4Args">icraft::Logger::fatal（C++ function）</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger5fatalERKNSt11string_viewE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger6GlobalEv">icraft::Logger::Global（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4IDpEN6icraft6Logger4infoEvNSt6stringEDpRR4Args">icraft::Logger::info（C++ function）</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger4infoERKNSt11string_viewE">[1]</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4NK6icraft6Logger5levelEv">icraft::Logger::level（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It">icraft::Logger::Logger（C++ function）</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger6LoggerERKNSt6stringENSt16initializer_listI9BasicSinkEE">[1]</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger6LoggerERKNSt6stringERK9BasicSink">[2]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger3logE8LogLevelNSt11string_viewE">icraft::Logger::log（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4NK6icraft6Logger4nameEv">icraft::Logger::name（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger8setLevelE8LogLevel">icraft::Logger::setLevel（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger10setPatternEPKc">icraft::Logger::setPattern（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4IDpEN6icraft6Logger4warnEvNSt6stringEDpRR4Args">icraft::Logger::warn（C++ function）</a>, <a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6Logger4warnERKNSt11string_viewE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_logger.html#_CPPv4N6icraft6LoggerE">icraft::Logger（C++ class）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel5DEBUGE">icraft::LogLevel::DEBUG（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel3ERRE">icraft::LogLevel::ERR（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel5FATALE">icraft::LogLevel::FATAL（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel4INFOE">icraft::LogLevel::INFO（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel3OFFE">icraft::LogLevel::OFF（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel5TRACEE">icraft::LogLevel::TRACE（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevel4WARNE">icraft::LogLevel::WARN（C++ enumerator）</a>
+</li>
+      <li><a href="_cppapi/enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevelE">icraft::LogLevel（C++ enum）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar7currentEv">icraft::ProgressBar::current（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar11isCompletedEv">icraft::ProgressBar::isCompleted（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar15markAsCompletedEv">icraft::ProgressBar::markAsCompleted（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar11ProgressBarE9ColorName">icraft::ProgressBar::ProgressBar（C++ function）</a>, <a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar11ProgressBarEv">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4NK6icraft11ProgressBar8progressEv">icraft::ProgressBar::progress（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar8setColorE9ColorName">icraft::ProgressBar::setColor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar14setPostfixTextERKNSt6stringE">icraft::ProgressBar::setPostfixText（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar13setPrefixTextERKNSt6stringE">icraft::ProgressBar::setPrefixText（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar11setProgressEf">icraft::ProgressBar::setProgress（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar15showElapsedTimeEb">icraft::ProgressBar::showElapsedTime（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar17showRemainingTimeEb">icraft::ProgressBar::showRemainingTime（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar4tickEi">icraft::ProgressBar::tick（C++ function）</a>, <a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBar4tickEv">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_progress_bar.html#_CPPv4N6icraft11ProgressBarE">icraft::ProgressBar（C++ class）</a>
+</li>
+      <li><a href="_cppapi/function_string_8h_1add4b1470aed32a5e8ac547e418650ce3.html#_CPPv4N6icraft26replace_substring_in_placeERNSt6stringERKNSt6stringERKNSt6stringE">icraft::replace_substring_in_place（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_string_8h_1aa0f248d19536133b4c7ffade8b5197f8.html#_CPPv4I0EN6icraft11rleCompressENSt6vectorINSt4pairI7int64_t1TEEEERKNSt6vectorI1TEE">icraft::rleCompress（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_file_8h_1a1868354607892994b31053bb34c3c3d1.html#_CPPv4N6icraft12safeLoadFileERKNSt10filesystem4pathENSt8ios_base8openmodeE">icraft::safeLoadFile（C++ function）</a>, <a href="_cppapi/function_file_8h_1a4ecd315970bd0cb18419d65a54fa34ac.html#_CPPv4N6icraft12safeLoadFileERKNSt6stringENSt8ios_base8openmodeE">[1]</a>
+</li>
+      <li><a href="_cppapi/function_dll_8h_1a594b2d1464811d17e41585ec2e0847e6.html#_CPPv4N6icraft17SearchAndLoadDllsERKNSt6stringE">icraft::SearchAndLoadDlls（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_dll_8h_1a374ff23ad3036fb1f93606e59bbfe4c9.html#_CPPv4N6icraft17SearchDLLByEnvVarERKNSt6stringERKNSt6stringE">icraft::SearchDLLByEnvVar（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_string_8h_1a15d02497f2b9dca472ab32e8007d4511.html#_CPPv4N6icraft5splitERKNSt6stringERKNSt6stringE">icraft::split（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_stderr_sink.html#_CPPv4N6icraft10StderrSink8setColorE8LogLevel8LogColor">icraft::StderrSink::setColor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_stderr_sink.html#_CPPv4N6icraft10StderrSink10StderrSinkEv">icraft::StderrSink::StderrSink（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_stderr_sink.html#_CPPv4N6icraft10StderrSinkE">icraft::StderrSink（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_stdout_sink.html#_CPPv4N6icraft10StdoutSink8setColorE8LogLevel8LogColor">icraft::StdoutSink::setColor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_stdout_sink.html#_CPPv4N6icraft10StdoutSink10StdoutSinkEv">icraft::StdoutSink::StdoutSink（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1_stdout_sink.html#_CPPv4N6icraft10StdoutSinkE">icraft::StdoutSink（C++ class）</a>
+</li>
+      <li><a href="_cppapi/function_string_8h_1a5f1f0333d2045591bcc5837c7cbc8ac5.html#_CPPv4N6icraft13UnDecoTypeKeyERKNSt6stringE">icraft::UnDecoTypeKey（C++ function）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1ad329b75790225efee1757acc89a3e4bf.html#c.ICRAFT_CHECK_BINARY_OP">ICRAFT_CHECK_BINARY_OP（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a8b26bd8fdc90b70d2e86821124f84a76.html#c.ICRAFT_CHECK_EQ">ICRAFT_CHECK_EQ（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a22c88ec8749c96c5d2f8c895bcc41cb1.html#c.ICRAFT_CHECK_GE">ICRAFT_CHECK_GE（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a4ad775af6bf58d24abd1a747822016e0.html#c.ICRAFT_CHECK_GT">ICRAFT_CHECK_GT（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a6e13b7532cbc77127ebab3d5e09c559b.html#c.ICRAFT_CHECK_LE">ICRAFT_CHECK_LE（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1abff1c512a5032bf72b34d8b516e4efcb.html#c.ICRAFT_CHECK_LT">ICRAFT_CHECK_LT（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1ae7e17f1ea192ef0dee1b03889ab1abac.html#c.ICRAFT_CHECK_NE">ICRAFT_CHECK_NE（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a910ff16eb80dee5af0a8dfc474429c48.html#c.ICRAFT_CHECK">ICRAFT_CHECK（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1ae0fd6d30f78d095768ea32ba785374e4.html#c.ICRAFT_CONSOLE_USE_UTF8">ICRAFT_CONSOLE_USE_UTF8（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a400915d5fb2a8cbdf3fc69b4f68618d4.html#c.ICRAFT_LOG">ICRAFT_LOG（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1a9ffd66dc98c7c8cca81ce3578ceae11d.html#c.ICRAFT_SET_LOG_LEVEL">ICRAFT_SET_LOG_LEVEL（C macro）</a>
+</li>
+      <li><a href="_cppapi/define_logging_8h_1ab7f45c684305cc7c9c6a031c24da7c6d.html#c.ICRAFT_TRY">ICRAFT_TRY（C macro）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

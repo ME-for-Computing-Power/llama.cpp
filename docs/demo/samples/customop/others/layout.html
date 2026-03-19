@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>布衣架构排布说明 &#8212; Icraft Demo  文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/customop/others/layout';</script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Icraft Demo: 自定义算子" href="../../pass/index.html" />
+    <link rel="prev" title="Icraft Demo: 自定义硬算子" href="../hardop.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Demo  文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">自定义算子</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../activate.html">自定义激活</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../softop.html">自定义软算子</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../hardop.html">自定义硬算子</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pass/index.html">Pass</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pass/pass.html">自定义pass</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../xrt/index.html">xrt运行相关用例</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../xrt/yolov5s.html">yolov5s运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xrt/multiNetwork.html">多网络连接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xrt/timeProfile.html">计时</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xrt/snapshot.html">快照</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/samples/customop/others/layout.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>布衣架构排布说明</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">排布的表达</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">软件排布和硬件排布</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">排布转换</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">自定义算子的排布要求</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>布衣架构排布说明<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>神经网络中数据是以张量的形式存在的，CNN网络的一些算子，比如卷积核池化等，给每个维度赋予了含义，即NHWC或者NCHW，但是在Transformer等其他网络的一些算子中，已经很难再找到对每个维度的明确定义了。张量是严格按照其维度来排布的，下图以NHWC为例，描述了框架下数据的排布：</p>
+<img alt="../../../_images/nhwc_layout.png" src="../../../_images/nhwc_layout.png" />
+<section id="id2">
+<h2>排布的表达<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Icraft XIR用 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 来描述数据排布形式， <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 是对张量形状中每一维的注解，每个维度使用一个字母来表示。比如对于一个四维张量来说， <code class="docutils literal notranslate"><span class="pre">layout=NHWC</span></code> 说明了它的最后一维表示通道，这对于卷积等算子的实现是必不可少的。</p>
+<p>Layout使用单个字符表示的坐标轴来解释张量的每一维是什么意义，目前有效的字符为 <code class="docutils literal notranslate"><span class="pre">NHWDCIO*nhwdcio</span></code> 。其中大写字母表示没被划分或划分后的Tile数量的坐标轴，小写字母表示做了划分后的单位坐标轴，后面跟数字表示单位长度，<a href="#id3"><span class="problematic" id="id4">*</span></a>表示不关心的坐标轴。例如 <code class="docutils literal notranslate"><span class="pre">NCHWc32</span></code> ， <code class="docutils literal notranslate"><span class="pre">OIHWi32o32</span></code> ， <code class="docutils literal notranslate"><span class="pre">N**Cc4</span></code> 等都是有效的表达。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>NHWDCIO分别表示Batch、高度、宽度、深度、通道、输入(通道)、输出(通道)</p>
+</div>
+</section>
+<section id="id5">
+<h2>软件排布和硬件排布<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p>在Icraft中，软算子在CPU或GPU上计算，输入输出以及参数存储在PSDDR上，其排布方式称为软件排布；硬算子在NPU或PL上计算，输入输出及参数存储在PLDDR上，其排布方式称为硬件排布。</p>
+<ul>
+<li><p>软件排布：对于CNN网络中的算子，Icraft仅支持框架下的NHWC形式的排布；对于非CNN的算子，Icraft支持的排布形式与框架保持一致，描述维***C；</p></li>
+<li><p>硬件排布：为了满足布衣架构的NPU对数据排布的要求，软件排布需要转为硬件排布：
+最里面一个维度C的数据拆分为两个维度，分别表示为Cc，其他维度保持不变。需要说明的是：当张量的数据精度为8bit时，c必须在{1，2，4，8，16，32}中取值；当张量的数据精度为16bit时，c必须在{1，2，4，8，16}中取值。</p>
+<p>同时，为了读取数据的便利，我们可以根据需要摆放C维度的位置，而c维度需要固定在最后一维。下图展示了C在不同位置的情况：</p>
+<img alt="../../../_images/buyi_layout.png" src="../../../_images/buyi_layout.png" />
+</li>
+</ul>
+<p>软件排布和硬件排布可以根据Layout参数来区分，即如果layout中同时存在C和c，且c为最后一维，表示硬件排布，如果只存在C，且C为最后一维，表示软件排布，其余为非法排布，示例如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layout</p></th>
+<th class="head"><p>排布类型</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NCHWc</p></td>
+<td><p>硬件排布</p></td>
+</tr>
+<tr class="row-odd"><td><p>NHWC</p></td>
+<td><p>软件排布</p></td>
+</tr>
+<tr class="row-even"><td><p>NHWcC</p></td>
+<td><p>非法排布（c必须在最后一维）</p></td>
+</tr>
+<tr class="row-odd"><td><p>NHWc</p></td>
+<td><p>非法排布（c和C须同时存在）</p></td>
+</tr>
+<tr class="row-even"><td><p>**C*c</p></td>
+<td><p>硬件排布</p></td>
+</tr>
+<tr class="row-odd"><td><p>**c</p></td>
+<td><p>非法排布（c和C须同时存在）</p></td>
+</tr>
+<tr class="row-even"><td><p>**C*c*</p></td>
+<td><p>非法排布（c必须在最后一维）</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id6">
+<h2>排布转换<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
+<p>软件排布转硬件排布，以NHWC为例，相当于做如下操作</p>
+<img alt="../../../_images/s2h_layout.png" src="../../../_images/s2h_layout.png" />
+<p>硬件排布转软件排布，以NHWC为例，相当于做如下操作</p>
+<img alt="../../../_images/h2s_layout.png" src="../../../_images/h2s_layout.png" />
+</section>
+<section id="id7">
+<h2>自定义算子的排布要求<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p>自定义算子输入的排布，请参考参数layout来获取输入的排布形式，然后获取输入数据，进行前向计算；</p></li>
+<li><p>自定义算子输出的排布，用户需要关注自定义算子的consumer，如果自定义算子的consumer为布衣架构上的硬算子，则要求自定义算子的输出必须排布为硬件排布，即将tensor最里面一维C拆分C*c，C所在的位置没有特殊要求。如果自定义算子的consumer为软算子，则要求输出排布为软件排布。</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../hardop.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Icraft Demo: 自定义硬算子</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../pass/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Icraft Demo: 自定义算子</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">排布的表达</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">软件排布和硬件排布</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">排布转换</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">自定义算子的排布要求</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

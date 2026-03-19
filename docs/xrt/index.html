@@ -1,0 +1,1294 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft XRT &#8212; Icraft XRT 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="API" href="_cppapi/api_root.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft XRT 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__xir.html">Namespace icraft::xir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__xrt.html">Namespace icraft::xrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__xrt__utils.html">Namespace icraft::xrt::utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_buyi_device.html">Class BuyiDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_buyi_device_node.html">Class BuyiDeviceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_device.html">Class Device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_device_node.html">Class DeviceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_device_registry.html">Class DeviceRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_device.html">Class HostDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_device_node.html">Class HostDeviceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_mem_region.html">Class HostMemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_mem_region_node.html">Class HostMemRegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_mem_chunk.html">Class MemChunk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_mem_chunk_node.html">Class MemChunkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_mem_ptr.html">Class MemPtr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_mem_ptr_node.html">Class MemPtrNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_mem_region.html">Class MemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_mem_region_node.html">Class MemRegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_reg_region.html">Class RegRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_reg_region_node.html">Class RegRegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_seg_table.html">Class SegTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_seg_table_node.html">Class SegTableNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_session.html">Class Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_session_node.html">Class SessionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_tensor.html">Class Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_tensor_node.html">Class TensorNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1utils_1_1_url_parser.html">Class UrlParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/enum_device_8h_1af974064fefd7dd52b2dccb8e242769c7.html">Enum PtrType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1ae1a38cb593f243cb21e611d484537628.html">Function icraft::xrt::operator+(const MemPtr&amp;, uint64_t)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1ac256b08b4de939f08f66ef2da848cd8e.html">Function icraft::xrt::operator+(uint64_t, const MemPtr&amp;)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1a288b7ee752d26955ddfe0921eebc7906.html">Function icraft::xrt::operator-(const MemPtr&amp;, uint64_t)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1a8b74090dfb3075d41129de3976a24270.html">Function icraft::xrt::operator-(const MemPtr&amp;, const MemPtr&amp;)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1aa01f01f51fd179f0d50ed1ea67de9d96.html">Function icraft::xrt::operator&lt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1adc331dcd1e69bc979cf076cbda4e8580.html">Function icraft::xrt::operator&lt;=</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1ae9e08156e1225760d595f320483e0d7b.html">Function icraft::xrt::operator&gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1a2089c7a554ac1b86c3c9944d353251d5.html">Function icraft::xrt::operator&gt;=</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_device_8h_1a01ca57d0ab88d81862d5d5210f92222f.html">Template Function icraft::xrt::utils::WaitUntil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/typedef_device_8h_1a85bf30b5045c0b4dfd06d1d7fa0177db.html">Typedef icraft::xrt::FChunkDeleter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/typedef_session_8h_1a4ac58eb09e80088914f526b5d1fd51ca.html">Typedef icraft::xrt::TimeProfileResults</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft XRT</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">〇 用户接口</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 快速开始</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#session">1.1 创建Session</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.1 按优先级创建Session</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.2 使用绑定好算子和设备的后端创建Session</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.3 使用序列化得到的快照文件</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2 序列化Session生成快照文件</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.3 Session前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#forward">1.3.1 forward前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stepto">1.3.2 stepTo前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">二 数据结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memptr">2.1 MemPtr</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memregion">2.2 MemRegion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regregion">2.3 RegRegion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memchunk">2.4 MemChunk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device">2.5 Device</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor">2.6 Tensor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backend">2.7 Backend</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.8 Session</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">三 索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-xrt">
+<h1>Icraft XRT<a class="headerlink" href="#icraft-xrt" title="此标题的永久链接">#</a></h1>
+<p>Icraft XRT是统一前向后的运行时，在XRT中，不再区分仿真和运行，而是把不同的计算资源抽象为不同的后端，使得Icraft中的网络能够在任意的计算资源上完成计算。</p>
+<p>XRT主要有以下数据结构组成：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Device</span></code> ：抽象了具体的硬件设备，比如一个板卡。一个 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 中包含若干个 <code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> ，分别表示不同的寄存器区域和内存区域</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> ： <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 分配的一块连续内存</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tensor</span></code>：表示前向的输入和输出，包含 <code class="docutils literal notranslate"><span class="pre">dtype</span></code> 和 <code class="docutils literal notranslate"><span class="pre">chunk</span></code> 等属性分别描述数据类型和和数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Backend</span></code> ：表示某一种计算资源，比如Host(CPU), Cuda（GPU）和Buyi(加速器)。 <code class="docutils literal notranslate"><span class="pre">Backend</span></code> 包含了其所支持的每一个算子在该计算资源上初始化和前向计算的逻辑。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Session</span></code>：表示会话（进程），主要的用户接口。创建 <code class="docutils literal notranslate"><span class="pre">Session</span></code> 的过程就是资源分配的过程，即将网络的每一个算子绑定到合适的计算资源（ <code class="docutils literal notranslate"><span class="pre">Backend</span></code> ）上。</p></li>
+</ul>
+<p>以上数据结构之间的关系如下图所示：</p>
+<img alt="_static/device_tensor.png" src="_static/device_tensor.png" />
+<hr class="docutils" />
+<img alt="_static/backend_session.png" src="_static/backend_session.png" />
+<section id="id1">
+<h2>〇 用户接口<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>Icraft 提供了C++ API和Python API作为用户接口。</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#full-api">Full API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="id2">
+<h2>一 快速开始<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<section id="session">
+<h3>1.1 创建Session<a class="headerlink" href="#session" title="此标题的永久链接">#</a></h3>
+<p>创建Session的过程就是将算子绑定到后端的过程。创建Session有三种方法：</p>
+<ul class="simple">
+<li><p>按优先级将算子绑定到指定的后端</p></li>
+<li><p>直接使用绑定好算子和设备的后端</p></li>
+<li><p>直接使用序列化Session得到的快照文件</p></li>
+</ul>
+<section id="id3">
+<h4>1.1.1 按优先级创建Session<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h4>
+<section id="c">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#c" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/SSD_BY.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/SSD_BY.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300.png&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 打开设备</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">();</span>
+<span class="linenos"> 7</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 加载网络</span>
+<span class="linenos">10</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos">11</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">// 创建Session1</span>
+<span class="linenos">14</span><span class="c1">// 该方法会根据模板参数的顺序，自动创建Backend对象</span>
+<span class="linenos">15</span><span class="c1">// 首先尝试将算子绑定到BuyiBackend上，如果不支持，则绑定到HostBackend上</span>
+<span class="linenos">16</span><span class="k">auto</span><span class="w"> </span><span class="n">sess1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">buyi_device</span><span class="p">,</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1">// 获取sess1所有的Backends</span>
+<span class="linenos">19</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">backends</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess1</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">;</span>
+<span class="linenos">20</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">21</span><span class="k">auto</span><span class="w"> </span><span class="n">host_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backends</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="c1">// 手动创建Backend对象</span>
+<span class="linenos">24</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">25</span><span class="k">auto</span><span class="w"> </span><span class="n">host_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="c1">// 创建Session2</span>
+<span class="linenos">28</span><span class="c1">// 如果不适用模板Create方法，也可以使用CreateByOrder方法，将算子按顺序绑定到已有的Backend对象上</span>
+<span class="linenos">29</span><span class="k">auto</span><span class="w"> </span><span class="n">sess2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">buyi_backend</span><span class="p">,</span><span class="w"> </span><span class="n">host_backend</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">buyi_device</span><span class="p">,</span><span class="w"> </span><span class="n">host_device</span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="python">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#python" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">host_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">from</span> <span class="nn">buyi_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 6</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># 获取一个网络</span>
+<span class="linenos"> 9</span><span class="c1"># Input → Conv2d → Cast → HardOp → Cast → Relu → Maxpool → Output</span>
+<span class="linenos">10</span><span class="n">network</span> <span class="o">=</span> <span class="n">GenerateNetwork</span><span class="p">()</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># 创建Session，按顺序传入想要绑定的后端类型</span>
+<span class="linenos">13</span><span class="n">sess1</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">(),</span> <span class="n">Device</span><span class="p">()</span> <span class="p">])</span>
+<span class="linenos">14</span><span class="n">sess1</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="n">backend_bindings</span> <span class="o">=</span> <span class="n">sess1</span><span class="o">.</span><span class="n">backendBindings</span><span class="p">()</span>
+<span class="linenos">17</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Conv2d</span>
+<span class="linenos">18</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Cast</span>
+<span class="linenos">19</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">))</span> <span class="c1"># HardOp</span>
+<span class="linenos">20</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">))</span> <span class="c1"># Cast</span>
+<span class="linenos">21</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Relu</span>
+<span class="linenos">22</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Maxpool</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="c1"># 也可以使用CreateByOrder方法，将算子按顺序绑定到已有的Backend对象上</span>
+<span class="linenos">25</span><span class="n">sess2</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">BuyiBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">(),</span> <span class="n">HostBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">()],</span> <span class="p">[</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">(),</span> <span class="n">Device</span><span class="p">()</span> <span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h4>1.1.2 使用绑定好算子和设备的后端创建Session<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h4>
+<section id="id5">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 创建网络</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_network</span><span class="p">(</span><span class="s">&quot;whatever&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Framework</span><span class="o">::</span><span class="n">PYTORCH</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;v1.9&quot;</span><span class="p">);</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">// 打开设备</span>
+<span class="linenos"> 5</span><span class="k">auto</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">();</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">);</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">// 创建后端，并绑定网络视图和设备</span>
+<span class="linenos"> 9</span><span class="k">auto</span><span class="w"> </span><span class="n">host_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Backend</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="n">view</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">}),</span><span class="w"> </span><span class="n">host_device</span><span class="p">);</span>
+<span class="linenos">10</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Backend</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}),</span><span class="w"> </span><span class="n">buyi_device</span><span class="p">);</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">// 创建Session</span>
+<span class="linenos">13</span><span class="c1">// 直接使用指定后端已有的绑定关系</span>
+<span class="linenos">14</span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">CreateWithBackends</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">host_backend</span><span class="p">,</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 导入必要的库</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">host_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 5</span><span class="kn">from</span> <span class="nn">buyi_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos"> 6</span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># 获取一个网络</span>
+<span class="linenos"> 9</span><span class="c1"># Input → Conv2d → Cast → HardOp → Cast → Relu → Maxpool → Output</span>
+<span class="linenos">10</span><span class="n">network</span> <span class="o">=</span> <span class="n">GenerateNetwork</span><span class="p">()</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># 创建HostBackend，绑定算子0, 1, 2, 5, 6, 7</span>
+<span class="linenos">13</span><span class="n">host_backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]),</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">())</span>
+<span class="linenos">14</span><span class="c1"># 创建BuyiBackend，绑定算子3, 4</span>
+<span class="linenos">15</span><span class="n">buyi_backend</span> <span class="o">=</span> <span class="n">Backend</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="n">Device</span><span class="p">())</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1"># 创建Session</span>
+<span class="linenos">18</span><span class="c1"># 直接使用指定后端已有的绑定关系</span>
+<span class="linenos">19</span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">CreateWithBackends</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span> <span class="n">host_backend</span><span class="p">,</span> <span class="n">buyi_backend</span> <span class="p">])</span>
+<span class="linenos">20</span><span class="n">sess</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="n">backend_bindings</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">backendBindings</span><span class="p">()</span>
+<span class="linenos">23</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Conv2d</span>
+<span class="linenos">24</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Cast</span>
+<span class="linenos">25</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">))</span> <span class="c1"># HardOp</span>
+<span class="linenos">26</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">BuyiBackend</span><span class="p">))</span> <span class="c1"># Cast</span>
+<span class="linenos">27</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Relu</span>
+<span class="linenos">28</span><span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">backend_bindings</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">HostBackend</span><span class="p">))</span> <span class="c1"># Maxpool</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h4>1.1.3 使用序列化得到的快照文件<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h4>
+<p>该创建session的方式包含了构造网络network和apply部署，
+且mmu模式、合并算子和内存优化等配置无效，是与生成快照文件时的配置一致。
+序列化session生成快照文件的方法详见1.2小节。</p>
+<section id="id8">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// 直接使用序列化得到的快照文件创建Session</span>
+<span class="linenos">2</span><span class="n">Session</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">CreateWithSnapshot</span><span class="p">(</span><span class="n">snapshot_file</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">(),</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">()</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># 直接使用序列化得到的快照文件创建Session</span>
+<span class="linenos">2</span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">CreateWithSnapshot</span><span class="p">(</span><span class="n">snapshot_file</span><span class="p">,[</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id10">
+<h3>1.2 序列化Session生成快照文件<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h3>
+<p>目前序列化session仅支持BY阶段的网络，对device、backend的各项配置请在序列化前进行调用。</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 打开设备</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">// 加载网络</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 创建Session</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// 部署session</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 序列化session，并保存快照文件至指定路径</span>
+<span class="linenos">10</span><span class="n">sess</span><span class="p">.</span><span class="n">dumpSnapshot</span><span class="p">(</span><span class="n">filepath</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 打开设备</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1"># 加载网络</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1"># 创建Session</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1"># 部署session</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1"># 序列化session，并保存快照文件至指定路径</span>
+<span class="linenos">10</span><span class="n">sess</span><span class="o">.</span><span class="n">dumpSnapshot</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>代码示例中的缺省部分参考1.1.1节，这里仅展示必要的接口使用方式和调用位置</p>
+</div>
+</section>
+<section id="id11">
+<h3>1.3 Session前向<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
+<p>为了满足不同场景的需求，Session提供了两个前向的API：</p>
+<ul class="simple">
+<li><p>forward: 直接前向Session中绑定的整个网络视图</p></li>
+<li><p>stepTo: 前向到指定的算子</p></li>
+</ul>
+<section id="forward">
+<h4>1.3.1 forward前向<a class="headerlink" href="#forward" title="此标题的永久链接">#</a></h4>
+<section id="id12">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300_quantized.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300_quantized.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/resnet18.png&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 创建网络</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 创建Session</span>
+<span class="linenos">10</span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos">11</span><span class="c1">// 应用Session的设置</span>
+<span class="linenos">12</span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// 构造输入Tensor</span>
+<span class="linenos">15</span><span class="k">auto</span><span class="w"> </span><span class="n">input_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">inputOp</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">();</span>
+<span class="linenos">16</span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">img2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span><span class="w"> </span><span class="n">input_dtype</span><span class="p">);</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1">// 前向Session中绑定的整个网络视图</span>
+<span class="linenos">19</span><span class="c1">// 前向的过程即遍历网络视图中的每一个算子，执行其指定后端上的前向函数</span>
+<span class="linenos">20</span><span class="c1">// 若算子的输入来自外部，则按顺序从输入列表中取</span>
+<span class="linenos">21</span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h5>
+<p>待补充</p>
+</section>
+</section>
+<section id="stepto">
+<h4>1.3.2 stepTo前向<a class="headerlink" href="#stepto" title="此标题的永久链接">#</a></h4>
+<section id="id14">
+<h5><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code><a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300_quantized.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300_quantized.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/resnet18.png&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 创建网络</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 创建Session</span>
+<span class="linenos">10</span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos">11</span><span class="c1">// 应用Session的设置</span>
+<span class="linenos">12</span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// 构造输入Tensor</span>
+<span class="linenos">15</span><span class="k">auto</span><span class="w"> </span><span class="n">input_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">inputOp</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">();</span>
+<span class="linenos">16</span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">img2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span><span class="w"> </span><span class="n">input_dtype</span><span class="p">);</span>
+<span class="linenos">17</span><span class="c1">// 用于保存输出</span>
+<span class="linenos">18</span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">// 以下代码使用stepTo实现了获取网络每个算子的执行结果，并dump</span>
+<span class="linenos">21</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">op</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sess</span><span class="o">-&gt;</span><span class="n">network_view</span><span class="o">-&gt;</span><span class="n">ops</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">22</span><span class="w">   </span><span class="c1">// 前向到Op ID指定的算子，并返回该算子的输出</span>
+<span class="linenos">23</span><span class="w">   </span><span class="c1">// stepTo会记录上次前向到的位置，下次调用时会从记录位置开始继续前向</span>
+<span class="linenos">24</span><span class="w">   </span><span class="c1">// 只有在算子的输入来自外部时，才会取输入Tensor列表中的，否则使用生产者算子产生的Tensor</span>
+<span class="linenos">25</span><span class="w">   </span><span class="n">output_tensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">stepTo</span><span class="p">(</span><span class="n">op</span><span class="p">.</span><span class="n">opId</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="n">outputsNum</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">28</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="linenos">29</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_tensors</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">dump_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dumps.SQB&quot;</span><span class="p">;</span>
+<span class="linenos">32</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directory</span><span class="p">(</span><span class="n">dump_dir</span><span class="p">);</span>
+<span class="linenos">33</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">os</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="n">fmt</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;{}/{}.ftmp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dump_dir</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">v_id</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">binary</span><span class="p">);</span>
+<span class="linenos">34</span><span class="w">      </span><span class="n">output_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">dump</span><span class="p">(</span><span class="n">os</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SQB&quot;</span><span class="p">);</span>
+<span class="linenos">35</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">36</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h5><code class="docutils literal notranslate"><span class="pre">Python示例</span></code><a class="headerlink" href="#id15" title="此标题的永久链接">#</a></h5>
+<p>待补充</p>
+</section>
+</section>
+</section>
+</section>
+<section id="id16">
+<h2>二 数据结构<a class="headerlink" href="#id16" title="此标题的永久链接">#</a></h2>
+<section id="memptr">
+<h3>2.1 MemPtr<a class="headerlink" href="#memptr" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">MemPtr</span></code> 是对内存地址的统一抽象，无论是Host上、加速器上还是交换空间的内存地址都能通过MemPtr表达。</p>
+<p><code class="docutils literal notranslate"><span class="pre">MemPtr</span></code> 有三种类型：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PtrType::CPTR</span></code> ：C指针类型，主要来表达Host（操作系统）上的内存地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PtrType::ADDR</span></code> ：物理地址类型，主要来表达加速器上的内存地址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PtrType::BOTH</span></code> ：包含以上两者，即既可以使用C指针访问，又可以通过物理地址访问，主要来表达交换空间的内存地址</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">MemPtr</span></code> 可以表达空指针，即表示不指向任何内存地址。当且仅当 <code class="docutils literal notranslate"><span class="pre">MemPtr</span></code> 的类型是 <code class="docutils literal notranslate"><span class="pre">PtrType::CPTR</span></code> 且C指针为 <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> 时，表示该 <code class="docutils literal notranslate"><span class="pre">MemPtr</span></code> 为空指针。</p>
+<p>以下是一些 <code class="docutils literal notranslate"><span class="pre">MemPtr</span></code> 的使用和测试示例：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 空指针的几种构造方法</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">null_ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">null_ptr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MemPtr</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">null_ptr3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">::</span><span class="n">NullPtr</span><span class="p">();</span>
+<span class="linenos"> 5</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">null_ptr1</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+<span class="linenos"> 6</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">null_ptr2</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+<span class="linenos"> 7</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">null_ptr3</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 构造一个PtrType::CPTR类型的MemPtr</span>
+<span class="linenos">10</span><span class="kt">char</span><span class="w"> </span><span class="n">tmp</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<span class="linenos">11</span><span class="k">auto</span><span class="w"> </span><span class="n">c_ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MemPtr</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+<span class="linenos">12</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">c_ptr1</span><span class="p">.</span><span class="n">ptype</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PtrType</span><span class="o">::</span><span class="n">CPTR</span><span class="p">);</span>
+<span class="linenos">13</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">c_ptr1</span><span class="p">.</span><span class="n">cptr</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tmp</span><span class="p">);</span>
+<span class="linenos">14</span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">c_ptr1</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1">// 构造一个PtrType::ADDR类型的MemPtr</span>
+<span class="linenos">17</span><span class="k">auto</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x40000000</span><span class="p">;</span>
+<span class="linenos">18</span><span class="k">auto</span><span class="w"> </span><span class="n">addr_ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MemPtr</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+<span class="linenos">19</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">addr_ptr1</span><span class="p">.</span><span class="n">ptype</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PtrType</span><span class="o">::</span><span class="n">ADDR</span><span class="p">);</span>
+<span class="linenos">20</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">addr_ptr1</span><span class="p">.</span><span class="n">addr</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">addr</span><span class="p">);</span>
+<span class="linenos">21</span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">addr_ptr1</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="c1">// 构造一个PtrType::BOTH类型的MemPtr</span>
+<span class="linenos">24</span><span class="k">auto</span><span class="w"> </span><span class="n">both_ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MemPtr</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="n">addr</span><span class="p">);</span>
+<span class="linenos">25</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr1</span><span class="p">.</span><span class="n">ptype</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PtrType</span><span class="o">::</span><span class="n">BOTH</span><span class="p">);</span>
+<span class="linenos">26</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr1</span><span class="p">.</span><span class="n">cptr</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tmp</span><span class="p">);</span>
+<span class="linenos">27</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr1</span><span class="p">.</span><span class="n">addr</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">addr</span><span class="p">);</span>
+<span class="linenos">28</span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">both_ptr1</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="c1">// MemPtr的一些运算</span>
+<span class="linenos">31</span><span class="k">auto</span><span class="w"> </span><span class="n">both_ptr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">both_ptr1</span><span class="p">;</span>
+<span class="linenos">32</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">both_ptr1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+<span class="linenos">33</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">both_ptr2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-40</span><span class="p">);</span>
+<span class="linenos">34</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">both_ptr1</span><span class="p">);</span>
+<span class="linenos">35</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">both_ptr2</span><span class="p">);</span>
+<span class="linenos">36</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">both_ptr2</span><span class="p">);</span>
+<span class="linenos">37</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr2</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">both_ptr1</span><span class="p">);</span>
+<span class="linenos">38</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">both_ptr2</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">both_ptr1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="memregion">
+<h3>2.2 MemRegion<a class="headerlink" href="#memregion" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 表示设备上的一块独立的内存区域，不同的内存区域的内存访问实现方式可能不相同，比如布衣架构设备上的PLDDR和交换空间的区域。</p>
+<p><code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 抽象了一些内存访问的接口，这些接口需要被具体的 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 子类来实现。以下以 <code class="docutils literal notranslate"><span class="pre">SampleMemRegion</span></code> 为例，展示具体的接口定义和实现方法：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">SampleMemRegionNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">SampleMemRegionNode</span><span class="p">,</span><span class="w"> </span><span class="n">MemRegionNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">     </span><span class="k">private</span><span class="o">:</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="cm">/** MemRegion的初始化接口，在该接口的实现中初始化资源 */</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">init</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="cm">/** MemRegion的关闭接口，在该接口的实现中关闭初始化的资源 */</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deinit</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">10</span><span class="cm">    * @brief MemRegion的读接口，将指定位置的数据读到数据缓存.</span>
+<span class="linenos">11</span><span class="cm">    * @param dest               数据被读取到char*表示的缓存</span>
+<span class="linenos">12</span><span class="cm">    * @param src                     从该位置开始读取数据</span>
+<span class="linenos">13</span><span class="cm">    * @param byte_size       读取数据的字节大小</span>
+<span class="linenos">14</span><span class="cm">    */</span>
+<span class="linenos">15</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">18</span><span class="cm">    * @brief MemRegion的写接口，将数据缓存中数据写到指定位置.</span>
+<span class="linenos">19</span><span class="cm">    * @param dest               数据被写入的位置</span>
+<span class="linenos">20</span><span class="cm">    * @param src                     char*表示的数据缓存</span>
+<span class="linenos">21</span><span class="cm">    * @param byte_size       写入数据的字节大小</span>
+<span class="linenos">22</span><span class="cm">    */</span>
+<span class="linenos">23</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">26</span><span class="cm">    * @brief MemRegion的内存分配接口，分配指定大小的内存.</span>
+<span class="linenos">27</span><span class="cm">    * @param byte_size       分配内存的大小</span>
+<span class="linenos">28</span><span class="cm">    * @param auto_free       指定分配的内存是否会被自动释放</span>
+<span class="linenos">29</span><span class="cm">    */</span>
+<span class="linenos">30</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="n">MemChunk</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">auto_free</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">33</span><span class="cm">    * @brief MemRegion的内存分配接口，尝试分配指定位置开始的内存</span>
+<span class="linenos">34</span><span class="cm">    * @param begin           指定的内存位置</span>
+<span class="linenos">35</span><span class="cm">    * @param byte_size       分配内存的大小</span>
+<span class="linenos">36</span><span class="cm">    * @param deleter         内存释放的自定义函数，若指定了FChunkDeleter，则调用该函数来释放内存</span>
+<span class="linenos">37</span><span class="cm">    * @param auto_free       指定分配的内存是否会被自动释放</span>
+<span class="linenos">38</span><span class="cm">    */</span>
+<span class="linenos">39</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="n">MemChunk</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="n">MemPtr</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">,</span><span class="w"> </span><span class="n">FChunkDeleter</span><span class="w"> </span><span class="n">deleter</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">auto_free</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">42</span><span class="cm">    * @brief MemRegion的内存释放接口，释放指定位置的内存</span>
+<span class="linenos">43</span><span class="cm">    * @param src             指定的内存位置</span>
+<span class="linenos">44</span><span class="cm">    */</span>
+<span class="linenos">45</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">48</span><span class="cm">    * @brief MemRegion的内存复制接口，在指定的内存位置间复制数据</span>
+<span class="linenos">49</span><span class="cm">    * @param dest            内存复制的目的位置</span>
+<span class="linenos">50</span><span class="cm">    * @param src                     内存复制的源位置</span>
+<span class="linenos">51</span><span class="cm">    * @param byte_size       内存复制的字节大小</span>
+<span class="linenos">52</span><span class="cm">    */</span>
+<span class="linenos">53</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">memcpy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">56</span><span class="cm">    * @brief MemRegion的跨MemRegion内存复制接口</span>
+<span class="linenos">57</span><span class="cm">    * @param dest_ptr        内存复制的目的位置</span>
+<span class="linenos">58</span><span class="cm">    * @param src_region      内存复制的源MemRegion</span>
+<span class="linenos">59</span><span class="cm">    * @param src_ptr         内存复制的源位置</span>
+<span class="linenos">60</span><span class="cm">    * @param byte_size       内存复制的字节大小</span>
+<span class="linenos">61</span><span class="cm">    *</span>
+<span class="linenos">62</span><span class="cm">    * @note 该接口有默认实现，即将源MemRegion的数据复制到Host，然后写的目的MemRegion.</span>
+<span class="linenos">63</span><span class="cm">    * 若硬件对两个MemRegion之间的复制有特殊优化，可以覆盖实现</span>
+<span class="linenos">64</span><span class="cm">    */</span>
+<span class="linenos">65</span><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">memcpy</span><span class="p">(</span>
+<span class="linenos">66</span><span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dest_ptr</span><span class="p">,</span>
+<span class="linenos">67</span><span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">MemRegion</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src_region</span><span class="p">,</span>
+<span class="linenos">68</span><span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">MemPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src_ptr</span><span class="p">,</span>
+<span class="linenos">69</span><span class="w">      </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span>
+<span class="linenos">70</span><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">71</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos">72</span>
+<span class="linenos">73</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">SampleMemRegion</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">SampleMemRegion</span><span class="p">,</span><span class="w"> </span><span class="n">MemRegion</span><span class="p">,</span><span class="w"> </span><span class="n">SampleMemRegionNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{};</span>
+</pre></div>
+</div>
+<p>更详细的示例请参考AXIQL100AIUDevice中 <code class="docutils literal notranslate"><span class="pre">AXIQL100AIUdmaMemRegion</span></code> 和 <code class="docutils literal notranslate"><span class="pre">AXIQL100AIPLDDRMemRegion</span></code> 的实现。</p>
+</section>
+<section id="regregion">
+<h3>2.3 RegRegion<a class="headerlink" href="#regregion" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 表示设备上的一块独立的寄存器区域，不同的寄存器区域的内存访问实现方式可能不相同。</p>
+<p><code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 抽象了一些寄存器访问的接口，这些接口需要被具体的 <code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 子类来实现。以下以 <code class="docutils literal notranslate"><span class="pre">SampleRegRegion</span></code> 为例，展示具体的接口定义和实现方法：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">SampleRegRegionNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">SampleRegRegionNode</span><span class="p">,</span><span class="w"> </span><span class="n">RegRegionNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="k">private</span><span class="o">:</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="cm">/** RegRegion的初始化接口，在该接口的实现中初始化资源 */</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">init</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="cm">/** RegRegion的关闭接口，在该接口的实现中关闭初始化的资源 */</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">deinit</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">10</span><span class="cm">    * @brief RegRegion的读数据接口.</span>
+<span class="linenos">11</span><span class="cm">    * @param addr            读取的地址</span>
+<span class="linenos">12</span><span class="cm">    * @param relative        是否以相对地址读取数据</span>
+<span class="linenos">13</span><span class="cm">    * @return 读取到的寄存器数据</span>
+<span class="linenos">14</span><span class="cm">    */</span>
+<span class="linenos">15</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos">18</span><span class="cm">    * @brief RegRegion的写数据接口.</span>
+<span class="linenos">19</span><span class="cm">    * @param addr            写入的地址</span>
+<span class="linenos">20</span><span class="cm">    * @param data            写入的数据</span>
+<span class="linenos">21</span><span class="cm">    * @param relative        是否以相对地址写入数据</span>
+<span class="linenos">22</span><span class="cm">    */</span>
+<span class="linenos">23</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">write</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">24</span><span class="p">};</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="k">class</span><span class="w"> </span><span class="nc">SampleRegRegion</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">SampleRegRegion</span><span class="p">,</span><span class="w"> </span><span class="n">RegRegion</span><span class="p">,</span><span class="w"> </span><span class="n">SampleRegRegionNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{};</span>
+</pre></div>
+</div>
+</section>
+<section id="memchunk">
+<h3>2.4 MemChunk<a class="headerlink" href="#memchunk" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 表示某一个内存区域上分配的一块连续内存块。<code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 没有构造函数，所有的 <code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 都是由 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 的 <code class="docutils literal notranslate"><span class="pre">malloc</span></code> 方法分配产生的。</p>
+<p><code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 的 <code class="docutils literal notranslate"><span class="pre">malloc</span></code> 方法具有以下两种形式：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">malloc(uint64_t</span> <span class="pre">byte_size,</span> <span class="pre">bool</span> <span class="pre">auto_free</span> <span class="pre">=</span> <span class="pre">true)</span></code> ：申请分配指定大小的内存块，当 <code class="docutils literal notranslate"><span class="pre">auto_free</span> <span class="pre">=</span> <span class="pre">true</span></code> 时，分配的内存在 <code class="docutils literal notranslate"><span class="pre">MemChunkNode</span></code> 析构时会自动释放，否则则不会自动释放。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">malloc(MemPtr</span> <span class="pre">begin,</span> <span class="pre">uint64_t</span> <span class="pre">byte_size,</span> <span class="pre">FChunkDeleter</span> <span class="pre">deleter,</span> <span class="pre">bool</span> <span class="pre">auto_free)</span></code> : 申请分配指定位置开始的内存。该接口允许自定义内存释放方法，当 <code class="docutils literal notranslate"><span class="pre">deleter</span></code> 不为空时，会调用 <code class="docutils literal notranslate"><span class="pre">deleter</span></code> 来释放内存；auto_free的含义同上。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 具有读写等一些列方法，当通过 <code class="docutils literal notranslate"><span class="pre">malloc</span></code> 分配得到 <code class="docutils literal notranslate"><span class="pre">MemChunk</span></code> 后，可以通过这些方法来操作分配所得内存：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">read</span></code> ：读取数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write</span></code> : 写入数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copyFrom</span></code> ：从其他MemChunk复制数据</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">free</span></code> ：释放该MemChunk所占用的内存</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isOn</span></code> ：检查该MemChunk是否位于某个MemRegion上</p></li>
+</ul>
+<p>以上方法的具体定义请参考API。</p>
+</section>
+<section id="device">
+<h3>2.5 Device<a class="headerlink" href="#device" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Device</span></code> 是一系列 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 的集合。实现一个 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 的主要过程就是声明该设备包含哪些 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RegRegion</span></code></p>
+<p>以下以 <code class="docutils literal notranslate"><span class="pre">AXIQL100AIUDevice</span></code> 为例，展示Device的实现方法：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">AXIQL100AIUDeviceNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">AXIQL100AIUDeviceNode</span><span class="p">,</span><span class="w"> </span><span class="n">BuyiDeviceNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="c1">// 调用宏声明该设备所包含的MemRegion和RegRegion</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="c1">// 需要注意的是AXIQL100AIPLDDRMemRegion需要依赖AXIQL100AIUdmaMemRegion，因此二者的声明有先后顺序</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="c1">// 还需要注意的是每个设备都包含一个默认的MemRegion和RegRegion</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">ICRAFT_DECLARE_DEVICE_NODE</span><span class="p">(</span><span class="n">AXIQL100AIUDeviceNode</span><span class="p">){</span>
+<span class="linenos"> 7</span><span class="w">      </span><span class="n">ICRAFT_MEM_REGION_FIELD</span><span class="p">(</span><span class="n">udma</span><span class="p">,</span><span class="w"> </span><span class="n">AXIQL100AIUdmaMemRegion</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w">      </span><span class="n">ICRAFT_DEFAULT_MEM_REGION_FIELD</span><span class="p">(</span><span class="n">plddr</span><span class="p">,</span><span class="w"> </span><span class="n">AXIQL100AIPLDDRMemRegion</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">      </span><span class="n">ICRAFT_DEFAULT_REG_REGION_FIELD</span><span class="p">(</span><span class="n">npu</span><span class="p">,</span><span class="w"> </span><span class="n">AXIQL100RegRegion</span><span class="p">);</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="w">   </span><span class="c1">// 实现初始化函数，在设备初始化是做一些信息打印</span>
+<span class="linenos">13</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">init</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">      </span><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;设备初始化成功,版本信息：&quot;</span><span class="p">);</span>
+<span class="linenos">15</span><span class="w">      </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">version</span><span class="p">()){</span>
+<span class="linenos">16</span><span class="w">         </span><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">{}: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">18</span><span class="w">      </span><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;设备协议：{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">protocol</span><span class="p">);</span>
+<span class="linenos">19</span><span class="w">      </span><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;设备名称：{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span>
+<span class="linenos">20</span><span class="w">      </span><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;设备参数：&quot;</span><span class="p">);</span>
+<span class="linenos">21</span><span class="w">      </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">params</span><span class="p">){</span>
+<span class="linenos">22</span><span class="w">         </span><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">{}: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
+<span class="linenos">23</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">24</span><span class="w">      </span><span class="n">reset</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">25</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">deinit</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">30</span><span class="p">};</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="k">class</span><span class="w"> </span><span class="nc">AXIQL100AIUDevice</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">AXIQL100AIUDevice</span><span class="p">,</span><span class="w"> </span><span class="n">BuyiDevice</span><span class="p">,</span><span class="w"> </span><span class="n">AXIQL100AIUDeviceNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{};</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="c1">// 注册该设备，注册后即可通过该URL打开设备</span>
+<span class="linenos">35</span><span class="n">ICRAFT_REGISTER_DEVICE</span><span class="p">(</span><span class="s">&quot;axi://ql100aiu&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">AXIQL100AIUDevice</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="tensor">
+<h3>2.6 Tensor<a class="headerlink" href="#tensor" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Tensor</span></code> 表示前向工程中算子的输入和输出，包含 <code class="docutils literal notranslate"><span class="pre">dtype</span></code> 和 <code class="docutils literal notranslate"><span class="pre">chunk</span></code> 等属性分别描述数据类型和和数据。</p>
+<p>以下是一些 <code class="docutils literal notranslate"><span class="pre">Tensor</span></code> 的使用和测试示例：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 使用已有的TensorType和MemChunk构造</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">host_mregion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">MemRegion</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">chunk1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">host_mregion</span><span class="p">.</span><span class="n">malloc</span><span class="p">(</span><span class="n">ttype1</span><span class="p">.</span><span class="n">bytes</span><span class="p">());</span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">ttype1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWC&quot;</span><span class="p">));</span>
+<span class="linenos"> 5</span><span class="k">auto</span><span class="w"> </span><span class="n">tensor1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">ttype1</span><span class="p">,</span><span class="w"> </span><span class="n">chunk1</span><span class="p">);</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">data1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tensor1</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">data1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">chunk1</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor1</span><span class="p">.</span><span class="n">isReady</span><span class="p">());</span>
+<span class="linenos">10</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor1</span><span class="p">.</span><span class="n">isOn</span><span class="p">(</span><span class="n">host_mregion</span><span class="p">));</span>
+<span class="linenos">11</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor1</span><span class="p">.</span><span class="n">memRegion</span><span class="p">().</span><span class="n">same_as</span><span class="p">(</span><span class="n">host_mregion</span><span class="p">));</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">// 将Tensor复制到指定的host_mregion的上</span>
+<span class="linenos">14</span><span class="c1">// 如果该Tensor已经在指定的MemRegion上，则复制不会发生，而是直接返回原Tensor</span>
+<span class="linenos">15</span><span class="k">auto</span><span class="w"> </span><span class="n">tensor2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tensor1</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">host_mregion</span><span class="p">);</span>
+<span class="linenos">16</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor2</span><span class="p">.</span><span class="n">same_as</span><span class="p">(</span><span class="n">tensor1</span><span class="p">));</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1">// 从xir::Params构造Tensor</span>
+<span class="linenos">19</span><span class="k">auto</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Params</span><span class="p">(</span><span class="n">ttype1</span><span class="p">).</span><span class="n">fill</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">([](</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">20</span><span class="k">auto</span><span class="w"> </span><span class="n">tensor3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">weight</span><span class="p">);</span>
+<span class="linenos">21</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor3</span><span class="p">.</span><span class="n">dtype</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">weight</span><span class="p">.</span><span class="n">dtype</span><span class="p">());</span>
+<span class="linenos">22</span><span class="k">auto</span><span class="w"> </span><span class="n">data3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tensor3</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="linenos">23</span><span class="n">tensor1</span><span class="p">.</span><span class="n">fill</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">([](</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">24</span><span class="k">auto</span><span class="w"> </span><span class="n">equal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memcmp</span><span class="p">(</span><span class="n">data1</span><span class="p">.</span><span class="n">cptr</span><span class="p">(),</span><span class="w"> </span><span class="n">data3</span><span class="p">.</span><span class="n">cptr</span><span class="p">(),</span><span class="w"> </span><span class="n">ttype1</span><span class="p">.</span><span class="n">bytes</span><span class="p">())</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">25</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">equal</span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="k">auto</span><span class="w"> </span><span class="n">chunk2_is_deleted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="linenos">28</span><span class="p">{</span>
+<span class="linenos">29</span><span class="w">   </span><span class="c1">// tensor5 只有类型，没有数据</span>
+<span class="linenos">30</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">ttype2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">IntegerType</span><span class="o">::</span><span class="n">SInt8</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">));</span>
+<span class="linenos">31</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">tensor5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">ttype2</span><span class="p">);</span>
+<span class="linenos">32</span><span class="w">   </span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">tensor5</span><span class="p">.</span><span class="n">hasData</span><span class="p">());</span>
+<span class="linenos">33</span><span class="w">   </span><span class="p">{</span>
+<span class="linenos">34</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">tensor4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">ttype2</span><span class="p">);</span>
+<span class="linenos">35</span><span class="w">      </span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">tensor4</span><span class="p">.</span><span class="n">hasData</span><span class="p">());</span>
+<span class="linenos">36</span><span class="w">      </span><span class="p">{</span>
+<span class="linenos">37</span><span class="w">         </span><span class="c1">// chunk2 在申请内存时指定了自定义的释放函数</span>
+<span class="linenos">38</span><span class="w">         </span><span class="c1">// 因此chunk2在析构释放内存时会调用该函数</span>
+<span class="linenos">39</span><span class="w">         </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<span class="linenos">40</span><span class="w">         </span><span class="k">auto</span><span class="w"> </span><span class="n">chunk2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">host_mregion</span><span class="p">.</span><span class="n">malloc</span><span class="p">(</span><span class="n">MemPtr</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">begin</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">41</span><span class="w">            </span><span class="n">chunk2_is_deleted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">42</span><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;chunk2 is deleted now!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">43</span><span class="w">         </span><span class="p">});</span>
+<span class="linenos">44</span><span class="w">         </span><span class="c1">// tensor4和tensor5都包含了chunk2</span>
+<span class="linenos">45</span><span class="w">         </span><span class="n">tensor4</span><span class="p">.</span><span class="n">setData</span><span class="p">(</span><span class="n">chunk2</span><span class="p">);</span>
+<span class="linenos">46</span><span class="w">         </span><span class="n">tensor5</span><span class="p">.</span><span class="n">setData</span><span class="p">(</span><span class="n">chunk2</span><span class="p">);</span>
+<span class="linenos">47</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">48</span><span class="w">      </span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor4</span><span class="p">.</span><span class="n">hasData</span><span class="p">());</span>
+<span class="linenos">49</span><span class="w">             </span><span class="p">}</span>
+<span class="linenos">50</span><span class="w">   </span><span class="c1">// 这里tensor4析构，但是chunk2不会析构，因为还有tensor5引用了它</span>
+<span class="linenos">51</span><span class="w">   </span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">chunk2_is_deleted</span><span class="p">);</span>
+<span class="linenos">52</span><span class="p">}</span>
+<span class="linenos">53</span><span class="c1">// 这里tensor5也析构了，chunk2也会被析构</span>
+<span class="linenos">54</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">chunk2_is_deleted</span><span class="p">)</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="k">auto</span><span class="w"> </span><span class="n">ttype3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP16</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWC&quot;</span><span class="p">));</span>
+<span class="linenos">57</span><span class="k">auto</span><span class="w"> </span><span class="n">checked_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="linenos">58</span><span class="k">auto</span><span class="w"> </span><span class="n">check_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Device</span><span class="o">&amp;</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">59</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">checked_ready</span><span class="p">;</span>
+<span class="linenos">60</span><span class="p">}</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span><span class="c1">// 构造Tensor时可以指定一个状态查询函数</span>
+<span class="linenos">63</span><span class="c1">// mallocOn可以在指定的MemRegion分配Tensor所需大小的内存</span>
+<span class="linenos">64</span><span class="k">auto</span><span class="w"> </span><span class="n">tensor6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">ttype3</span><span class="p">,</span><span class="w"> </span><span class="n">check_func</span><span class="p">).</span><span class="n">mallocOn</span><span class="p">(</span><span class="n">HostDevice</span><span class="o">::</span><span class="n">MemRegion</span><span class="p">())</span>
+<span class="linenos">65</span><span class="c1">// 如果Tensor创建时指定了状态查询函数，那么该Tensor默认是不ready的</span>
+<span class="linenos">66</span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">tensor6</span><span class="p">.</span><span class="n">isReady</span><span class="p">());</span>
+<span class="linenos">67</span><span class="c1">// 调用waitForReady，不断查询Tensor状态，直到ready或超时</span>
+<span class="linenos">68</span><span class="c1">// 此处checked_ready一直为false，因此会超时</span>
+<span class="linenos">69</span><span class="n">REQUIRE</span><span class="p">(</span><span class="o">!</span><span class="n">tensor6</span><span class="p">.</span><span class="n">waitForReady</span><span class="p">(</span><span class="mi">1000</span><span class="n">ms</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="n">ms</span><span class="p">));</span>
+<span class="linenos">70</span><span class="c1">// 把checked_ready设为true，则waitForReady成功</span>
+<span class="linenos">71</span><span class="n">checked_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">72</span><span class="n">tensor6</span><span class="p">.</span><span class="n">waitForReady</span><span class="p">(</span><span class="mi">1000</span><span class="n">ms</span><span class="p">);</span>
+<span class="linenos">73</span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">tensor6</span><span class="p">.</span><span class="n">isReady</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Tensor的dump方法支持将内存中的数据导出到指定的输出流。
+dump方法的接口定义如下：</p>
+<p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">dump(std::ostream&amp;</span> <span class="pre">os,</span> <span class="pre">const</span> <span class="pre">std::string&amp;</span> <span class="pre">format</span> <span class="pre">=</span> <span class="pre">&quot;&quot;)</span> <span class="pre">const</span></code></p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">format</span></code> 默认为空，表示将内存中的原生数据导出到输出流。
+当 <code class="docutils literal notranslate"><span class="pre">format</span></code> 不为空时，可以通过三个字母来表示：</p>
+<ul class="simple">
+<li><p>第一个字母表示排布， <code class="docutils literal notranslate"><span class="pre">H</span></code> 表示硬件， <code class="docutils literal notranslate"><span class="pre">S</span></code> 表示软件</p></li>
+<li><p>第二个字母表示数值， <code class="docutils literal notranslate"><span class="pre">F</span></code> 表示浮点， <code class="docutils literal notranslate"><span class="pre">Q</span></code> 表示定点</p></li>
+<li><p>第三个字母表示序列化形式， <code class="docutils literal notranslate"><span class="pre">B</span></code> 表示二进制， <code class="docutils literal notranslate"><span class="pre">T</span></code> 表示文本</p></li>
+</ul>
+<p>需要注意的是，若一个 <code class="docutils literal notranslate"><span class="pre">Tensor</span></code> 原本的排布时 <code class="docutils literal notranslate"><span class="pre">H</span></code> ，那么可以转为 <code class="docutils literal notranslate"><span class="pre">S</span></code> ；若原本的数值为 <code class="docutils literal notranslate"><span class="pre">Q</span></code> ，那么可以转为 <code class="docutils literal notranslate"><span class="pre">F</span></code> ；反之不可。</p>
+</section>
+<section id="backend">
+<h3>2.7 Backend<a class="headerlink" href="#backend" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Backend</span></code> 表示的是一种计算资源，比如Host(CPU), Cuda（GPU）和Buyi(加速器)。 <code class="docutils literal notranslate"><span class="pre">Backend</span></code> 包含了其所支持的每一个算子在该计算资源上初始化和前向计算的逻辑。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Backend</span></code> 抽象了一系列后端相关的接口，这些接口需要被具体的 <code class="docutils literal notranslate"><span class="pre">Backend</span></code> 子类来实现。以下以 <code class="docutils literal notranslate"><span class="pre">SampleBackend</span></code> 为例，展示具体的接口定义和实现方法：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">SampleBackendNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">SampleBackendNode</span><span class="p">,</span><span class="w"> </span><span class="n">BackendNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="kt">bool</span><span class="w"> </span><span class="n">fake_qf</span><span class="p">;</span><span class="w">     </span><span class="c1">//每个后端可以设置一些独有的选项</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">private</span><span class="o">:</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="cm">/**</span>
+<span class="linenos"> 7</span><span class="cm">    * @brief 初始化Backend</span>
+<span class="linenos"> 8</span><span class="cm">    * @param network_view    网络</span>
+<span class="linenos"> 9</span><span class="cm">    * @param device                  设备</span>
+<span class="linenos">10</span><span class="cm">    */</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">NetworkView</span><span class="o">&amp;</span><span class="w"> </span><span class="n">network_view</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Device</span><span class="o">&amp;</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="w">   </span><span class="cm">/** 释放Backend */</span>
+<span class="linenos">14</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">deinit</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="w">   </span><span class="cm">/** 应用Backend的一些选型 */</span>
+<span class="linenos">17</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">apply</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">   </span><span class="cm">/** 复制一个Backend用于多线程 */</span>
+<span class="linenos">20</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="n">Backend</span><span class="w"> </span><span class="n">fork</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">view</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">start_index</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">end_index</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">23</span><span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="n">MergedOps</span><span class="w"> </span><span class="n">autoMerge</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{...</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">24</span><span class="w">   </span><span class="p">};</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="k">class</span><span class="w"> </span><span class="nc">SampleBackend</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">SampleBackend</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackendNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">27</span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">28</span><span class="w">   </span><span class="c1">// 提供方法设置相应的选项</span>
+<span class="linenos">29</span><span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="n">setFakeQF</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">fake_qf</span><span class="p">);</span>
+<span class="linenos">30</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>除了实现以上 <code class="docutils literal notranslate"><span class="pre">Backend</span></code> 的接口外，还需要实现每一个支持的算子在该后端上的初始化和前向逻辑，以下是添加算子到后端的示例：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 调用宏添加Conv2d算子的初始化和前向实现</span>
+<span class="linenos"> 2</span><span class="n">ICRAFT_ADD_OP_TO_BACKEND</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="p">.</span><span class="n">set_init</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">Conv2d</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">fmt</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Initing Conv2d for samplebackend!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="p">})</span>
+<span class="linenos"> 6</span><span class="c1">// 所有的Backend在前向时都需要考虑计时功能</span>
+<span class="linenos"> 7</span><span class="c1">// 当backend-&gt;time_profile = true时，开启计时</span>
+<span class="linenos"> 8</span><span class="c1">// 计时结束调用setTimeElapses记录计时数据</span>
+<span class="linenos"> 9</span><span class="p">.</span><span class="n">set_forward</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">Conv2d</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">   </span><span class="k">static</span><span class="w"> </span><span class="n">utils</span><span class="o">::</span><span class="n">Timer</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">backend</span><span class="o">-&gt;</span><span class="n">time_profile</span><span class="p">)</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">tik</span><span class="p">();</span>
+<span class="linenos">12</span><span class="w">   </span><span class="n">fmt</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Forwarding Conv2d for samplebackend!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWC&quot;</span><span class="p">)))</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">14</span><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">backend</span><span class="o">-&gt;</span><span class="n">time_profile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">15</span><span class="w">      </span><span class="n">t</span><span class="p">.</span><span class="n">tok</span><span class="p">();</span>
+<span class="linenos">16</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">elapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">elapsed</span><span class="o">&lt;</span><span class="n">milliseconds</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">17</span><span class="w">      </span><span class="n">backend</span><span class="p">.</span><span class="n">setTimeElapses</span><span class="p">(</span><span class="n">op</span><span class="p">.</span><span class="n">opId</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">elapse</span><span class="p">);</span>
+<span class="linenos">18</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">19</span><span class="p">});</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1">// 向后端添加算子时可以设置约束</span>
+<span class="linenos">22</span><span class="c1">// 比如该实例通过约束实现了，当Cast算子的输入和输出都在ETM上时，才在SampleBackend计算</span>
+<span class="linenos">23</span><span class="c1">// 可以调用Backend的isOpSupported来检查算子能否在该后端上计算</span>
+<span class="linenos">24</span><span class="n">ICRAFT_ADD_OP_TO_BACKEND</span><span class="p">(</span><span class="n">Cast</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="p">)</span>
+<span class="linenos">25</span><span class="p">.</span><span class="n">set_init</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">Cast</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">26</span><span class="w">   </span><span class="n">fmt</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Initing Cast for samplebackend!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">27</span><span class="p">})</span>
+<span class="linenos">28</span><span class="p">.</span><span class="n">set_forward</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">Cast</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">29</span><span class="w">   </span><span class="n">fmt</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Forwarding Cast for samplebackend!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">30</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWC&quot;</span><span class="p">)))</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">31</span><span class="p">})</span>
+<span class="linenos">32</span><span class="p">.</span><span class="n">set_constraint</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">Cast</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">SampleBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">33</span><span class="w">   </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input_mtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="n">getInput</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">mtype</span><span class="p">;</span>
+<span class="linenos">34</span><span class="w">   </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ouput_mtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">mtype</span><span class="p">;</span>
+<span class="linenos">35</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">input_mtype</span><span class="p">.</span><span class="n">is</span><span class="o">&lt;</span><span class="n">ExternalMem</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ouput_mtype</span><span class="p">.</span><span class="n">is</span><span class="o">&lt;</span><span class="n">ExternalMem</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">36</span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>2.8 Session<a class="headerlink" href="#id17" title="此标题的永久链接">#</a></h3>
+<p>表示会话（进程），主要的用户接口，用户通过 <code class="docutils literal notranslate"><span class="pre">Session</span></code> 的接口来描述如何把网络放到各个后端上计算。创建 <code class="docutils literal notranslate"><span class="pre">Session</span></code> 的过程就是资源分配的过程，即将网络的每一个算子绑定到合适的计算资源（Backend）上。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Session</span></code> 的创建和前向方法在《快速开始》部分已经进行说明，此处不再赘述。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Session</span></code> 还支持一些选项，以控制前向的过程。目前支持的选项如下：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">enableTimeProfile</span></code> ，使能时间分析功能</p></li>
+</ul>
+<p>以下是使用示例:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300_quantized.json&quot;</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300_quantized.raw&quot;</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/ssd300.png&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="c1">// 加载网络</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="c1">// 创建Session</span>
+<span class="linenos">10</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()});</span>
+<span class="linenos">11</span><span class="w">   </span><span class="c1">// 使能时间分析</span>
+<span class="linenos">12</span><span class="w">   </span><span class="n">sess</span><span class="p">.</span><span class="n">enableTimeProfile</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">   </span><span class="c1">// 应用选项</span>
+<span class="linenos">14</span><span class="w">   </span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="w">   </span><span class="c1">// 前向</span>
+<span class="linenos">17</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">input_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">inputOp</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">();</span>
+<span class="linenos">18</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">img2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span><span class="w"> </span><span class="n">input_dtype</span><span class="p">);</span>
+<span class="linenos">19</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="w">   </span><span class="c1">// 获取时间分析结果</span>
+<span class="linenos">22</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">profile_results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">timeProfileResults</span><span class="p">();</span>
+<span class="linenos">23</span><span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">op_id</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">profile_results</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">24</span><span class="w">      </span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">wall</span><span class="p">,</span><span class="w"> </span><span class="n">mem</span><span class="p">,</span><span class="w"> </span><span class="n">hard</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="linenos">25</span><span class="w">      </span><span class="n">fmt</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;op_id = {}, wall = {}ms, mem = {}ms, hard = {}ms, other = {}ms</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">op_id</span><span class="p">,</span><span class="w"> </span><span class="n">wall</span><span class="p">,</span><span class="w"> </span><span class="n">mem</span><span class="p">,</span><span class="w"> </span><span class="n">hard</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
+<span class="linenos">26</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">27</span><span class="w">   </span><span class="c1">// 获取总的执行时间</span>
+<span class="linenos">28</span><span class="w">   </span><span class="c1">// 无论是否开启时间分析功能，总时间都会被统计</span>
+<span class="linenos">29</span><span class="w">   </span><span class="n">fmt</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;total_time = {}s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">totalTime</span><span class="o">&lt;</span><span class="n">seconds</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id18">
+<h2>三 索引<a class="headerlink" href="#id18" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="_cppapi/api_root.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">〇 用户接口</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 快速开始</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#session">1.1 创建Session</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.1 按优先级创建Session</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#python"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.2 使用绑定好算子和设备的后端创建Session</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.3 使用序列化得到的快照文件</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2 序列化Session生成快照文件</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.3 Session前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#forward">1.3.1 forward前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stepto">1.3.2 stepTo前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">C++</span> <span class="pre">示例</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">Python示例</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">二 数据结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memptr">2.1 MemPtr</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memregion">2.2 MemRegion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regregion">2.3 RegRegion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memchunk">2.4 MemChunk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device">2.5 Device</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor">2.6 Tensor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backend">2.7 Backend</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.8 Session</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">三 索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

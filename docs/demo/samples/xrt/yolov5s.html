@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft XRT: yolov5s &#8212; Icraft Demo  文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/xrt/yolov5s';</script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Icraft XRT: multiNetwork" href="multiNetwork.html" />
+    <link rel="prev" title="Icraft XRT: 运行时相关用例" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Demo  文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../customop/index.html">自定义算子</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../customop/activate.html">自定义激活</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../customop/softop.html">自定义软算子</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../customop/hardop.html">自定义硬算子</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customop/others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pass/index.html">Pass</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pass/pass.html">自定义pass</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">xrt运行相关用例</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">yolov5s运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiNetwork.html">多网络连接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeProfile.html">计时</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshot.html">快照</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/samples/xrt/yolov5s.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft XRT: yolov5s</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo">1.1 demo结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 适配流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1 网络编译</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2 环境配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#x64-windows">2.2.1 x64-windows环境</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linux-aarch64">2.2.2 linux-aarch64环境</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">2.2.3 python环境</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">三 Demo解析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-demo">3.1 yolov5s Demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-opt-demo">3.2 yolov5s_opt Demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-imk-demo">3.3 yolov5s_imk Demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-multi-thread-demo">3.4 yolov5s_multi_thread Demo</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-xrt-yolov5s">
+<h1>Icraft XRT: yolov5s<a class="headerlink" href="#icraft-xrt-yolov5s" title="此标题的永久链接">#</a></h1>
+<p>这个用例共提供四个demo，以yolov5s为用例，循序渐进从跑通一个简单的网络到通过流水线并行加速</p>
+<section id="id1">
+<h2>一 工程配置<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="demo">
+<h3>1.1 demo结构<a class="headerlink" href="#demo" title="此标题的永久链接">#</a></h3>
+<div class="line-block">
+<div class="line">samples/xrt/yolov5s</div>
+<div class="line-block">
+<div class="line">├───yolov5s.cpp</div>
+<div class="line">├───yolov5s_opt.cpp</div>
+<div class="line">├───yolov5s_imk.cpp</div>
+<div class="line">└───yolov5s_multi_thread.cpp</div>
+</div>
+</div>
+<p>在上面的工程结构中：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">yolov5s</span></code> 是简单通过xrt跑通yolov5s的demo</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yolov5s_opt</span></code> 在之前的demo中加上了xrt相关接口对时间以及内存的优化</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yolov5s_imk</span></code> 在之前的demo上加上了自定义硬算子image_make以及Detpost</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yolov5s_multi_thread</span></code> 在之前的demo基础上加上了流水并行，从而实现进一步的性能优化</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>1.2 编译生成<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<p>以上工程文件属于 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 工程的一部分，具体的编译生成方法请参考 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 的编译生成的说明。</p>
+</section>
+</section>
+<section id="id3">
+<h2>二 适配流程<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<section id="id4">
+<h3>2.1 网络编译<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<p>通过Icraft编译器解析两个yolov5s网络</p>
+<ul class="simple">
+<li><p>yolov5s 不带任何硬算子的yolov5s检测网络</p></li>
+<li><p>yolov5s_customop 带image_make, Detpost硬算子，psin的yolov5s检测网络</p></li>
+</ul>
+<p>均可以通过 .\samples\xrt\models 文件夹下的网络文件解析得到</p>
+<p>具体编译器安装以及使用方法 参照Icraft编译器使用手册</p>
+</section>
+<section id="id5">
+<h3>2.2 环境配置<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<section id="x64-windows">
+<h4>2.2.1 x64-windows环境<a class="headerlink" href="#x64-windows" title="此标题的永久链接">#</a></h4>
+<p>安装对应的</p>
+<ul class="simple">
+<li><p>CustomOp_Setup_v3.0.0.exe</p></li>
+<li><p>Icraft_Setup_v3.0.0.exe</p></li>
+</ul>
+<p>由于需要后处理，所以需要编译x64的OpenCV并修改配置CMakeList(<code class="docutils literal notranslate"><span class="pre">./samples/xrt/yolov5s/CMakeLists.txt</span></code>)，将编译需要的库指向本地安装位置</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">WIN32</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">OPENCV_PACKAGE_PATH</span><span class="w"> </span><span class="s">C:/Users/zhangfengyu/Downloads/opencv</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="o">${</span><span class="nv">OPENCV_PACKAGE_PATH</span><span class="o">}</span><span class="s">/build</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">UNIX</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">OPENCV_PACKAGE_PATH</span><span class="w"> </span><span class="s">/mnt/c/Users/zhangfengyu/Downloads/opencv-4.8.0</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="o">${</span><span class="nv">OPENCV_PACKAGE_PATH</span><span class="o">}</span><span class="s">/build</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>如果不需要后处理也可以自行注释代码后编译</p>
+</section>
+<section id="linux-aarch64">
+<h4>2.2.2 linux-aarch64环境<a class="headerlink" href="#linux-aarch64" title="此标题的永久链接">#</a></h4>
+<p>安装对应的</p>
+<ul class="simple">
+<li><p>CustomOp_3.0.0_arm64.deb</p></li>
+<li><p>Icraft_3.0.0_arm64.deb</p></li>
+</ul>
+<p>并配置环境变量</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/etc/profile
+</pre></div>
+</div>
+<p>由于需要后处理，所以需要编译aarch64的OpenCV并修改配置CMakeList(<code class="docutils literal notranslate"><span class="pre">./samples/xrt/yolov5s/CMakeLists.txt</span></code>)，将编译需要的库指向本地安装位置</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">WIN32</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">OPENCV_PACKAGE_PATH</span><span class="w"> </span><span class="s">C:/Users/zhangfengyu/Downloads/opencv</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="o">${</span><span class="nv">OPENCV_PACKAGE_PATH</span><span class="o">}</span><span class="s">/build</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">UNIX</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">OPENCV_PACKAGE_PATH</span><span class="w"> </span><span class="s">/mnt/c/Users/zhangfengyu/Downloads/opencv-4.8.0</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="o">${</span><span class="nv">OPENCV_PACKAGE_PATH</span><span class="o">}</span><span class="s">/build</span><span class="p">)</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>如果不需要后处理也可以自行注释代码后编译</p>
+</section>
+<section id="python">
+<h4>2.2.3 python环境<a class="headerlink" href="#python" title="此标题的永久链接">#</a></h4>
+<p>只支持 <strong>python3.8</strong></p>
+<p>如果需要torch的库请卸载本地的torch并使用以下指令安装指定版本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span><span class="nv">pytorch</span><span class="o">==</span><span class="m">2</span>.0.1<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.15.2<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.0.2<span class="w"> </span>pytorch-cuda<span class="o">=</span><span class="m">11</span>.7<span class="w"> </span>-c<span class="w"> </span>pytorch<span class="w"> </span>-c<span class="w"> </span>nvidia
+</pre></div>
+</div>
+<p>安装对应的</p>
+<ul class="simple">
+<li><p>icraft-3.0.0-cp38-none-win_amd64.whl</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id6">
+<h2>三 Demo解析<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
+<section id="yolov5s-demo">
+<h3>3.1 yolov5s Demo<a class="headerlink" href="#yolov5s-demo" title="此标题的永久链接">#</a></h3>
+<p>yolov5s Demo 意在快速部署yolov5s网络并上板跑通</p>
+<ul class="simple">
+<li><p>.cpp文件 samples/xrt/yolov5s/yolov5s.cpp</p></li>
+<li><p>.py文件 samples/xrt/yolov5s/yolov5s.py</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/core/session.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/dev/host_device.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/dev/buyi_device.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/buyibackend/buyibackend.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/hostbackend/backend.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/hostbackend/utils.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;opencv2/opencv.hpp&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;post.h&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xrt</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">std</span><span class="o">::</span><span class="nn">filesystem</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">//我们使用不同的url字符串去区分不同的Device设备</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url_socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+
+<span class="cp">#ifdef _WIN32</span>
+<span class="w">        </span><span class="c1">//Demo默认在windows环境中打开socket Device</span>
+<span class="w">        </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">);</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="c1">//Demo默认在windows环境中打开axi Device</span>
+<span class="w">        </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="c1">//配置网络名以及输入图片</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;yolov5s&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">image_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dog.png&quot;</span><span class="p">;</span>
+
+<span class="c1">//根据网络名以及输入图片在不同的环境下寻找对应的文件</span>
+<span class="cp">#ifdef _WIN32</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/json&amp;raw/30/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.json&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/json&amp;raw/30/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.raw&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/images/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">image_file</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./json&amp;raw/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.json&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./json&amp;raw/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.raw&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./images/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">image_file</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="c1">//根据序列化的网络json文件反序列化成icraft::xir::network对象</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//std::cout &lt;&lt; &quot;CreaFom finish&quot; &lt;&lt; std::endl;</span>
+<span class="w">        </span><span class="c1">//network加载raw_file</span>
+<span class="w">        </span><span class="n">network</span><span class="p">.</span><span class="n">lazyLoadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//std::cout &lt;&lt; &quot;lazyload finish&quot; &lt;&lt; std::endl;</span>
+<span class="w">        </span><span class="c1">//创建session，将buyibackend以及hostbackend绑定到sess对象上</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+<span class="w">        </span><span class="c1">//std::cout &lt;&lt; &quot;Creat session finish&quot; &lt;&lt; std::endl;</span>
+<span class="w">        </span><span class="c1">//session执行前必须进行apply部署操作</span>
+<span class="w">        </span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="w">        </span><span class="c1">//std::cout &lt;&lt; &quot;apply finish&quot; &lt;&lt; std::endl;</span>
+
+<span class="w">        </span><span class="c1">//借助HostBackend的工具函数将输入图片转成Tensor</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">hostbackend</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//std::cout &lt;&lt; &quot;Crea tensor finish&quot; &lt;&lt; std::endl;</span>
+<span class="w">        </span><span class="c1">//前向</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+<span class="w">        </span><span class="c1">//std::cout &lt;&lt; &quot;forward finish&quot; &lt;&lt; std::endl;</span>
+<span class="w">        </span><span class="c1">//将进行后处理并输出</span>
+<span class="w">        </span><span class="n">post</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span><span class="w"> </span><span class="n">img_file</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">//关闭设备</span>
+<span class="w">        </span><span class="n">Device</span><span class="o">::</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yolov5s_post</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">icraft.xir</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">icraft.xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">icraft.buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">icraft.host_backend</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">os_name</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span>
+
+<span class="k">if</span> <span class="n">os_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;win&#39;</span><span class="p">):</span>
+    <span class="n">device_url</span> <span class="o">=</span> <span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981&quot;</span>
+    <span class="n">json_file</span> <span class="o">=</span> <span class="s2">&quot;E:/test/json&amp;raw/30/yolov5s_BY.json&quot;</span>
+    <span class="n">raw_file</span> <span class="o">=</span> <span class="s2">&quot;E:/test/json&amp;raw/30/yolov5s_BY.raw&quot;</span>
+    <span class="n">img_file</span> <span class="o">=</span> <span class="s2">&quot;E:/test/images/dog.png&quot;</span><span class="p">;</span>
+<span class="k">elif</span> <span class="n">os_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;linux&#39;</span><span class="p">):</span>
+    <span class="n">device_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu&quot;</span>
+    <span class="n">json_file</span> <span class="o">=</span> <span class="s2">&quot;./test/json&amp;raw/yolov5s_BY.json&quot;</span>
+    <span class="n">raw_file</span> <span class="o">=</span> <span class="s2">&quot;./test/json&amp;raw/yolov5s_BY.raw&quot;</span>
+    <span class="n">img_file</span> <span class="o">=</span> <span class="s2">&quot;./images/dog.png&quot;</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">device_url</span><span class="p">)</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">lazyLoadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">)</span>
+
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+
+<span class="n">sess</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="c1"># 调用HostBackend的辅助函数将图片转为Tensor</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># 前向，获取输出</span>
+<span class="n">output_tensors</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">forward</span><span class="p">([</span> <span class="n">input_tensor</span> <span class="p">])</span>
+
+<span class="n">yolov5_post</span><span class="p">(</span><span class="n">output_tensors</span><span class="p">,</span> <span class="n">img_file</span><span class="p">)</span>
+
+<span class="n">Device</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>后处理的部分可以参考对应代码，这里就不再赘述，使用docs/source/static/dog.png 图片作为输入，最后输出的正确结果应该如下</p>
+<img alt="../../_images/yolov5s_result.png" src="../../_images/yolov5s_result.png" />
+</section>
+<section id="yolov5s-opt-demo">
+<h3>3.2 yolov5s_opt Demo<a class="headerlink" href="#yolov5s-opt-demo" title="此标题的永久链接">#</a></h3>
+<p>yolov5s_opt Demo 在yolov5s Demo的基础上调用了compressFtmp以及speedMode接口</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>compressFtmp: 可以将网络中间输出层的使用的地址空间进行复用，从而实现减少对plddr的需求
+speedMode： 可以自动将多个连续的hardop进行合并，减少频繁同步带来的软件时间
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>.cpp文件 samples/xrt/yolov5s/yolov5s_opt.cpp</p></li>
+<li><p>.pyw文件 samples/xrt/yolov5s/yolov5s_opt.py</p></li>
+</ul>
+<p>相较于yolov5s Demo， yolov5s_opt Demo 增加了如何调用BuyiBackend提供的相关优化接口</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在BuyiBackend调用compressFtmp和speedMode的优化效果与在编译阶段开启合并算子和内存优化是一样的，
+如果选择在BuyiBackend调用这两个接口，需要注意关闭mmu模式，并且不能使用合并后或者内存优化后的网络。
+建议非特殊情况都使用mmu模式，在编译阶段开启合并算子和内存优化</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//获取session第一个绑定的backend并将其cast成BuyiBackend</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buyibackend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">//开启中间层压缩功能，将网络中间输出数据进行地址复用，减少对硬件内存的消耗</span>
+<span class="w">    </span><span class="n">buyibackend</span><span class="p">.</span><span class="n">compressFtmp</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">//开启加速功能，此功能会根据网络结构将能够合并的硬算子进行合并，从而减少频繁同步以及切入切出带来的软件消耗</span>
+<span class="w">    </span><span class="n">buyibackend</span><span class="p">.</span><span class="n">speedMode</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">//session执行前必须进行apply部署操作</span>
+<span class="w">    </span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>调用接口时需要在session构造之后，得到绑定的backend并cast成BuyiBackend对象，之后调用接口，之后对session进行部署</p>
+<p>对应的python代码如下</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+<span class="n">buyibackend</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">buyibackend</span><span class="o">.</span><span class="n">compressFtmp</span><span class="p">()</span>
+<span class="n">buyibackend</span><span class="o">.</span><span class="n">speedMode</span><span class="p">()</span>
+
+<span class="n">sess</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="yolov5s-imk-demo">
+<h3>3.3 yolov5s_imk Demo<a class="headerlink" href="#yolov5s-imk-demo" title="此标题的永久链接">#</a></h3>
+<p>yolov5s_imk Demo 相较于3.2 yolov5s_opt, 反序列化的json&amp;raw文件有所不同，yolov5s_customop网络中会添加image_make以及Detpost硬算子用于调用7100芯片的FPGA运算单元进行加速</p>
+<p>对于psin image_make的使用，用户需要在执行该算子的前向之前配置相关的寄存器并启动运算单元，所以我们需要将网络分成两段来执行，中间插入配置image_make的代码</p>
+<p>network.view 接口就提供了网络分段的功能，具体如何操作可以看核心代码</p>
+<ul class="simple">
+<li><p>.cpp文件 samples/xrt/yolov5s/yolov5s_imk.cpp</p></li>
+<li><p>.pyw文件 samples/xrt/yolov5s/yolov5s_imk.py</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//通过view将网络切分成两段，前一段到做imk前，剩下的是后一段</span>
+<span class="c1">//view接口传入两个op_index 是左开右闭，imk算子在网络中的idx是3，所以view(0,3)表示做imk前</span>
+<span class="c1">//view传入一个op_index 表示从该op_index的算子开始切分，一直到最后</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">network_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">network_imk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">//创建session，将buyibackend以及hostbackend绑定到sess对象上</span>
+<span class="c1">//根据view出来的两个network_view 分别构造session对象</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sess_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network_host</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sess_imk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network_imk</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+
+<span class="c1">//和yolov5s_opt demo一样，我们可以对session对象进行优化</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend_imk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess_imk</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">buyi_backend_imk</span><span class="p">.</span><span class="n">compressFtmp</span><span class="p">();</span>
+<span class="n">buyi_backend_imk</span><span class="p">.</span><span class="n">speedMode</span><span class="p">();</span>
+
+<span class="c1">//session执行前必须进行apply部署操作</span>
+<span class="c1">//两个session都要部署</span>
+<span class="n">sess_host</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+<span class="n">sess_imk</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+
+<span class="c1">//借助HostBackend的工具函数将输入图片转成Tensor</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">input_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">hostbackend</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span><span class="w"> </span><span class="n">input_dtype</span><span class="p">);</span>
+<span class="c1">//第一段前向执行</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">outputs_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess_host</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+
+<span class="c1">//在进行第二段session的前向前，需要进行imk硬算子的一系列配置</span>
+<span class="c1">//具体配置参数可以参见imk手册</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">ImageMakeChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">[</span><span class="mi">-1</span><span class="p">];</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">ImageMakeWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">[</span><span class="mi">-2</span><span class="p">];</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">ImageMakeHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">[</span><span class="mi">-3</span><span class="p">];</span>
+
+<span class="c1">//获取umda的memRegion</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">uregion_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device</span><span class="p">.</span><span class="n">getMemRegion</span><span class="p">(</span><span class="s">&quot;udma&quot;</span><span class="p">);</span>
+
+<span class="c1">//将host上的输出复制到udma上，并返回对应的tensor</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">utensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">uregion_</span><span class="p">);</span>
+
+<span class="c1">//获取在udma上对应的物理指针</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">ImageMakeRddrBase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utensor</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">addr</span><span class="p">();</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">ImageMakeRlen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">ImageMakeWidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ImageMakeHeight</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">24</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ImageMakeChannel</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">ImageMakeLastSft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ImageMakeWidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ImageMakeHeight</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">ImageMakeRlen</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">24</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ImageMakeChannel</span><span class="p">);</span>
+
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x4</span><span class="p">,</span><span class="w"> </span><span class="n">ImageMakeRddrBase</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x8</span><span class="p">,</span><span class="w"> </span><span class="n">ImageMakeRlen</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0xC</span><span class="p">,</span><span class="w"> </span><span class="n">ImageMakeLastSft</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="n">ImageMakeChannel</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x1C</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x20</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">device</span><span class="p">.</span><span class="n">defaultRegRegion</span><span class="p">().</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+
+<span class="k">auto</span><span class="w"> </span><span class="n">outputs_imk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess_imk</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+<span class="c1">//将进行后处理并输出</span>
+<span class="n">post_detpost</span><span class="p">(</span><span class="n">outputs_imk</span><span class="p">,</span><span class="w"> </span><span class="n">img_file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>对应的python代码如下</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network_host</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">network_imk</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="n">sess_host</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span><span class="n">HostBackend</span><span class="p">],</span> <span class="n">network_host</span><span class="p">,</span> <span class="p">[</span><span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+<span class="n">sess_imk</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">network_imk</span><span class="p">,</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+
+<span class="n">buyibackend_imk</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">sess_imk</span><span class="o">.</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">buyibackend_imk</span><span class="o">.</span><span class="n">compressFtmp</span><span class="p">()</span>
+<span class="n">buyibackend_imk</span><span class="o">.</span><span class="n">speedMode</span><span class="p">()</span>
+
+<span class="n">sess_host</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="n">sess_imk</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="n">input_dtype</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># 调用HostBackend的辅助函数将图片转为Tensor</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span> <span class="n">input_dtype</span><span class="p">)</span>
+<span class="c1"># 前向，获取输出</span>
+<span class="n">outputs_host</span> <span class="o">=</span> <span class="n">sess_host</span><span class="o">.</span><span class="n">forward</span><span class="p">([</span><span class="n">input_tensor</span><span class="p">]);</span>
+
+<span class="n">ImageMakeChannel</span> <span class="o">=</span> <span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ImageMakeWidth</span> <span class="o">=</span> <span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">ImageMakeHeight</span> <span class="o">=</span> <span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">uregion_</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">getMemRegion</span><span class="p">(</span><span class="s2">&quot;udma&quot;</span><span class="p">)</span>
+
+<span class="c1">#将host上的输出复制到udma上，并返回对应的tensor</span>
+<span class="n">utensor</span> <span class="o">=</span> <span class="n">outputs_host</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">uregion_</span><span class="p">)</span>
+
+<span class="c1">#获取在udma上对应的物理指针</span>
+<span class="n">ImageMakeRddrBase</span> <span class="o">=</span> <span class="n">utensor</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">addr</span><span class="p">()</span>
+
+<span class="n">ImageMakeRlen</span> <span class="o">=</span> <span class="p">((</span><span class="n">ImageMakeWidth</span> <span class="o">*</span> <span class="n">ImageMakeHeight</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="p">(</span><span class="mi">24</span> <span class="o">//</span> <span class="n">ImageMakeChannel</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">ImageMakeLastSft</span> <span class="o">=</span> <span class="n">ImageMakeWidth</span> <span class="o">*</span> <span class="n">ImageMakeHeight</span> <span class="o">-</span> <span class="p">(</span><span class="n">ImageMakeRlen</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">24</span> <span class="o">//</span> <span class="n">ImageMakeChannel</span><span class="p">)</span>
+
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span> <span class="o">+</span> <span class="mh">0x4</span><span class="p">,</span> <span class="n">ImageMakeRddrBase</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span> <span class="o">+</span> <span class="mh">0x8</span><span class="p">,</span> <span class="n">ImageMakeRlen</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span> <span class="o">+</span> <span class="mh">0xC</span><span class="p">,</span> <span class="n">ImageMakeLastSft</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">,</span> <span class="n">ImageMakeChannel</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span> <span class="o">+</span> <span class="mh">0x1C</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span> <span class="o">+</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">defaultRegRegion</span><span class="p">()</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x1000C0000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">outputs_imk</span> <span class="o">=</span> <span class="n">sess_imk</span><span class="o">.</span><span class="n">forward</span><span class="p">([</span> <span class="n">input_tensor</span> <span class="p">]);</span>
+
+<span class="n">post_detpost</span><span class="p">(</span><span class="n">outputs_imk</span><span class="p">,</span> <span class="n">img_file</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="yolov5s-multi-thread-demo">
+<h3>3.4 yolov5s_multi_thread Demo<a class="headerlink" href="#yolov5s-multi-thread-demo" title="此标题的永久链接">#</a></h3>
+<p>为了追求更高的性能，我们可以通过将上述所用到的接口进行组合，利用7100多处理器异构的特点，通过多线程流水线的方式来实现异构并行</p>
+<p>该例子中，通过将一个网络按执行单元分为image_make(FPGA)，icore(icore),后处理(cpu)，利用线程库实现了三级流水并行</p>
+<p>由于例子相对复杂，具体操作和用法可以直接参见代码</p>
+<ul class="simple">
+<li><p>.cpp文件 samples/xrt/yolov5s/yolov5s_multi_thread.cpp</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Icraft XRT: 运行时相关用例</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="multiNetwork.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Icraft XRT: multiNetwork</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo">1.1 demo结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 适配流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1 网络编译</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2 环境配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#x64-windows">2.2.1 x64-windows环境</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linux-aarch64">2.2.2 linux-aarch64环境</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">2.2.3 python环境</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">三 Demo解析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-demo">3.1 yolov5s Demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-opt-demo">3.2 yolov5s_opt Demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-imk-demo">3.3 yolov5s_imk Demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolov5s-multi-thread-demo">3.4 yolov5s_multi_thread Demo</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

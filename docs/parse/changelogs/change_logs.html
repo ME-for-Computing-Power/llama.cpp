@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>更新日志 &#8212; Icraft Parser 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changelogs/change_logs';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="prev" title="icraft-parse" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Parser 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/changelogs/change_logs.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>更新日志</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-7-0">v3.7.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-3">v3.6.3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-2">v3.6.2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-1">v3.6.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-0">v3.6.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-5-0">v3.5.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-4-0">v3.4.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-3-0">v3.3.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-2-0">v3.2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-1-1">v3.1.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-1-0">v3.1.0</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>更新日志<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<section id="v3-7-0">
+<h2>v3.7.0<a class="headerlink" href="#v3-7-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Onnx</p>
+<ul>
+<li><p>AveragePool（完善算子支持程度，支持AveragePool3D）</p></li>
+<li><p>BatchNormalization（完善算子支持程度，支持BatchNormalization3D）</p></li>
+<li><p>Conv（完善算子支持程度，支持Conv3D）</p></li>
+<li><p>Equal(新增算子)</p></li>
+<li><p>Gemm（完善算子支持程度，完全支持）</p></li>
+<li><p>Greater(新增算子)</p></li>
+<li><p>GreatOrEqual(新增算子)</p></li>
+<li><p>InstanceNormalization（完善算子支持程度，支持InstanceNormalization3D）</p></li>
+<li><p>Less(新增算子)</p></li>
+<li><p>LessOrEqual(新增算子)</p></li>
+<li><p>MaxPool（完善算子支持程度，支持MaxPool3D）</p></li>
+<li><p>Not(新增算子)</p></li>
+<li><p>Pad（完善算子支持程度，支持Pad3D）</p></li>
+<li><p>ReduceMax(新增算子)</p></li>
+<li><p>ReduceMean（完善算子支持程度，完全支持）</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>新增功能</p></li>
+</ol>
+<ul class="simple">
+<li><p>OnnxParser：升级OnnxParser，支持unsupport算子：对于不支持算子解析为unsupport算子占位并保存josn&amp;raw文件，方便查看、分析网络</p></li>
+<li><p>OnnxParser：新增支持TensorFlow2Onnx的模型：支持tf1、tf2保存的Onnx模型，仅支持data_format为默认值channels_last，即排布为NHWC格式</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>修复的bug</p></li>
+</ol>
+<ul class="simple">
+<li><p>OnnxParser：修复Gather算子indices为负数解析错误的bug</p></li>
+<li><p>OnnxParser：修复Squeeze算子axis为空时不支持解析的bug</p></li>
+</ul>
+</section>
+<section id="v3-6-3">
+<h2>v3.6.3<a class="headerlink" href="#v3-6-3" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Onnx</p>
+<ul>
+<li><p>normalize（新增pattern）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="v3-6-2">
+<h2>v3.6.2<a class="headerlink" href="#v3-6-2" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>修复bug</p></li>
+</ol>
+<ul class="simple">
+<li><p>OnnxParser：修复OnnxParser无法在win7上编译的bug</p></li>
+</ul>
+</section>
+<section id="v3-6-1">
+<h2>v3.6.1<a class="headerlink" href="#v3-6-1" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>修复bug</p></li>
+</ol>
+<ul class="simple">
+<li><p>OnnxParser：修复pixelshuffle添加transpose错误的bug</p></li>
+<li><p>OnnxParser：修复pad中pad value为空的bug</p></li>
+</ul>
+</section>
+<section id="v3-6-0">
+<h2>v3.6.0<a class="headerlink" href="#v3-6-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Pytorch</p>
+<ul>
+<li><p>sum（新增算子）</p></li>
+<li><p>sqrt（新增算子）</p></li>
+<li><p>clamp（新增算子，约束详见 <a class="reference external" href="../../ops/op_support.html#pytorch">《Icraft-Docs之算子支持》</a>）</p></li>
+<li><p>einsum（新增算子）</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>新增功能</p></li>
+</ol>
+<ul class="simple">
+<li><p>所有Parser：根据Icraft硬件特性，升级parser对1D算子的解析方式，从而提升1D算子的性能</p></li>
+<li><p>所有Parser：升级预检功能，新增参数pre_check，默认为true，用于启动整个编译器级别的模型预检；配置为false，则只完成Praser组件的预检，目前仅OnnxParser支持升级后的模型预检功能</p></li>
+<li><p>OnnxParser：全面升级OnnxParser，OnnxParser目前支持Pytorch（opset17）、PaddlePaddle（opset11），具体算子支持情况详见 <a class="reference external" href="../../ops/op_support.html">《Icraft-Docs之算子支持》</a></p></li>
+</ul>
+</section>
+<section id="v3-5-0">
+<h2>v3.5.0<a class="headerlink" href="#v3-5-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Pytorch</p>
+<ul>
+<li><p>ChannelShuffle（新增算子）</p></li>
+<li><p>stack（新增算子）</p></li>
+<li><p>unbind（新增算子）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="v3-4-0">
+<h2>v3.4.0<a class="headerlink" href="#v3-4-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Pytorch</p>
+<ul>
+<li><p>hard_tanh（新增算子）</p></li>
+<li><p>Softplus（新增算子）</p></li>
+<li><p>SoftShrink（新增算子）</p></li>
+<li><p>AdaptiveMaxPool2d（完善算子支持程度，完全支持）</p></li>
+<li><p>AdaptiveAvgPool2d（完善算子支持程度，完全支持）</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>修复bug</p></li>
+</ol>
+<ul class="simple">
+<li><p>PytorchParser：修复expand算子参数dim=-1时，显示不支持该算子</p></li>
+<li><p>PytorchParser：修复relu6解析错误</p></li>
+</ul>
+</section>
+<section id="v3-3-0">
+<h2>v3.3.0<a class="headerlink" href="#v3-3-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Pytorch</p>
+<ul>
+<li><p>AdaptiveMaxPool1d（新增算子）</p></li>
+<li><p>Batchnorm1d（新增算子）</p></li>
+<li><p>Conv1d（新增算子）</p></li>
+<li><p>Maxpool1d（新增算子）</p></li>
+<li><p>InstanceNorm1d（新增算子）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="v3-2-0">
+<h2>v3.2.0<a class="headerlink" href="#v3-2-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Pytorch</p>
+<ul>
+<li><p>Roll（新增算子，约束详见 <a class="reference external" href="../../ops/op_support.html#pytorch">《Icraft-Docs之算子支持》</a>）</p></li>
+<li><p>AvgPool1d（新增算子）</p></li>
+<li><p>AdaptiveAvgPool1d（新增算子，约束详见 <a class="reference external" href="../../ops/op_support.html#pytorch">《Icraft-Docs之算子支持》</a>）</p></li>
+<li><p>bmm（新增算子）</p></li>
+<li><p>Add（完善算子支持程度：完全支持）</p></li>
+<li><p>Multiply（完善算子支持程度：完全支持）</p></li>
+<li><p>Matmul（完善算子支持程度：完全支持）</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>新增功能</p></li>
+</ol>
+<ul class="simple">
+<li><p>PytorchParser：扩充支持pytorch2.0.1</p></li>
+</ul>
+</section>
+<section id="v3-1-1">
+<h2>v3.1.1<a class="headerlink" href="#v3-1-1" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>修复bug</p></li>
+</ol>
+<ul class="simple">
+<li><p>PytorchParser：修复多输出算子的bug，影响网络：img_cnn_lstm</p></li>
+</ul>
+</section>
+<section id="v3-1-0">
+<h2>v3.1.0<a class="headerlink" href="#v3-1-0" title="此标题的永久链接">#</a></h2>
+<ol class="arabic simple">
+<li><p>调整算子库</p></li>
+</ol>
+<ul class="simple">
+<li><p>Pytorch</p>
+<ul>
+<li><p>InstanceNorm2d（新增算子）</p></li>
+<li><p>AdaptiveMaxPool2d（新增算子：仅支持可以等效为MaxPool的场景）</p></li>
+<li><p>Reshape（完善算子支持程度：完全支持）</p></li>
+<li><p>View（完善算子支持程度：完全支持）</p></li>
+<li><p>Add（添加算子约束：不支持input0为常量，input1为变量的场景）</p></li>
+<li><p>Multiply（添加算子约束：不支持input0为常量，input1为变量的场景）</p></li>
+<li><p>Matmul（添加算子约束：不支持input0为常量，input1为变量的场景）</p></li>
+</ul>
+</li>
+<li><p>Onnx(PaddlePaddle)</p>
+<ul>
+<li><p>Reshape（完善算子支持程度：完全支持）</p></li>
+<li><p>View（完善算子支持程度：完全支持）</p></li>
+<li><p>Add（添加算子约束：不支持input0为常量，input1为变量的场景）</p></li>
+<li><p>Multiply（添加算子约束：不支持input0为常量，input1为变量的场景）</p></li>
+<li><p>Matmul（添加算子约束：不支持input0为常量，input1为变量的场景）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">icraft-parse</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-7-0">v3.7.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-3">v3.6.3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-2">v3.6.2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-1">v3.6.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-0">v3.6.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-5-0">v3.5.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-4-0">v3.4.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-3-0">v3.3.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-2-0">v3.2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-1-1">v3.1.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-1-0">v3.1.0</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： wangcan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

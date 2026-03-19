@@ -1,0 +1,900 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>host_backend.CudaDevice &#8212; Icraft HostBackend 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/host_backend.CudaDevice';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="host_backend.CudaMemRegion" href="host_backend.CudaMemRegion.html" />
+    <link rel="prev" title="host_backend.Image2Tensor" href="host_backend.Image2Tensor.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft HostBackend 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft__hostbackend.html">Namespace icraft::hostbackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft__hostbackend__utils.html">Namespace icraft::hostbackend::utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft__xrt.html">Namespace icraft::xrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/structicraft_1_1hostbackend_1_1utils_1_1_detected_box.html">Struct DetectedBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/class_custom_decoder.html">Class CustomDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_cuda_device.html">Class CudaDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_cuda_device_node.html">Class CudaDeviceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_cuda_mem_region.html">Class CudaMemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_cuda_mem_region_node.html">Class CudaMemRegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_host_backend.html">Class HostBackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_host_backend_cuda_utils.html">Class HostBackendCudaUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_host_backend_node.html">Class HostBackendNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xrt_1_1_host_bknd_cuda_utils__impl.html">Class HostBkndCudaUtils_impl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_decode__custom_8h_1a199ab221e6aa20c6869f3bf8fb5da774.html">Function GetCustomDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_utils_8h_1a704a357e97c78bae7f337215cfbe1baf.html">Function icraft::hostbackend::utils::Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_utils_8h_1a4d8e44308abe110615756d8e68398d33.html">Function icraft::hostbackend::utils::DecodeWithDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_utils_8h_1acfeb377b1e816a56509b840d4718b64f.html">Function icraft::hostbackend::utils::Ftmp2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_utils_8h_1a7e652666ee5a9874d9a2806583da066e.html">Function icraft::hostbackend::utils::Image2Tensor(const std::string&amp;, int, int)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_utils_8h_1ab87c76f8821611e5770ee29dfdb93af9.html">Function icraft::hostbackend::utils::Image2Tensor(const std::string&amp;, const xir::Value&amp;)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_utils_8h_1a6a7a8b3adaf70dd20719cbdc13c67946.html">Function icraft::hostbackend::utils::TensorToDetectedBoxes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_decode__custom_8h_1a1806ab788d6406379b257e6ff1a6a511.html">Define CUSTOM_API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_backend_8h_1a752ea8558ede9147ff7da1419cae3ce5.html">Define HOSTBKND_BACKEND_PCH_GUARD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_decode__custom_8h_1a83b0e76a4801540cb2392db5f5f7ce9c.html">Define HOSTBKND_DECODE_CUSTOM_PCH_GUARD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_utils_8h_1aeb8150f9d88c067d16bef2238a1fd1a1.html">Define HOSTBKND_UTILS_PCH_GUARD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_cuda_2utils_8h_1ae027d7f23c8aec74bc7d8b7520de81b2.html">Define REGISTER_CUDAUTILS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_decode__custom_8h_1a82087e87ec686c93353427b9e5befb20.html">Define REGISTER_CUSTOM_DECODER</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="host_backend.html">Python API reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="host_backend.Cast.html">host_backend.Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host_backend.DecodeWithDecoder.html">host_backend.DecodeWithDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host_backend.Ftmp2Tensor.html">host_backend.Ftmp2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host_backend.Image2Tensor.html">host_backend.Image2Tensor</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">host_backend.CudaDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host_backend.CudaMemRegion.html">host_backend.CudaMemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host_backend.HostBackend.html">host_backend.HostBackend</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_autosummary/host_backend.CudaDevice.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>host_backend.CudaDevice</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice"><code class="docutils literal notranslate"><span class="pre">CudaDevice</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.Close"><code class="docutils literal notranslate"><span class="pre">CudaDevice.Close()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.Default"><code class="docutils literal notranslate"><span class="pre">CudaDevice.Default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.MemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.MemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.Open"><code class="docutils literal notranslate"><span class="pre">CudaDevice.Open()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.check"><code class="docutils literal notranslate"><span class="pre">CudaDevice.check()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.clone"><code class="docutils literal notranslate"><span class="pre">CudaDevice.clone()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.defaultMemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.defaultMemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.defaultRegRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.defaultRegRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.defined"><code class="docutils literal notranslate"><span class="pre">CudaDevice.defined()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.getMemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.getMemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.getRegRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.getRegRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.malloc"><code class="docutils literal notranslate"><span class="pre">CudaDevice.malloc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.readReg"><code class="docutils literal notranslate"><span class="pre">CudaDevice.readReg()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.reset"><code class="docutils literal notranslate"><span class="pre">CudaDevice.reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.same_as"><code class="docutils literal notranslate"><span class="pre">CudaDevice.same_as()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.setDefaultMemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.setDefaultMemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.setDefaultRegRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.setDefaultRegRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.showStatus"><code class="docutils literal notranslate"><span class="pre">CudaDevice.showStatus()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.typeKey"><code class="docutils literal notranslate"><span class="pre">CudaDevice.typeKey()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.type_is"><code class="docutils literal notranslate"><span class="pre">CudaDevice.type_is()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.unique"><code class="docutils literal notranslate"><span class="pre">CudaDevice.unique()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.use_count"><code class="docutils literal notranslate"><span class="pre">CudaDevice.use_count()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.version"><code class="docutils literal notranslate"><span class="pre">CudaDevice.version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.writeReg"><code class="docutils literal notranslate"><span class="pre">CudaDevice.writeReg()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="host-backend-cudadevice">
+<h1>host_backend.CudaDevice<a class="headerlink" href="#host-backend-cudadevice" title="此标题的永久链接">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="host_backend.CudaDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CudaDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#host_backend.CudaDevice" title="host_backend.CudaDevice"><span class="pre">host_backend.CudaDevice</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#host_backend.CudaDevice" title="永久链接至目标">#</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.Close" title="host_backend.CudaDevice.Close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Close</span></code></a></p></td>
+<td><p>关闭设备.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.Default" title="host_backend.CudaDevice.Default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Default</span></code></a></p></td>
+<td><p>获取全局默认的CudaDevice对象</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.MemRegion" title="host_backend.CudaDevice.MemRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MemRegion</span></code></a></p></td>
+<td><p>获取全局默认的CudaDevice的内存区域对象</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.Open" title="host_backend.CudaDevice.Open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Open</span></code></a></p></td>
+<td><p>打开设备.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.check" title="host_backend.CudaDevice.check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check</span></code></a></p></td>
+<td><p>检查设备.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.clone" title="host_backend.CudaDevice.clone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clone</span></code></a></p></td>
+<td><p>克隆一份该对象 :param depth:   克隆的深度，默认为1，即浅克隆 :return:                克隆得到的新对象</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.defaultMemRegion" title="host_backend.CudaDevice.defaultMemRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">defaultMemRegion</span></code></a></p></td>
+<td><p>获取设备默认的MemRegion</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.defaultRegRegion" title="host_backend.CudaDevice.defaultRegRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">defaultRegRegion</span></code></a></p></td>
+<td><p>获取设备默认的RegRegion</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.defined" title="host_backend.CudaDevice.defined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">defined</span></code></a></p></td>
+<td><p>检查引用的实例是否存在，如果对象引用了空指针则返回false</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.getMemRegion" title="host_backend.CudaDevice.getMemRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMemRegion</span></code></a></p></td>
+<td><p>根据名字获取设备的MemRegion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.getRegRegion" title="host_backend.CudaDevice.getRegRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRegRegion</span></code></a></p></td>
+<td><p>根据名字获取设备的MemRegion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.malloc" title="host_backend.CudaDevice.malloc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">malloc</span></code></a></p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.readReg" title="host_backend.CudaDevice.readReg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readReg</span></code></a></p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.reset" title="host_backend.CudaDevice.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
+<td><p>复位设备.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.same_as" title="host_backend.CudaDevice.same_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">same_as</span></code></a></p></td>
+<td><p>比较引用的实例是否相同，即对象的指针是否相同</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.setDefaultMemRegion" title="host_backend.CudaDevice.setDefaultMemRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDefaultMemRegion</span></code></a></p></td>
+<td><p>将指定的MemRegion设置为默认MemRegion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.setDefaultRegRegion" title="host_backend.CudaDevice.setDefaultRegRegion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setDefaultRegRegion</span></code></a></p></td>
+<td><p>将指定的MemRegion设置为默认MemRegion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.showStatus" title="host_backend.CudaDevice.showStatus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showStatus</span></code></a></p></td>
+<td><p>显示设备状态.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.typeKey" title="host_backend.CudaDevice.typeKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">typeKey</span></code></a></p></td>
+<td><p>获取所引用对象的type_key字符串，该字符串表示引用对象的类型</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.type_is" title="host_backend.CudaDevice.type_is"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_is</span></code></a></p></td>
+<td><p>检查类型是否是字符串指定的类型</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.unique" title="host_backend.CudaDevice.unique"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unique</span></code></a></p></td>
+<td><p>判断引用是否唯一，即引用计数为1则返回true</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.use_count" title="host_backend.CudaDevice.use_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_count</span></code></a></p></td>
+<td><p>获取引用计数</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#host_backend.CudaDevice.version" title="host_backend.CudaDevice.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<td><p>获取设备的版本</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#host_backend.CudaDevice.writeReg" title="host_backend.CudaDevice.writeReg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeReg</span></code></a></p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_key</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.Close">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.Close" title="永久链接至目标">#</a></dt>
+<dd><p>关闭设备.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>device</strong> – 被关闭的设备对象URL</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.Default">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#host_backend.CudaDevice" title="host_backend.CudaDevice"><span class="pre">host_backend.CudaDevice</span></a></span></span><a class="headerlink" href="#host_backend.CudaDevice.Default" title="永久链接至目标">#</a></dt>
+<dd><p>获取全局默认的CudaDevice对象</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.MemRegion">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MemRegion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="host_backend.CudaMemRegion.html#host_backend.CudaMemRegion" title="host_backend.CudaMemRegion"><span class="pre">host_backend.CudaMemRegion</span></a></span></span><a class="headerlink" href="#host_backend.CudaDevice.MemRegion" title="永久链接至目标">#</a></dt>
+<dd><p>获取全局默认的CudaDevice的内存区域对象</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.Open">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.Device</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.Open" title="永久链接至目标">#</a></dt>
+<dd><p>打开设备.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>url</strong> – 设备的URL</p>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>打开的设备对象</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.check" title="永久链接至目标">#</a></dt>
+<dd><p>检查设备.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>level</strong> – 检查等级</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>不同的设备具有不同的定义和实现，详见具体设备的使用说明</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.Device</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.clone" title="永久链接至目标">#</a></dt>
+<dd><p>克隆一份该对象
+:param depth:   克隆的深度，默认为1，即浅克隆
+:return:                克隆得到的新对象</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.defaultMemRegion">
+<span class="sig-name descname"><span class="pre">defaultMemRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.MemRegion</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.defaultMemRegion" title="永久链接至目标">#</a></dt>
+<dd><p>获取设备默认的MemRegion</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.defaultRegRegion">
+<span class="sig-name descname"><span class="pre">defaultRegRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.RegRegion</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.defaultRegRegion" title="永久链接至目标">#</a></dt>
+<dd><p>获取设备默认的RegRegion</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.defined">
+<span class="sig-name descname"><span class="pre">defined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.defined" title="永久链接至目标">#</a></dt>
+<dd><p>检查引用的实例是否存在，如果对象引用了空指针则返回false</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.getMemRegion">
+<span class="sig-name descname"><span class="pre">getMemRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.MemRegion</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.getMemRegion" title="永久链接至目标">#</a></dt>
+<dd><p>根据名字获取设备的MemRegion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – MemRegion的名字</p>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>相对应的MemRegion对象</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.getRegRegion">
+<span class="sig-name descname"><span class="pre">getRegRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.RegRegion</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.getRegRegion" title="永久链接至目标">#</a></dt>
+<dd><p>根据名字获取设备的MemRegion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – RegRegion的名字</p>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>相对应的RegRegion对象</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.malloc">
+<span class="sig-name descname"><span class="pre">malloc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#host_backend.CudaDevice.malloc" title="永久链接至目标">#</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>malloc(self: xrt.Device, byte_size: int) -&gt; xrt.MemChunk</p></li>
+</ol>
+<p>在默认的MemRegion上申请分配内存.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>byte_size</strong> – 申请的内存大小的名字</p>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>申请得到的MemChunk对象</p>
+</dd>
+</dl>
+<ol class="arabic simple" start="2">
+<li><p>malloc(self: xrt.Device, mem_region: str, byte_size: int) -&gt; xrt.MemChunk</p></li>
+</ol>
+<p>在指定的MemRegion上申请分配内存.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mem_region</strong> – 指定的MemRegion的名字</p></li>
+<li><p><strong>byte_size</strong> – 申请的内存大小</p></li>
+</ul>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>申请得到的MemChunk对象</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.readReg">
+<span class="sig-name descname"><span class="pre">readReg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#host_backend.CudaDevice.readReg" title="永久链接至目标">#</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>readReg(self: xrt.Device, byte_size: int, relative: bool = False) -&gt; int</p></li>
+</ol>
+<p>在默认的RegRegion上读取寄存器.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addr</strong> – 读取的地址</p></li>
+<li><p><strong>relative</strong> – 是否以相对地址读取寄存器</p></li>
+</ul>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>读取得到的寄存器数据</p>
+</dd>
+</dl>
+<ol class="arabic simple" start="2">
+<li><p>readReg(self: xrt.Device, region_name: str, byte_size: int, relative: bool = False) -&gt; int</p></li>
+</ol>
+<p>在指定的的RegRegion上读取寄存器.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_name</strong> – 指定的RegRegion的名字</p></li>
+<li><p><strong>addr</strong> – 读取的地址</p></li>
+<li><p><strong>relative</strong> – 是否以相对地址读取寄存器</p></li>
+</ul>
+</dd>
+<dt class="field-even">返回<span class="colon">:</span></dt>
+<dd class="field-even"><p>读取得到的寄存器数据</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.reset" title="永久链接至目标">#</a></dt>
+<dd><p>复位设备.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>level</strong> – 复位等级</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>不同的设备具有不同的定义和实现，详见具体设备的使用说明</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.same_as">
+<span class="sig-name descname"><span class="pre">same_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.same_as" title="永久链接至目标">#</a></dt>
+<dd><p>比较引用的实例是否相同，即对象的指针是否相同</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.setDefaultMemRegion">
+<span class="sig-name descname"><span class="pre">setDefaultMemRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.Device</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.setDefaultMemRegion" title="永久链接至目标">#</a></dt>
+<dd><p>将指定的MemRegion设置为默认MemRegion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>region_name</strong> – 指定的MemRegion名字</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.setDefaultRegRegion">
+<span class="sig-name descname"><span class="pre">setDefaultRegRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">xrt.Device</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.setDefaultRegRegion" title="永久链接至目标">#</a></dt>
+<dd><p>将指定的MemRegion设置为默认MemRegion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>region_name</strong> – 指定的RegRegion名字</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.showStatus">
+<span class="sig-name descname"><span class="pre">showStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.showStatus" title="永久链接至目标">#</a></dt>
+<dd><p>显示设备状态.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>level</strong> – 状态等级</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>不同的设备具有不同的定义和实现，详见具体设备的使用说明</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.typeKey">
+<span class="sig-name descname"><span class="pre">typeKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.typeKey" title="永久链接至目标">#</a></dt>
+<dd><p>获取所引用对象的type_key字符串，该字符串表示引用对象的类型</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.type_is">
+<span class="sig-name descname"><span class="pre">type_is</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.type_is" title="永久链接至目标">#</a></dt>
+<dd><p>检查类型是否是字符串指定的类型</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.unique">
+<span class="sig-name descname"><span class="pre">unique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.unique" title="永久链接至目标">#</a></dt>
+<dd><p>判断引用是否唯一，即引用计数为1则返回true</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.use_count">
+<span class="sig-name descname"><span class="pre">use_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xir.ObjectRef</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#host_backend.CudaDevice.use_count" title="永久链接至目标">#</a></dt>
+<dd><p>获取引用计数</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.version">
+<span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">xrt.Device</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#host_backend.CudaDevice.version" title="永久链接至目标">#</a></dt>
+<dd><p>获取设备的版本</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="host_backend.CudaDevice.writeReg">
+<span class="sig-name descname"><span class="pre">writeReg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#host_backend.CudaDevice.writeReg" title="永久链接至目标">#</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>writeReg(self: xrt.Device, addr: int, data: int, relative: bool = False) -&gt; None</p></li>
+</ol>
+<p>将数据写入默认的RegRegion上的寄存器.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addr</strong> – 写入的地址</p></li>
+<li><p><strong>data</strong> – 写入的数据</p></li>
+<li><p><strong>relative</strong> – 是否以相对地址写入寄存器</p></li>
+</ul>
+</dd>
+</dl>
+<ol class="arabic simple" start="2">
+<li><p>writeReg(self: xrt.Device, region_name: str, addr: int, data: int, relative: bool = False) -&gt; None</p></li>
+</ol>
+<p>将数据写入指定的RegRegion上的寄存器.</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_name</strong> – 指定的RegRegion的名字</p></li>
+<li><p><strong>addr</strong> – 写入的地址</p></li>
+<li><p><strong>data</strong> – 写入的数据</p></li>
+<li><p><strong>relative</strong> – 是否以相对地址写入寄存器</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="host_backend.Image2Tensor.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">host_backend.Image2Tensor</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="host_backend.CudaMemRegion.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">host_backend.CudaMemRegion</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice"><code class="docutils literal notranslate"><span class="pre">CudaDevice</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.Close"><code class="docutils literal notranslate"><span class="pre">CudaDevice.Close()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.Default"><code class="docutils literal notranslate"><span class="pre">CudaDevice.Default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.MemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.MemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.Open"><code class="docutils literal notranslate"><span class="pre">CudaDevice.Open()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.check"><code class="docutils literal notranslate"><span class="pre">CudaDevice.check()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.clone"><code class="docutils literal notranslate"><span class="pre">CudaDevice.clone()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.defaultMemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.defaultMemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.defaultRegRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.defaultRegRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.defined"><code class="docutils literal notranslate"><span class="pre">CudaDevice.defined()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.getMemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.getMemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.getRegRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.getRegRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.malloc"><code class="docutils literal notranslate"><span class="pre">CudaDevice.malloc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.readReg"><code class="docutils literal notranslate"><span class="pre">CudaDevice.readReg()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.reset"><code class="docutils literal notranslate"><span class="pre">CudaDevice.reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.same_as"><code class="docutils literal notranslate"><span class="pre">CudaDevice.same_as()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.setDefaultMemRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.setDefaultMemRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.setDefaultRegRegion"><code class="docutils literal notranslate"><span class="pre">CudaDevice.setDefaultRegRegion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.showStatus"><code class="docutils literal notranslate"><span class="pre">CudaDevice.showStatus()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.typeKey"><code class="docutils literal notranslate"><span class="pre">CudaDevice.typeKey()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.type_is"><code class="docutils literal notranslate"><span class="pre">CudaDevice.type_is()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.unique"><code class="docutils literal notranslate"><span class="pre">CudaDevice.unique()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.use_count"><code class="docutils literal notranslate"><span class="pre">CudaDevice.use_count()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.version"><code class="docutils literal notranslate"><span class="pre">CudaDevice.version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#host_backend.CudaDevice.writeReg"><code class="docutils literal notranslate"><span class="pre">CudaDevice.writeReg()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： linzhengnan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

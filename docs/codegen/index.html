@@ -1,0 +1,1796 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft CodeGen &#8212; Icraft CodeGen 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="API" href="_cppapi/api_root.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft CodeGen 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__cg.html">Namespace icraft::cg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/structicraft_1_1cg_1_1_code_gen_options.html">Struct CodeGenOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_codegen__network_8h_1a857721c04b389bb7bcec81c193d1e4e5.html">Function icraft::cg::MakeNetworkCodeGen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1abeed94f57dc3be833a7dfb38aab86a8e.html">Variable ALIGNAXIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1ab0bd9291198e61d1642a841475d14fb0.html">Variable BIN_SUFFIX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a819e8b95d2d79be3cff191c37c6f640d.html">Variable BY</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a3f185c4947eccdf334c073549176c07f.html">Variable CONCAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1abb6c17c3732e995049eb32ba1845b866.html">Variable INSTANCENORM2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1aefecb3c2be85b8c46851e8fc8677655d.html">Variable JSON_SUFFIX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a49297a6569be798c67c749061a4dc280.html">Variable LAYERNORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a57c7b2987f14c695538e40fd36e299be.html">Variable no_inst_oplist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a0831676a3301bb5332be3cf6337a251a.html">Variable NORMALIZE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a7a3997742b390134bf3a57b4a0d60e8d.html">Variable PARAMS_SUFFIX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a55fc2cebb54d08952f24dad5a1072c1e.html">Variable PRUNEAXIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1ae349defe5a73f610785e5d81793a1004.html">Variable RESHAPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1abcb984dc5d0a0f0d3656c6e318d7a5d8.html">Variable SOFTMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a696055330a3214772ce99216566117c7.html">Variable SPLIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_codegen__options_8h_1abf27f602e2b50b92c4c5ddd6d1225703.html">Define BUYI_ETM_BYTE_UNIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_dll__export_8h_1ae115b0b180fcfa7267fddf08ddacc791.html">Define CG_API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_codegen__options_8h_1afff09866f7e501eaed371b52a2d09bd8.html">Define DDR_BYTE_UNIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_codegen__options_8h_1ac109b9414ae528145282e51e23d12683.html">Define INSTR_BYTE_UNIT</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/buyi_codegen.html">Python API reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/buyi_codegen.MakeNetworkCodeGen.html">buyi_codegen.MakeNetworkCodeGen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/buyi_codegen.CodeGenOptions.html">buyi_codegen.CodeGenOptions</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft CodeGen</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 整体介绍</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 简介</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraftcodegen">1.1.1 Icraft编译流程中的CodeGen</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.2 组件架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.3 功能概要</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.4 指令生成编译流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#my-target-label">二 算子映射</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">三 使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.1 安装与依赖</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.2 参数配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">3.3 API调用</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">四 算子支持情况</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">五 报错说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5.1 错误码说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">六 测试方法</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">6.1 单元测试</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">6.2 组件测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">七 索引</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">八 开发细节</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-codegen">
+<h1>Icraft CodeGen<a class="headerlink" href="#icraft-codegen" title="此标题的永久链接">#</a></h1>
+<section id="id1">
+<h2>一 整体介绍<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="id2">
+<h3>1.1 简介<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<p>Icraft CodeGen(指令生成组件，以下简称CodeGen或指令生成)是Icraft中位于量化器和适配器后的后端组件，主要负责将量化且适配后的模型转化为能在硬件上运行的指令。</p>
+<section id="icraftcodegen">
+<h4>1.1.1 Icraft编译流程中的CodeGen<a class="headerlink" href="#icraftcodegen" title="此标题的永久链接">#</a></h4>
+<p>Icraft编译器的编译流程包括：解析》优化》量化》适配》指令生成。指令生成作为编译的最后一环，其输入来自适配器的输出，其作用在于将网络模型按算子或结构映射为能在AI加速核上运行的指令模型。</p>
+</section>
+<section id="id3">
+<h4>1.1.2 组件架构<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h4>
+<p>CodeGen组件结构上包括三个动态库：icraft_buyi_codegen.dll、icraft_buyi_taskgen.dll、icraft_buyi_instgen.dll，分别是算子级的codegen，任务级的taskgen以及指令级的instgen，共三级逻辑。其中codegen用于实现各nn算子的操作，包括算子合并和替换、地址分配等，taskgen用于将合并后算子转换为Task序列，instgen则是根据Task序列，生成对应的指令序列。其中各功能之间的映射关系请参见 <a class="reference external" href="#my-target-label">算子映射</a>。</p>
+</section>
+<section id="id5">
+<h4>1.1.3 功能概要<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<p>CodeGen组件包含以下几个比较重要的功能点：</p>
+<p><strong>算子映射：</strong></p>
+<p>算子映射依次进行将量化适配后模型的XIR算子序列映射为AI核对应的计算（AI硬算子，以下简称HardOp）序列，再将HardOp序列映射为表征任务的任务（以下简称Task）序列，最后将Task序列映射为表征硬件操作的指令序列（以下简称Inst），各阶段序列的映射关系请参见 <a class="reference external" href="#my-target-label">算子映射</a>。</p>
+<p><strong>地址分配：</strong></p>
+<p>CodeGen组件根据需求对网络模型中的参数、输入输出进行地址分配。其中模型参数按顺序依次存放在外部存储（External Memory，以下简称ETM）中，输入输出特征图紧随其后依次存放。由于ETM存储AI核的通信带宽受限，为了提高效率，CodeGen组件将部分满足条件的输入输出特征图存放在片上存储（On-Chip Memory，以下简称OCM）中，从而减小读写ETM的带宽压力，提高模型在硬件上的运行效率。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>由于硬件的限制，需要在开头预留64个ETM（此处为DDR）地址。</p>
+</div>
+<p>地址分配以byte为单位，json文件中的地址也为byte地址。因此对于存放格式有一定的要求：每个算子的参数以及输入输出特征图需要以ETM（64bytes）第一个byte作为起始地址，即对齐64byte地址。每个算子的指令按ETM（64bytes）第一个byte作为起始地址，且用空指令补齐64bytes。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>对于concat的输入以及split的输出，由于要拼接成一个完整特征图或需要从一个完整特征图分离成多个特征图，因此多个输入或多个输出需要连续存放。</p>
+</div>
+<img alt="_images/memmanage.png" src="_images/memmanage.png" />
+<p>目前CodeGen提供两种OCM分配方案：</p>
+<p id="ocmopt-1-label"><em>全局评分法</em></p>
+<p>记录所有可用OCM的特征图，记录它们的ID、起始时间、寿命、大小等信息；
+分配器将全局分析，确定出每个特征图是否使用OCM以及具体分配位置；
+并根据各特征图的得分来决定分配优先级;</p>
+<p id="ocmopt-2-label"><em>局部最优动态规划法</em></p>
+<p>每个节点记录M个最优（读写数据量最大的前M种情况）
+第N个节点分别在前N-1个节点各自的前M个最优情况下进行分配，并记录该节点的M个最优情况，以此类推；
+最后一个节点与前面所有节点的前M个最优进行组合，选取最终的最优解；
+算法复杂度：M*O(n^2)；</p>
+<p id="ocmopt-3-label"><em>顺序按评分踢出法</em></p>
+<p>按顺序遍历所有的特征图，能存放时即分配OCM地址，若遍历到某个特征图时发现OCM空间不够，则对比该特征图与已分配的特征图的得分，若该特征图得分较高，则按顺序踢出第一个得分较低的特征图，否则不给该特征图分配OCM空间；</p>
+<p>用户可配置OCM优化选项请参见 <a class="reference external" href="#ocmopt-label">OCM优化配置说明</a>。</p>
+<p>随着大模型越来越成熟，应用也越来越广泛，当前板卡的ETM（通常为2G或4G）内存越来越紧张。为了能尽可能支持大模型的部署，CodeGen组件还提供了对ETM中特征图的内存优化。其中回收浪费内存是固定的优化方法，排序复用内存法则是一种用于内存回收的优化方案。</p>
+<p id="etmopt-2-label"><em>回收浪费的内存</em></p>
+<p>ETM的地址分配是按照顺序对特征图进行分配，当遇到concat/split/reshape这类无指令算子，只需要将输入指定到输出地址上，或者将输出指定到输入地址上即可。如是便会浪费原来分配的输入或输出的内存空间。为了更高效地利用ETM，CodeGen的ETM优化将回收这部分被浪费的内存。</p>
+<p id="etmopt-1-label"><em>排序复用内存法</em></p>
+<p>ETM的地址分配是按照顺序对特征图进行分配，当各算子输入特征图被使用完成且再无其他算子需要该特征图时，其内存空间可以被释放出来。为了更高效地利用ETM，CodeGen的ETM优化将释放这部分内存用以给其他特征图使用。排序复用内存法是先将所有的特征图按照尺寸大小进行排序，并按照从大到小进行地址分配，记录每个特征图的生命周期以确保所有特征图没有时间和空间上的重叠。该方案的优势是尽可能将大的特征图放在低地址空间，减少中间释放时空隙放不下其他特征图的情况。一般而言，该方案能达到最优的分配方式，最大程度减小对ETM的空间占用。</p>
+<p>用户可配置ETM优化选项请参见 <a class="reference external" href="#etmopt-label">ETM优化配置说明</a>。</p>
+<p><strong>Tile划分与MAC调度：</strong></p>
+<p>由于硬件计算过程中需要缓存部分数据以提高计算效率，因此通常会将特征图按硬件的缓存大小进行划分，本文档将划分后的特征图块称为一个Tile。硬件的计算以Tile为单位。</p>
+<p>特征图在通道上按照固定长度为单位（布衣架构中支持通道长度单位为1，2，4，8，16，32，以下简称Cu）,将输入输出按照Cu进行Tile划分，如下图所示：</p>
+<img alt="_images/CTile.png" src="_images/CTile.png" />
+<p>特征图在面上按照缓存大小进行划分，分块进行计算，如下图所示：</p>
+<img alt="_images/HWTile.png" src="_images/HWTile.png" />
+<p>上述两个图表明了Icraft对特征图的划块方式（以下简称Tile划分），在AI核上的计算是以Tile为单位进行的，可以根据调度的不同，对不同的Tile进行并行或串行的计算。</p>
+<p>由于布衣架构的AI核中包含4X4个MPE（矩阵处理引擎，后续简称MPE，用户可配置），共四行乘四列。每个MPE中包含一个MAC（乘加模块，后续简称MAC）单元，因此可以通过MAC调度使多个Tile并行计算。</p>
+<img alt="_images/MPE-array.png" src="_images/MPE-array.png" />
+<p>用户可配置MPE的数量，以平衡模型计算的效率和功耗，其中可配置项 <a class="reference external" href="#AIcore-label">AI核配置说明</a>。</p>
+</section>
+<section id="id7">
+<h4>1.1.4 指令生成编译流程<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h4>
+<p>CodeGen组件的编译流程如下：</p>
+<p><em>解析适配后模型，获得XIR算子序列</em></p>
+<p><em>将XIR算子序列根据模式匹配规则映射为HardOp序列，并记录算子的信息</em></p>
+<p>模式匹配与HardOp的映射关系请参见 <a class="reference external" href="#my-target-label">算子映射</a>。</p>
+<p><em>为参数、输入输出分配地址</em></p>
+<p>本组件首先对参数进行地址分配，按32byte对齐。再对输入输出特征图进行地址分配，按64byte对齐。最后指令按顺序存放在其后，按64byte对齐。</p>
+<p><em>指令映射</em></p>
+<p>HardOp与Task序列的映射关系请参见 <a class="reference external" href="#my-target-label">算子映射</a>。
+Task序列与Inst序列的映射关系请参见 <a class="reference external" href="#my-target-label">算子映射</a>。</p>
+<p><em>生成带指令的模型</em></p>
+<p><em>合并硬算子</em></p>
+<p>本组件提供可配的合并硬算子功能，用于将连续的hardop进行合并，以减少icore与软件的交互，从而提高运行效率。</p>
+</section>
+</section>
+</section>
+<section id="my-target-label">
+<span id="id11"></span><h2>二 算子映射<a class="headerlink" href="#my-target-label" title="此标题的永久链接">#</a></h2>
+<p>CodeGen组件的核心是算子的下降，从XIR算子序列映射为HardOp算子序列，在映射到Task序列，最后到Inst序列，从而实现从算子到任务再到硬件操作的下降。其映射关系如下表：</p>
+<table class="table" id="id28">
+<caption><span class="caption-text">Table.pattern</span><a class="headerlink" href="#id28" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Xirop</p></th>
+<th class="head"><p>rules</p></th>
+<th class="head"><p>pattern</p></th>
+<th class="head"><p>hardop</p></th>
+<th class="head"><p>task</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Act</p></td>
+<td><p>act_rule</p></td>
+<td><p>激活</p></td>
+<td><p>opActCompile</p></td>
+<td><p>addLutAct</p></td>
+</tr>
+<tr class="row-odd"><td><p>Add</p></td>
+<td><p>addact_rule/add_rule</p></td>
+<td><p>add+激活/add</p></td>
+<td><p>opEltwiseCompile</p></td>
+<td><p>addVlcu + addVactToEtm</p></td>
+</tr>
+<tr class="row-even"><td><p>Add</p></td>
+<td><p>add_rule</p></td>
+<td><p>add</p></td>
+<td><p>opEltwiseCompile</p></td>
+<td><p>addVlcu + addVactToEtm</p></td>
+</tr>
+<tr class="row-odd"><td><p>AlignAxis</p></td>
+<td><p>align_axis_rule</p></td>
+<td><p>补通道算子</p></td>
+<td><p>opAlignAxisCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-even"><td><p>BatchNorm</p></td>
+<td><p>bnact_rule/bn_rule</p></td>
+<td><p>batchnorm+激活/batchnorm</p></td>
+<td><p>opScaleCompile</p></td>
+<td><p>addVlcu + addVactToEtm</p></td>
+</tr>
+<tr class="row-odd"><td><p>Concat</p></td>
+<td><p>concat_real_rule/concat_rule</p></td>
+<td><p>有实际数据搬移的concat /没有数据搬移的concat，只需通过修改地址即可实现（优先级高于需要搬移的concat）</p></td>
+<td><p>opConcatCompile/null</p></td>
+<td><p>addAssign/null</p></td>
+</tr>
+<tr class="row-even"><td><p>Conv2d</p></td>
+<td><p>convact_rule/conv_rule</p></td>
+<td><p>卷积或分组卷积或conv2d_ftmp算子与激活算子的组合/卷积或分组卷积或conv2d_ftmp算子</p></td>
+<td><p>opConvCompile or opGroupConvCompile</p></td>
+<td><p>addMpeConv + addVpeAccToEtm</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conv2d</p></td>
+<td><p>convpool_rule/crp_rule</p></td>
+<td><p>卷积或conv2d_ftmp算子与pool算子的组合/卷积或conv2d_ftmp算子与relu以及pool算子的组合</p></td>
+<td><p>opConvPoolCompile</p></td>
+<td><p>addMpeConv + addPoolMax(addPoolAvg) + addVpeAccToEtm</p></td>
+</tr>
+<tr class="row-even"><td><p>Conv2d</p></td>
+<td><p>dwact_ftmp_rule/dwact_rule/dw_ftmp_rule/dw_rule</p></td>
+<td><p>两个输入都为ftmp的深度可分离卷积+激活（优先级高于卷积）/深度可分离卷积+激活（优先级高于卷积）/两个输入都为ftmp的深度可分离卷积（优先级高于卷积）/深度可分离卷积（优先级高于卷积）</p></td>
+<td><p>opDwFtmpCompile/opDwCompile/opDwFtmpCompile/opDwCompile</p></td>
+<td><p>addVlcu + addVactToEtm</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conv2dTranspose</p></td>
+<td><p>convtransposeact_rule/convtrans_rule</p></td>
+<td><p>反卷积+激活/反卷积</p></td>
+<td><p>opConvTransposeCompile</p></td>
+<td><p>addMpeConv + addVpeAccToEtm</p></td>
+</tr>
+<tr class="row-even"><td><p>Copy</p></td>
+<td><p>copy_rule</p></td>
+<td><p>copy算子</p></td>
+<td><p>opCopyCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-odd"><td><p>Expand</p></td>
+<td><p>expand_rule</p></td>
+<td><p>广播算子</p></td>
+<td><p>opExpandCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-even"><td><p>InstanceNorm2D</p></td>
+<td><p>instancenorm2d_rule</p></td>
+<td><p>硬算子InstanceNorm2D</p></td>
+<td><p>单独的硬算子指令</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layernorm</p></td>
+<td><p>layernorm_rule</p></td>
+<td><p>硬算子Layernorm</p></td>
+<td><p>单独的硬算子指令</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Matmul</p></td>
+<td><p>matmulact_rule/matmul_rule</p></td>
+<td><p>矩阵乘+激活/矩阵乘</p></td>
+<td><p>opMatMulCompile</p></td>
+<td><p>addMatrixMul + addVpeAccToEtm</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiply</p></td>
+<td><p>multiplyact_rule/multiply_rule</p></td>
+<td><p>乘法+激活/乘法</p></td>
+<td><p>opSacMulCompile</p></td>
+<td><p>addVlcu + addVactToEtm</p></td>
+</tr>
+<tr class="row-even"><td><p>Normalize</p></td>
+<td><p>normalize_rule</p></td>
+<td><p>硬算子Normalize</p></td>
+<td><p>单独的硬算子指令</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Pad</p></td>
+<td><p>pad_dim_rule/pad_rule</p></td>
+<td><p>任意维度pad/NHWC面上pad</p></td>
+<td><p>opPadDimCompile/opPadCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-even"><td><p>Maxpool/Avgpool</p></td>
+<td><p>pool_rule</p></td>
+<td><p>池化</p></td>
+<td><p>opPoolCompile</p></td>
+<td><p>addAssignWithPad + addPoolMax （addPoolAvg）</p></td>
+</tr>
+<tr class="row-odd"><td><p>PruneAxis</p></td>
+<td><p>prune_axis_rule</p></td>
+<td><p>去通道算子</p></td>
+<td><p>opPruneAxisCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-even"><td><p>Reshape</p></td>
+<td><p>reshape_rule</p></td>
+<td><p>Reshape算子</p></td>
+<td><p>null</p></td>
+<td><p>null</p></td>
+</tr>
+<tr class="row-odd"><td><p>Slice</p></td>
+<td><p>slice_rule</p></td>
+<td><p>slice算子</p></td>
+<td><p>opSliceCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-even"><td><p>Softmax</p></td>
+<td><p>softmax_rule</p></td>
+<td><p>softmax算子</p></td>
+<td><p>单独的硬算子指令</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Split</p></td>
+<td><p>split_rule</p></td>
+<td><p>split算子</p></td>
+<td><p>null</p></td>
+<td><p>null</p></td>
+</tr>
+<tr class="row-even"><td><p>Transpose</p></td>
+<td><p>transpose_cw_rule/transpose_wh_rule</p></td>
+<td><p>最后两维交换/除最后一维其他任意两个维度交换</p></td>
+<td><p>opTransposeCWCompile/opTransposeWHCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+<tr class="row-odd"><td><p>Upsample</p></td>
+<td><p>upsample_rule</p></td>
+<td><p>upsample算子</p></td>
+<td><p>opResizeCompile</p></td>
+<td><p>addAssign/addResize</p></td>
+</tr>
+<tr class="row-even"><td><p>Roll</p></td>
+<td><p>roll_rule</p></td>
+<td><p>roll算子</p></td>
+<td><p>opRollCompile</p></td>
+<td><p>addAssign</p></td>
+</tr>
+</tbody>
+</table>
+<p>上述列表中，第一列为XIR对应的算子序列，由输入的Json和Raw文件解析所得。第二列的rules为CodeGen中定义的模式匹配规则列表，每个规则对应一个pattern，即第三列的内容，pattern是指原XIR的算子中可以进行融合的组合，或是根据参数的不同分别进行不同实现的组合等。第四列将不同的pattern映射到不同类型的带指令HardOp上，每个类型的HardOp对应不同的映射关系，根据各自的映射关系将算子的组合映射为任务列表，即第五列的task序列。</p>
+</section>
+<section id="id12">
+<h2>三 使用说明<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h2>
+<section id="id13">
+<h3>3.1 安装与依赖<a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h3>
+<p>Icraft编译器由应用程序和对应的依赖库构成，以安装包的形式提供给用户。用户在使用Icraft编译器前，需要先安装编译器安装包、第三方依赖库以及一些常见的自定义硬算子demo。
+安装上述Icraft后即可使用icraft-generate实现指令生成的调用。</p>
+</section>
+<section id="id14">
+<h3>3.2 参数配置<a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h3>
+<p>安装完成后如需单独通过CLI调用，则可按以下示例实现：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nl">C</span><span class="p">:</span><span class="o">/</span><span class="n">Icraft</span><span class="o">-</span><span class="n">CLI</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">icraft</span><span class="o">-</span><span class="n">generate</span><span class="p">.</span><span class="n">exe</span><span class="w"> </span><span class="o">--</span><span class="n">json</span><span class="w"> </span><span class="s">&quot;json&amp;raw/resnet101_adapted.json&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">raw</span><span class="w"> </span><span class="s">&quot;json&amp;raw/resnet101_adapted.raw&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">log_path</span><span class="w"> </span><span class="s">&quot;logs//generator/&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">jr_path</span><span class="w"> </span><span class="s">&quot;json&amp;raw/&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">ocmopt</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">--</span><span class="n">icropt</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">--</span><span class="n">xlmopt</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">--</span><span class="n">klmopt</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">--</span><span class="n">rows</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">--</span><span class="n">cols</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">--</span><span class="n">etmopt</span><span class="w"> </span><span class="mi">-1</span>
+</pre></div>
+</div>
+<p>其中，详细的参数列表如下所示：</p>
+<span id="command-line"></span><table class="table" id="id29">
+<caption><span class="caption-text">Table.指令生成参数列表</span><a class="headerlink" href="#id29" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名字</p></th>
+<th class="head"><p>数据格式</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>json</p></td>
+<td><p>string</p></td>
+<td><p>输入的中间层JSON文件(adapted阶段)</p></td>
+</tr>
+<tr class="row-odd"><td><p>raw</p></td>
+<td><p>string</p></td>
+<td><p>输入的中间层RAW文件(adapted阶段)</p></td>
+</tr>
+<tr class="row-even"><td><p>jr_path</p></td>
+<td><p>string</p></td>
+<td><p>输出的中间文件存放的路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>log_path</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示log文件的存放路径，省略则为默认路径</p></td>
+</tr>
+<tr class="row-even"><td><p>path</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示路径，通常与network配合使用，表示网络路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>network</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示网络名称，通常与path配合使用，表示网络路径，json+raw、path+network的组合仅可存在一组</p></td>
+</tr>
+<tr class="row-even"><td><p>ddr_base</p></td>
+<td><p>int（optional）</p></td>
+<td><p>表示预留的地址空间，默认预留64x64 bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p>rows（optional）</p></td>
+<td><p>int 1~4（optional）</p></td>
+<td><p>表示AI CORE采用的PE阵列数量（行），默认4</p></td>
+</tr>
+<tr class="row-even"><td><p>cols（optional）</p></td>
+<td><p>int 1~4（optional）</p></td>
+<td><p>表示AI CORE采用的PE阵列数量（列），默认4</p></td>
+</tr>
+<tr class="row-odd"><td><p>xlmopt</p></td>
+<td><p>int（optional）</p></td>
+<td><p>表示对ifm的优化，默认3，最高级优化</p></td>
+</tr>
+<tr class="row-even"><td><p>klmopt</p></td>
+<td><p>int（optional）</p></td>
+<td><p>表示对kernenl的优化，默认3，最高级优化</p></td>
+</tr>
+<tr class="row-odd"><td><p>icropt</p></td>
+<td><p>int（optional）</p></td>
+<td><p>表示对指令的优化，默认1，打开优化</p></td>
+</tr>
+<tr class="row-even"><td><p>ocmopt</p></td>
+<td><p>int（optional） -1/0/1/2/3</p></td>
+<td><p>表示选择ocm的优化方案，默认-1;-1表示遍历方案1和2选得分较高的方案；0表示关闭ocm优化；1表示选择方案1，2表示选择方案2，3表示选择方案3</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p>bool（optional）</p></td>
+<td><p>表示是否打印版本信息，默认不打印</p></td>
+</tr>
+<tr class="row-even"><td><p>device_info</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示fpga硬算子所需的硬件信息，通常为一组寄存器信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>etmopt</p></td>
+<td><p>int（optional） -2/-1/0/1</p></td>
+<td><p>表示选择etm的优化方案，默认为-1；-2表示只做回收浪费的内存;-1表示两种内存优化都做；0表示不做任何内存优化；1表示只做排序复用内存法</p></td>
+</tr>
+<tr class="row-even"><td><p>no_mergeops</p></td>
+<td><p>bool optional</p></td>
+<td><p>表示选择是否打开合并硬算子功能，默认打开；不配置该参数表示打开，配置该参数表示关闭</p></td>
+</tr>
+</tbody>
+</table>
+<p id="aicore-label"><strong>AI核数量的配置：</strong></p>
+<p>上述配置列表中–cols，–rows共同决定了AI的MPE阵列的大小，即AI核中MAC的数量（cols*rows）。根据1.3中*Tile划分与MAC调度*所介绍，将特征图进行划块后，可以根据划块的数量来配置MPE阵列的大小，对于划块数量较小的模型，可以适当减小MPE阵列，以在不影响效率的情况下减小功耗。</p>
+<p>cols和rows分别为1~4的整数，可以进行任意组合，请结合模型情况和应用需求选取合适的大小进行配置。</p>
+<p><strong>合并算子配置：</strong></p>
+<p>连续在icore核上运行的算子可以进行合并，并通过指令中的握手逻辑进行数据握手，以便在模型运行阶段能减少与软件的交互，从而提高运行效率。在codegen中进行合并，并保证各子图间完全独立，不存在握手和状态的依赖，各子图内部按照规定逻辑进行握手。</p>
+<p id="ocmopt-label"><strong>OCM分配方案配置：</strong></p>
+<p>上述配置列表中–ocmopt表示OCM的分配方案配置。目前支持配置-1、0、1、2、3。</p>
+<p>其中-1表示遍历1和2的分配方案并计算每种分配方案的得分，选取最高分作为最终的方案。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>得分最高只在一定程度上表示性能较高，并不能完全等效于性能最高。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>方案2对于算子数量较多的网络，其编译时间较长，因此我们建议当用户网络的算子个数大于500时，可以直接通过–ocmopt 1来选定优化方案1。编译时报出信息：”Please note: ops.size = {}, it is not suitable to use scheme 2 and is skipped. “</p>
+</div>
+<p>0表示不进行OCM分配，所有数据均不放在OCM上。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>目前有部分模型包含了超大global pool（pool_h*pool_w&gt;2048），由于CodeGen实现上的缺陷，需要关闭OCM的优化选项，强制需要配置–ocmopt为0。</p>
+</div>
+<p>1表示选择第一个OCM分配方案，详见地址分配中的 <a class="reference external" href="#ocmopt-1-label">全局评分法</a></p>
+<p>2表示选择第二个OCM分配方案，详见地址分配中的 <a class="reference external" href="#ocmopt-2-label">局部最优动态规划法</a></p>
+<p>3表示选择第三种OCM分配方案，详见地址分配中的 <a class="reference external" href="#ocmopt-3-label">顺序按评分踢出法</a></p>
+<p id="etmopt-label"><strong>ETM分配方案配置：</strong></p>
+<p>上述配置列表中–etmopt表示ETM的分配方案配置。目前支持配置-2、-1、0、1。</p>
+<p>-2表示只开启回收浪费的内存，详见地址分配中的 <a class="reference external" href="#etmopt-2-label">回收浪费的内存</a></p>
+<p>-1表示所有的ETM内存优化都做，包括回收浪费的内存和复用内存。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>设置–etmopt = -1时虽然同时进行了回收浪费的内存和复用内存，但是效果可能与单独进行复用内存相同，因为通常网络中间层的算子的输入输出都会被回收并复用。</p>
+</div>
+<p>0表示不开启ETM优化。</p>
+<p>1表示只开启复用内存优化，详见地址分配中的 <a class="reference external" href="#etmopt-1-label">排序复用内存法</a></p>
+<p><strong>Tile划分优化：</strong></p>
+<p>在1.1.3的*Tile划分与MAC调度*中介绍了Tile划分的概念，计算以Tile为单位，并在计算前将一个Tile的数据传输到硬件上进行缓存，因此Tile的尺寸越大，缓存的数据越多，其效率越高。所以推荐用户在输入尺寸可选的情况下，尽可能选择能被划分为大尺寸Tile的输入尺寸，以提高计算资源的利用率。</p>
+<p><strong>优化配置说明：</strong></p>
+<p>当前指令生成组件所支持的优化有以下几种：</p>
+<table class="table" id="id30">
+<caption><span class="caption-text">Table.优化类型</span><a class="headerlink" href="#id30" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>优化选项</p></th>
+<th class="head"><p>优化力度</p></th>
+<th class="head"><p>优化内容</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ocmopt</p></td>
+<td><p>-1</p></td>
+<td><p>表示选择ocm的优化方案，默认-1;-1表示遍历方案1和2选得分较高的方案；0表示关闭ocm优化；1表示选择方案1，2表示选择方案2，3表示选择方案3</p></td>
+<td><p>Ocm=2MB，数据是否存放在ocm中，减小etm带宽压力</p></td>
+</tr>
+<tr class="row-odd"><td><p>xlmopt</p></td>
+<td><p>&gt;=2</p></td>
+<td><p>通道折叠</p></td>
+<td><p>当面较小，通道较大时，将通道折叠到面上，减少Tile数</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>&gt;=3</p></td>
+<td><p>面上划Tile分配到多个MPE并行计算</p></td>
+<td><p>避免只使用一个MPE计算，其他MPE空闲的情况</p></td>
+</tr>
+<tr class="row-odd"><td><p>klmopt</p></td>
+<td><p>&gt;=2</p></td>
+<td><p>合并相同的读参数Task</p></td>
+<td><p>当相邻两个读参数Task满足跳转一致，地址连续则合并为一个读参数Tasktask</p></td>
+</tr>
+<tr class="row-even"><td><p>icropt</p></td>
+<td><p>&gt;=0</p></td>
+<td><p>消除重复立即数指令</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>etmopt</p></td>
+<td><p>-1</p></td>
+<td><p>-1表示所有的ETM内存优化都做，包括回收浪费的内存和复用内存；0表示不开启ETM优化；1表示只开启复用内存优化；-2表示只开启回收浪费的内存</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>no_mergeops</p></td>
+<td><p>false</p></td>
+<td><p>不配置该参数表示默认打开硬算子合并功能，配置–no_mergeops表示关闭，默认打开</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="api">
+<h3>3.3 API调用<a class="headerlink" href="#api" title="此标题的永久链接">#</a></h3>
+<p>头文件：
+icraft-code/gen</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">cg</span><span class="o">::</span><span class="n">MakeNetworkCodeGen</span><span class="p">(</span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Network</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">CodeGenOptions</span><span class="o">&amp;</span><span class="w"> </span><span class="n">options</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>C++API示例：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">// 构造所需量化数据类型</span>
+<span class="linenos"> 4</span><span class="n">TensorType</span><span class="w"> </span><span class="nf">GetFQuantizedTensorType</span><span class="p">(</span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Layout</span><span class="w"> </span><span class="n">layout</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shape</span><span class="p">[</span><span class="n">layout</span><span class="p">.</span><span class="n">getIndexOf</span><span class="p">(</span><span class="sc">&#39;C&#39;</span><span class="p">)];</span>
+<span class="linenos"> 6</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shape</span><span class="p">[</span><span class="n">layout</span><span class="p">.</span><span class="n">getIndexOf</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">)];</span>
+<span class="linenos"> 7</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">chann</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">normratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">chann</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">scales</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">QuantizedScaleArray</span><span class="p">(</span><span class="n">chann</span><span class="p">,</span><span class="w"> </span><span class="n">ExpQuantizedScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.f</span><span class="p">));</span>
+<span class="linenos">10</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">qt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NormalizedQuantizedType</span><span class="p">(</span><span class="n">normratio</span><span class="p">,</span><span class="w"> </span><span class="n">scales</span><span class="p">,</span><span class="w"> </span><span class="n">IntegerType</span><span class="o">::</span><span class="n">SInt8</span><span class="p">());</span>
+<span class="linenos">11</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">qt</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">layout</span><span class="p">));</span>
+<span class="linenos">12</span><span class="p">}</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// 初始化target</span>
+<span class="linenos">15</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuyiTarget</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">16</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostTarget</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1">//　定义网络的名称、前端框架和框架版本</span>
+<span class="linenos">19</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="p">(</span><span class="s">&quot;whatever&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Framework</span><span class="o">::</span><span class="n">PYTORCH</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;v1.9&quot;</span><span class="p">);</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1">// 构造网络的输入</span>
+<span class="linenos">22</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">input_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">23</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Input</span><span class="p">(</span><span class="n">input_type</span><span class="p">);</span>
+<span class="linenos">24</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="c1">// 添加Cast算子</span>
+<span class="linenos">27</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">target_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">IntegerType</span><span class="o">::</span><span class="n">SInt8</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NCHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">28</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">cast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cast</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">target_type</span><span class="p">);</span>
+<span class="linenos">29</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">cast_output_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetFQuantizedTensorType</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NCHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">30</span><span class="w">      </span><span class="n">cast</span><span class="p">.</span><span class="n">inferResults</span><span class="p">({</span><span class="w"> </span><span class="n">cast_output_type</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">31</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">cast</span><span class="p">);</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="c1">// 添加Cast算子</span>
+<span class="linenos">34</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Copy</span><span class="p">(</span><span class="n">cast</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="linenos">35</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">copy</span><span class="p">);</span>
+<span class="linenos">36</span><span class="w">      </span><span class="n">copy</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">().</span><span class="n">createAddMergedDistr</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">37</span><span class="w">      </span><span class="n">copy</span><span class="p">.</span><span class="n">setCompileTarget</span><span class="p">(</span><span class="n">buyi</span><span class="p">);</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="c1">// 添加Concat算子</span>
+<span class="linenos">40</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">concat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Concat</span><span class="p">({</span><span class="w"> </span><span class="n">cast</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">copy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">41</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">concat_output_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetFQuantizedTensorType</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NCHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">42</span><span class="w">      </span><span class="n">concat</span><span class="p">.</span><span class="n">inferResults</span><span class="p">({</span><span class="w"> </span><span class="n">concat_output_type</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">43</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">concat</span><span class="p">);</span>
+<span class="linenos">44</span><span class="w">      </span><span class="n">concat</span><span class="p">.</span><span class="n">setCompileTarget</span><span class="p">(</span><span class="n">buyi</span><span class="p">);</span>
+<span class="linenos">45</span>
+<span class="linenos">46</span><span class="c1">// 添加Slice算子</span>
+<span class="linenos">47</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Slice</span><span class="p">(</span><span class="n">concat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">48</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">slice_output_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetFQuantizedTensorType</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">416</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NCHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">49</span><span class="w">      </span><span class="n">slice</span><span class="p">.</span><span class="n">inferResults</span><span class="p">({</span><span class="w"> </span><span class="n">slice_output_type</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">50</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">slice</span><span class="p">);</span>
+<span class="linenos">51</span><span class="w">      </span><span class="n">slice</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">().</span><span class="n">createAddMergedDistr</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">52</span><span class="w">      </span><span class="n">slice</span><span class="p">.</span><span class="n">setCompileTarget</span><span class="p">(</span><span class="n">buyi</span><span class="p">);</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span><span class="c1">// 添加Reshape算子</span>
+<span class="linenos">55</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">reshape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Reshape</span><span class="p">(</span><span class="n">slice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;CHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">56</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">reshape_output_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetFQuantizedTensorType</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;CHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">57</span><span class="w">      </span><span class="n">reshape</span><span class="p">.</span><span class="n">inferResults</span><span class="p">({</span><span class="w"> </span><span class="n">reshape_output_type</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">58</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">reshape</span><span class="p">);</span>
+<span class="linenos">59</span><span class="w">      </span><span class="n">reshape</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">().</span><span class="n">createAddMergedDistr</span><span class="p">({</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">60</span><span class="w">      </span><span class="n">reshape</span><span class="p">.</span><span class="n">setCompileTarget</span><span class="p">(</span><span class="n">buyi</span><span class="p">);</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span><span class="c1">// 添加第二个Cast算子</span>
+<span class="linenos">63</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">target_type1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TensorType</span><span class="p">(</span><span class="n">FloatType</span><span class="o">::</span><span class="n">FP32</span><span class="p">(),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">208</span><span class="p">,</span><span class="w"> </span><span class="mi">208</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">Layout</span><span class="p">(</span><span class="s">&quot;NHWc32&quot;</span><span class="p">));</span>
+<span class="linenos">64</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">cast1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cast</span><span class="p">(</span><span class="n">reshape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">target_type1</span><span class="p">);</span>
+<span class="linenos">65</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">cast1</span><span class="p">);</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span><span class="c1">//构造输出</span>
+<span class="linenos">68</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Output</span><span class="p">(</span><span class="n">cast1</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="linenos">69</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">addOp</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+<span class="linenos">70</span>
+<span class="linenos">71</span><span class="c1">//构造指令生成的配置结构体</span>
+<span class="linenos">72</span><span class="w">      </span><span class="n">CodeGenOptions</span><span class="w"> </span><span class="n">options</span><span class="p">(</span><span class="n">network</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./log/whatever/&quot;</span><span class="p">);</span>
+<span class="linenos">73</span>
+<span class="linenos">74</span><span class="c1">//调用指令生成API生成指令网络</span>
+<span class="linenos">75</span><span class="n">MakeNetworkCodeGen</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="linenos">76</span>
+<span class="linenos">77</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">78</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">JR</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">79</span><span class="w">             </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="n">JR</span><span class="p">);</span>
+<span class="linenos">80</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">81</span><span class="c1">//dump出指令网络</span>
+<span class="linenos">82</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">dumpJsonToFile</span><span class="p">(</span><span class="n">JR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">BY</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">JSON_SUFFIX</span><span class="p">);</span>
+<span class="linenos">83</span><span class="w">      </span><span class="n">network</span><span class="p">.</span><span class="n">dumpParamsToFile</span><span class="p">(</span><span class="n">JR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">BY</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PARAMS_SUFFIX</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>pythonAPI示例：</p>
+</section>
+</section>
+<section id="id20">
+<h2>四 算子支持情况<a class="headerlink" href="#id20" title="此标题的永久链接">#</a></h2>
+<table class="table" id="id31">
+<caption><span class="caption-text">Table.算子支持情况</span><a class="headerlink" href="#id31" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 14.3%" />
+<col style="width: 19.0%" />
+<col style="width: 47.6%" />
+<col style="width: 19.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>算子类型</p></th>
+<th class="head"><p>约束对象</p></th>
+<th class="head"><p>约束说明</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Act</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>输入输出形状一致</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Add</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>支持两个ftmp相加，或ftmp与常数tensor相加，或常数与ftmp相加，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>两个输入维度数相同，支持两个相同形状的tensor相加，或一个tensor与vector相加，且要求通道维度相等（Cc）</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>alpha、beta</p></td>
+<td><p>量化系数一致</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Batchnorm</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个或两个params输入（bias可选）。一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Concat</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>支持多个ftmp的拼接，或ftmp与常数tensor的拼接，其中tensor最多只能有一个，ftmp可以有多个，顺序任意。一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>多个输入维度数相同，多个输入除了拼接维度可以不相等，其余维度必须相等</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Conv2d</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>支持正常卷积（一个ftmp输入，一个或两个参数params输入，weights，bias可选）或两个ftmp的卷积。一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>第一个输入和输出ftmp为5维，第二个输入为6维</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>第一个输入维度为NCHWc，第二个输入维度为OIWHoi，第三个输入（若有）维度为Oo</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>kernel</p></td>
+<td><p>groups=1时大小无限制，其余情况：(dilation_w * (W - 1) + 1) * (dilation_h * (H - 1) + 1) &lt;= LMDEPTH</p></td>
+<td><p>第二个输入的W和H</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>stride_width、stride_height</p></td>
+<td><p>(ifm_w - ((dilation_w * (W - 1) + 1)) + pad_left + pad_right) % stride_width = 0;(ifm_h - ((dilation_h * (H - 1) + 1)) + pad_top + pad_bottom) % stride_height = 0</p></td>
+<td><p>能整除</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>pad_top、pad_bottom、pad_left、pad_right</p></td>
+<td><p>(dilation_w * (W - 1) + 1) * (dilation_h * (H - 1) + 1) &gt; LMDEPTH时，暂只支持pad = 0</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>dilation_width、dilation_height</p></td>
+<td><p>(dilation_w * (W - 1) + 1) * (dilation_h * (H - 1) + 1) &gt; LMDEPTH时，dilation = 1</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>groups</p></td>
+<td><p>groups=1：普通卷积；groups=输入通道=输出通道：深度可分离卷积；else：分组卷积</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>padding_mode</p></td>
+<td><p>只支持ZEROS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Conv2d_transpose</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>目前只支持一个ftmp输入，一个或两个params输入：weights、bias（可选）。一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>第一个输入和输出ftmp为5维，第二个输入为6维</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>第一个输入维度为NCHWc，第二个输入维度为OIWHoi，第三个输入（若有）维度为Oo</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>kernel</p></td>
+<td><p>(dilation_w * (W - 1) + 1) * (dilation_h * (H - 1) + 1) &lt;= LMDEPTH</p></td>
+<td><p>第二个输入的W和H</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>stride_width、stride_height</p></td>
+<td><p>(ifm_w - W + pad_left + pad_right) % stride_width = 0;(ifm_h - H + pad_top + pad_bottom) % stride_height = 0</p></td>
+<td><p>能整除</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>pad_top、pad_bottom、pad_left、pad_right</p></td>
+<td><p>同上</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>dilation_width、dilation_height</p></td>
+<td><p>dilation_width=1 &amp;&amp; dilation_height=1</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>groups</p></td>
+<td><p>只支持groups=1</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Copy</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Matmul</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>支持两个ftmp做矩阵乘，或ftmp与常数tensor做矩阵乘，或常数与ftmp做矩阵乘。一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>两个输入维度数相同，除最后三维外，其余维度满足广播需求（对应维度相等，或对应维度有一个为1）</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>两个输入的最后三维分别为C*c，或CWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Multiply</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>支持两个ftmp相乘，或ftmp与常数tensor相乘,或者常数与ftmp相乘。一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>两个输入维度数相同，支持两个相同形状的tensor相乘，或一个tensor与vector相乘，且要求通道维度相等（Cc）</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Pad</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>支持任意维度的输入输出形式</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出维度不小于3为即可</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>padding</p></td>
+<td><p>目前支持除cu外所有维度的pad</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>mode</p></td>
+<td><p>目前只支持CONSTANT</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>value</p></td>
+<td><p>任意数值常数（量化后不超过量化数据范围）</p></td>
+<td><p>当输入维度为NHWC时，可以支持按通道pad不同常数；当输入为任意维度时，只支持pad同一个常数</p></td>
+</tr>
+<tr class="row-odd"><td><p>Maxpool</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>输入输出均为5维</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出维NCHWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>pool_width、pool_height</p></td>
+<td><p>(dilation_w * (pool_width - 1) + 1) * (dilation_h * (pool_height - 1) + 1) &lt;= LMDEPTH * LMDEPTH(最多切分为二级)；</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>stride_width、stride_height</p></td>
+<td><p>(ifm_w - ((dilation_w * (pool_width - 1) + 1)) + pad_left + pad_right) % stride_width = 0;(ifm_h - ((dilation_h * (pool_height - 1) + 1)) + pad_top + pad_bottom) % stride_height = 0</p></td>
+<td><p>能整除</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>pad_top、pad_bottom、pad_left、pad_right</p></td>
+<td><p>同上</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>dilation_width、dilation_height</p></td>
+<td><p>无限制</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Avgpool</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>输入输出均为5维</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出维NCHWc</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>pool_width、pool_height</p></td>
+<td><p>(dilation_w * (pool_width - 1) + 1) * (dilation_h * (pool_height - 1) + 1) &lt;= LMDEPTH * LMDEPTH(最多切分为二级)；</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>stride_width、stride_height</p></td>
+<td><p>(ifm_w - ((dilation_w * (pool_width - 1) + 1)) + pad_left + pad_right) % stride_width = 0;(ifm_h - ((dilation_h * (pool_height - 1) + 1)) + pad_top + pad_bottom) % stride_height = 0</p></td>
+<td><p>能整除</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>pad_top、pad_bottom、pad_left、pad_right</p></td>
+<td><p>同上</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>divisor_override</p></td>
+<td><p>暂不支持负数情况，当divisor_override！=0时，只支持(dilation_w * (pool_width - 1) + 1) * (dilation_h * (pool_height - 1) + 1) &lt;= LMDEPTH的情况</p></td>
+<td><p>默认为0，表示不覆盖原有分母</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>count_include_pad</p></td>
+<td><p>只支持false</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Reshape</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>转化前后ftmp在硬件上的排布不变</p></td>
+<td><p>通常为相邻维度的合并和拆分</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Slice</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>begin</p></td>
+<td><p>除c维度（最里层维度）begin=0外，其余维度无限制，在输入维度范围内即可</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>end</p></td>
+<td><p>除c维度（最里层维度）end=Cu外，其余维度无限制，在输入维度范围内即可</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>stride</p></td>
+<td><p>除c维度（最里层维度）stride=1外，其余各维度满足（end - begin）能被stride整除即可</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Split</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>sections</p></td>
+<td><p>满足各section的和等于被拆分的维度大小即可</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>axis</p></td>
+<td><p>只支持最外层或第一个不为1的维度的切分</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Transpose</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>当交换最后两个维度时，输入的最后三维分别为C*c，或CWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>dims</p></td>
+<td><p>支持最后两个维度的转置；支持除最后一个维度外，其余任意两个维度的转置</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Upsample</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>输入输出均为5维</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出均为NCHWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>interpolation</p></td>
+<td><p>目前只支持NEAREST、BILINEAR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>height、width</p></td>
+<td><p>NEAREST时，只支持整数倍上采样，BILINEAR可支持非整数倍的上下采样，最大上采用倍数为wup_times * hup_times &lt;= 512</p></td>
+<td><p>非整数倍时NEAREST会被改为BILINEAR</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>align_corners</p></td>
+<td><p>无限制</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layernorm</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出的最后三维分别为C*c，或CWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>axis</p></td>
+<td><p>axis = -2或size-2（axis是倒数第二维）</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>AlignAxis</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出包含”C”</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>PruneAxis</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出包含”C”</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Expand</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>sizes</p></td>
+<td><p>Cu维度‘c’不能进行广播，只能对维度大小为1的维度进行广播，一次只能广播一个维度，多个维度广播需要在adapter中拆分级联为多个广播算子</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Softmax</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出的最后三维分别为C*c，或CWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>axis</p></td>
+<td><p>axis = -2或size-2（axis是倒数第二维）</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Normalize</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>大于2维</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>输入输出的最后三维分别为C*c，或CWc</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>axis</p></td>
+<td><p>倒数第二维</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>InstanceNorm2D</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>NCtWHCu</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>NCtWHCu</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>参数限制</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Roll</p></td>
+<td><p>输入输出形式</p></td>
+<td><p>一个ftmp输入，一个ftmp输出</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>形状限制</p></td>
+<td><p>无限制</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>layout限制</p></td>
+<td><p>无限制</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>shifts</p></td>
+<td><p>不为空</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>dims</p></td>
+<td><p>不为空</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>输入输出限制</strong></p>
+<p>ftmp的尺寸各维度能用16bit数据表示。</p>
+</section>
+<section id="id21">
+<h2>五 报错说明<a class="headerlink" href="#id21" title="此标题的永久链接">#</a></h2>
+<section id="id22">
+<h3>5.1 错误码说明<a class="headerlink" href="#id22" title="此标题的永久链接">#</a></h3>
+<p><strong>22000:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">缺少必须参数</span></code></p></li>
+</ul>
+<p><strong>22001:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">文件或路径不存在</span></code></p></li>
+</ul>
+<p><strong>22002:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数超出范围、格式错误</span></code></p></li>
+</ul>
+<p><strong>22003-22009:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">预留错误码</span></code></p></li>
+</ul>
+<p><strong>22011:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OCM分配相关的错误</span></code></p></li>
+</ul>
+<p><strong>22012:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ETM优化相关错误</span></code></p></li>
+</ul>
+<p><strong>22013:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FPGA算子配置及参数相关错误</span></code></p></li>
+</ul>
+<p><strong>22014:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数及参数范围不支持的错误</span></code></p></li>
+</ul>
+<p><strong>22015:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">输入尺寸不满足算子需求</span></code></p></li>
+</ul>
+<p><strong>22016:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">网络配置参数错误：target、qbits等</span></code></p></li>
+</ul>
+<p><strong>22017:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">网络结构的错误、算子连接、输入输出确实或参数缺失等</span></code></p></li>
+</ul>
+<p><strong>22018:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">量化系数错误：截位不合法、量化系数尺寸不合法等</span></code></p></li>
+</ul>
+<p><strong>22019:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">指令映射内部错误</span></code></p></li>
+</ul>
+<p><strong>22020:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">改指令内部错误</span></code></p></li>
+</ul>
+<p><strong>22021:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">其余错误</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="id23">
+<h2>六 测试方法<a class="headerlink" href="#id23" title="此标题的永久链接">#</a></h2>
+<section id="id24">
+<h3>6.1 单元测试<a class="headerlink" href="#id24" title="此标题的永久链接">#</a></h3>
+<p>针对所有算子类型和pattern进行了单元测试，并在每次修改后自动触发。</p>
+</section>
+<section id="id25">
+<h3>6.2 组件测试<a class="headerlink" href="#id25" title="此标题的永久链接">#</a></h3>
+<p>针对所有算子类型、参数以及各自pattern等进行了单元测试，并在每次修改后自动触发。</p>
+</section>
+</section>
+<section id="id26">
+<h2>七 索引<a class="headerlink" href="#id26" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#full-api">Full API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/buyi_codegen.html">Python API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/buyi_codegen.MakeNetworkCodeGen.html">buyi_codegen.MakeNetworkCodeGen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/buyi_codegen.CodeGenOptions.html">buyi_codegen.CodeGenOptions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="id27">
+<h2>八 开发细节<a class="headerlink" href="#id27" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+<p>请参考 <a class="reference internal" href="dev_index.html"><span class="doc">开发部分</span></a> 获取更多信息.</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="_cppapi/api_root.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 整体介绍</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 简介</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraftcodegen">1.1.1 Icraft编译流程中的CodeGen</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.2 组件架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.3 功能概要</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.4 指令生成编译流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#my-target-label">二 算子映射</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">三 使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.1 安装与依赖</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.2 参数配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">3.3 API调用</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">四 算子支持情况</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">五 报错说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5.1 错误码说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">六 测试方法</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">6.1 单元测试</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">6.2 组件测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">七 索引</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">八 开发细节</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： LiMengyu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

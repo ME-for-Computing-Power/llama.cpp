@@ -1,0 +1,726 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class Quantizer &#8212; Icraft Quantizer 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/classicraft_1_1qt_1_1_quantizer';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Quantizer 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/classicraft_1_1qt_1_1_quantizer.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Class Quantizer</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-quantizer">
+<span id="exhale-class-classicraft-1-1qt-1-1-quantizer"></span><h1>Class Quantizer<a class="headerlink" href="#class-quantizer" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-qt_core_quantizer.h.html#file-icraft-qt-core-quantizer-h"><span class="std std-ref">File quantizer.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="此标题的永久链接">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9QuantizerE">
+<span id="_CPPv3N6icraft2qt9QuantizerE"></span><span id="_CPPv2N6icraft2qt9QuantizerE"></span><span id="icraft::qt::Quantizer"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Quantizer</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9QuantizerE" title="永久链接至目标">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer7FtmpMapE">
+<span id="_CPPv3N6icraft2qt9Quantizer7FtmpMapE"></span><span id="_CPPv2N6icraft2qt9Quantizer7FtmpMapE"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a3595519f32c02487c53e06d58457ce4a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FtmpMap</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer7FtmpMapE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer9QuantizerERKN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer9QuantizerERKN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer9QuantizerERKN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::Quantizer__icraft::xir::NetworkCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a7e94b6018755c3c4229d3dd68b15c463"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Quantizer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer9QuantizerERKN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer9QuantizerERK16QuantizerOptionsRKN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer9QuantizerERK16QuantizerOptionsRKN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer9QuantizerERK16QuantizerOptionsRKN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::Quantizer__QuantizerOptionsCR.icraft::xir::NetworkCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a6c41e8a0d7195f652447084ae56ca322"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Quantizer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer9QuantizerERK16QuantizerOptionsRKN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10setOptionsERK16QuantizerOptions">
+<span id="_CPPv3N6icraft2qt9Quantizer10setOptionsERK16QuantizerOptions"></span><span id="_CPPv2N6icraft2qt9Quantizer10setOptionsERK16QuantizerOptions"></span><span id="icraft::qt::Quantizer::setOptions__QuantizerOptionsCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1aad001a6b254f84a1d842844dbd3eeee7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setOptions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10setOptionsERK16QuantizerOptions" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer16setQuantizerToolERK16QuantizerOptions">
+<span id="_CPPv3N6icraft2qt9Quantizer16setQuantizerToolERK16QuantizerOptions"></span><span id="_CPPv2N6icraft2qt9Quantizer16setQuantizerToolERK16QuantizerOptions"></span><span id="icraft::qt::Quantizer::setQuantizerTool__QuantizerOptionsCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a315cd6b30af5d7845a5f3ba92cf35d09"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setQuantizerTool</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer16setQuantizerToolERK16QuantizerOptions" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer18setQuantizerConfigERK16QuantizerOptionsRKN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer18setQuantizerConfigERK16QuantizerOptionsRKN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer18setQuantizerConfigERK16QuantizerOptionsRKN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::setQuantizerConfig__QuantizerOptionsCR.icraft::xir::NetworkCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ac331d96a3e620e630e7c057ab1b4ff8e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setQuantizerConfig</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer18setQuantizerConfigERK16QuantizerOptionsRKN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13setAutoConfigERKN6icraft3xir7NetworkERK16QuantizerOptions">
+<span id="_CPPv3N6icraft2qt9Quantizer13setAutoConfigERKN6icraft3xir7NetworkERK16QuantizerOptions"></span><span id="_CPPv2N6icraft2qt9Quantizer13setAutoConfigERKN6icraft3xir7NetworkERK16QuantizerOptions"></span><span id="icraft::qt::Quantizer::setAutoConfig__icraft::xir::NetworkCR.QuantizerOptionsCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a20d0b07c4940b7c016b3088011a1f24a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setAutoConfig</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13setAutoConfigERKN6icraft3xir7NetworkERK16QuantizerOptions" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer9getLoggerEv">
+<span id="_CPPv3N6icraft2qt9Quantizer9getLoggerEv"></span><span id="_CPPv2N6icraft2qt9Quantizer9getLoggerEv"></span><span id="icraft::qt::Quantizer::getLogger"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a8e706121f1123e867e19232e34d125f6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLoggerE" title="icraft::qt::QuantizerLogger"><span class="n"><span class="pre">QuantizerLogger</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getLogger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer9getLoggerEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10transInputERN6icraft3xir7NetworkENSt6vectorIiEE">
+<span id="_CPPv3N6icraft2qt9Quantizer10transInputERN6icraft3xir7NetworkENSt6vectorIiEE"></span><span id="_CPPv2N6icraft2qt9Quantizer10transInputERN6icraft3xir7NetworkENSt6vectorIiEE"></span><span id="icraft::qt::Quantizer::transInput__icraft::xir::NetworkR.std::vector:i:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a29eb67ab9bea27ae1e288774b1962a3b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transInput</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">no_trans_ids</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10transInputERN6icraft3xir7NetworkENSt6vectorIiEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer12optimizeCastERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer12optimizeCastERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer12optimizeCastERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::optimizeCast__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ad1b32b83ff4d5e512edb168fd7303829"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">optimizeCast</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer12optimizeCastERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13castInNetworkERN6icraft3xir7NetworkENSt3mapIiNSt6stringEEE">
+<span id="_CPPv3N6icraft2qt9Quantizer13castInNetworkERN6icraft3xir7NetworkENSt3mapIiNSt6stringEEE"></span><span id="_CPPv2N6icraft2qt9Quantizer13castInNetworkERN6icraft3xir7NetworkENSt3mapIiNSt6stringEEE"></span><span id="icraft::qt::Quantizer::castInNetwork__icraft::xir::NetworkR.std::map:i.ss:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a32a10cf9441208762f197dc22f155e13"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">castInNetwork</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dtype</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13castInNetworkERN6icraft3xir7NetworkENSt3mapIiNSt6stringEEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10patchOnActERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer10patchOnActERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer10patchOnActERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::patchOnAct__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a06deab2dcc91b71ba1bf48384c0dbb1a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">patchOnAct</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10patchOnActERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer22changeNetworkInputNormERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer22changeNetworkInputNormERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer22changeNetworkInputNormERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::changeNetworkInputNorm__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a1b6487e16eace1349b81051597215444"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">changeNetworkInputNorm</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer22changeNetworkInputNormERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10insertCastERiRN6icraft3xir7NetworkERKN6icraft3xir5ValueERKN6icraft3xir9OperationEiNSt6stringENSt6stringENSt6vectorI7int64_tEEN6icraft3xir6LayoutENSt6stringE">
+<span id="_CPPv3N6icraft2qt9Quantizer10insertCastERiRN6icraft3xir7NetworkERKN6icraft3xir5ValueERKN6icraft3xir9OperationEiNSt6stringENSt6stringENSt6vectorI7int64_tEEN6icraft3xir6LayoutENSt6stringE"></span><span id="_CPPv2N6icraft2qt9Quantizer10insertCastERiRN6icraft3xir7NetworkERKN6icraft3xir5ValueERKN6icraft3xir9OperationEiNSt6stringENSt6stringENSt6vectorI7int64_tEEN6icraft3xir6LayoutENSt6stringE"></span><span id="icraft::qt::Quantizer::insertCast__iR.icraft::xir::NetworkR.icraft::xir::ValueCR.icraft::xir::OperationCR.i.ss.ss.std::vector:int64_t:.icraft::xir::Layout.ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a14516c3f674176afe7ea13aeb42a2369"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insertCast</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_index</span></span>, <span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Value</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">iftmp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i_type</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">o_type</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shape</span></span>, <span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Layout</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">layout</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">processor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10insertCastERiRN6icraft3xir7NetworkERKN6icraft3xir5ValueERKN6icraft3xir9OperationEiNSt6stringENSt6stringENSt6vectorI7int64_tEEN6icraft3xir6LayoutENSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13smoothNetworkERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer13smoothNetworkERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer13smoothNetworkERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::smoothNetwork__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a51e0cc6092103ec4c9f8fb5a41a7f061"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">smoothNetwork</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13smoothNetworkERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer9calibrateERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer9calibrateERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer9calibrateERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::calibrate__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1aa70ec4402ed01a6702c054de377d5b8c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calibrate</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer9calibrateERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer15calibrateByFtmpERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer15calibrateByFtmpERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer15calibrateByFtmpERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::calibrateByFtmp__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a3e4a808c1a85abc036eaeb50bfbe46be"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calibrateByFtmp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer15calibrateByFtmpERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer18calibrateByForwardERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer18calibrateByForwardERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer18calibrateByForwardERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::calibrateByForward__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ad37afcf3d45d991b3c70a28c5e542d05"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calibrateByForward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer18calibrateByForwardERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13calcNormratioERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer13calcNormratioERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer13calcNormratioERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::calcNormratio__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a44b33fcee8ab0f19b37ddf913f89a9e0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calcNormratio</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13calcNormratioERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer9normalizeERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer9normalizeERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer9normalizeERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::normalize__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1afca485918a83d29e307e6b75f450d2cb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">normalize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer9normalizeERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer8quantizeERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer8quantizeERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer8quantizeERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::quantize__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1af87031356e3af3bccda7aaff90242181"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quantize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer8quantizeERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer5checkERN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer5checkERN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer5checkERN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::check__icraft::xir::NetworkR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ac965fc597cee9af865078c5544472183"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">check</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer5checkERN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer7measureER7FtmpMapN16QuantizerOptions10SaturationE">
+<span id="_CPPv3N6icraft2qt9Quantizer7measureER7FtmpMapN16QuantizerOptions10SaturationE"></span><span id="_CPPv2N6icraft2qt9Quantizer7measureER7FtmpMapN16QuantizerOptions10SaturationE"></span><span id="icraft::qt::Quantizer::measure__FtmpMapR.QuantizerOptions::Saturation"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a0f1581ed0a7c15a7c73ba86a662e1bfb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measure</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6icraft2qt9Quantizer7FtmpMapE" title="icraft::qt::Quantizer::FtmpMap"><span class="n"><span class="pre">FtmpMap</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp_map</span></span>, <a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">saturation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer7measureER7FtmpMapN16QuantizerOptions10SaturationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer7measureERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationENSt6stringE">
+<span id="_CPPv3N6icraft2qt9Quantizer7measureERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationENSt6stringE"></span><span id="_CPPv2N6icraft2qt9Quantizer7measureERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationENSt6stringE"></span><span id="icraft::qt::Quantizer::measure__std::vector:icraft::xrt::Tensor:R.std::vector:i:.QuantizerOptions::SaturationR.ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a6cceda65fa8ec27f562d90d1db484344"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measure</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xrt</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">oftmp_id</span></span>, <a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">per</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer7measureERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationENSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer15measureOnTensorERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationE">
+<span id="_CPPv3N6icraft2qt9Quantizer15measureOnTensorERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationE"></span><span id="_CPPv2N6icraft2qt9Quantizer15measureOnTensorERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationE"></span><span id="icraft::qt::Quantizer::measureOnTensor__std::vector:icraft::xrt::Tensor:R.std::vector:i:.QuantizerOptions::SaturationR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a0f962b43c76f2619790ab27f4cd839a6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measureOnTensor</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xrt</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">oftmp_id</span></span>, <a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer15measureOnTensorERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13measureOnAxisERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi">
+<span id="_CPPv3N6icraft2qt9Quantizer13measureOnAxisERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi"></span><span id="_CPPv2N6icraft2qt9Quantizer13measureOnAxisERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi"></span><span id="icraft::qt::Quantizer::measureOnAxis__std::vector:icraft::xrt::Tensor:R.std::vector:i:.QuantizerOptions::SaturationR.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a66d7c02f004cd88c293a34acc9a429b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measureOnAxis</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xrt</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">oftmp_id</span></span>, <a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturationint</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">axis</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13measureOnAxisERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer14measureOnGroupERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEii">
+<span id="_CPPv3N6icraft2qt9Quantizer14measureOnGroupERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEii"></span><span id="_CPPv2N6icraft2qt9Quantizer14measureOnGroupERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEii"></span><span id="icraft::qt::Quantizer::measureOnGroup__std::vector:icraft::xrt::Tensor:R.std::vector:i:.QuantizerOptions::SaturationR.i.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a48b63f9c1c222ee5bbd2e0a8aff795b5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measureOnGroup</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xrt</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">oftmp_id</span></span>, <a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">groups</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">axis</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer14measureOnGroupERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEii" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13measureAScaleERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi">
+<span id="_CPPv3N6icraft2qt9Quantizer13measureAScaleERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi"></span><span id="_CPPv2N6icraft2qt9Quantizer13measureAScaleERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi"></span><span id="icraft::qt::Quantizer::measureAScale__std::vector:icraft::xrt::Tensor:R.std::vector:i:.QuantizerOptions::SaturationR.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a1a30c6a7ac34251655e4a1ac6f22c2c0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measureAScale</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xrt</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">oftmp_id</span></span>, <a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">axis</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13measureAScaleERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer8loadFtmpEN6icraft3xir9OperationENSt6vectorINSt6stringEEE">
+<span id="_CPPv3N6icraft2qt9Quantizer8loadFtmpEN6icraft3xir9OperationENSt6vectorINSt6stringEEE"></span><span id="_CPPv2N6icraft2qt9Quantizer8loadFtmpEN6icraft3xir9OperationENSt6vectorINSt6stringEEE"></span><span id="icraft::qt::Quantizer::loadFtmp__icraft::xir::Operation.std::vector:ss:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a84ac9d4d6af89b332b99122a97d03f24"></span><a class="reference internal" href="#_CPPv4N6icraft2qt9Quantizer7FtmpMapE" title="icraft::qt::Quantizer::FtmpMap"><span class="n"><span class="pre">FtmpMap</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loadFtmp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">file_list</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer8loadFtmpEN6icraft3xir9OperationENSt6vectorINSt6stringEEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer6dumpJRERN6icraft3xir7NetworkERNSt6stringENSt6stringE">
+<span id="_CPPv3N6icraft2qt9Quantizer6dumpJRERN6icraft3xir7NetworkERNSt6stringENSt6stringE"></span><span id="_CPPv2N6icraft2qt9Quantizer6dumpJRERN6icraft3xir7NetworkERNSt6stringENSt6stringE"></span><span id="icraft::qt::Quantizer::dumpJR__icraft::xir::NetworkR.ssR.ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ae0e3e7fdc2b1e63755360a46a9de5f60"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpJR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">jr_path</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer6dumpJRERN6icraft3xir7NetworkERNSt6stringENSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer15dumpFtmpLogFileEv">
+<span id="_CPPv3N6icraft2qt9Quantizer15dumpFtmpLogFileEv"></span><span id="_CPPv2N6icraft2qt9Quantizer15dumpFtmpLogFileEv"></span><span id="icraft::qt::Quantizer::dumpFtmpLogFile"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ae9cd3ac33b067d490d623ed1b02cffab"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpFtmpLogFile</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer15dumpFtmpLogFileEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer14dumpRawLogFileEv">
+<span id="_CPPv3N6icraft2qt9Quantizer14dumpRawLogFileEv"></span><span id="_CPPv2N6icraft2qt9Quantizer14dumpRawLogFileEv"></span><span id="icraft::qt::Quantizer::dumpRawLogFile"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a52e4de99e7783609eb672e59769774f4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpRawLogFile</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer14dumpRawLogFileEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer15dumpSmoothScaleEv">
+<span id="_CPPv3N6icraft2qt9Quantizer15dumpSmoothScaleEv"></span><span id="_CPPv2N6icraft2qt9Quantizer15dumpSmoothScaleEv"></span><span id="icraft::qt::Quantizer::dumpSmoothScale"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ad72751e23f6d0c43ddb150ba04aa7787"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpSmoothScale</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer15dumpSmoothScaleEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10getOptionsEv">
+<span id="_CPPv3N6icraft2qt9Quantizer10getOptionsEv"></span><span id="_CPPv2N6icraft2qt9Quantizer10getOptionsEv"></span><span id="icraft::qt::Quantizer::getOptions"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a3f5f274b7b27f1962fc2530f6d976565"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getOptions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10getOptionsEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer15initInputTensorERKN6icraft3xir7NetworkE">
+<span id="_CPPv3N6icraft2qt9Quantizer15initInputTensorERKN6icraft3xir7NetworkE"></span><span id="_CPPv2N6icraft2qt9Quantizer15initInputTensorERKN6icraft3xir7NetworkE"></span><span id="icraft::qt::Quantizer::initInputTensor__icraft::xir::NetworkCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1afac792ac95dbf111b4789bb3f1e10902"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xrt</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initInputTensor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer15initInputTensorERKN6icraft3xir7NetworkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer17passChangedNormUpEKN6icraft3xir9OperationEi">
+<span id="_CPPv3N6icraft2qt9Quantizer17passChangedNormUpEKN6icraft3xir9OperationEi"></span><span id="_CPPv2N6icraft2qt9Quantizer17passChangedNormUpEKN6icraft3xir9OperationEi"></span><span id="icraft::qt::Quantizer::passChangedNormUp__icraft::xir::OperationC.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ac14f7d2986a017802dca079ae1e1b8d1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">passChangedNormUp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">operation</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer17passChangedNormUpEKN6icraft3xir9OperationEi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer19passChangedNormDownEKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt9Quantizer19passChangedNormDownEKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt9Quantizer19passChangedNormDownEKN6icraft3xir9OperationE"></span><span id="icraft::qt::Quantizer::passChangedNormDown__icraft::xir::OperationC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a170a7e461e599613b4d6317d446c13ce"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">passChangedNormDown</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">operation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer19passChangedNormDownEKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer8getScaleENSt6vectorIfEEi">
+<span id="_CPPv3N6icraft2qt9Quantizer8getScaleENSt6vectorIfEEi"></span><span id="_CPPv2N6icraft2qt9Quantizer8getScaleENSt6vectorIfEEi"></span><span id="icraft::qt::Quantizer::getScale__std::vector:float:.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1aa3acae6d751e4837fb0062eb3de7d263"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getScale</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sat</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer8getScaleENSt6vectorIfEEi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10getBiasSatERKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt9Quantizer10getBiasSatERKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt9Quantizer10getBiasSatERKN6icraft3xir9OperationE"></span><span id="icraft::qt::Quantizer::getBiasSat__icraft::xir::OperationCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a8d3f93c8fa215f891ed29a0a91005362"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getBiasSat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10getBiasSatERKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer11adjustScaleEdiii">
+<span id="_CPPv3N6icraft2qt9Quantizer11adjustScaleEdiii"></span><span id="_CPPv2N6icraft2qt9Quantizer11adjustScaleEdiii"></span><span id="icraft::qt::Quantizer::adjustScale__double.i.i.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ad25fb5c77c26f7acce8ec8f7f83af164"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">adjustScale</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scale</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bit</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shift_min</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shift_max</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer11adjustScaleEdiii" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer12adjustScaleCEdiii">
+<span id="_CPPv3N6icraft2qt9Quantizer12adjustScaleCEdiii"></span><span id="_CPPv2N6icraft2qt9Quantizer12adjustScaleCEdiii"></span><span id="icraft::qt::Quantizer::adjustScaleC__double.i.i.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a88d59b620053a52fca6d52ffc9e07ad8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">adjustScaleC</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scale</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">base</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shift_min</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shift_max</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer12adjustScaleCEdiii" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer12quantizeFtmpERKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt9Quantizer12quantizeFtmpERKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt9Quantizer12quantizeFtmpERKN6icraft3xir9OperationE"></span><span id="icraft::qt::Quantizer::quantizeFtmp__icraft::xir::OperationCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ae54725591681775476188209dfba3e1e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quantizeFtmp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer12quantizeFtmpERKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13calcNormratioERKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt9Quantizer13calcNormratioERKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt9Quantizer13calcNormratioERKN6icraft3xir9OperationE"></span><span id="icraft::qt::Quantizer::calcNormratio__icraft::xir::OperationCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1aba86d87adf086a72049b841f69c7680a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calcNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13calcNormratioERKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13passNormratioERKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt9Quantizer13passNormratioERKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt9Quantizer13passNormratioERKN6icraft3xir9OperationE"></span><span id="icraft::qt::Quantizer::passNormratio__icraft::xir::OperationCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a6d0bb8ffa0469be54c9d1b01c9af4eb9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">passNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13passNormratioERKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer12catNormratioERKN6icraft3xir9OperationEi">
+<span id="_CPPv3N6icraft2qt9Quantizer12catNormratioERKN6icraft3xir9OperationEi"></span><span id="_CPPv2N6icraft2qt9Quantizer12catNormratioERKN6icraft3xir9OperationEi"></span><span id="icraft::qt::Quantizer::catNormratio__icraft::xir::OperationCR.i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a9cb47cef4274746ae24ae7d0aa64218b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">catNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">axis</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer12catNormratioERKN6icraft3xir9OperationEi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer16reshapeNormratioERKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt9Quantizer16reshapeNormratioERKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt9Quantizer16reshapeNormratioERKN6icraft3xir9OperationE"></span><span id="icraft::qt::Quantizer::reshapeNormratio__icraft::xir::OperationCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a85673cec6693cdcd38252ae07b80c70e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reshapeNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer16reshapeNormratioERKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer14calcBNormratioERKN6icraft3xir9OperationEb">
+<span id="_CPPv3N6icraft2qt9Quantizer14calcBNormratioERKN6icraft3xir9OperationEb"></span><span id="_CPPv2N6icraft2qt9Quantizer14calcBNormratioERKN6icraft3xir9OperationEb"></span><span id="icraft::qt::Quantizer::calcBNormratio__icraft::xir::OperationCR.b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1adf9eb915bd0fe0612a134db589ca6c0c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calcBNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">operation</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">has_bias</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer14calcBNormratioERKN6icraft3xir9OperationEb" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer13measureWeightERKN6icraft3xir5ValueENSt6stringERKN16QuantizerOptions10SaturationERKi">
+<span id="_CPPv3N6icraft2qt9Quantizer13measureWeightERKN6icraft3xir5ValueENSt6stringERKN16QuantizerOptions10SaturationERKi"></span><span id="_CPPv2N6icraft2qt9Quantizer13measureWeightERKN6icraft3xir5ValueENSt6stringERKN16QuantizerOptions10SaturationERKi"></span><span id="icraft::qt::Quantizer::measureWeight__icraft::xir::ValueCR.ss.QuantizerOptions::SaturationCR.iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a822e5a844c714dd799a9fd641b5d0531"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">measureWeight</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Value</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weight</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">per</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">axis</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer13measureWeightERKN6icraft3xir5ValueENSt6stringERKN16QuantizerOptions10SaturationERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE"></span><span id="icraft::qt::Quantizer::quantizeParams__icraft::xir::ValueR.icraft::xir::ValueR.i.std::vector:std::pair:i.i::.std::vector:std::pair:i.i::.std::vector:double:.std::vector:double:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1abbca3130a445870a22a14648705704e5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quantizeParams</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Value</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weight</span></span>, <span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Value</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">bias</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">h_w_scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">h_b_scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">w_scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE"></span><span id="icraft::qt::Quantizer::quantizeParams__icraft::xir::ValueR.i.std::vector:std::pair:i.i::.std::vector:double:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ae3eba1e5209ad8e18db5a5249809dcbc"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quantizeParams</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Value</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weight</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">h_w_scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">w_scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer8quantizeEPf6size_tiiNSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt9Quantizer8quantizeEPf6size_tiiNSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt9Quantizer8quantizeEPf6size_tiiNSt6vectorIdEE"></span><span id="icraft::qt::Quantizer::quantize__floatP.s.i.i.std::vector:double:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1af4bec011c23b6fb1360efa7ca43332c4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">quantize</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data_ptr</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">co</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer8quantizeEPf6size_tiiNSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE"></span><span id="icraft::qt::Quantizer::makeQDtype__icraft::xir::Array:int64_t:.icraft::xir::Layout.i.std::vector:std::pair:i.i::.std::vector:double:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ab617d61a6cd6f2de3bb9317d0ae8b0fc"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TensorType</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">makeQDtype</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shape</span></span>, <span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Layout</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">layout</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hard_scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE"></span><span id="icraft::qt::Quantizer::makeQDtype__icraft::xir::Array:int64_t:.icraft::xir::Layout.i.std::vector:std::pair:i.i::.std::vector:double:.std::vector:double:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a2b2bb5b1805abf11d2ac88b652ecd798"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TensorType</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">makeQDtype</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shape</span></span>, <span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Layout</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">layout</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bits</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hard_scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scale</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">normratio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer6dtype_E">
+<span id="_CPPv3N6icraft2qt9Quantizer6dtype_E"></span><span id="_CPPv2N6icraft2qt9Quantizer6dtype_E"></span><span id="icraft::qt::Quantizer::dtype___std::map:i.ss:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a31939e73032e2148b23cef1360b530d7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dtype_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer6dtype_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer12dtype_value_E">
+<span id="_CPPv3N6icraft2qt9Quantizer12dtype_value_E"></span><span id="_CPPv2N6icraft2qt9Quantizer12dtype_value_E"></span><span id="icraft::qt::Quantizer::dtype_value___std::map:i.i:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a844f97a46364b87249c02199769100f2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dtype_value_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer12dtype_value_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer12value_range_E">
+<span id="_CPPv3N6icraft2qt9Quantizer12value_range_E"></span><span id="_CPPv2N6icraft2qt9Quantizer12value_range_E"></span><span id="icraft::qt::Quantizer::value_range___std::map:i.std::vector:i::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1aaff31b81345ff9d22f28a089a8a04a6f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value_range_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer12value_range_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer11saturation_E">
+<span id="_CPPv3N6icraft2qt9Quantizer11saturation_E"></span><span id="_CPPv2N6icraft2qt9Quantizer11saturation_E"></span><span id="icraft::qt::Quantizer::saturation___std::map:i.std::vector:QuantizerOptions::Saturation::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1ae77c2c3d9d61e82339a5800da6615e7f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Saturation</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">saturation_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer11saturation_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer4per_E">
+<span id="_CPPv3N6icraft2qt9Quantizer4per_E"></span><span id="_CPPv2N6icraft2qt9Quantizer4per_E"></span><span id="icraft::qt::Quantizer::per___std::map:i.std::vector:ss::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a6061c07b0eccdfa7bc54521d0ced2bfe"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">per_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer4per_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer7logger_E">
+<span id="_CPPv3N6icraft2qt9Quantizer7logger_E"></span><span id="_CPPv2N6icraft2qt9Quantizer7logger_E"></span><span id="icraft::qt::Quantizer::logger___QuantizerLogger"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1af9af7efe670eeb5511d122f510fb347c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLoggerE" title="icraft::qt::QuantizerLogger"><span class="n"><span class="pre">QuantizerLogger</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logger_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer7logger_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer8options_E">
+<span id="_CPPv3N6icraft2qt9Quantizer8options_E"></span><span id="_CPPv2N6icraft2qt9Quantizer8options_E"></span><span id="icraft::qt::Quantizer::options___QuantizerOptions"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1a80146cd1eaa2b4b4c57b4981cd9fffbf"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE" title="icraft::qt::QuantizerOptions"><span class="n"><span class="pre">QuantizerOptions</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">options_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer8options_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt9Quantizer14quantizertool_E">
+<span id="_CPPv3N6icraft2qt9Quantizer14quantizertool_E"></span><span id="_CPPv2N6icraft2qt9Quantizer14quantizertool_E"></span><span id="icraft::qt::Quantizer::quantizertool___QuantizerTool"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_1aa3a35c785492c2b7913917dc563c5b8e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerToolE" title="icraft::qt::QuantizerTool"><span class="n"><span class="pre">QuantizerTool</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quantizertool_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt9Quantizer14quantizertool_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： GuoPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1480 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>一 icraft-optimize &#8212; Icraft Optimizer\Adapter 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'teco_list_old';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Optimizer\Adapter 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/teco_list_old.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>一 icraft-optimize</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">一 icraft-optimize</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.1 组件结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-optimize-exe">1.1.1 icraft-optimize.exe</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">参数说明</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">应用示例</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-xxpass-dll">1.1.2 icraft.xxPass.dll</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertbigkernel2smallkernelpass">icraft.ConvertBigKernel2SmallKernelPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertbigpool2smallpoolpass">icraft.ConvertBigPool2SmallPoolPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertdimfreeoplayoutpass">icraft.ConvertDimFreeOpLayoutPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertdividescalar2multiplypass">icraft.ConvertDivideScalar2MultiplyPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertinnerproduct2conv2dpass">icraft.ConvertInnerProduct2Conv2dPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertmultiplyadd2batchnormpass">icraft.ConvertMultiplyAdd2BatchnormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertroutepass">icraft.ConvertRoutePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertsqueeze2reshapepass">icraft.ConvertSqueeze2ReshapePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertupsamplebili2nearestpass">icraft.ConvertUpsampleBili2NearestPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-demergetransposepass">icraft.DemergeTransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-expandparampass">icraft.ExpandParamPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergeadd2conv2dpass">icraft.MergeAdd2Conv2dPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergebatchnormconv2dpass">icraft.MergeBatchnormConv2dPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergebatchnormmatmulpass">icraft.MergeBatchnormMatmulPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergeconv2dbatchnormpass">icraft.MergeConv2dBatchnormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemulconst2innerproductpass">icraft.MergeMulConst2InnerProductPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultipleconcatpass">icraft.MergeMultipleConcatPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultiplereshapepass">icraft.MergeMultipleReshapePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultipleslicepass">icraft.MergeMultipleSlicePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultipletransposepass">icraft.MergeMultipleTransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergetranspose2innerproductpass">icraft.MergeTranspose2InnerProductPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-opparamconstraintbypass">icraft.OpParamConstraintBYPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessavgpoolpass">icraft.RemoveUselessAvgpoolPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessbranchpass">icraft.RemoveUselessBranchPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessmaxpoolpass">icraft.RemoveUselessMaxpoolPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessreshapepass">icraft.RemoveUselessReshapePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselesstranspose1pass">icraft.RemoveUselessTranspose1Pass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselesstransposepass">icraft.RemoveUselessTransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-replaceavgpoolparampass">icraft.ReplaceAvgpoolParamPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-replaceupsampleparampass">icraft.ReplaceUpsampleParamPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-splitlayernormpass">icraft.SplitLayernormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-splitupsamplepass">icraft.SplitUpsamplePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-tuningpadpass">icraft.TuningPadPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-turndimfreeoplocationpass">icraft.TurnDimFreeOpLocationPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-turnoporder1pass">icraft.TurnOpOrder1Pass</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-adapt">二 icraft-adapt</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1 组件结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-adapt-exe">2.1.1 icraft-adapt.exe</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">参数说明</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">应用示例</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.1.2 icraft.xxPass.dll</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-addcopy2layernormpass">icraft.AddCopy2LayernormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-addcopy2noinsoppass">icraft.AddCopy2noInsOpPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-buyilayoutpass">icraft.BuyiLayoutPass</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#add-layout">add_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#avgpool-layout">avgpool_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#batchnorm-layout">batchnorm_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#cast-layout">cast_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#concat-layout">concat_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#conv2d-layout">conv2d_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#conv2dtranspose-layout">conv2dtranspose_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-layout">copy_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#dividescalar-layout">dividescalar_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#elu-layout">elu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#gelu-layout">gelu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#hardsigmoid-layout">hardsigmoid_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#hardswish-layout">hardswish_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#input-layout">input_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#layernorm-layout">layernorm_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#matmul-layout">matmul_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#maxpool-layout">maxpool_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#mish-layout">mish_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#multiply-layout">multiply_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#output-layout">output_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pad-layout">pad_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pixelshuffle-buyilayout">pixelshuffle_buyilayout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prelu-layout">prelu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#region-layout">region_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-layout">relu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#reorg-layout">reorg_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#reshape-layout">reshape_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#resize-layout">resize_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#sigmoid-layout">sigmoid_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#silu-layout">silu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#slice-layout">slice_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-layout">softmax_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#split-layout">split_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#swaporder-layout">swaporder_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tanh-layout">tanh_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-layout">transpose_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#upsample-layout">upsample_layout</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertpixelshuffle2transposepass">icraft.ConvertPixelShuffle2TransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-copyftmppass">icraft.CopyFtmpPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convertsplit2slicepass">ConvertSplit2SlicePass</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">三 硬件适配</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add">3.1 Add</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiply">3.2 Multiply</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matmul">3.3 Matmul</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax">3.4 Softmax</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layernorm">3.5 Layernorm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.6 Matmul</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">四 索引</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p>Icraft编译网络，需经历icraft-parse -&gt; icraft-optimize -&gt; icraft-quantize -&gt; icraft-adapt -&gt; icraft-codegen。
+其中icraft-optimize和icraft-adapt从组成结构到应用方式都高度相似，因此本文将两个组件放到一起来介绍。</p>
+<section id="icraft-optimize">
+<h1>一 icraft-optimize<a class="headerlink" href="#icraft-optimize" title="此标题的永久链接">#</a></h1>
+<p>icraft-parse -&gt; <strong>icraft-optimize</strong> -&gt; icraft-quantize -&gt; icraft-adapt -&gt; icraft-codegen</p>
+<p>顾名思义，icraft-optimize完成的工作是优化网络结构，或达到减小运算量的目的，或达到减小带宽的目的云云，
+每一个优化选项就是一个pass。</p>
+<section id="id1">
+<h2>1.1 组件结构<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>该组件由两部分组成：</p>
+<ul class="simple">
+<li><p>icraft-optimize.exe</p></li>
+<li><p>icraft.XxPass.dll</p></li>
+</ul>
+<section id="icraft-optimize-exe">
+<h3>1.1.1 icraft-optimize.exe<a class="headerlink" href="#icraft-optimize-exe" title="此标题的永久链接">#</a></h3>
+<p>icraft-optimize.exe作为组件的顶层，主要负责结合用户的配置和内嵌配置调用各pass选项，需要说明的是，组件内部的各pass选项是循环调度的，
+循环调度的结束标志是当前循环下网络结构不再发生改变。</p>
+<section id="id2">
+<h4>参数说明<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>json，string类型，表示输入的中间层json文件路径。</p></li>
+<li><p>raw，string类型，表示输入的中间层raw文件路径，与json参数配合使用，json+raw、path+network的组合仅可存在一组。</p></li>
+<li><p>path，string类型，表示路径，通常与network配合使用，表示网络路径。</p></li>
+<li><p>network，string类型，表示网络名称，通常与path配合使用，表示网络路径，json+raw、path+network的组合仅可存在一组。</p></li>
+<li><p>jr_path, string类型，表示优化后网络的存放路径。</p></li>
+<li><p>log_path，string类型，可选，表示log文件的存放路径，省略则为默认路径。</p></li>
+<li><p>pass_on，string类型，可选，通过配置该参数，可以打开icraft内置pass或自定义pass，以”，“分隔，pass_on所打开的自定义pass将优先于内置pass执行。</p></li>
+<li><p>pass_off，string类型，可选，通过配置该参数，可以关掉icraft内置pass，以”，“分隔。pass_on和pass_off不可包含同一个pass。</p></li>
+<li><p>custom_config，string类型，可选，用于描述文件路径，该文件用于向自定义pass传递参数。</p></li>
+<li><p>no_integral, implicit类型，默认为false，该参数通常与pass_on配合使用，表明将忽略icraft内置pass，仅调用pass_on所描述的pass选项。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>应用示例<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>编译网络：icraft compile ./yolov5.toml，compile命令会一次调用icraft-parse -&gt; <strong>icraft-optimize</strong> -&gt; icraft-quantize -&gt; icraft-adapt -&gt; icraft-codegen</p></li>
+<li><p>优化网络：icraft optimize ./yolov5.toml，optimize命令会调用**icraft-optimize**对网络进行优化，所调用的pass由yolov5.toml中[optimize]下的参数决定。</p></li>
+</ul>
+</section>
+</section>
+<section id="icraft-xxpass-dll">
+<h3>1.1.2 icraft.xxPass.dll<a class="headerlink" href="#icraft-xxpass-dll" title="此标题的永久链接">#</a></h3>
+<p>icraft.xxPass为具体的优化pass选项，该单元为一系列的dll文件。Optimizer中的pass选项采用xir提供的pass接口来统一实现。
+pass中用到接口以及模式匹配请参见:<a class="reference external" href="https://persistent-donut-283.notion.site/Icraft-XIR-aabc179ffa114314b5a832bcac2b930a">Icraft XIR设计说明</a>。
+Optimizer共有多个Pass,下面列举各Pass的功能说明：</p>
+<section id="icraft-convertbigkernel2smallkernelpass">
+<h4>icraft.ConvertBigKernel2SmallKernelPass<a class="headerlink" href="#icraft-convertbigkernel2smallkernelpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该Pass的功能是将大尺寸的卷积核划分成多个小尺寸的卷积核，以实现硬件上的多线程并行计算加速。优化前后网络结构改变如下</p>
+<img alt="_static/BK2SK.png" src="_static/BK2SK.png" />
+</section>
+<section id="icraft-convertbigpool2smallpoolpass">
+<h4>icraft.ConvertBigPool2SmallPoolPass<a class="headerlink" href="#icraft-convertbigpool2smallpoolpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将大尺寸的平均池化划分为多个小尺寸的平均池化，目的是实现多线程的并行加速。
+优化前后网络结构改变与ConvertBigKernel2SmallKernelPass基本一致，区别是本pass划分的是平均池化算子而不是Conv2d算子。</p>
+</section>
+<section id="icraft-convertdimfreeoplayoutpass">
+<h4>icraft.ConvertDimFreeOpLayoutPass<a class="headerlink" href="#icraft-convertdimfreeoplayoutpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将调整一些维度不敏感的算子的计算顺序，包括add和multiply两种算子。调整的结构是transpose-add和transpose-multiply两种结
+构，经过调整后add和multiply将被转移至transpose前计算,便于transpose算子跟后续算子的合并，减小计算量。</p>
+<img alt="_static/DOL.png" src="_static/DOL.png" />
+<p>可优化的网络：yolov4_mish，se_resnet等</p>
+</section>
+<section id="icraft-convertdividescalar2multiplypass">
+<h4>icraft.ConvertDivideScalar2MultiplyPass<a class="headerlink" href="#icraft-convertdividescalar2multiplypass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将除数为固定值的除法转换成乘除数的倒数的乘法。</p>
+</section>
+<section id="icraft-convertinnerproduct2conv2dpass">
+<h4>icraft.ConvertInnerProduct2Conv2dPass<a class="headerlink" href="#icraft-convertinnerproduct2conv2dpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将reshape+matmul转换为conv2d+reshape。</p>
+<p>约束条件：reshape中input.layout=NHWC</p>
+<p>可优化的网络：resnet等</p>
+</section>
+<section id="icraft-convertmultiplyadd2batchnormpass">
+<h4>icraft.ConvertMultiplyAdd2BatchnormPass<a class="headerlink" href="#icraft-convertmultiplyadd2batchnormpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将multiply+add转换为batchnorm。</p>
+<p>约束条件：要求multiply和add算子的ifm0.dim=4,ifm1为vector的param。</p>
+<p>可优化的网络：nafnet16等</p>
+</section>
+<section id="icraft-convertroutepass">
+<h4>icraft.ConvertRoutePass<a class="headerlink" href="#icraft-convertroutepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将route算子转换成split算子。Darknet框架下route算子的功能可用split算子替代，为简化后端所需支持的算子库，用split替换。</p>
+</section>
+<section id="icraft-convertsqueeze2reshapepass">
+<h4>icraft.ConvertSqueeze2ReshapePass<a class="headerlink" href="#icraft-convertsqueeze2reshapepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass的功能是将squeeze算子转换成reshape算子，简化后端所需支持的算子库。</p>
+</section>
+<section id="icraft-convertupsamplebili2nearestpass">
+<h4>icraft.ConvertUpsampleBili2NearestPass<a class="headerlink" href="#icraft-convertupsamplebili2nearestpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将输入ftmp尺寸为1*1的双线性插值改为最邻近插值，在输入ftmp尺寸为1*1时，最邻近插值与双线性插值是等效的，但是最邻近插值计算更快。</p>
+</section>
+<section id="icraft-demergetransposepass">
+<h4>icraft.DemergeTransposePass<a class="headerlink" href="#icraft-demergetransposepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：受后端组件限制，要求transpose算子每次只能对两个维度的数据进行重排。该pass正是基于上述限制采用transpose拆分级联的方式进行算子的等效，
+从而达到适配后端组件的目的。后端组件的限制为：1）参与重排的维度只有两个维度；特定情况下，为了减少级联次数，可以考虑合并维度，例如NX0X1X2X3-&gt;NX1X2X0X3，可考虑将X1X2合并；
+2）仅面上的维度参与重排，重排的两个维度可以不相邻；3）通道参与重排，重排到通道的维度必须先移动到与通道相邻的位置。</p>
+<p>限制条件：该pass与MergeMultipleTransposePass是相反的功能，因此该pass会在其他pass循环调用结束后单独调用一次。</p>
+</section>
+<section id="icraft-expandparampass">
+<h4>icraft.ExpandParamPass<a class="headerlink" href="#icraft-expandparampass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将根据add、multiply算子功能实现相应的数据维度扩展。</p>
+<ul class="simple">
+<li><p>multiply_ftmp(add_ftmp)扩充为相同数量的维度，例如input0.dim=[1,32,23,112]，input1.dim=[1,112]，经过该pass，input0.dim=[1,32,23,112]，input1.dim=[1,1,1,112]，仅扩充维度数量。</p></li>
+<li><p>multiply_const(add_const)，根据expand的规则，针对ftmp的输入，仅扩充维度；针对params的输入，在扩充为度的基础上，扩充最后一维。
+例如input0.dim=[1,112]，input1.dim=[1,20,1]，其中input0为ftmp，input1为params，经过该pass,input0.dim=[1,1,112]，input1.dim=[1,20,112]。
+optimizer提前将param的最后一维扩充好，简化后端实现；但是又没有扩充param的其他维度，是为了减小数据传输量，提高效率。</p></li>
+</ul>
+</section>
+<section id="icraft-mergeadd2conv2dpass">
+<h4>icraft.MergeAdd2Conv2dPass<a class="headerlink" href="#icraft-mergeadd2conv2dpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将1）满足条件的add+conv2d合并为conv2d，要求add算子有一个输入为常数的vector，如果该输入原本为常数标量，会在ExpandParamPass中扩展为vector，满足合并条件；
+2）满足条件的conv2d+add合并为conv2d，要求add算子有一个输入为常数的vector，如果该输入原本为常数标量，会在ExpandParamPass中扩展为vector，满足合并条件。</p>
+</section>
+<section id="icraft-mergebatchnormconv2dpass">
+<h4>icraft.MergeBatchnormConv2dPass<a class="headerlink" href="#icraft-mergebatchnormconv2dpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将batchnorm+conv2d合并为conv2d，合并后的计算结果与合并前的会有略微差别，如果出现精度下降的情况可以将本pass关闭。</p>
+</section>
+<section id="icraft-mergebatchnormmatmulpass">
+<h4>icraft.MergeBatchnormMatmulPass<a class="headerlink" href="#icraft-mergebatchnormmatmulpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将batchnorm+matmul合并为matmul，此处的batchnorm是layernorm=layernorm+batchnorm拆分出来的，该pass有待考虑，batchnorm必须是4维的，但是此处很可能不是4维。</p>
+</section>
+<section id="icraft-mergeconv2dbatchnormpass">
+<h4>icraft.MergeConv2dBatchnormPass<a class="headerlink" href="#icraft-mergeconv2dbatchnormpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将conv2d+batchnorm合并为conv2d，合并后的计算结果与合并前的会有略微差别，如果出现精度下降的情况可以将本pass关闭。</p>
+</section>
+<section id="icraft-mergemulconst2innerproductpass">
+<h4>icraft.MergeMulConst2InnerProductPass<a class="headerlink" href="#icraft-mergemulconst2innerproductpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将乘数是常数标量的乘法融合到内积中，其目的是减小网络计算量；合并的方式是将Multiply的参数加到InnerProduct的weights中。</p>
+</section>
+<section id="icraft-mergemultipleconcatpass">
+<h4>icraft.MergeMultipleConcatPass<a class="headerlink" href="#icraft-mergemultipleconcatpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass的功能是将多个级联且没有其他分支的concat算子合并成一个，合并的好处在于简化图结构，便于后续优化。
+如果存在其他分支，则不合并。</p>
+</section>
+<section id="icraft-mergemultiplereshapepass">
+<h4>icraft.MergeMultipleReshapePass<a class="headerlink" href="#icraft-mergemultiplereshapepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass是将多个级联且没有其他分支的reshape算子合并成一个，合并的好处在于简化图结构。
+如果存在其他分支，则不合并。</p>
+</section>
+<section id="icraft-mergemultipleslicepass">
+<h4>icraft.MergeMultipleSlicePass<a class="headerlink" href="#icraft-mergemultipleslicepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将多个级联且没有其他分支的slice算子合并成一个，合并的好处在于减少算子数量，减少运行时间。
+如果存在其他分支，则不合并。</p>
+</section>
+<section id="icraft-mergemultipletransposepass">
+<h4>icraft.MergeMultipleTransposePass<a class="headerlink" href="#icraft-mergemultipletransposepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass将多个级联且没有其他分支的transpose算子合并成一个，合并的好处在于减少算子数量，减少运行时间。
+如果存在其他分支，则不合并。如果ftmp经过多个transpose后输出的ftmp的layout和输入ftmp一致，则删除所有的级联的transpose。</p>
+</section>
+<section id="icraft-mergetranspose2innerproductpass">
+<h4>icraft.MergeTranspose2InnerProductPass<a class="headerlink" href="#icraft-mergetranspose2innerproductpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass的功能是将Transpose融合到Innerproduct(Matmul_const)里，融合的结构是transpose-reshape-matmul，
+融合后transpose消失，仅保留reshape和matmul，减小网络计算量。
+约束条件：transpose算子搬移的维度经过reshape为最后一维，全用来做内积运算。</p>
+</section>
+<section id="icraft-opparamconstraintbypass">
+<h4>icraft.OpParamConstraintBYPass<a class="headerlink" href="#icraft-opparamconstraintbypass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass参考硬件设备对算子的支持情况，配置算子的target。配置规则为：BuyiTarget、FpgaTarget优先，
+上述两种target不支持的情况，才考虑HostTarget。</p>
+<p>下表针对target进行了所支持算子的汇总。</p>
+<table class="table" id="id12">
+<caption><span class="caption-text">表1 target所支持算子的汇总</span><a class="headerlink" href="#id12" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 29.4%" />
+<col style="width: 70.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Target</p></th>
+<th class="head"><p>算子名称</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BuyiTarget</p></td>
+<td><p>Conv2d、Hardswish、Relu、Gelu、Silu、Mish、Sigmoid、Tanh、Elu、Maxpool、Avgpool、Concat、Upsample、Matmul、Batchnorm、Reshape
+PixelShuffle、Squeeze、Split、Add、Multiply、Slice、Pad、Copy、Transpose、Conv2dTranspose</p></td>
+</tr>
+<tr class="row-odd"><td><p>FpgaTarget</p></td>
+<td><p>Cast、Layernorm</p></td>
+</tr>
+<tr class="row-even"><td><p>HostTarget</p></td>
+<td><p>Conv2d、Hardswish、Relu、Gelu、Silu、Mish、Sigmoid、Tanh、Elu、Maxpool、Avgpool、Concat、Upsample、Matmul、Batchnorm、Reshape
+PixelShuffle、Squeeze、Split、Add、Multiply、Slice、Pad、Copy、Transpose、Conv2dTranspose、Layernorm、Cast、Reorg</p></td>
+</tr>
+</tbody>
+</table>
+<p>需要说明的是，因为一些原因影响，上表中BuyiTarget所支持的算子是有限制的。下表列出了icraft算子在BuyiTarget中的约束，如果算子参数在约束限制内，则将该算子的target配置为HostTarget。</p>
+<table class="table" id="id13">
+<caption><span class="caption-text">表2 BuyiTarget中算子约束</span><a class="headerlink" href="#id13" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 29.4%" />
+<col style="width: 70.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>算子名称</p></th>
+<th class="head"><p>算子约束</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Conv2d</p></td>
+<td><p>卷积核长乘宽小于2048</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conv2dTranspose</p></td>
+<td><p>卷积核长乘宽小于2048</p></td>
+</tr>
+<tr class="row-even"><td><p>Slice （待扩充）</p></td>
+<td><p>slice的步长必须等于1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Upsample</p></td>
+<td><p>BICUBIC模式不支持</p></td>
+</tr>
+<tr class="row-even"><td><p>Upsample</p></td>
+<td><p>输入ftmp的维度仅支持四维或五维</p></td>
+</tr>
+<tr class="row-odd"><td><p>Upsample</p></td>
+<td><p>放大倍数是整数且面积放大倍数小于512.即 (ofm_w / ifm_w) * (ofm_h / ifm_h)&lt;512</p></td>
+</tr>
+<tr class="row-even"><td><p>Pad</p></td>
+<td><p>pad的数值仅支持0；不支持其他数值，即padding mode = CONSTANT</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiply</p></td>
+<td><p>算子的两个输入的维度数量相同, 且通道数（最后一维）相同</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="icraft-removeuselessavgpoolpass">
+<h4>icraft.RemoveUselessAvgpoolPass<a class="headerlink" href="#icraft-removeuselessavgpoolpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：移除无用的Avgpool，即池化的长宽，步长均为1，上下左右的pad都是0，膨胀系数为0的平均池化，
+ftmp经过这样的池化数值是不会改变，因此可以直接删除该算子。</p>
+</section>
+<section id="icraft-removeuselessbranchpass">
+<h4>icraft.RemoveUselessBranchPass<a class="headerlink" href="#icraft-removeuselessbranchpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：移除无用的分支，即一些从网络中分出但是没有连接到输出的无效分支，本pass会将该分支完全移除。</p>
+</section>
+<section id="icraft-removeuselessmaxpoolpass">
+<h4>icraft.RemoveUselessMaxpoolPass<a class="headerlink" href="#icraft-removeuselessmaxpoolpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：移除无用的Maxpool，即池化的长宽，步长均为1，上下左右的pad都是0，膨胀系数为0的平均池化，
+ftmp经过这样的池化数值是不会改变，因此可以直接删除该算子。</p>
+</section>
+<section id="icraft-removeuselessreshapepass">
+<h4>icraft.RemoveUselessReshapePass<a class="headerlink" href="#icraft-removeuselessreshapepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：移除无用的Reshape，即输入输出ftmp的尺寸一致，layout也一致的Reshape，
+ftmp经过这种算子不发生变化因此可以直接删除该算子。</p>
+</section>
+<section id="icraft-removeuselesstranspose1pass">
+<h4>icraft.RemoveUselessTranspose1Pass<a class="headerlink" href="#icraft-removeuselesstranspose1pass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：将仅合并HW维度的Transpose-Reshape-Transpose结构简化为Reshape，主要用于Transformer中，示意图如下</p>
+<img alt="_static/TRT.png" src="_static/TRT.png" />
+</section>
+<section id="icraft-removeuselesstransposepass">
+<h4>icraft.RemoveUselessTransposePass<a class="headerlink" href="#icraft-removeuselesstransposepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：将连续交换维度而且只有一个维度为1的多个级联的transpose合并成一个Reshape。</p>
+</section>
+<section id="icraft-replaceavgpoolparampass">
+<h4>icraft.ReplaceAvgpoolParamPass<a class="headerlink" href="#icraft-replaceavgpoolparampass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：将Avgpool中电路不支持的count_include_pad = false的模式改成count_include_pad = true。</p>
+</section>
+<section id="icraft-replaceupsampleparampass">
+<h4>icraft.ReplaceUpsampleParamPass<a class="headerlink" href="#icraft-replaceupsampleparampass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：Nearest模式的上采样不支持非整数倍的上采样，因此遇到这种情况本pass会将Nearest换成Bilinear模式。</p>
+</section>
+<section id="icraft-splitlayernormpass">
+<h4>icraft.SplitLayernormPass<a class="headerlink" href="#icraft-splitlayernormpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：该pass拆分layernorm，layernorm -&gt; layernorm + batchnorm（mul+add），便于适配硬件的计算。</p>
+</section>
+<section id="icraft-splitupsamplepass">
+<h4>icraft.SplitUpsamplePass<a class="headerlink" href="#icraft-splitupsamplepass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：出于硬件的限制，双线性插值上采样倍率仅能支持到22倍，因此超过22倍的整数倍上采样会被拆分成多个级联的上采样算子实现。
+但是在使用时要注意，这种拆分只有在上采样的Align Corner参数为True时才完全等效，
+而在Align Corner参数为false时，二者会有一定的误差。优化前后网络结构示意图如下：</p>
+<img alt="_static/SU.png" src="_static/SU.png" />
+</section>
+<section id="icraft-tuningpadpass">
+<h4>icraft.TuningPadPass<a class="headerlink" href="#icraft-tuningpadpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：调整Maxpool,Avgpool,Conv2d算子的Pad值，使算子的输出ftmp规整。</p>
+</section>
+<section id="icraft-turndimfreeoplocationpass">
+<h4>icraft.TurnDimFreeOpLocationPass<a class="headerlink" href="#icraft-turndimfreeoplocationpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：调整维度不敏感的算子的位置，维度不敏感的算子包括:Sigmoid,Gelu,Relu,Hardswish,Prelu,Silu,Tanh,Hardsigmoid
+可以调整的算子包括：Reshape，transpose
+当这两种算子相连时，就可以把维度不敏感的算子转移至Reshape或transpose后进行计算，方便后续的算子合并。</p>
+<p>应用网络：se_resnet</p>
+<img alt="_static/DFO.png" src="_static/DFO.png" />
+</section>
+<section id="icraft-turnoporder1pass">
+<h4>icraft.TurnOpOrder1Pass<a class="headerlink" href="#icraft-turnoporder1pass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：调整conv2d-concat的结构，将原来由concat合并的两个卷积分支拆分回两个分支以便于后续的融合算子等优化，示意图如下</p>
+<img alt="_static/oporder1.png" src="_static/oporder1.png" />
+</section>
+</section>
+</section>
+</section>
+<section id="icraft-adapt">
+<h1>二 icraft-adapt<a class="headerlink" href="#icraft-adapt" title="此标题的永久链接">#</a></h1>
+<p>icraft-adapt完成的主要工作是基于后端组件进行网络的适配，当然由于icraft-adapt所处的编译环节，
+我们也将部分适合优化量化后网络的pass放置到了icraft-adapt中。因此icraft-adapt组件也是由一系列的内置pass组成。</p>
+<section id="id4">
+<h2>2.1 组件结构<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>该组件由两部分组成：</p>
+<ul class="simple">
+<li><p>icraft-adapt.exe</p></li>
+<li><p>icraft.XxPass.dll</p></li>
+</ul>
+<section id="icraft-adapt-exe">
+<h3>2.1.1 icraft-adapt.exe<a class="headerlink" href="#icraft-adapt-exe" title="此标题的永久链接">#</a></h3>
+<p>icraft-adapt.exe作为组件的顶层，主要负责结合用户的配置和内嵌配置调用各pass选项，组件内部的各pass选项是循环调度的，
+循环调度的结束标志是当前循环下网络结构不再发生改变。</p>
+<section id="id5">
+<h4>参数说明<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>json，string类型，表示输入的中间层json文件路径。</p></li>
+<li><p>raw，string类型，表示输入的中间层raw文件路径，与json参数配合使用，json+raw、path+network的组合仅可存在一组。</p></li>
+<li><p>path，string类型，表示路径，通常与network配合使用，表示网络路径。</p></li>
+<li><p>network，string类型，表示网络名称，通常与path配合使用，表示网络路径，json+raw、path+network的组合仅可存在一组。</p></li>
+<li><p>jr_path, string类型，表示优化后网络的存放路径。</p></li>
+<li><p>log_path，string类型，可选，表示log文件的存放路径，省略则为默认路径。</p></li>
+<li><p>pass_on，string类型，可选，通过配置该参数，可以打开icraft内置pass或自定义pass，以”，“分隔，pass_on所打开的自定义pass将优先于内置pass执行。</p></li>
+<li><p>pass_off，string类型，可选，通过配置该参数，可以关掉icraft内置pass，以”，“分隔。pass_on和pass_off不可包含同一个pass。</p></li>
+<li><p>custom_config，string类型，可选，用于描述文件路径，该文件用于向自定义pass传递参数。</p></li>
+<li><p>no_integral, implicit类型，默认为false，该参数通常与pass_on配合使用，表明将忽略icraft内置pass，仅调用pass_on所描述的pass选项。</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>应用示例<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>编译网络：icraft compile ./yolov5.toml，compile命令会一次调用icraft-parse -&gt; icraft-optimize -&gt; icraft-quantize -&gt; <strong>icraft-adapt</strong> -&gt; icraft-codegen</p></li>
+<li><p>优化网络：icraft adapt ./yolov5.toml，adapt命令会调用**icraft-adapt**对网络进行优化，所调用的pass由yolov5.toml中[adapt]下的参数决定。</p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h3>2.1.2 icraft.xxPass.dll<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<p>icraft.xxPass为具体的优化pass选项，该单元为一系列的dll文件。Adapter中的pass选项采用xir提供的pass接口来统一实现。
+pass中用到接口以及模式匹配请参见:<a class="reference external" href="https://persistent-donut-283.notion.site/Icraft-XIR-aabc179ffa114314b5a832bcac2b930a">Icraft XIR设计说明</a>。
+Adapter共有多个Pass,下面列举各Pass的功能说明：</p>
+<section id="icraft-addcopy2layernormpass">
+<h4>icraft.AddCopy2LayernormPass<a class="headerlink" href="#icraft-addcopy2layernormpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：buyi_target要求，layernorm的最后一维必须是32的整数倍，对于不满足32整数倍的，添加copy+concat来补充通道以满足硬件要求。</p>
+</section>
+<section id="icraft-addcopy2noinsoppass">
+<h4>icraft.AddCopy2noInsOpPass<a class="headerlink" href="#icraft-addcopy2noinsoppass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：部分算子如reshape、split在buyi_target上为无指令算子，从而能够优化网络的计算量。但当多个无指令算子连续出现时，无指令算子序列的处理比较复杂，
+因此，该pass在连续的无指令算子之间添加copy算子，便于后算组件处理。</p>
+</section>
+<section id="icraft-buyilayoutpass">
+<h4>icraft.BuyiLayoutPass<a class="headerlink" href="#icraft-buyilayoutpass" title="此标题的永久链接">#</a></h4>
+<p>功能描述：icraft3.0针对BuyiTarget进行网络编译，该pass的任务就是调整网络数据排布（我们称之为layout），以适应硬件的运算。针对BuyiTarget进行layout，
+我们既要实现ftmp的layout，也要实现param的layout。需要说明的是，layout的实现是一个非常繁琐的过程，或为了便于分级维护，或为了量化方便，或为了优化，
+我们将整个layout的过程分散实现在了多个pass中。这其中，BuyiLayoutPass毫无疑问是最主要的一个，该pass忽略网络前后结构，从算子的角度出发，
+针对每一个算子进行具体的layout。因此layout过程中，需要考虑前后结构的实现，都独立出去自成一个pass了。下面，我们将以算子为切入点，展开layout的介绍以及
+相关前后铺垫的介绍。</p>
+<section id="add-layout">
+<h5>add_layout<a class="headerlink" href="#add-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：ExpandParamPass、ExpandFtmpPass，将算子ifm.tensorType()-&gt;shape.size()调整到一致，ifm.tensorType()-&gt;shape无需一致。</p></li>
+<li><p>layout方式：1）判断c是否一致，不一致报错推出（目前不支持添加conv2d调成一致的动作）；2）判断C的位置是一致的，不一致则采用transpose移动到一致。
+3）根据ifm.tensorType()获取ofm.tensorType()。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="avgpool-layout">
+<h5>avgpool_layout<a class="headerlink" href="#avgpool-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：ConvertBigPool2SmallPoolPass，将大kernel的pool算子拆分为小kernel算子的级联；</p></li>
+<li><p>layout方式：1）判断C的位置，如果不满足NCHWc的排布顺序，添加transpose算子移动C到指定位置。2）根据ifm.tensorType()获取ofm.tensorType()。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="batchnorm-layout">
+<h5>batchnorm_layout<a class="headerlink" href="#batchnorm-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无。</p></li>
+<li><p>layout方式：1）判断C的位置，如果不满足NCHWc的排布顺序，添加transpose算子移动C到指定位置。2）根据ifm.tensorType()获取ofm.tensorType()。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="cast-layout">
+<h5>cast_layout<a class="headerlink" href="#cast-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无。</p></li>
+<li><p>layout方式：cast是唯一一个所有compile_target=host也要考虑layout的算子。1）compile_target==FpgaTarget，目前考虑8&lt;-&gt;16bit的转换，
+应用与混合精度，根据target_type获取ofm.tensorType()；2）compile_target==HostTarget，考虑软硬件数据的转换，这里既要考虑数据类型的转换，
+也要考虑数据排布的转换，还要考虑补通道和去通道的问题。</p>
+<ul>
+<li><p>soft -&gt; hard, cast -&gt; align_axis + cast  (其中，align_axis负责给数据补通道，cast负责完成数据类型的转换和数据排布的转换)，
+cast实现硬件排布时，C所在的位置时固定到了index=1的位置；</p></li>
+<li><p>hard -&gt; soft，cast -&gt; cast + prune_axis （其中，cast负责完成数据类型的转换和数据排布的转换，prune_axis负责去掉无效通道）。</p></li>
+<li><p>后续有可能对上述步骤进行硬件加速。</p></li>
+</ul>
+</li>
+<li><p>后级pass：MergeTranspose2CastPass。如前所述，soft -&gt; hard将C的索引固化到了index=1的位置，这个位置可能不满足后续算子的需求，需要添加
+tranpose来移动C的位置，MergeTranspose2CastPass用来将移动C的transpose合并到cast中，实现cast算子根据后续算子的需求来配置C的位置，减小
+网络计算量。</p></li>
+</ul>
+</section>
+<section id="concat-layout">
+<h5>concat_layout<a class="headerlink" href="#concat-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无。</p></li>
+<li><p>layout方式：layout中，axis参数需要记录的是硬件对应的concat维度。</p>
+<ul>
+<li><p>ifms中存在param：</p>
+<ul>
+<li><p>axis = -1，根据所有的ftmp输入来统计c，针对ftmp添加conv2d来同步c；针对param进行补通道和重排，从而达到同步c的目的，修改axis=C_index；
+根据ofm.mergedAxisDistr，考虑添加conv2d来合并无效通道，调节为合适的c；</p></li>
+<li><p>axis != -1，根据c对param进行补通道和重排，从而达到同步c的目的，因为添加了C维度，需要根据硬件维度更新axis；</p></li>
+</ul>
+</li>
+<li><p>ifms全为ftmp：</p>
+<ul>
+<li><p>目前，为支持ifms.layout不相同的情况，后续考虑添加transpose；</p></li>
+<li><p>axis = -1，根据所有的ftmp输入来统计c，针对ftmp添加conv2d来同步c；修改axis=C_index；根据ofm.mergedAxisDistr，考虑添加conv2d来合并无效通道，调节为合适的c；</p></li>
+<li><p>axis != -1，因为添加了C维度，需要根据硬件维度更新axis；</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="conv2d-layout">
+<h5>conv2d_layout<a class="headerlink" href="#conv2d-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：PreProcessConv2dFtmpPass，该pass针对con2d_ftmp中ifm1进行重排，由HWIO -&gt; HWOI（O中的无效通道保留）。</p></li>
+<li><p>layout方式：</p>
+<ul>
+<li><p>conv2d_const</p>
+<ul>
+<li><p>group = 1：根据weight和storage_type确定i、o；根据i、o进行weight的补通道和重排；获取ofm.tensorType()；</p></li>
+<li><p>group = I*i；根据weight和storage_type确定i、o；根据i、o进行weight的补通道和重排；获取ofm.tensorType()；</p></li>
+<li><p>1 &lt; group &lt; I*i：根据weight、storage_type、group确定i、o；添加conv2d调整ifm.i;获取ofm.tensorType()；添加conv2d合并无效通道；</p></li>
+</ul>
+</li>
+<li><p>con2d_ftmp</p>
+<ul>
+<li><p>group = 1 || I*i：将HWIOi变为OIHWoi；HWIOi-&gt;Reshape(HWIOoi)-&gt;Transpose(IOHWoi)-&gt;Transpose(OIHWoi);获取ofm.tensorType()；</p></li>
+<li><p>1 &lt; group &lt; I*i：考虑用concat_const针对ifm1（HWOI）进行IO的补通道；将HWIOi变为OIHWoi；
+HWIOi-&gt;Reshape(HWIOoi)-&gt;Transpose(IOHWoi)-&gt;Transpose(OIHWoi);获取ofm.tensorType()；后续添加conv2d合并无效通道。</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="conv2dtranspose-layout">
+<h5>conv2dtranspose_layout<a class="headerlink" href="#conv2dtranspose-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：同于conv2d_const；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="copy-layout">
+<h5>copy_layout<a class="headerlink" href="#copy-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="dividescalar-layout">
+<h5>dividescalar_layout<a class="headerlink" href="#dividescalar-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：ConvertDivideScalar2MultiplyPass将dividescalar替换为mul。</p></li>
+<li><p>layout方式：在layout中看不到该算子，忽略。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="elu-layout">
+<h5>elu_layout<a class="headerlink" href="#elu-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="gelu-layout">
+<h5>gelu_layout<a class="headerlink" href="#gelu-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="hardsigmoid-layout">
+<h5>hardsigmoid_layout<a class="headerlink" href="#hardsigmoid-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="hardswish-layout">
+<h5>hardswish_layout<a class="headerlink" href="#hardswish-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="input-layout">
+<h5>input_layout<a class="headerlink" href="#input-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：该算子在3.0中compile_target = host，无需实现layout。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="layernorm-layout">
+<h5>layernorm_layout<a class="headerlink" href="#layernorm-layout" title="此标题的永久链接">#</a></h5>
+<ul>
+<li><p>前级pass：PreProcessLayernormPass</p>
+<img alt="_static/PreProcessLayernormPass.png" src="_static/PreProcessLayernormPass.png" />
+</li>
+<li><p>layout方式：仅针对layernorm算子进行layout实现，ofm.tensorType() = ifm.tensorType().clone()。PreProcessLayernormPass拆分出的算子，在其他算子自身的layout中实现。
+需要补充的是：PreProcessLayernormPass拆分出来的transpose算子在做最后两维翻转时，要保留最后一维的无效通道。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="matmul-layout">
+<h5>matmul_layout<a class="headerlink" href="#matmul-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：PreProcessMatmulPass，将**IO重排为**OI；</p></li>
+<li><p>layout方式：
+- matmul_const:根据ifm和ofm，确定weight的io；针对i对weight进行输入的补通道，o无需补，因为硬件可以自定的补输出通道；将weight从**IO重排为**OI。
+- matmul_ftmp:依赖PreProcessMatmulPass实现重排，获取ofm.tensorType()。</p></li>
+</ul>
+</section>
+<section id="maxpool-layout">
+<h5>maxpool_layout<a class="headerlink" href="#maxpool-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：ConvertBigPool2SmallPoolPass，将大kernel的pool算子拆分为小kernel算子的级联；</p></li>
+<li><p>layout方式：1）判断C的位置，如果不满足NCHWc的排布顺序，添加transpose算子移动C到指定位置。2）根据ifm.tensorType()获取ofm.tensorType()。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="mish-layout">
+<h5>mish_layout<a class="headerlink" href="#mish-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="multiply-layout">
+<h5>multiply_layout<a class="headerlink" href="#multiply-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：ExpandParamPass、ExpandFtmpPass，将算子ifm.tensorType()-&gt;shape.size()调整到一致，ifm.tensorType()-&gt;shape无需一致。</p></li>
+<li><p>layout方式：1）判断c是否一致，不一致报错推出（目前不支持添加conv2d调成一致的动作）；2）判断C的位置是一致的，不一致则采用transpose移动到一致。
+3）根据ifm.tensorType()获取ofm.tensorType()。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="output-layout">
+<h5>output_layout<a class="headerlink" href="#output-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：该算子在3.0中compile_target = host，无需实现layout。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="pad-layout">
+<h5>pad_layout<a class="headerlink" href="#pad-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：根据ofm获取ofm.tensorType()。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="pixelshuffle-buyilayout">
+<h5>pixelshuffle_buyilayout<a class="headerlink" href="#pixelshuffle-buyilayout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：ConvertTranspose2PixelShufflePass，将一系列的小算子合并为pixelshuffle。</p></li>
+<li><p>layout方式：根据ofm获取ofm.tensorType()。</p></li>
+<li><p>后级pass：ConvertPixelShuffle2TransposePass。pixelshuffle在硬件上是用reshape+transpose拼搭出来的，
+因此该pass会针对layout后的pixelshuffle进行拆分，以适配硬件的计算。</p></li>
+</ul>
+</section>
+<section id="prelu-layout">
+<h5>prelu_layout<a class="headerlink" href="#prelu-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="region-layout">
+<h5>region_layout<a class="headerlink" href="#region-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：该算子在3.0中compile_target = host，无需实现layout。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="relu-layout">
+<h5>relu_layout<a class="headerlink" href="#relu-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="reorg-layout">
+<h5>reorg_layout<a class="headerlink" href="#reorg-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：该算子在3.0中compile_target = host，无需实现layout。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="reshape-layout">
+<h5>reshape_layout<a class="headerlink" href="#reshape-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：添加transpose算子将C移动到倒数第二维，此时，我们认为恢复到了软件排布。
+硬件对reshape的理解，是除c维度外，其他维度随意拼接组合。因此要求i_c=o_c，不满足的情况下同通过添加conv2d来添加无效通道。
+目前已支持任意维度的reshape，使用reshape、transpose、conv2d的组合来实现有倍数关系的通道合并或拆分的reshape，
+用prune_axis和align_axis来实现对于任意无倍数关系的通道reshape的合并或拆分。</p></li>
+<li><p>后级pass：无。（由于内部引入了较多的reshape和tranpose，因此期望后级惊醒reshape和transpose的消除与合并，但是不是必须的）</p></li>
+</ul>
+</section>
+<section id="resize-layout">
+<h5>resize_layout<a class="headerlink" href="#resize-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：前处理算子，该算子在3.0中compile_target = host，无需实现layout。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="sigmoid-layout">
+<h5>sigmoid_layout<a class="headerlink" href="#sigmoid-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="silu-layout">
+<h5>silu_layout<a class="headerlink" href="#silu-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="slice-layout">
+<h5>slice_layout<a class="headerlink" href="#slice-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无。</p></li>
+<li><p>layout方式：
+- 通道不切，根据ofm获取ofm.tensorType();instrgen支持一次切通道外的多个维度；
+- 仅切通道，考虑添加conv2d将要切出来的部分变成n*c；根据ofm获取ofm.tensorType()，因此instrgen看到的slice是切C;
+- 同时切通道和其他维度，需要对slice进行级联，待实现在新的pass里。</p></li>
+<li><p>后级pass：ConvertSlice2SplitPass，在不需要搬移数据的场景，将slice算子转换为split，减小网络运行时间(暂时未实现这个优化)。</p></li>
+</ul>
+</section>
+<section id="softmax-layout">
+<h5>softmax_layout<a class="headerlink" href="#softmax-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>待实现，考虑同于layernorm；</p></li>
+</ul>
+</section>
+<section id="split-layout">
+<h5>split_layout<a class="headerlink" href="#split-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无。</p></li>
+<li><p>layout方式：
+- axis=-1，针对多个输出，找到合适的c，根据c采用conv2d对ifm进行补通道，从而满足后续split不搬移数据的实现方式；
+- axis!=-1，无需特殊操作。</p></li>
+<li><p>后级pass：ConvertSplit2SlicePass，在需要搬移数据的场景，将split换成slice算子，后端统一支持slice来搬移数据。</p></li>
+</ul>
+</section>
+<section id="swaporder-layout">
+<h5>swaporder_layout<a class="headerlink" href="#swaporder-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：前处理算子，该算子在3.0中compile_target = host，无需实现layout。</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="tanh-layout">
+<h5>tanh_layout<a class="headerlink" href="#tanh-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：无</p></li>
+<li><p>layout方式：ofm.tensorType() = ifm.tensorType().clone()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="transpose-layout">
+<h5>transpose_layout<a class="headerlink" href="#transpose-layout" title="此标题的永久链接">#</a></h5>
+<ul>
+<li><p>前级pass：DemergeTransposePass，该pass负责将transpose做拆分，拆分为instrgen能够支持的形式；</p></li>
+<li><p>layout方式：因为前级pass的处理，此处只需考虑:</p>
+<ul>
+<li><p>最后一维参与重排，需要将另一个需要重排的维度先搬移到倒数第二维，然后做最后两维的重排；
+考虑到硬件可以实现重排时去无效通道，layout实现出来的网络结构必须与硬件对齐，且可以仿真，因此采用多算子来等效替换这个实现，
+instrgen编辑指令时需要做该子图重新合并为transpose算子。</p>
+<img alt="_static/transpose_buyilayout.png" src="_static/transpose_buyilayout.png" />
+</li>
+<li><p>最后一维不参与重排。</p></li>
+</ul>
+</li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+<section id="upsample-layout">
+<h5>upsample_layout<a class="headerlink" href="#upsample-layout" title="此标题的永久链接">#</a></h5>
+<ul class="simple">
+<li><p>前级pass：SplitUpsamplePass；</p></li>
+<li><p>layout方式：根据ifm.tensorType()获取ofm.tensorType()；</p></li>
+<li><p>后级pass：无。</p></li>
+</ul>
+</section>
+</section>
+<section id="icraft-convertpixelshuffle2transposepass">
+<h4>icraft.ConvertPixelShuffle2TransposePass<a class="headerlink" href="#icraft-convertpixelshuffle2transposepass" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>功能描述：该pass根据pixelshuffle的layout情况，将pixelshuffle拆分为了transpose+reshape的组合，适配后端组件的实现。
+也就是说，在instrgen端是看不到pixelshuffle算子的。</p></li>
+</ul>
+</section>
+<section id="icraft-copyftmppass">
+<h4>icraft.CopyFtmpPass<a class="headerlink" href="#icraft-copyftmppass" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>功能描述：concat算子在buyi_target上为无指令算子，该pass针对同一个pass作为多个concat输入的情况，添加copy算子。</p></li>
+</ul>
+</section>
+<section id="convertsplit2slicepass">
+<h4>ConvertSplit2SlicePass<a class="headerlink" href="#convertsplit2slicepass" title="此标题的永久链接">#</a></h4>
+<ul class="simple">
+<li><p>前置pass：BuyiLayoutPass，针对split（axis!=-1）算子进行layout；</p></li>
+<li><p>功能描述：将axis不等于第一个非1维度的场景，将split替换为slice算子，如是，后端组件的split算子不再考虑搬移数据，搬移数据的动作由slice完成。</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="id9">
+<h1>三 硬件适配<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h1>
+<section id="add">
+<h2>3.1 Add<a class="headerlink" href="#add" title="此标题的永久链接">#</a></h2>
+<ul>
+<li><p>适配硬件需求：codegen要求 1）add（add_ftmp、add_const）算子的输入维度数量必须相同；
+2）如果其中一个输入为vector（无论该输入为ftmp还是param），则该输入不需要广播，codegen自动广播；
+3）如果输入需要广播，param则提前广播好，ftmp则添加expand算子。</p></li>
+<li><p>相关Pass
+- ExpandParamPass：适配add_const，用于广播add_const下的ftmp和param；</p>
+<blockquote>
+<div><img alt="_static/ExpandParamPass.PNG" src="_static/ExpandParamPass.PNG" />
+</div></blockquote>
+<ul>
+<li><p>ExpandFtmpPass：适配add_ftmp，用于广播add_ftmp下的ftmp；</p>
+<img alt="_static/ExpandFtmpPass.PNG" src="_static/ExpandFtmpPass.PNG" />
+</li>
+<li><p>SplitExpandPass:ExpandParamPass以及ExpandFtmpPass添加的expand是不考虑后端组件对expand的支持方式的，因此统一用SplitExpandPass来做expand的级联。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="multiply">
+<h2>3.2 Multiply<a class="headerlink" href="#multiply" title="此标题的永久链接">#</a></h2>
+<ul>
+<li><p>适配硬件需求：codegen要求 1）multiply（multiply_ftmp、multiply_const）算子的输入维度数量必须相同；
+2）如果其中一个输入为vector（无论该输入为ftmp还是param），则该输入不需要广播，codegen自动广播；
+3）如果输入需要广播，param则提前广播好，ftmp则添加expand算子。</p></li>
+<li><p>相关Pass
+- ExpandParamPass：适配multiply_const，用于广播multiply_const下的ftmp和param；</p>
+<blockquote>
+<div><img alt="_static/ExpandParamPass.PNG" src="_static/ExpandParamPass.PNG" />
+</div></blockquote>
+<ul>
+<li><p>ExpandFtmpPass：适配multiply_ftmp，用于广播multiply_ftmp下的ftmp；</p>
+<img alt="_static/ExpandFtmpPass.PNG" src="_static/ExpandFtmpPass.PNG" />
+</li>
+<li><p>SplitExpandPass:ExpandParamPass以及ExpandFtmpPass添加的expand是不考虑后端组件对expand的支持方式的，因此统一用SplitExpandPass来做expand的级联。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="matmul">
+<h2>3.3 Matmul<a class="headerlink" href="#matmul" title="此标题的永久链接">#</a></h2>
+<ul>
+<li><p>适配硬件需求：codegen要求 1）matmul（matmul_ftmp、matmul_const）算子的输入维度数量必须相同；
+2）如果其中一个输入只有两维（无论该输入为ftmp还是param），则该输入不需要广播，codegen自动广播；
+3）如果输入需要广播，param则提前广播好，ftmp则添加expand算子。</p></li>
+<li><p>相关Pass
+- ExpandParamPass：适配matmul_const，用于广播matmul_const下的ftmp和param；</p>
+<blockquote>
+<div><img alt="_static/ExpandParamPass.PNG" src="_static/ExpandParamPass.PNG" />
+</div></blockquote>
+<ul>
+<li><p>ExpandFtmpPass：适配matmul_ftmp，用于广播matmul_ftmp下的ftmp；</p>
+<img alt="_static/ExpandFtmpPass.PNG" src="_static/ExpandFtmpPass.PNG" />
+</li>
+<li><p>SplitExpandPass:ExpandParamPass以及ExpandFtmpPass添加的expand是不考虑后端组件对expand的支持方式的，因此统一用SplitExpandPass来做expand的级联。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="softmax">
+<h2>3.4 Softmax<a class="headerlink" href="#softmax" title="此标题的永久链接">#</a></h2>
+<ul>
+<li><p>适配硬件要求：硬件要求softmax的维度必须排在倒数第二维，且重排后最后一维必须是当前精度下最大cu的整数倍。</p>
+<img alt="_static/PreProcessSoftmaxPass.PNG" src="_static/PreProcessSoftmaxPass.PNG" />
+</li>
+<li><p>相关pass：</p>
+<ul class="simple">
+<li><p>PreProcessSoftmaxPass，用于添加transpose重排最后两个维度，且在改transpose上打上tag：fix_cu，表示改transpose_layout的新cu必须为指定的cu，而非最小cu。</p></li>
+<li><p>BuyiLayoutPass，用于对PreProcessSoftmaxPass添加的算子逐个做layout实现。</p></li>
+</ul>
+</li>
+<li><p>补充：该算子的layout前向，因为softmax作为数据重排，因此需要在layout前向中做逆重排。</p></li>
+</ul>
+</section>
+<section id="layernorm">
+<h2>3.5 Layernorm<a class="headerlink" href="#layernorm" title="此标题的永久链接">#</a></h2>
+<ul>
+<li><p>适配硬件要求：硬件要求layernorm维度必须排在倒数第二维，且重排后最后一维必须是当前精度下最大cu的整数倍。</p>
+<img alt="_static/PreProcessLayernormPass.PNG" src="_static/PreProcessLayernormPass.PNG" />
+</li>
+<li><p>相关pass：</p>
+<ul class="simple">
+<li><p>PreProcessLayernormPass，用于添加transpose重排最后两个维度。目前没有项softmax一样做到最大的cu。</p></li>
+<li><p>BuyiLayoutPass，用于对PreProcessLayernormPass添加的算子逐个做layout实现。</p></li>
+</ul>
+</li>
+<li><p>补充：该算子的layout前向，因为layernorm作为数据重排，因此需要在layout前向中做逆重排。</p></li>
+</ul>
+</section>
+<section id="id10">
+<h2>3.6 Matmul<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p>适配硬件要求：硬件要求matmul_ftmp的ifm1的数据需要翻转重排，例如(a,b,c,d)-&gt;(a,b,d,c)。</p></li>
+<li><p>相关pass：</p>
+<ul>
+<li><p>PreProcessMatmulPass，用于添加transpose重排最后两个维度。</p></li>
+<li><p>BuyiLayoutPass，用于对PreProcessLayernormPass添加的算子逐个做layout实现。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h1>四 索引<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">一 icraft-optimize</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.1 组件结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-optimize-exe">1.1.1 icraft-optimize.exe</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">参数说明</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">应用示例</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-xxpass-dll">1.1.2 icraft.xxPass.dll</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertbigkernel2smallkernelpass">icraft.ConvertBigKernel2SmallKernelPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertbigpool2smallpoolpass">icraft.ConvertBigPool2SmallPoolPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertdimfreeoplayoutpass">icraft.ConvertDimFreeOpLayoutPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertdividescalar2multiplypass">icraft.ConvertDivideScalar2MultiplyPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertinnerproduct2conv2dpass">icraft.ConvertInnerProduct2Conv2dPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertmultiplyadd2batchnormpass">icraft.ConvertMultiplyAdd2BatchnormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertroutepass">icraft.ConvertRoutePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertsqueeze2reshapepass">icraft.ConvertSqueeze2ReshapePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertupsamplebili2nearestpass">icraft.ConvertUpsampleBili2NearestPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-demergetransposepass">icraft.DemergeTransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-expandparampass">icraft.ExpandParamPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergeadd2conv2dpass">icraft.MergeAdd2Conv2dPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergebatchnormconv2dpass">icraft.MergeBatchnormConv2dPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergebatchnormmatmulpass">icraft.MergeBatchnormMatmulPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergeconv2dbatchnormpass">icraft.MergeConv2dBatchnormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemulconst2innerproductpass">icraft.MergeMulConst2InnerProductPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultipleconcatpass">icraft.MergeMultipleConcatPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultiplereshapepass">icraft.MergeMultipleReshapePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultipleslicepass">icraft.MergeMultipleSlicePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergemultipletransposepass">icraft.MergeMultipleTransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-mergetranspose2innerproductpass">icraft.MergeTranspose2InnerProductPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-opparamconstraintbypass">icraft.OpParamConstraintBYPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessavgpoolpass">icraft.RemoveUselessAvgpoolPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessbranchpass">icraft.RemoveUselessBranchPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessmaxpoolpass">icraft.RemoveUselessMaxpoolPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselessreshapepass">icraft.RemoveUselessReshapePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselesstranspose1pass">icraft.RemoveUselessTranspose1Pass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-removeuselesstransposepass">icraft.RemoveUselessTransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-replaceavgpoolparampass">icraft.ReplaceAvgpoolParamPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-replaceupsampleparampass">icraft.ReplaceUpsampleParamPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-splitlayernormpass">icraft.SplitLayernormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-splitupsamplepass">icraft.SplitUpsamplePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-tuningpadpass">icraft.TuningPadPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-turndimfreeoplocationpass">icraft.TurnDimFreeOpLocationPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-turnoporder1pass">icraft.TurnOpOrder1Pass</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-adapt">二 icraft-adapt</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1 组件结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-adapt-exe">2.1.1 icraft-adapt.exe</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">参数说明</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">应用示例</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.1.2 icraft.xxPass.dll</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-addcopy2layernormpass">icraft.AddCopy2LayernormPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-addcopy2noinsoppass">icraft.AddCopy2noInsOpPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-buyilayoutpass">icraft.BuyiLayoutPass</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#add-layout">add_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#avgpool-layout">avgpool_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#batchnorm-layout">batchnorm_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#cast-layout">cast_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#concat-layout">concat_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#conv2d-layout">conv2d_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#conv2dtranspose-layout">conv2dtranspose_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-layout">copy_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#dividescalar-layout">dividescalar_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#elu-layout">elu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#gelu-layout">gelu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#hardsigmoid-layout">hardsigmoid_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#hardswish-layout">hardswish_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#input-layout">input_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#layernorm-layout">layernorm_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#matmul-layout">matmul_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#maxpool-layout">maxpool_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#mish-layout">mish_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#multiply-layout">multiply_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#output-layout">output_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pad-layout">pad_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pixelshuffle-buyilayout">pixelshuffle_buyilayout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prelu-layout">prelu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#region-layout">region_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-layout">relu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#reorg-layout">reorg_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#reshape-layout">reshape_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#resize-layout">resize_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#sigmoid-layout">sigmoid_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#silu-layout">silu_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#slice-layout">slice_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-layout">softmax_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#split-layout">split_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#swaporder-layout">swaporder_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tanh-layout">tanh_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-layout">transpose_layout</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#upsample-layout">upsample_layout</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-convertpixelshuffle2transposepass">icraft.ConvertPixelShuffle2TransposePass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-copyftmppass">icraft.CopyFtmpPass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convertsplit2slicepass">ConvertSplit2SlicePass</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">三 硬件适配</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add">3.1 Add</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiply">3.2 Multiply</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matmul">3.3 Matmul</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax">3.4 Softmax</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layernorm">3.5 Layernorm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.6 Matmul</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">四 索引</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： wangcan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

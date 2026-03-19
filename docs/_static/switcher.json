@@ -1,0 +1,10 @@
+[
+  {
+    "version": "dev",
+    "url": "http://192.168.125.234/icraft/latest/"
+  },
+  {
+    "version": "3.0.0",
+    "url": "http://192.168.125.234/icraft/3.0.0/"
+  }
+]

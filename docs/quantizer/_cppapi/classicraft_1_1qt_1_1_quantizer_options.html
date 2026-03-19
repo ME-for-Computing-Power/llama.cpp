@@ -1,0 +1,590 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class QuantizerOptions &#8212; Icraft Quantizer 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/classicraft_1_1qt_1_1_quantizer_options';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Quantizer 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/classicraft_1_1qt_1_1_quantizer_options.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Class QuantizerOptions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-quantizeroptions">
+<span id="exhale-class-classicraft-1-1qt-1-1-quantizer-options"></span><h1>Class QuantizerOptions<a class="headerlink" href="#class-quantizeroptions" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-qt_core_quantizer_options.h.html#file-icraft-qt-core-quantizer-options-h"><span class="std std-ref">File quantizer_options.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="此标题的永久链接">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptionsE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptionsE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptionsE"></span><span id="icraft::qt::QuantizerOptions"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuantizerOptions</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptionsE" title="永久链接至目标">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a93f91931175726099352c266d8be6b79"></span><span class="sig-name descname"><span class="pre">ENUM_HPP_CLASS_DECL</span> <span class="pre">(ForwardMode,</span> <span class="pre">int,(ftmp)(image))</span> <span class="pre">ENUM_HPP_CLASS_DECL(Saturation</span></span></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a4caad0af19c919fce1206ebac21069a1"></span><span class="sig-name descname"><span class="pre">null</span> <span class="pre">kld</span> <span class="pre">ems</span> <span class="pre">(nsigma))</span> <span class="pre">ENUM_HPP_CLASS_DECL(Per</span></span></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a8e7cf1aac1c686861556444fedd870e8"></span><span class="sig-name descname"><span class="pre">null</span> <span class="pre">kld</span> <span class="pre">tensor</span> <span class="pre">(channel))</span> <span class="pre">ForwardMode</span> <span class="pre">forward_mode</span></span></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp">
+<span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a61569f2965b7a369eb10b6d75d410d11"></span><span class="sig-name descname"><span class="pre">int</span></span></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp">
+<span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a5ba43e35480ed3b6206d0da196574d82"></span><span class="sig-name descname"><span class="pre">null</span> <span class="pre">kld</span> <span class="pre">int</span></span></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions11before_reluE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions11before_reluE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions11before_reluE"></span><span id="icraft::qt::QuantizerOptions::before_relu__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a08579846afc98b1a917122e126bf6de0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">before_relu</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions11before_reluE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions6no_imkE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions6no_imkE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions6no_imkE"></span><span id="icraft::qt::QuantizerOptions::no_imk__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a1ec852318805d46628b8c60586b327d9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_imk</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions6no_imkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions8no_transE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions8no_transE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions8no_transE"></span><span id="icraft::qt::QuantizerOptions::no_trans__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a51ac724e7468a84e2127ba53418e6d98"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_trans</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions8no_transE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions12no_normalizeE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions12no_normalizeE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions12no_normalizeE"></span><span id="icraft::qt::QuantizerOptions::no_normalize__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a2a720ef0d44bb178596c78e52ffe2984"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_normalize</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions12no_normalizeE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions5debugE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions5debugE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions5debugE"></span><span id="icraft::qt::QuantizerOptions::debug__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a398527b3e9e358c345c5047b16871957"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">debug</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions5debugE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions8precheckE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions8precheckE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions8precheckE"></span><span id="icraft::qt::QuantizerOptions::precheck__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a00473485f9c17eb1a412911d46c7fc44"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">precheck</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions8precheckE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions8auto_mixE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions8auto_mixE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions8auto_mixE"></span><span id="icraft::qt::QuantizerOptions::auto_mix__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a2b9641b5480efeb4830bf88e13d59af5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">auto_mix</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions8auto_mixE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions13no_transinputE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions13no_transinputE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions13no_transinputE"></span><span id="icraft::qt::QuantizerOptions::no_transinput__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a95a26c82ed0e13043d0027b26a32940f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_transinput</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions13no_transinputE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions10no_imgmakeE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions10no_imgmakeE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions10no_imgmakeE"></span><span id="icraft::qt::QuantizerOptions::no_imgmake__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a73bd6cd9690df381b837e5ac20f73850"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_imgmake</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions10no_imgmakeE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions11forward_dirE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions11forward_dirE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions11forward_dirE"></span><span id="icraft::qt::QuantizerOptions::forward_dir__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a365ba1a8425e6caf46397ac23665f291"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">forward_dir</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions11forward_dirE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions12forward_listE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions12forward_listE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions12forward_listE"></span><span id="icraft::qt::QuantizerOptions::forward_list__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a16728639dfc8bafcc50b99ee9296f7b1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">forward_list</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions12forward_listE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions10names_fileE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions10names_fileE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions10names_fileE"></span><span id="icraft::qt::QuantizerOptions::names_file__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1aa72dd329803cdab8e169fabd65657dd9"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">names_file</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions10names_fileE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions8ftmp_csvE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions8ftmp_csvE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions8ftmp_csvE"></span><span id="icraft::qt::QuantizerOptions::ftmp_csv__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a3cac19b74d7d8e519330531fe72860ab"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ftmp_csv</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions8ftmp_csvE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions7raw_csvE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions7raw_csvE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions7raw_csvE"></span><span id="icraft::qt::QuantizerOptions::raw_csv__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1aef6a32d79144fb1324c73c636062a5c3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_csv</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions7raw_csvE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions10decode_dllE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions10decode_dllE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions10decode_dllE"></span><span id="icraft::qt::QuantizerOptions::decode_dll__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a16af3a3902a8a4bdab539382c8966fb8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">decode_dll</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions10decode_dllE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions10input_normE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions10input_normE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions10input_normE"></span><span id="icraft::qt::QuantizerOptions::input_norm__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a5f489fb6a0d710ef056dc62912467096"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_norm</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions10input_normE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions6targetE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions6targetE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions6targetE"></span><span id="icraft::qt::QuantizerOptions::target__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1aa139e7c7d968328493be1eaea54c5193"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions6targetE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions13mix_precisionE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions13mix_precisionE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions13mix_precisionE"></span><span id="icraft::qt::QuantizerOptions::mix_precision__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1aa5dd9fd8256b7a9c5bcdce3375849b08"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mix_precision</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions13mix_precisionE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions8log_pathE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions8log_pathE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions8log_pathE"></span><span id="icraft::qt::QuantizerOptions::log_path__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1ab9a5e2965a8a7be88b0a1e296d4cc0be"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">log_path</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions8log_pathE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions7jr_pathE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions7jr_pathE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions7jr_pathE"></span><span id="icraft::qt::QuantizerOptions::jr_path__ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a1c7288cc3ebf998aa39eaed6101baf01"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">jr_path</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions7jr_pathE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions12no_trans_idsE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions12no_trans_idsE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions12no_trans_idsE"></span><span id="icraft::qt::QuantizerOptions::no_trans_ids__std::vector:i:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a3a7fd16de4ba531ad671c6946db9eea4"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_trans_ids</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions12no_trans_idsE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions10no_imk_idsE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions10no_imk_idsE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions10no_imk_idsE"></span><span id="icraft::qt::QuantizerOptions::no_imk_ids__std::vector:i:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1aabf5a733e22422e948feddde0b87fbde"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_imk_ids</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions10no_imk_idsE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions10saturationE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions10saturationE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions10saturationE"></span><span id="icraft::qt::QuantizerOptions::saturation__Saturation"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1ab7d1ad075d158dfe243ceae329251def"></span><span class="n"><span class="pre">Saturation</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">saturation</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions10saturationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions3perE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions3perE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions3perE"></span><span id="icraft::qt::QuantizerOptions::per__Per"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1acad20919aa776dea648be2f03a383bf5"></span><span class="n"><span class="pre">Per</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">per</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions3perE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions4axisE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions4axisE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions4axisE"></span><span id="icraft::qt::QuantizerOptions::axis__i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a884869744ebf14a092b339ae65c2af37"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">axis</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions4axisE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions4bitsE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions4bitsE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions4bitsE"></span><span id="icraft::qt::QuantizerOptions::bits__i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1ad1e28a1a66a25529b0b61b9ca4e66d44"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions4bitsE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions5batchE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions5batchE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions5batchE"></span><span id="icraft::qt::QuantizerOptions::batch__i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1ad1793c1a8dd3db1a8c4e2d76eadf0036"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">batch</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions5batchE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions7bin_numE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions7bin_numE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions7bin_numE"></span><span id="icraft::qt::QuantizerOptions::bin_num__i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1adc538a6a4dbe21355cf76f51afa132d6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bin_num</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4096</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions7bin_numE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions1nE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions1nE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions1nE"></span><span id="icraft::qt::QuantizerOptions::n__i"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a76f11d9a0a47b94f72c2d0e77fb32240"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">n</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions1nE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt16QuantizerOptions12smooth_alphaE">
+<span id="_CPPv3N6icraft2qt16QuantizerOptions12smooth_alphaE"></span><span id="_CPPv2N6icraft2qt16QuantizerOptions12smooth_alphaE"></span><span id="icraft::qt::QuantizerOptions::smooth_alpha__double"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_options_1a8de8bbc3c340bb32b15b446fe4390323"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">smooth_alpha</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt16QuantizerOptions12smooth_alphaE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： GuoPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

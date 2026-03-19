@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Program Listing for File buyibackend.h &#8212; Icraft BuyiBackend 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/program_listing_file_icraft-backends_buyibackend_buyibackend.h';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft BuyiBackend 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_icraft__xir.html">Namespace icraft::xir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_icraft__xrt.html">Namespace icraft::xrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_buyi_backend.html">Class BuyiBackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_buyi_backend_node.html">Class BuyiBackendNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_forward_info.html">Class ForwardInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_forward_info_node.html">Class ForwardInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_hard_op_info.html">Class HardOpInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_hard_op_info_node.html">Class HardOpInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_logic_segment.html">Class LogicSegment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_logic_segment_node.html">Class LogicSegmentNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_phy_segment.html">Class PhySegment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_phy_segment_node.html">Class PhySegmentNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_value_info.html">Class ValueInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xrt_1_1_value_info_node.html">Class ValueInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_buyibackend_8h_1a02e8200fc8b89f1431ff021142e3ead4.html">Enum Segment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typedef_buyibackend_8h_1a352d7ab152c537844ba7b442d4f9c5fb.html">Typedef icraft::xrt::ITER_TYPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typedef_buyibackend_8h_1a114b7183aabd6c95ddb1f1cb7882cb9f.html">Typedef ULL</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/program_listing_file_icraft-backends_buyibackend_buyibackend.h.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Program Listing for File buyibackend.h</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="program-listing-for-file-buyibackend-h">
+<span id="program-listing-file-icraft-backends-buyibackend-buyibackend-h"></span><h1>Program Listing for File buyibackend.h<a class="headerlink" href="#program-listing-for-file-buyibackend-h" title="此标题的永久链接">#</a></h1>
+<p>↰ <a class="reference internal" href="file_icraft-backends_buyibackend_buyibackend.h.html#file-icraft-backends-buyibackend-buyibackend-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">icraft-backends\buyibackend\buyibackend.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xir/core/data.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xir/ops/hard_op.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;icraft-xrt/core/device.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;icraft-xrt/core/backend.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/dev/buyi_device.h&gt;</span>
+<span class="c1">//#include &quot;buyibackend_apply.h&quot;</span>
+
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;set&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;list&gt;</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">ULL</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xrt</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Value</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Node</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">NodeBase</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">HandleBase</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">HardOp</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ITER_TYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Array</span><span class="o">&lt;</span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Operation</span><span class="o">&gt;::</span><span class="n">const_iterator</span><span class="p">;</span>
+<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Segment</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">WEIGHT</span><span class="p">,</span><span class="w">             </span><span class="c1">//&lt; 权重分段，etm上存放hardop对应的的权重数据</span>
+<span class="w">        </span><span class="n">INSTR</span><span class="p">,</span><span class="w">              </span><span class="c1">//&lt; 指令分段，etm上存放hardop对应需要执行的指令数据</span>
+<span class="w">        </span><span class="n">INPUT</span><span class="p">,</span><span class="w">              </span><span class="c1">//&lt; 输入分段，etm上存放的Value作为网络输入</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="p">,</span><span class="w">             </span><span class="c1">//&lt; 输出分段，etm上存放的Value作为网络输出</span>
+<span class="w">        </span><span class="n">FTMP</span><span class="w">                </span><span class="c1">//&lt; 中间层分段，etm上存放的Value作为可以优化的中间层</span>
+<span class="w">    </span><span class="p">};</span>
+
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">ValueInfoNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">ValueInfoNode</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+
+<span class="w">        </span><span class="n">Value</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w">                        </span><span class="c1">//&lt; icraft::xir::Value的引用类，获得对应的Value指针</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">                   </span><span class="c1">//&lt; 若为true，表示对应的value在etm上真实分配了地址；若为false表示，其地址与fake_from的value地址共用</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_ocm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                </span><span class="c1">//&lt; 若为true，表示对应的value数据存放在ocm上</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">               </span><span class="c1">//&lt; 若为true，表示对应的value数据存放在host端</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="w"> </span><span class="n">real_to</span><span class="p">;</span><span class="w">         </span><span class="c1">//&lt; real若为true, 可能包含与其共用etm为false的value</span>
+<span class="w">        </span><span class="n">Value</span><span class="w"> </span><span class="n">fake_from</span><span class="p">;</span><span class="w">                    </span><span class="c1">//&lt; real若为false，必定存在预期共用etm地址且为true的value</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">logic_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; value 在etm分配的逻辑字节地址</span>
+
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">user_used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">             </span><span class="c1">//&lt; 若为true，表示存放value的memchunk为用户申请</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">phy_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">              </span><span class="c1">//&lt; value 在etm分配的真实物理字节地址</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">             </span><span class="c1">//&lt; value 在etm上占据的字节大小</span>
+<span class="w">        </span><span class="n">Segment</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Segment</span><span class="o">::</span><span class="n">FTMP</span><span class="p">;</span><span class="w">    </span><span class="c1">//&lt; value 在etm上地址对应的分段类型</span>
+
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">accept</span><span class="p">(</span><span class="n">AttrVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">visitor</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">reduceAccept</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ReduceVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">reduce</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">ValueInfo</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">ValueInfo</span><span class="p">,</span><span class="w"> </span><span class="n">Handle</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfoNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">ValueInfo</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ValueInfo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Value</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w">  </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">ValueInfoNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="o">-&gt;</span><span class="n">mtype</span><span class="p">.</span><span class="n">is</span><span class="o">&lt;</span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">OnChipMem</span><span class="o">&gt;</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">is_ocm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="o">-&gt;</span><span class="n">mtype</span><span class="p">.</span><span class="n">is</span><span class="o">&lt;</span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">HostMem</span><span class="o">&gt;</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">is_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">storageBytes</span><span class="p">();</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">            </span><span class="c1">//node-&gt;consumer = value.getUsesOp();</span>
+<span class="w">            </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">setReal</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">real</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPhyAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">phy_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setLogicAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">logic_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFakeFrom</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Value</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setRealTo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">addRealTo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Value</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Value</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSegment</span><span class="p">(</span><span class="n">Segment</span><span class="w"> </span><span class="n">segment</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">HardOpInfoNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">HardOpInfoNode</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">weights_logic_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">//&lt; 对应HardOp的权重在etm上分配的逻辑字节地址</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">weights_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">              </span><span class="c1">//&lt; 对应HardOp的权重在etm上的字节大小</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">instr_logic_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">          </span><span class="c1">//&lt; 对应HardOp的指令在etm上分配的逻辑字节地址</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">instr_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; 对应HardOp的指令在etm上分配的逻辑字节大小</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">user_used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                 </span><span class="c1">//&lt; 若为true，表示对应HardOp在etm对应的memchunk为用户申请</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">weight_phy_addr</span><span class="p">;</span><span class="w">               </span><span class="c1">//&lt; 对应HardOp的权重在etm上的真实物理字节地址</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">instr_phy_addr</span><span class="p">;</span><span class="w">                </span><span class="c1">//&lt; 对应HardOp的指令在etm上的真实物理字节地址</span>
+
+<span class="w">        </span><span class="n">HardOp</span><span class="w"> </span><span class="n">net_hardop</span><span class="p">;</span><span class="w">                      </span><span class="c1">//&lt; 对应icraft::xir::HardOp类的指针</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ULL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">instr_data</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; 对应HardOp执行的指令</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">merge_from</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; 如果在speedMode下，表示合并前的hardop op_id集合</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sync_idx</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; 对应HardOp的同步信息</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">accept</span><span class="p">(</span><span class="n">AttrVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">visitor</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">reduceAccept</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ReduceVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">reduce</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">HardOpInfo</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">HardOpInfo</span><span class="p">,</span><span class="w"> </span><span class="n">Handle</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfoNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">HardOpInfo</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="w">        </span><span class="n">HardOpInfo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">HardOp</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hardop</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">HardOpInfoNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">net_hardop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hardop</span><span class="p">;</span>
+<span class="w">            </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">setWLogicAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">w_logic_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setWSize</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">w_byte_size</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setWPhyAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">w_phy_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setILogicAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">i_logic_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setISize</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">i_byte_size</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setIPhyAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">i_phy_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSyncIdx</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sync_idx</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ULL</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getInstrData</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getMergeFrom</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">LogicSegmentNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">LogicSegmentNode</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">info_map</span><span class="p">;</span><span class="w">                </span><span class="c1">//&lt; 逻辑分段包含的valueInfo信息  &lt;v_id, valueInfo&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hardop_map</span><span class="p">;</span><span class="w">         </span><span class="c1">//&lt; 逻辑分段包含的hardOp信息     &lt;op_id, hardopInfo&gt;</span>
+
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">logic_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                        </span><span class="c1">//&lt; 逻辑分段在etm的逻辑字节地址</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                         </span><span class="c1">//&lt; 逻辑分段在etm的字节大小</span>
+<span class="w">        </span><span class="n">Segment</span><span class="w"> </span><span class="n">segment_type</span><span class="p">;</span><span class="w">                           </span><span class="c1">//&lt; 逻辑分段的分段类型</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">accept</span><span class="p">(</span><span class="n">AttrVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">visitor</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">reduceAccept</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ReduceVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">reduce</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">LogicSegment</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w">  </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">LogicSegment</span><span class="p">,</span><span class="w"> </span><span class="n">Handle</span><span class="p">,</span><span class="w"> </span><span class="n">LogicSegmentNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">LogicSegment</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">LogicSegment</span><span class="p">(</span><span class="n">Segment</span><span class="w"> </span><span class="n">segment_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">LogicSegmentNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">segment_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment_type</span><span class="p">;</span>
+<span class="w">            </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getValueMap</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getOpMap</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setLogicAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">logic_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setByteSize</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">PhySegmentNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">PhySegmentNode</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">Segment</span><span class="w"> </span><span class="n">segment_type</span><span class="p">;</span><span class="w">                       </span><span class="c1">//&lt; 物理分段的分段类型</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">;</span><span class="w">                         </span><span class="c1">//&lt; 物理分段在etm上的字节大小</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">phy_addr</span><span class="p">;</span><span class="w">                          </span><span class="c1">//&lt; 物理分段在etm上的真实物理字节地址</span>
+
+<span class="w">        </span><span class="n">MemChunk</span><span class="w"> </span><span class="n">memchunk</span><span class="p">;</span><span class="w">                          </span><span class="c1">//&lt; 物理分段在etm上申请的memchunk</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">info_map</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; 物理分段包含的valueInfo信息  &lt;v_id, valueInfo&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hardop_map</span><span class="p">;</span><span class="w">     </span><span class="c1">//&lt; 物理分段包含的hardOp信息     &lt;op_id, hardopInfo&gt;</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">user_used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                     </span><span class="c1">//&lt; 若为true，表示物理分段的memchunk是用户申请的</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">accept</span><span class="p">(</span><span class="n">AttrVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">visitor</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">reduceAccept</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ReduceVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">reduce</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">PhySegment</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">PhySegment</span><span class="p">,</span><span class="w"> </span><span class="n">Handle</span><span class="p">,</span><span class="w"> </span><span class="n">PhySegmentNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">PhySegment</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="w">        </span><span class="n">PhySegment</span><span class="p">(</span><span class="n">LogicSegment</span><span class="w"> </span><span class="n">logic_segment</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">PhySegmentNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">segment_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logic_segment</span><span class="o">-&gt;</span><span class="n">segment_type</span><span class="p">;</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logic_segment</span><span class="o">-&gt;</span><span class="n">byte_size</span><span class="p">;</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">phy_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logic_segment</span><span class="o">-&gt;</span><span class="n">logic_addr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">info_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logic_segment</span><span class="o">-&gt;</span><span class="n">info_map</span><span class="p">;</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">hardop_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logic_segment</span><span class="o">-&gt;</span><span class="n">hardop_map</span><span class="p">;</span>
+<span class="w">            </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">PhySegment</span><span class="p">(</span><span class="n">Segment</span><span class="w"> </span><span class="n">segment_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">PhySegmentNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">segment_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment_type</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getValueMap</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getOpMap</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPhyAddr</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">logic_addr</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setByteSize</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">byte_size</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setUserUsed</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">user_used</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setMemChunk</span><span class="p">(</span><span class="n">MemChunk</span><span class="w"> </span><span class="n">mem_chunk</span><span class="p">);</span>
+<span class="w">    </span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">ForwardInfoNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">ForwardInfoNode</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">value_map</span><span class="p">;</span><span class="w">               </span><span class="c1">//&lt; network_view包含的所有valueInfo的集合  &lt;v_id, ValueInfo&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hardop_map</span><span class="p">;</span><span class="w">             </span><span class="c1">//&lt; network_view包含的所有hardopInfo的集合 &lt;op_id, HardOpInfo&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">idx_map</span><span class="p">;</span><span class="w">                      </span><span class="c1">//&lt; network_view中所有op的同步信息集合     &lt;op_id, &lt;sync_idx,diff_idx&gt;&gt;</span>
+
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">accept</span><span class="p">(</span><span class="n">AttrVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">visitor</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">reduceAccept</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ReduceVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">reduce</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">ForwardInfo</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">ForwardInfo</span><span class="p">,</span><span class="w"> </span><span class="n">Handle</span><span class="p">,</span><span class="w"> </span><span class="n">ForwardInfoNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">ForwardInfo</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getValueMap</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">HardOpInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getHardopMap</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">getIdxMap</span><span class="p">();</span>
+
+
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">BuyiBackend</span><span class="p">;</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">ApplyHelper</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">BuyiBackendNode</span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">NodeBase</span><span class="o">&lt;</span><span class="n">BuyiBackendNode</span><span class="p">,</span><span class="w"> </span><span class="n">BackendNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">accept</span><span class="p">(</span><span class="n">AttrVisitor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">visitor</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">NetworkView</span><span class="o">&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Device</span><span class="o">&amp;</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">apply</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">view</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">start_index</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">end_index</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">Backend</span><span class="w"> </span><span class="n">fork</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">MergedOps</span><span class="w"> </span><span class="n">autoMerge</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">deinit</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SerializeOp</span><span class="p">,</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="w"> </span><span class="n">SerializeFtmp</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">FlatbufferBuilder</span><span class="o">&amp;</span><span class="w"> </span><span class="n">builder</span><span class="p">,</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">op_id</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">value_info</span><span class="p">;</span><span class="w">            </span><span class="c1">//&lt; 包含network_view所有valueInfo的信息, &lt;v_id, ValueInfo&gt;</span>
+
+<span class="w">        </span><span class="n">ForwardInfo</span><span class="w"> </span><span class="n">forward_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ForwardInfo</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span><span class="w">     </span><span class="c1">//&lt; 包含buyibackend所有前向所需要的信息</span>
+
+<span class="w">        </span><span class="n">SegTable</span><span class="w"> </span><span class="n">seg_table_</span><span class="p">;</span><span class="w">   </span><span class="c1">//&lt; 记录段表中的逻辑地址和物理地址等相关数据</span>
+<span class="w">        </span><span class="cm">/*</span>
+<span class="cm">        const Device&amp; getDevice() const;</span>
+<span class="cm">        const NetworkView&amp; getNetworkView() const;</span>
+<span class="cm">        */</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">Segment</span><span class="p">,</span><span class="w"> </span><span class="n">LogicSegment</span><span class="o">&gt;</span><span class="w"> </span><span class="n">logic_segment_map</span><span class="p">;</span><span class="w">    </span><span class="c1">//&lt; 包含buyibackend的所有逻辑分段信息，&lt;segment_type, logicSegment&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">Segment</span><span class="p">,</span><span class="w"> </span><span class="n">PhySegment</span><span class="o">&gt;</span><span class="w"> </span><span class="n">phy_segment_map</span><span class="p">;</span><span class="w">        </span><span class="c1">//&lt; 包含buyibackend的所有物理分段信息, &lt;segment_type, phySegment&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;</span><span class="w"> </span><span class="n">value_list</span><span class="p">;</span><span class="w">                        </span><span class="c1">//&lt; 所有在etm上真实分配空间的value的信息</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">HardOpInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">speed_ops_</span><span class="p">;</span><span class="w">       </span><span class="c1">//&lt; 合并后的算子列表</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">FtmpRealloc</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Value</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input_ftmp</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">overlapFtmp</span><span class="p">(</span><span class="n">ValueInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">big</span><span class="p">,</span><span class="w"> </span><span class="n">ValueInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">small</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSegmentValueMap</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">calcLogic</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">userSetSegment</span><span class="p">(</span><span class="n">MemChunk</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memchunk</span><span class="p">,</span><span class="w"> </span><span class="n">Segment</span><span class="w"> </span><span class="n">segment_type</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">updateSegTable</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">compressFtmp</span><span class="p">();</span>
+
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_speedmode_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                         </span><span class="c1">//&lt; 若为true，buyibackend开启speedmode</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_compressftmp_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                      </span><span class="c1">//&lt; 若为true, buyibackend开启compressFtmp功能</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_applied_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                           </span><span class="c1">//&lt; 若为true, buyibackend已完成部署</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_mmu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">                                 </span><span class="c1">//&lt; 若为true, buyibackend开启mmu</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_pure_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                              </span><span class="c1">//&lt; 若为true，则为纯净版（仅内部测试用），运行将不再依赖mmu和改指令，但需要注意网络必须按照mmu场景要求进行编译</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">buyibackend_sid</span><span class="p">;</span><span class="w">                         </span><span class="c1">//&lt; buyibackend的静态技术，计算当前程序下buyibackend的个数</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">buyibackend_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                             </span><span class="c1">//&lt; 当前buyibackend的id</span>
+
+<span class="w">        </span><span class="k">friend</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="p">;</span>
+<span class="w">        </span><span class="k">friend</span><span class="w"> </span><span class="n">ApplyHelper</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">BuyiBackend</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">HandleBase</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">Backend</span><span class="p">,</span><span class="w"> </span><span class="n">BuyiBackendNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">speedMode</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">compressFtmp</span><span class="p">();</span>
+
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">log</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">getDeploySize</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">precheck</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">XRT_DLL</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">userSetSegment</span><span class="p">(</span><span class="n">MemChunk</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memchunk</span><span class="p">,</span><span class="w"> </span><span class="n">Segment</span><span class="w"> </span><span class="n">segment_type</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： zhangfengyu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

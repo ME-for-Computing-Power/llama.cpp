@@ -1,0 +1,1278 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>更新日志 &#8212; Icraft XIR 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changelogs/change_logs';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Network" href="../validate_rule/Network.html" />
+    <link rel="prev" title="xir module" href="../_autosummary/xir.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft XIR 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Icraft XIR
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft__xir.html">Namespace icraft::xir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/namespace_icraft__xir__detail.html">Namespace icraft::xir::detail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/structicraft_1_1xir_1_1_null_opt_type.html">Struct NullOptType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_abs.html">Class Abs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_abs_node.html">Class AbsNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_add.html">Class Add</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_add_node.html">Class AddNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_align_axis.html">Class AlignAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_align_axis_node.html">Class AlignAxisNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_aligned_unit.html">Class AlignedUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_aligned_unit_node.html">Class AlignedUnitNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_and_pattern.html">Class AndPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_and_pattern_node.html">Class AndPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_any.html">Class Any</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_anycards_pattern.html">Class AnycardsPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_anycards_pattern_node.html">Class AnycardsPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_any_node.html">Class AnyNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_argmax.html">Class Argmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_argmax_node.html">Class ArgmaxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_array.html">Template Class Array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_array_node.html">Template Class ArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_attr_field_info.html">Class AttrFieldInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_attr_field_info_node.html">Class AttrFieldInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_attr_pattern.html">Class AttrPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_attr_pattern_node.html">Class AttrPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_attr_visitor.html">Class AttrVisitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_avgpool.html">Class Avgpool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_avg_pool1d.html">Class AvgPool1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_avg_pool1d_node.html">Class AvgPool1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_avg_pool3d.html">Class AvgPool3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_avg_pool3d_node.html">Class AvgPool3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_avgpool_node.html">Class AvgpoolNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_axis_name.html">Class AxisName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_axis_name_node.html">Class AxisNameNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_axis_unit.html">Class AxisUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_axis_unit_node.html">Class AxisUnitNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_base_quantized_type.html">Class BaseQuantizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_base_quantized_type_node.html">Class BaseQuantizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_batchnorm.html">Class Batchnorm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_batch_norm1d.html">Class BatchNorm1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_batch_norm1d_node.html">Class BatchNorm1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_batch_norm3d.html">Class BatchNorm3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_batch_norm3d_node.html">Class BatchNorm3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_batchnorm_node.html">Class BatchnormNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_bool.html">Class Bool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_bool_node.html">Class BoolNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_buyi_target.html">Class BuyiTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_buyi_target_node.html">Class BuyiTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_calibrated_type.html">Class CalibratedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_calibrated_type_node.html">Class CalibratedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_cast.html">Class Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_cast_node.html">Class CastNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_channel_shuffle.html">Class ChannelShuffle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_channel_shuffle_node.html">Class ChannelShuffleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_chunk_mem.html">Class ChunkMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_chunk_mem_node.html">Class ChunkMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_clamp_scalar.html">Class ClampScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_clamp_scalar_node.html">Class ClampScalarNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_compile_target.html">Class CompileTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_compile_target_node.html">Class CompileTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_concat.html">Class Concat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_concat_node.html">Class ConcatNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv1d.html">Class Conv1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv1d_node.html">Class Conv1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv1d_transpose.html">Class Conv1dTranspose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv1d_transpose_node.html">Class Conv1dTransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv2d.html">Class Conv2d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv2d_node.html">Class Conv2dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv2d_transpose.html">Class Conv2dTranspose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv2d_transpose_node.html">Class Conv2dTransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv3d.html">Class Conv3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv3d_node.html">Class Conv3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv3d_transpose.html">Class Conv3dTranspose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_conv3d_transpose_node.html">Class Conv3dTransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_copy.html">Class Copy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_copy_node.html">Class CopyNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_custom_target.html">Class CustomTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_custom_target_node.html">Class CustomTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_data.html">Class Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_data_node.html">Class DataNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_data_type.html">Class DataType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_data_type_node.html">Class DataTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1detail_1_1_base_array_node.html">Template Class BaseArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1detail_1_1_base_array_node_3_01bool_01_4.html">Template Class BaseArrayNode&lt; bool &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_divide_scalar.html">Class DivideScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_divide_scalar_node.html">Class DivideScalarNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_einsum.html">Class Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_einsum_node.html">Class EinsumNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_elu.html">Class Elu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_elu_node.html">Class EluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_equal.html">Class Equal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_equal_node.html">Class EqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_expand.html">Class Expand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_expand_node.html">Class ExpandNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_exp_quantized_scale.html">Class ExpQuantizedScale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_exp_quantized_scale_array.html">Class ExpQuantizedScaleArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_exp_quantized_scale_array_node.html">Class ExpQuantizedScaleArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_exp_quantized_scale_node.html">Class ExpQuantizedScaleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_external_mem.html">Class ExternalMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_external_mem_node.html">Class ExternalMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_float_imm.html">Class FloatImm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_float_imm_node.html">Class FloatImmNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_float_type.html">Class FloatType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_float_type_1_1_semantics.html">Class FloatType::Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_float_type_node.html">Class FloatTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_f_p_g_a_target.html">Class FPGATarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_f_p_g_a_target_node.html">Class FPGATargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_gelu.html">Class Gelu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_gelu_node.html">Class GeluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_get_attr_nums.html">Class GetAttrNums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_greater.html">Class Greater</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_greater_equal.html">Class GreaterEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_greater_equal_node.html">Class GreaterEqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_greater_node.html">Class GreaterNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_handle.html">Class Handle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_handle_base.html">Template Class HandleBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hard_op.html">Class HardOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hard_op_node.html">Class HardOpNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardshrink.html">Class Hardshrink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardshrink_node.html">Class HardshrinkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardsigmoid.html">Class Hardsigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardsigmoid_node.html">Class HardsigmoidNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardswish.html">Class Hardswish</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardswish_node.html">Class HardswishNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardtanh.html">Class Hardtanh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_hardtanh_node.html">Class HardtanhNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_host_mem.html">Class HostMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_host_mem_node.html">Class HostMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_host_target.html">Class HostTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_host_target_node.html">Class HostTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_input.html">Class Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_input_node.html">Class InputNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_instance_norm1d.html">Class InstanceNorm1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_instance_norm1d_node.html">Class InstanceNorm1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_instance_norm2d.html">Class InstanceNorm2d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_instance_norm2d_node.html">Class InstanceNorm2dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_instance_norm3d.html">Class InstanceNorm3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_instance_norm3d_node.html">Class InstanceNorm3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_integer_type.html">Class IntegerType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_integer_type_node.html">Class IntegerTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_int_imm.html">Class IntImm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_int_imm_node.html">Class IntImmNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_is_activate.html">Template Class IsActivate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_json_parser.html">Class JsonParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_json_printer.html">Class JsonPrinter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_layernorm.html">Class Layernorm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_layernorm_node.html">Class LayernormNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_layout.html">Class Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_layout_node.html">Class LayoutNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_less.html">Class Less</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_less_equal.html">Class LessEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_less_equal_node.html">Class LessEqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_less_node.html">Class LessNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_log.html">Class Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_log_node.html">Class LogNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_log_sigmoid.html">Class LogSigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_log_sigmoid_node.html">Class LogSigmoidNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_log_softmax.html">Class LogSoftmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_log_softmax_node.html">Class LogSoftmaxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_map.html">Template Class Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_map_node.html">Class MapNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_matmul.html">Class Matmul</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_matmul_node.html">Class MatmulNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_maxpool.html">Class Maxpool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_max_pool1d.html">Class MaxPool1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_max_pool1d_node.html">Class MaxPool1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_max_pool3d.html">Class MaxPool3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_max_pool3d_node.html">Class MaxPool3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_maxpool_node.html">Class MaxpoolNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mean.html">Class Mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mean_node.html">Class MeanNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mem_type.html">Class MemType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mem_type_node.html">Class MemTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_merged_axis_distr.html">Class MergedAxisDistr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_merged_axis_distr_node.html">Class MergedAxisDistrNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mish.html">Class Mish</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mish_node.html">Class MishNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_m_s_g_dumper.html">Class MSGDumper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_m_s_g_parser.html">Class MSGParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_multiply.html">Class Multiply</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_multiply_node.html">Class MultiplyNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_multi_yolo.html">Class MultiYolo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_multi_yolo_node.html">Class MultiYoloNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_mutable_handle_base.html">Template Class MutableHandleBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_neg.html">Class Neg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_neg_node.html">Class NegNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network.html">Class Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_base.html">Class NetworkBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_base_node.html">Class NetworkBaseNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_node.html">Class NetworkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_pass.html">Class NetworkPass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_pass_node.html">Class NetworkPassNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_rewriter.html">Class NetworkRewriter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_view.html">Class NetworkView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_network_view_node.html">Class NetworkViewNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_node.html">Class Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_node_base.html">Template Class NodeBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normalize.html">Class Normalize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normalized_quantized_type.html">Class NormalizedQuantizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normalized_quantized_type_node.html">Class NormalizedQuantizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normalized_type.html">Class NormalizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normalized_type_node.html">Class NormalizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normalize_node.html">Class NormalizeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normratio_array.html">Class NormratioArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_normratio_array_node.html">Class NormratioArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_not_equal.html">Class NotEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_not_equal_node.html">Class NotEqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_object.html">Class Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_object_ptr.html">Template Class ObjectPtr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_object_ref.html">Class ObjectRef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_on_chip_mem.html">Class OnChipMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_on_chip_mem_node.html">Class OnChipMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_one_result.html">Template Class OneResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_op_base.html">Template Class OpBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_operation.html">Class Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_operation_node.html">Class OperationNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_op_node_base.html">Template Class OpNodeBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_op_pattern.html">Class OpPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_op_pattern_node.html">Class OpPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_optional.html">Template Class Optional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_optional_op_pattern.html">Class OptionalOpPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_optional_op_pattern_node.html">Class OptionalOpPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_op_trait.html">Template Class OpTrait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_or_pattern.html">Class OrPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_or_pattern_node.html">Class OrPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_output.html">Class Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_output_like.html">Template Class OutputLike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_output_node.html">Class OutputNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_overide_clone.html">Class OverideClone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_overide_equal.html">Class OverideEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pad.html">Class Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pad_node.html">Class PadNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_params.html">Class Params</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_params_dumper.html">Class ParamsDumper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_params_lazy_loader.html">Class ParamsLazyLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_params_loader.html">Class ParamsLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_params_node.html">Class ParamsNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass.html">Class Pass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass_context.html">Class PassContext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass_context_node.html">Class PassContextNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass_info.html">Class PassInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass_info_node.html">Class PassInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass_node.html">Class PassNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pass_registry.html">Class PassRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pattern.html">Class Pattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pattern_node.html">Class PatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pixel_shuffle.html">Class PixelShuffle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_pixel_shuffle_node.html">Class PixelShuffleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_prelu.html">Class Prelu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_prelu_node.html">Class PreluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_prior_box.html">Class PriorBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_prior_box_node.html">Class PriorBoxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_prune_axis.html">Class PruneAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_prune_axis_node.html">Class PruneAxisNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_quantized_scale.html">Class QuantizedScale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_quantized_scale_array.html">Class QuantizedScaleArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_quantized_scale_array_node.html">Class QuantizedScaleArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_quantized_scale_node.html">Class QuantizedScaleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_quantized_type.html">Class QuantizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_quantized_type_node.html">Class QuantizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reduce_visitor.html">Class ReduceVisitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reflection_table.html">Class ReflectionTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reflection_table_1_1_registry.html">Class ReflectionTable::Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_region.html">Class Region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_region_node.html">Class RegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_relu.html">Class Relu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_relu_node.html">Class ReluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reorg.html">Class Reorg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reorg_node.html">Class ReorgNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reshape.html">Class Reshape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_reshape_node.html">Class ReshapeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_resize.html">Class Resize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_resize_node.html">Class ResizeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_roll.html">Class Roll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_roll_node.html">Class RollNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_route.html">Class Route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_route_node.html">Class RouteNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_scalar_imm.html">Class ScalarImm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_scalar_imm_node.html">Class ScalarImmNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_scalar_type.html">Class ScalarType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_scalar_type_node.html">Class ScalarTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sequential_pass.html">Class SequentialPass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sequential_pass_node.html">Class SequentialPassNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sigmoid.html">Class Sigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sigmoid_node.html">Class SigmoidNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_silu.html">Class Silu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_silu_node.html">Class SiluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_slice.html">Class Slice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_slice_node.html">Class SliceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softmax.html">Class Softmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softmax_node.html">Class SoftmaxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softplus.html">Class Softplus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softplus_node.html">Class SoftplusNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softshrink.html">Class Softshrink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softshrink_node.html">Class SoftshrinkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softsign.html">Class Softsign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_softsign_node.html">Class SoftsignNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_split.html">Class Split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_split_node.html">Class SplitNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sqrt.html">Class Sqrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sqrt_node.html">Class SqrtNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_squeeze.html">Class Squeeze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_squeeze_node.html">Class SqueezeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_s_s_d_output.html">Class SSDOutput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_s_s_d_output_node.html">Class SSDOutputNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_stack.html">Class Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_stack_node.html">Class StackNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_string.html">Class String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_string_node.html">Class StringNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_string_node_1_1_from_std.html">Class StringNode::FromStd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sum.html">Class Sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_sum_node.html">Class SumNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_swap_order.html">Class SwapOrder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_swap_order_node.html">Class SwapOrderNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_tanh.html">Class Tanh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_tanh_node.html">Class TanhNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_tanhshrink.html">Class Tanhshrink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_tanhshrink_node.html">Class TanhshrinkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_tensor_type.html">Class TensorType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_tensor_type_node.html">Class TensorTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_transpose.html">Class Transpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_transpose_node.html">Class TransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_unknown.html">Class Unknown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_unknown_node.html">Class UnknownNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_unstack.html">Class Unstack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_unstack_node.html">Class UnstackNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_unsupport.html">Class Unsupport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_unsupport_node.html">Class UnsupportNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_upsample.html">Class Upsample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_upsample_node.html">Class UpsampleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_value.html">Class Value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_value_node.html">Class ValueNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_value_pattern.html">Class ValuePattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_value_pattern_node.html">Class ValuePatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_virtual_base.html">Template Class VirtualBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_with.html">Template Class With</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_yolo.html">Class Yolo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_yolo_node.html">Class YoloNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_zhuge_target.html">Class ZhugeTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/classicraft_1_1xir_1_1_zhuge_target_node.html">Class ZhugeTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/enum_data__type__attr_8h_1a62ff75f1944688b8ce141c9a82843ad4.html">Enum DistrUnvalidValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/enum_network_8h_1a52f12ca1331504c9536b043a7d4d2ed7.html">Enum Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/enum_conv2d_8h_1a14d24d90ab4ba2956e92e27890ba4c91.html">Enum PaddingMode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/enum_resize_8h_1a1ac915a3b32e62d66d8a635bdbeab46f.html">Enum ResizeInterpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_network_8h_1a0de9c90f68a97dc71657583095adee7e.html">Function icraft::xir::_OverrideNetworkClone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_network_8h_1afb6d1ccafd83813b52fc572c57ef1848.html">Function icraft::xir::_OverrideNetworkEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_pattern_8h_1a93542529bb000fda0aaf54b90534a76c.html">Function icraft::xir::Anycards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a6abe8cca6a8061bdc0f366bcaeb282fe.html">Function icraft::xir::BuildTime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_json_8h_1a4be591f3b222e460eabd4f1f2bd15a63.html">Function icraft::xir::CalcMD5()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_json_8h_1a0185d16d44e07b98bc5b409791036be6.html">Function icraft::xir::CalcMD5()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a497b6f9e829feb7bc58477a0a3d78151.html">Function icraft::xir::CommitID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a96c8adafd6a10fbafa925be8d8b51716.html">Function icraft::xir::CommitSinceTag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_msgpack_8h_1a7abf2c4fea34765c1e1bab229ebf9681.html">Function icraft::xir::CreateNetworkFromMSG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_object_8h_1a68c32a41efd1aa99afca70837565cced.html">Function icraft::xir::Downcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a78754a280a4e70b6192eb9464bafd33f.html">Function icraft::xir::FullVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_object_8h_1a6bb897ef1c79fef652856160d3d825a4.html">Function icraft::xir::GetObjectPtr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_object_8h_1ae36a387dcf54c696cda7318084dd0d55.html">Function icraft::xir::GetRef()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_object_8h_1ac798b7092b8c4c6665631be6db1d4327.html">Function icraft::xir::GetRef()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_reflection_8h_1a55e9abf1358f73936d0c260df59e3a48.html">Function icraft::xir::GetReprBytes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_reflection_8h_1a3f420755305a0d0bbc43dd197083aafd.html">Function icraft::xir::HasReprOf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a70608457f1404249247900dd3a5638df.html">Function icraft::xir::IcraftVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_optional_8h_1ad0ce019e3fe7379a117a081af3a4c881.html">Function icraft::xir::is_optional()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_optional_8h_1a9daee3d26c5a475c024034ccf4134954.html">Function icraft::xir::is_optional()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_optional_8h_1a6fc9e3d36fec62302706492a13e206ac.html">Function icraft::xir::is_optional()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a234487798ed47026f728ac29b136cf0e.html">Function icraft::xir::IsModified</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_pattern_8h_1a0ae8a90d05e570283e126b308826ff7f.html">Function icraft::xir::IsOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_pattern_8h_1adf41480d0a206cbafb0f59eae92e7b95.html">Function icraft::xir::IsOptionalOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1aec81871e7ddcd07a5b76e701f54944f2.html">Function icraft::xir::MainVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a54db24f732df50a1b1ecde8e3eae4431.html">Function icraft::xir::MajorVersionNum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_object_8h_1a79b91b13ca6d5d54352daa3a7de8de1f.html">Function icraft::xir::make_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a70a34ef712f6bee084e34fa3136a2241.html">Function icraft::xir::MinorVersionNum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a29475156e730e27c5e1cba18c5177ef6.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1af6dfa63e8765ba8f0c05a7d40fa1c584.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1ac4e429cee0b2f43d16eca3b016f5185c.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a1cadc42fadabb1c9aaa455d8f857a6db.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1acab3e9f8bdf2c08f6cf2fc285558c1ce.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1af1ce218b03c384d2aad50a6295fb096d.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1a9c0be3c7885099d93fa52204c5e3ff29.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1a13f31d0631d8054ec6cbe16e5aa5c246.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_pattern_8h_1af0a441249e3041ef4d8b7a7ee7e96925.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a346acdf3143412eaab63e8f3664cd575.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1af71ae061ba27c966204712cf13558437.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a4ed702c701164539de5ce6b332c45d07.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1ae3cd285a0b3bcf7d5f1b89dba89035d1.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a90015386d12dcad1a1150e0e3c6a0d8a.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1aae232265e2908fc6e59999597d6441aa.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1abb89216adbfc3f69204c0a4ecbe67458.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1ad94401dcf2dfb1476aa89ca9835170b5.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1ab6704f416891347d26ebbc5bc9401a3a.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a29ed7eb9bc181d1df7f5c55ca6246b60.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1af4c6e48b61b0f04d2b0beda40a19706b.html">Function icraft::xir::operator&lt;&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_json_8h_1a047703dc2d7e22991c7dd29dc42a46d9.html">Function icraft::xir::operator&lt;&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_json_8h_1a50b7e723472acf1ca28b86c386460d18.html">Function icraft::xir::operator&lt;&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a721f0ec88d549e1301a0635b695a1a88.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a713de56481110a0598ff3f418b9896d8.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a48545cc6c63142caa4dcce85a1b6feda.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a990a88794f4e1678fd932c84de435e26.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a8849265e14282c47ef7327ce79e14d0e.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a9ae517eb66873b84094560f4a3698609.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a4ff932db1e5a280b017075c85d2856a8.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a57204d6cb68b449d9db9eae4883571c1.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a4cf760d9d1b68bcf1cd43e9f5c54feb1.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a0ccb8b7286ed4a45f31b6c936a9a98c2.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1a9bcac01c289f96bdbf3f3d398592098b.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1ace1bec728e7401063e26ebc9e83481a0.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1aabc2762937ed01fdce00372551019afb.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a522339d5ba8ef44cfee16c46aa6911e0.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1acee3f0570836bfe9f9bd769aafda6e75.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a1d1bcc50e73c2538ca16f3aec01eef87.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1ab4a443eed7b8adb78c5aadca1354b49b.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a0ac76ec24bc20d38967c451767fa76bd.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1aa98dbbb67f5b5fce8330bd3b43993f1b.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1ab9706925fd70fabd0427b0dd44ed39a5.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a8aaac987f17f693b727f6f61c82ef59d.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1adce2f798f94879309cef872d5c0cf70c.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_string_8h_1a5415fd0bce16fb23ec98e50c0b82b42e.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1ae841cffb9297b1e03dd333546492082a.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1ae7f269258f554b475a1fb22eb0901162.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_data_8h_1a3d2186da2c5fe38cd4cde2ed9fabae42.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_pattern_8h_1a3402e2566a4fa926faa7d5916b90eec9.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_version_8h_1a8ea066b50a4aaa0bc27455912d914c0e.html">Function icraft::xir::PatchVersionNum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1a514210b2ae6e2613ae6cf148878edd72.html">Function icraft::xir::TypeName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1a56ef9d55f16f19d811cba1376dc640f6.html">Function icraft::xir::TypeName&lt; Array&lt; int64_t &gt; &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1a84dffb7ee42896fb6ea04898e999d72e.html">Function icraft::xir::TypeName&lt; Array&lt; std::string &gt; &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1a013317811d164c81105f3136cd86a1df.html">Function icraft::xir::TypeName&lt; Array&lt; uint64_t &gt; &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1a60496d73028f462c51917f875c020888.html">Function icraft::xir::TypeName&lt; int64_t &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1aebf768e337b4e10fcd5041388d56abc1.html">Function icraft::xir::TypeName&lt; std::string &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1a97198a9f0338592d7fa15cbb4de2b468.html">Function icraft::xir::TypeName&lt; uint64_t &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_pattern_8h_1a1280260bbcab517cafd62246c537eb06.html">Function icraft::xir::Wildcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/function_type__trait_8h_1ae1e19e2edb2ea7b737e3bbfd46c3e065.html">Template Function IcraftGetSignature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/variable_array_8h_1abe3b18e913ce2f292a029a1846ee5ae3.html">Variable icraft::xir::is_iterator_v</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/variable_optional_8h_1abf9f9d97c8d614e485dc36b63e62a8d3.html">Variable icraft::xir::NullOpt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_operation_8h_1a589fc08fd078a46929285ba7af07ec96.html">Define ICRAFT_ATTR_FIELD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_operation_8h_1a0587adc4fa59710015e27ce34a6d4f20.html">Define ICRAFT_DECLARE_ATTRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_reflection_8h_1a50e6659d2ac383e62abed02ffe66c6a7.html">Define ICRAFT_PASS_REG_VAR_DEF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_reflection_8h_1a53097a5ba6b07fccef71a666acbbb533.html">Define ICRAFT_REFLECTION_REG_VAR_DEF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_reflection_8h_1a13afd72846c27ef4972a204be15ca40e.html">Define ICRAFT_REGISTER_NODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_operation_8h_1ad94829967e485c9a41f57ce3dc2dd69a.html">Define ICRAFT_REGISTER_OP_NODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_reflection_8h_1a696c33a608037514a095ed4cf00c230b.html">Define ICRAFT_REGISTER_PASS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_reflection_8h_1a0cd1b598ffe2d7953e852ea4cfbf7670.html">Define ICRAFT_REGISTER_REFLECTION_VTABLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_operation_8h_1ab6c5eefe51f60d0617b743d3bdf95b1f.html">Define ICRAFT_REGISTER_TINFER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/define_pattern_8h_1a34e9a7009fa4c7b0bbf683e280c52fa2.html">Define PATTERN_REQUIRE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/typedef_json_8h_1af13a1979f9e8f62c101433fac6511cc6.html">Typedef icraft::xir::Json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_cppapi/typedef_pattern_8h_1a4d205bdcf25db1c169d605a29aa44357.html">Typedef icraft::xir::MatchGroup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/xir.html">Python API reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">更新日志</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">验证规则</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/Network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/Operation.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/TensorType.html">TensorType</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/Value.html">Value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">算子spec</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Abs.html">Abs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Add.html">Add</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/AlignAxis.html">AlignAxis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Argmax.html">Argmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Avgpool.html">Avgpool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/AvgPool1d.html">AvgPool1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/AvgPool3d.html">AvgPool3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Batchnorm.html">Batchnorm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/BatchNorm1d.html">BatchNorm1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/BatchNorm3d.html">BatchNorm3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/ChannelShuffle.html">ChannelShuffle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/ClampScalar.html">ClampScalar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Concat.html">Concat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv1d.html">Conv1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv1dTranspose.html">Conv1dTranspose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv2d.html">Conv2d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv2dTranspose.html">Conv2dTranspose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv3d.html">Conv3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv3dTranspose.html">Conv3dTranspose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Copy.html">Copy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/DivideScalar.html">DivideScalar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Einsum.html">Einsum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Elu.html">Elu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Equal.html">Equal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Expand.html">Expand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Gelu.html">Gelu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Greater.html">Greater</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/GreaterEqual.html">GreaterEqual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/HardOp.html">HardOp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardshrink.html">Hardshrink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardsigmoid.html">Hardsigmoid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardswish.html">Hardswish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardtanh.html">Hardtanh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/InstanceNorm1d.html">InstanceNorm1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/InstanceNorm2d.html">InstanceNorm2d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/InstanceNorm3d.html">InstanceNorm3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Layernorm.html">Layernorm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Less.html">Less</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/LessEqual.html">LessEqual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/LogSigmoid.html">LogSigmoid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/LogSoftmax.html">LogSoftmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Matmul.html">Matmul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Maxpool.html">Maxpool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/MaxPool1d.html">MaxPool1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/MaxPool3d.html">MaxPool3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Mean.html">Mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Mish.html">Mish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Multiply.html">Multiply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/MultiYolo.html">MultiYolo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Neg.html">Neg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Normalize.html">Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/NotEqual.html">NotEqual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Pad.html">Pad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/PixelShuffle.html">PixelShuffle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Prelu.html">Prelu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/PruneAxis.html">PruneAxis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Region.html">Region</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Relu.html">Relu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Reorg.html">Reorg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Reshape.html">Reshape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Resize.html">Resize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Roll.html">Roll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Route.html">Route</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Sigmoid.html">Sigmoid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Silu.html">Silu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Slice.html">Slice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softmax.html">Softmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softplus.html">Softplus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softshrink.html">Softshrink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softsign.html">Softsign</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Split.html">Split</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Sqrt.html">Sqrt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Squeeze.html">Squeeze</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/SSDOutput.html">SSDOutput</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Stack.html">Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Sum.html">Sum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/SwapOrder.html">SwapOrder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Swish.html">Swish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Tanh.html">Tanh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Tanhshrink.html">Tanhshrink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Transpose.html">Transpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unbind.html">Unbind</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unknown.html">Unknown</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unstack.html">Unstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unsupport.html">Unsupport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Upsample.html">Upsample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Yolo.html">Yolo</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>更新日志</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-7-0">v3.7.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-0">v3.6.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-5-0">v3.5.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-4-0">v3.4.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-3-0">v3.3.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v2-2-0">v2.2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v2-1-0">v2.1.0</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>更新日志<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<section id="v3-7-0">
+<h2>v3.7.0<a class="headerlink" href="#v3-7-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>算子变更</dt><dd><ul>
+<li><p>新增算子： <code class="docutils literal notranslate"><span class="pre">Argmax</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Log</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Mean</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Neg</span></code></p></li>
+<li><p>新增算子： <code class="docutils literal notranslate"><span class="pre">Equal</span></code> 、 <code class="docutils literal notranslate"><span class="pre">NotEqual</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Greater</span></code> 、 <code class="docutils literal notranslate"><span class="pre">GreaterEqual</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Less</span></code> 、 <code class="docutils literal notranslate"><span class="pre">LessEqual</span></code></p></li>
+<li><p>新增算子： <code class="docutils literal notranslate"><span class="pre">AvgPool1d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">BatchNorm1d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Conv1d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Conv1dTranspose</span></code> 、 <code class="docutils literal notranslate"><span class="pre">InstanceNorm1d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">MaxPool1d</span></code></p></li>
+<li><p>新增算子： <code class="docutils literal notranslate"><span class="pre">AvgPool3d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">BatchNorm3d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Conv3d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Conv3dTranspose</span></code> 、 <code class="docutils literal notranslate"><span class="pre">InstanceNorm3d</span></code> 、 <code class="docutils literal notranslate"><span class="pre">MaxPool3d</span></code></p></li>
+<li><p>新增算子： <code class="docutils literal notranslate"><span class="pre">Unsupport</span></code> ：用来表示目前无法支持的算子，使用该算子以维持网络的完整连接关系 <a class="reference external" href="../op_spec/Unsupport.html">参考链接</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Squeeze</span></code> 移除属性 <code class="docutils literal notranslate"><span class="pre">layout</span></code> ，现在输出 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 根据输出 <code class="docutils literal notranslate"><span class="pre">Shape</span></code> 的维度数量自动设置为 <code class="docutils literal notranslate"><span class="pre">***C</span></code> 的形式 <a class="reference external" href="../op_spec/Squeeze.html">参考链接</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HardOp</span></code> 取消必须至少有一个输入的检查 <a class="reference external" href="../op_spec/HardOp.html">参考链接</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pad</span></code> 输出 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 不再设置为 <code class="docutils literal notranslate"><span class="pre">NHWC</span></code> ，现在改为与输入 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 相同 <a class="reference external" href="../op_spec/Pad.html">参考链接</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Resize</span></code> 输出 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 不再设置为 <code class="docutils literal notranslate"><span class="pre">NHWC</span></code> ，现在改为与输入 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 相同 <a class="reference external" href="../op_spec/Resize.html">参考链接</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Conv2dTranspose</span></code> 新增属性 <code class="docutils literal notranslate"><span class="pre">output_pad_width</span></code> 、 <code class="docutils literal notranslate"><span class="pre">output_pad_height</span></code> ，现在定义与框架相同 <a class="reference external" href="../op_spec/Conv2dTranspose.html">参考链接</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sum</span></code> 属性 <code class="docutils literal notranslate"><span class="pre">dim</span></code> 不再要求是严格升序的 <a class="reference external" href="../op_spec/Sum.html">参考链接</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Network</span></code> 相关</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">toNetwork()</span></code> ：将当前网络视图转为一个独立的网络，如果缺失输入输出会自动补全</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 支持不含任何算子</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 现在不会有重复的输入输出</p></li>
+<li><p>移除 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的 <code class="docutils literal notranslate"><span class="pre">toJson</span></code> 、 <code class="docutils literal notranslate"><span class="pre">CreateFromJson</span></code> 方法，可改用其它 <code class="docutils literal notranslate"><span class="pre">API</span></code> 替代</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">Network.rewrite</span></code> 陷入死循环的判断依据从 <code class="docutils literal notranslate"><span class="pre">1</span></code> 千次 改为 <code class="docutils literal notranslate"><span class="pre">1</span></code> 万次</p></li>
+<li><p>新增方法 <code class="docutils literal notranslate"><span class="pre">Network.setName</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">setOutputsOrderByValueIds</span></code> ，可以修改输出 <code class="docutils literal notranslate"><span class="pre">Value</span></code> 的顺序</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">View</span></code> 前后输出 <code class="docutils literal notranslate"><span class="pre">Value</span></code> 仅有顺序不同，则按 <code class="docutils literal notranslate"><span class="pre">View</span></code> 前的原顺序输出；否则按执行序输出</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>序列化</dt><dd><ul>
+<li><p>新增一种序列化和反序列化方式： <code class="docutils literal notranslate"><span class="pre">flatbuffers</span></code> <a class="reference external" href="../index.html#serialize">参考链接</a></p></li>
+<li><p>大幅优化 <code class="docutils literal notranslate"><span class="pre">json</span></code> 反序列化时的内存占用和耗时</p></li>
+<li><p>大幅优化 <code class="docutils literal notranslate"><span class="pre">msgpack</span></code> 反序列化时的内存占用和耗时</p></li>
+<li><p>三种序列化方式 <code class="docutils literal notranslate"><span class="pre">dump</span></code> 网络到文件方法新增参数 <code class="docutils literal notranslate"><span class="pre">validate</span></code> ，决定序列化时是否检查网络必须符合规范，默认开启</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>代码重构</dt><dd><ul>
+<li><p>不再使用 <code class="docutils literal notranslate"><span class="pre">and</span></code> 、 <code class="docutils literal notranslate"><span class="pre">or</span></code> 关键字，改为标准的 <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> 、 <code class="docutils literal notranslate"><span class="pre">||</span></code></p></li>
+<li><p>大量 <code class="docutils literal notranslate"><span class="pre">set</span></code> 方法的返回值改为自身，方便连续多次 <code class="docutils literal notranslate"><span class="pre">set</span></code></p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">DLL、String</span></code> 辅助工具迁移至 <code class="docutils literal notranslate"><span class="pre">Icraft-Utils</span></code></p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">getC</span></code> 辅助工具迁移至 <code class="docutils literal notranslate"><span class="pre">Icraft-Utils</span></code></p></li>
+<li><p>修复所有在不同编译器下不同的行为</p></li>
+<li><p>部分接口添加 <code class="docutils literal notranslate"><span class="pre">const</span></code> 限定符</p></li>
+<li><p>新增 <code class="docutils literal notranslate"><span class="pre">icraft-xir/ops/ops.h</span></code> 头文件，包含了所有算子的头文件</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Value</span></code> 相关</dt><dd><ul>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">Value</span></code> 的 <code class="docutils literal notranslate"><span class="pre">ID</span></code> 不连续的 <code class="docutils literal notranslate"><span class="pre">bug</span></code></p></li>
+<li><p>移除 <code class="docutils literal notranslate"><span class="pre">Value</span></code> 不再要求 <code class="docutils literal notranslate"><span class="pre">Value</span></code> 必须存在，增加使用灵活性</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Value</span></code> 及 <code class="docutils literal notranslate"><span class="pre">Params</span></code> 现在也支持记录 <code class="docutils literal notranslate"><span class="pre">tag</span></code> 了</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其它更新</dt><dd><ul>
+<li><p>新增模板方法 <code class="docutils literal notranslate"><span class="pre">TypeName&lt;T&gt;()</span></code> ，可获取类型 <code class="docutils literal notranslate"><span class="pre">T</span></code> 的字符串形式</p></li>
+<li><p>所有 <code class="docutils literal notranslate"><span class="pre">Node</span></code> 均可以通过访问 <code class="docutils literal notranslate"><span class="pre">::ParentNode</span></code> 获取父 <code class="docutils literal notranslate"><span class="pre">Node</span></code></p></li>
+<li><p>重构 <code class="docutils literal notranslate"><span class="pre">visit</span></code> 机制，现在使用 <code class="docutils literal notranslate"><span class="pre">type_name</span></code> 而不再是 <code class="docutils literal notranslate"><span class="pre">type_info</span></code> 区分类型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Array.map</span></code> 支持跨 <code class="docutils literal notranslate"><span class="pre">Pod</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ObjectRef</span></code> 转换</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">undefined</span></code> 的 <code class="docutils literal notranslate"><span class="pre">ObjectRef</span></code> 在 <code class="docutils literal notranslate"><span class="pre">Clone</span></code> 时不再抛异常</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MemType</span></code> 新增一种类型： <code class="docutils literal notranslate"><span class="pre">ChunkMem</span></code> <a class="reference external" href="../index.html#memtype">参考链接</a></p></li>
+<li><p>新增 <code class="docutils literal notranslate"><span class="pre">IsOptionalOp</span></code> ，可用于添加不确定是否存在的 <code class="docutils literal notranslate"><span class="pre">OpPattern</span></code></p></li>
+<li><p>支持一个算子有多个相同的输入，解除该检查</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataType</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">setStorageType</span></code> ，用来设置存储类型</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="v3-6-0">
+<h2>v3.6.0<a class="headerlink" href="#v3-6-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>算子变更</dt><dd><ul>
+<li><p>新增算子： <code class="docutils literal notranslate"><span class="pre">Sum</span></code>、 <code class="docutils literal notranslate"><span class="pre">Sqrt</span></code>、 <code class="docutils literal notranslate"><span class="pre">Hardshrink</span></code>、 <code class="docutils literal notranslate"><span class="pre">LogSigmoid</span></code>、 <code class="docutils literal notranslate"><span class="pre">Softsign</span></code>、 <code class="docutils literal notranslate"><span class="pre">Tanhshrink</span></code>、 <code class="docutils literal notranslate"><span class="pre">ClampScalar</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Layernorm</span></code>、 <code class="docutils literal notranslate"><span class="pre">Normalize</span></code>、 <code class="docutils literal notranslate"><span class="pre">PruneAxis</span></code> 的系数 <code class="docutils literal notranslate"><span class="pre">axis</span></code> 支持负数索引</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Bug</span></code> 修复</dt><dd><ul>
+<li><p>修复一些头文件 <code class="docutils literal notranslate"><span class="pre">include</span></code> 的缺失</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>代码重构</dt><dd><ul>
+<li><p>序列化相关工具独立存放在专门的文件夹中</p></li>
+<li><p>移除 <code class="docutils literal notranslate"><span class="pre">MultiYolo</span></code>、 <code class="docutils literal notranslate"><span class="pre">Region</span></code>、 <code class="docutils literal notranslate"><span class="pre">SSDOutput</span></code> 三个算子的单元测试、 <code class="docutils literal notranslate"><span class="pre">pythonAPI</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其它更新</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CalibratedTypeNode</span></code> 的属性 <code class="docutils literal notranslate"><span class="pre">mim</span></code>、 <code class="docutils literal notranslate"><span class="pre">max</span></code>、 <code class="docutils literal notranslate"><span class="pre">sat</span></code> 从 <code class="docutils literal notranslate"><span class="pre">double</span></code> 升级为 <code class="docutils literal notranslate"><span class="pre">Array&lt;double&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FloatType</span></code> 新增 <code class="docutils literal notranslate"><span class="pre">TF32</span></code> 浮点类型</p></li>
+<li><p>浮点 <code class="docutils literal notranslate"><span class="pre">QuantizedType</span></code> 允许 <code class="docutils literal notranslate"><span class="pre">scale</span></code> 为空</p></li>
+<li><p>新增检查：算子不能存在两个相同的输入特征图、输出特征图</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="v3-5-0">
+<h2>v3.5.0<a class="headerlink" href="#v3-5-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>算子变更</dt><dd><ul>
+<li><p>新增算子 <code class="docutils literal notranslate"><span class="pre">ChannelShuffle</span></code>、 <code class="docutils literal notranslate"><span class="pre">Einsum</span></code>、 <code class="docutils literal notranslate"><span class="pre">Stack</span></code>、 <code class="docutils literal notranslate"><span class="pre">Unstack</span></code></p></li>
+<li><p>新增算子 <code class="docutils literal notranslate"><span class="pre">Clamp</span></code>，实际等价于 <code class="docutils literal notranslate"><span class="pre">Hardtanh</span></code></p></li>
+<li><p>新增算子 <code class="docutils literal notranslate"><span class="pre">Swish</span></code>，实际等价于 <code class="docutils literal notranslate"><span class="pre">Silu</span></code></p></li>
+<li><p>新增算子 <code class="docutils literal notranslate"><span class="pre">Unbind</span></code>，实际等价于 <code class="docutils literal notranslate"><span class="pre">Unstack</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Hardsigmoid</span></code> 定义进行了修改</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>大量接口的 <code class="docutils literal notranslate"><span class="pre">index</span></code> 参数现在显式地支持负数索引了</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pass</span></code> 注册方式进行了简化，但保留旧接口</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MergedDistr</span></code> 添加 <code class="docutils literal notranslate"><span class="pre">uvalue</span></code> 属性，表示无效值，可选 <code class="docutils literal notranslate"><span class="pre">ZERO</span></code> 表示填 <code class="docutils literal notranslate"><span class="pre">0</span></code>， <code class="docutils literal notranslate"><span class="pre">NONE</span></code> 表示不存在</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Bug</span></code> 修复</dt><dd><ul>
+<li><p>修复无法 <code class="docutils literal notranslate"><span class="pre">lazyLoad</span></code> 空的 <code class="docutils literal notranslate"><span class="pre">raw</span></code> 文件的 <code class="docutils literal notranslate"><span class="pre">bug</span></code></p></li>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">Params</span></code>、 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 类型在 <code class="docutils literal notranslate"><span class="pre">clone</span></code> 时未考虑 <code class="docutils literal notranslate"><span class="pre">depth</span></code> 的问题</p></li>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">Roll</span></code> 算子的构造函数中 <code class="docutils literal notranslate"><span class="pre">dims</span></code> 参数传入空的 <code class="docutils literal notranslate"><span class="pre">Array</span></code> 会出错的问题</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="v3-4-0">
+<h2>v3.4.0<a class="headerlink" href="#v3-4-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>算子变更</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">AlignAxis</span></code> 定义进行了修改，支持 <code class="docutils literal notranslate"><span class="pre">layout</span></code> 之后的输入</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PruneAxis</span></code> 定义进行了修改，支持指定去除的无效数据</p></li>
+<li><p>新增四个激活算子 <code class="docutils literal notranslate"><span class="pre">Hardtanh</span></code>、 <code class="docutils literal notranslate"><span class="pre">LogSoftmax</span></code>、 <code class="docutils literal notranslate"><span class="pre">Softplus</span></code>、 <code class="docutils literal notranslate"><span class="pre">Softshrink</span></code></p></li>
+<li><p>废弃三个后处理算子 <code class="docutils literal notranslate"><span class="pre">MultiYolo</span></code>、 <code class="docutils literal notranslate"><span class="pre">Region</span></code>、 <code class="docutils literal notranslate"><span class="pre">SSDOutput</span></code> 和一个后处理属性类 <code class="docutils literal notranslate"><span class="pre">PriorBox</span></code> ，但未彻底删除</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Array</span></code> 优化</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Array</span></code> 重构，支持存放 <code class="docutils literal notranslate"><span class="pre">pod</span></code> 类型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Array</span></code> 存放 <code class="docutils literal notranslate"><span class="pre">bool</span></code> 时做了特殊优化，一个 <code class="docutils literal notranslate"><span class="pre">bool</span></code> 仅占一个比特</p></li>
+<li><p>移除类 <code class="docutils literal notranslate"><span class="pre">PackedFragment</span></code>，在序列化和反序列化 <code class="docutils literal notranslate"><span class="pre">Json</span></code> 时不再使用其对 <code class="docutils literal notranslate"><span class="pre">Array</span></code> 做压缩</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">Array&lt;IntImm&gt;</span></code>、 <code class="docutils literal notranslate"><span class="pre">Array&lt;FloatImm&gt;</span></code> 优化为 <code class="docutils literal notranslate"><span class="pre">Array&lt;int64_t&gt;</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Array&lt;double&gt;</span></code> ，网络占用内存减少五倍</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">scale</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">normratio</span></code></dt><dd><ul>
+<li><p>新增类 <code class="docutils literal notranslate"><span class="pre">NormratioArray</span></code> ，用来存放 <code class="docutils literal notranslate"><span class="pre">normratio</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NormalizedType</span></code>、 <code class="docutils literal notranslate"><span class="pre">NormalizedQuantizedType</span></code> 的属性 <code class="docutils literal notranslate"><span class="pre">normratio</span></code> 从 <code class="docutils literal notranslate"><span class="pre">Array&lt;FloatImm&gt;</span></code> 更改为 <code class="docutils literal notranslate"><span class="pre">NormratioArray</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NormratioArray</span></code>、 <code class="docutils literal notranslate"><span class="pre">ExpQuantizedScaleArray</span></code> 新增属性 <code class="docutils literal notranslate"><span class="pre">axis</span></code>，新增方法 <code class="docutils literal notranslate"><span class="pre">setAxis</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scale</span></code> 和 <code class="docutils literal notranslate"><span class="pre">normratio</span></code> 在 <code class="docutils literal notranslate"><span class="pre">Json</span></code> 中使用 <code class="docutils literal notranslate"><span class="pre">RLE</span></code> 压缩形式的字符串代称，更加简洁</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其它更新</dt><dd><ul>
+<li><p>新增类 <code class="docutils literal notranslate"><span class="pre">NetworkBase</span></code> 存放原 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的大部分属性和方法，子类为 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code>，所以 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 现在共享 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的全部接口</p></li>
+<li><p>使用预编译头文件 <code class="docutils literal notranslate"><span class="pre">PCH</span></code>， <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 下编译快了 <code class="docutils literal notranslate"><span class="pre">44%</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="v3-3-0">
+<h2>v3.3.0<a class="headerlink" href="#v3-3-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>算子变更</dt><dd><ul>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">Add</span></code> 算子的属性 <code class="docutils literal notranslate"><span class="pre">alpha</span></code> 、 <code class="docutils literal notranslate"><span class="pre">beta</span></code> 从 <code class="docutils literal notranslate"><span class="pre">ScalarImm</span></code> 扩展为 <code class="docutils literal notranslate"><span class="pre">Array&lt;ScalarImm&gt;</span></code></p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Roll</span></code> 算子新增检查：</dt><dd><ul>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">dims</span></code> 不为 <code class="docutils literal notranslate"><span class="pre">NullOpt</span></code> ， <code class="docutils literal notranslate"><span class="pre">shifts</span></code> 的 <code class="docutils literal notranslate"><span class="pre">size``必须与</span> <span class="pre">``dims</span></code> 的 <code class="docutils literal notranslate"><span class="pre">size</span></code> 相同</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">dims</span></code> 为 <code class="docutils literal notranslate"><span class="pre">NullOpt</span></code> ， <code class="docutils literal notranslate"><span class="pre">shifts</span></code> 的 <code class="docutils literal notranslate"><span class="pre">size</span></code> 必须为 <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>文档</dt><dd><ul>
+<li><p>侧栏新增《验证规则》栏目，描述现在已经推送的对各类型的验证规则</p></li>
+<li><p>侧栏新增《算子 <code class="docutils literal notranslate"><span class="pre">SPEC</span></code> 》栏目，描述算子的设计 <code class="docutils literal notranslate"><span class="pre">SPEC</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Bug</span></code> 修复</dt><dd><ul>
+<li><p>修复转译 <code class="docutils literal notranslate"><span class="pre">AddConst</span></code> 算子时 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 的错误</p></li>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">OpPattern</span></code> 未考虑算子输入可能为 <code class="docutils literal notranslate"><span class="pre">Params</span></code> 的 <code class="docutils literal notranslate"><span class="pre">bug</span></code></p></li>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">Linux</span></code> 单元测试： <code class="docutils literal notranslate"><span class="pre">hasAttr</span></code> 方法需要明确指定数据位宽，不能使用 <code class="docutils literal notranslate"><span class="pre">long</span></code> 等模糊类型</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Layout</span></code> 更新</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Layout</span></code> 新增 <code class="docutils literal notranslate"><span class="pre">isLayouted()</span></code> 方法，判断是否是 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 后的张量数据类型； <code class="docutils literal notranslate"><span class="pre">Matmul</span></code> 算子检验时利用该方法，区分 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> 前后两种情况</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Layout</span></code> 新增 <code class="docutils literal notranslate"><span class="pre">toString()</span></code> 方法，便于直接获得字符串形式的 <code class="docutils literal notranslate"><span class="pre">Layout</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>检查</dt><dd><ul>
+<li><p>为 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 、 <code class="docutils literal notranslate"><span class="pre">Value</span></code> 、 <code class="docutils literal notranslate"><span class="pre">TensorType</span></code> 类型添加 <code class="docutils literal notranslate"><span class="pre">validate()</span></code> ，用来验证该对象是否符合规范</p></li>
+<li><p>网络必须符合规范，才允许 <code class="docutils literal notranslate"><span class="pre">dump</span></code> 到文件内（ <code class="docutils literal notranslate"><span class="pre">std::cout</span></code> 等其它方式输出不受该限制）</p></li>
+<li><p>修改检查：网络中最后一个算子必须是 <code class="docutils literal notranslate"><span class="pre">Output</span></code> 改为网络中最后一个算子必须是 <code class="docutils literal notranslate"><span class="pre">OutputLike</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其它更新</dt><dd><ul>
+<li><p>将部分 <code class="docutils literal notranslate"><span class="pre">for</span></code> 循环的循环变量改为右值引用，避免复制，提高性能</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MergedAxisDistr</span></code> 的构造函数和方法中传入的 <code class="docutils literal notranslate"><span class="pre">element_num</span></code> 参数由 <code class="docutils literal notranslate"><span class="pre">uint64_t</span></code> 改为 <code class="docutils literal notranslate"><span class="pre">int64_t</span></code> ，并添加检查：必须为正整数</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Value</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">index()</span></code> ，获取该数据在其绑定的算子中的顺序</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Operation</span></code> 的方法 <code class="docutils literal notranslate"><span class="pre">producers()</span></code> 、 <code class="docutils literal notranslate"><span class="pre">consumers()</span></code> ， <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的方法 <code class="docutils literal notranslate"><span class="pre">getProducersByOpId()</span></code> 、 <code class="docutils literal notranslate"><span class="pre">getConsumersByOpId()</span></code> 新增参数 <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">sorted</span> <span class="pre">=</span> <span class="pre">false</span></code> ，设为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 时对输出算子列表按执行序排序</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Array</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">sort(std::function&lt;bool(T,</span> <span class="pre">T)&gt;</span> <span class="pre">comp)</span></code> ：对 <code class="docutils literal notranslate"><span class="pre">Array</span></code> 内部元素进行原地排序</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="v2-2-0">
+<h2>v2.2.0<a class="headerlink" href="#v2-2-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>算子变更</dt><dd><ul>
+<li><p>新增算子 <code class="docutils literal notranslate"><span class="pre">Unknown</span></code></p></li>
+<li><p>新增算子 <code class="docutils literal notranslate"><span class="pre">Roll</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HardOp</span></code> 新增属性 <code class="docutils literal notranslate"><span class="pre">layer_count</span></code> ，表示硬件 <code class="docutils literal notranslate"><span class="pre">layer_count</span></code> 信息，新增属性 <code class="docutils literal notranslate"><span class="pre">sub_hard_ops</span></code> ，表示 <code class="docutils literal notranslate"><span class="pre">SpeedMode</span></code> 时合并前的 <code class="docutils literal notranslate"><span class="pre">HardOp</span></code> 们</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Bug</span></code> 修复</dt><dd><ul>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">LazyLoadParams</span></code> 未考虑 <code class="docutils literal notranslate"><span class="pre">ParamsNode</span></code> 新增的属性 <code class="docutils literal notranslate"><span class="pre">_allow_no_data</span></code> 的问题</p></li>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的 <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> 方法过多次调用的问题</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其它更新</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ParamsNode</span></code> 新增属性 <code class="docutils literal notranslate"><span class="pre">_allow_no_data</span></code> ，表示是否允许该参数无 <code class="docutils literal notranslate"><span class="pre">_data</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">removeOpsById</span></code> ，一次性移除网络中的若干算子，但保留它们之间的连接关系</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">msgpack</span></code> 库从 <code class="docutils literal notranslate"><span class="pre">conan</span></code> 移到 <code class="docutils literal notranslate"><span class="pre">source</span></code> 中</p></li>
+<li><p>修改 <code class="docutils literal notranslate"><span class="pre">msgpack</span></code> 库，在保存浮点数时不再根据数值优化为整数</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="v2-1-0">
+<h2>v2.1.0<a class="headerlink" href="#v2-1-0" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Network</span></code> 更新</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 及 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">viewExcept</span></code> ，包含除了指定 <code class="docutils literal notranslate"><span class="pre">op_id</span></code> 们以外的 <code class="docutils literal notranslate"><span class="pre">op</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 及 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">viewByOpId</span></code> ，通过 <code class="docutils literal notranslate"><span class="pre">op_id</span></code> 指定范围</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 及 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 的 <code class="docutils literal notranslate"><span class="pre">view</span></code> 方法支持负数索引，并对索引进行检查</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 的 <code class="docutils literal notranslate"><span class="pre">view</span></code> 方法支持传入判断函数</p></li>
+<li><p>为 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的方法 <code class="docutils literal notranslate"><span class="pre">allParams</span></code>、 <code class="docutils literal notranslate"><span class="pre">Operation</span></code> 的方法 <code class="docutils literal notranslate"><span class="pre">paramsInputs</span></code> 实现 <code class="docutils literal notranslate"><span class="pre">Python</span></code> 接口</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">allParams</span></code>，获取网络中所有算子的 <code class="docutils literal notranslate"><span class="pre">Params</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span></code> 在析构时，会通知所有 <code class="docutils literal notranslate"><span class="pre">ops</span></code> 清除自己记录的所属 <code class="docutils literal notranslate"><span class="pre">Network</span></code></p></li>
+<li><p>现在两个 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 可以判断是否相等了。相等条件为：属性 <code class="docutils literal notranslate"><span class="pre">ops</span></code> 、 <code class="docutils literal notranslate"><span class="pre">network_</span></code> 对应相等</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 构造时传入源 <code class="docutils literal notranslate"><span class="pre">Network</span></code></p></li>
+<li><p>现在只要有任意个子图存在，原始 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 就不会自动析构；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 类现在也提供 <code class="docutils literal notranslate"><span class="pre">getOpIndexById</span></code> 方法了，输入 <code class="docutils literal notranslate"><span class="pre">op_id</span></code> 即可查询在子图中的 <code class="docutils literal notranslate"><span class="pre">index</span></code></p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">Network</span></code> 的 <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> 方法，从递归改为循环，减少堆栈占用</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Operation</span></code> 更新</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">OperationNode</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">paramsAttrs</span></code> ，获取算子中所有 <code class="docutils literal notranslate"><span class="pre">Params</span></code> 属性的哈希表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Operation</span></code> 新增方法 <code class="docutils literal notranslate"><span class="pre">paramsInputs</span></code> ，获取算子 <code class="docutils literal notranslate"><span class="pre">Params</span></code> 的输入列表</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Bug</span></code> 修复</dt><dd><ul>
+<li><p>修复 <code class="docutils literal notranslate"><span class="pre">NetworkView</span></code> 类的 <code class="docutils literal notranslate"><span class="pre">getOpIndexById</span></code> 方法计数时不包括输入输出算子的 <code class="docutils literal notranslate"><span class="pre">bug</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其它更新</dt><dd><ul>
+<li><p>消除所有 <code class="docutils literal notranslate"><span class="pre">warning</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Object</span></code> 减引用计数时保证线程安全</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NormalizedType</span></code>、 <code class="docutils literal notranslate"><span class="pre">QuantizedScale</span></code>、 <code class="docutils literal notranslate"><span class="pre">QuantizedScaleArray</span></code> 添加属性 <code class="docutils literal notranslate"><span class="pre">axis=-1</span></code> ，表示其系数对应的维度；并提供 <code class="docutils literal notranslate"><span class="pre">setAxis</span></code> 方法供修改</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../_autosummary/xir.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">xir module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../validate_rule/Network.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Network</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-7-0">v3.7.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-0">v3.6.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-5-0">v3.5.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-4-0">v3.4.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-3-0">v3.3.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v2-2-0">v2.2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v2-1-0">v2.1.0</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

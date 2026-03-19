@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>icraft-parse &#8212; Icraft Parser 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="更新日志" href="changelogs/change_logs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Parser 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>icraft-parse</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 安装与依赖</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cli">1.2 CLI说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2.1 前处理方式</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.3 组件的调用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.4 模型预检</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnxparser">1.4.1 OnnxParser模型预检</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">二 组件结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-parse-exe">2.1 icraft-parse.exe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-xxparser-dll">2.2 icraft-xxparser.dll</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">三 自定义算子在解析组件中的接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorchparser">3.1 PytorchParser</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.1.1 准备工作</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.1.2 解析实现</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.1.3 编译链接</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.2 OnnxParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">四 索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-parse">
+<h1>icraft-parse<a class="headerlink" href="#icraft-parse" title="此标题的永久链接">#</a></h1>
+<p>icraft-parse作为icraft与框架的交互组件，该组件实现了神经网络模型从框架到icraft的转换。</p>
+<section id="id1">
+<h2>一 使用说明<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="id2">
+<h3>1.1 安装与依赖<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<p>Icraft编译器由应用程序和对应的依赖库构成，以安装包的形式提供给用户。用户在使用Icraft编译器前，需要先安装编译器安装包、第三方依赖库以及一些常见的自定义硬算子demo。
+安装上述Icraft后即可使用icraft-parse实现指令生成的调用。</p>
+</section>
+<section id="cli">
+<span id="command-line"></span><h3>1.2 CLI说明<a class="headerlink" href="#cli" title="此标题的永久链接">#</a></h3>
+<p>安装完成后如需单独通过CLI调用，参数说明参见下表：</p>
+<table class="table" id="id17">
+<caption><span class="caption-text">表1 icraft-parse参数说明表</span><a class="headerlink" href="#id17" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 22.7%" />
+<col style="width: 22.7%" />
+<col style="width: 54.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>数据格式</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>net_name</p></td>
+<td><p>string</p></td>
+<td><p>表示网络模型的名字</p></td>
+</tr>
+<tr class="row-odd"><td><p>network</p></td>
+<td><p>string</p></td>
+<td><p>表示网络模型文件的路径，通常与weight（参数文件）配合使用。部分框架的网络模型和参数在同一个文件，该情况下，仅需配置network即可</p></td>
+</tr>
+<tr class="row-even"><td><p>weights</p></td>
+<td><p>string</p></td>
+<td><p>表示参数文件的路径，与network配合使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>jr_path</p></td>
+<td><p>string</p></td>
+<td><p>表示解析组件输出文件的存放路径</p></td>
+</tr>
+<tr class="row-even"><td><p>log_path</p></td>
+<td><p>string</p></td>
+<td><p>可选，表示解析组件执行过程输出的log文件的存放路径，省略则放到默认路径”./.icraft/logs/”下</p></td>
+</tr>
+<tr class="row-odd"><td><p>framework</p></td>
+<td><p>string</p></td>
+<td><p>产生网络的框架，仅支持 <code class="docutils literal notranslate"><span class="pre">Pytorch、Onnx</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>frame_version</p></td>
+<td><p>string</p></td>
+<td><p>框架版本号，因为只有 <code class="docutils literal notranslate"><span class="pre">PytorchParser</span></code> 支持多个版本，因此该参数仅在framework=Pytorch时需要配置，默认1.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>inputs</p></td>
+<td><p>string</p></td>
+<td><p>表示网络输入的尺寸，因为网络存在多输入的情况，因此需要给每个输入配置输入尺寸，以”;”分隔，每个输入内部以”,”区分维度</p></td>
+</tr>
+<tr class="row-even"><td><p>inputs_layout</p></td>
+<td><p>string</p></td>
+<td><p>表示网络输入的layout，因为网络存在多输入的情况，因此需要给每个输入配置layout，以”;”分隔，在cnn领域，推荐配置”NHWC”，对于维度含义不确定的情况，推荐”<em>C”,’</em>’的输入为input.dim.size-1，表示采用深度学习框架的排布</p></td>
+</tr>
+<tr class="row-odd"><td><p>pre_method</p></td>
+<td><p>string</p></td>
+<td><p>表示网络前处理，因为网络存在多输入的情况，因此需要给每个输入配置前处理，以”;”分隔，当某个输入没有前处理时，需要用nop占位</p></td>
+</tr>
+<tr class="row-even"><td><p>pre_mean</p></td>
+<td><p>string</p></td>
+<td><p>表示网络前处理参数pre_mean，因为网络存在多输入的情况，因此需要给每个输入配置前处理，以”;”分隔，当某个输入没有前处理参数pre_mean，需要用nop占位</p></td>
+</tr>
+<tr class="row-odd"><td><p>pre_scale</p></td>
+<td><p>string</p></td>
+<td><p>表示网络前处理参数pre_scale，因为网络存在多输入的情况，因此需要给每个输入配置前处理，以”;”分隔，当某个输入没有前处理参数pre_scale，需要用nop占位</p></td>
+</tr>
+<tr class="row-even"><td><p>channel_swap</p></td>
+<td><p>string</p></td>
+<td><p>表示网络前处理参数channel_swap，因为网络存在多输入的情况，因此需要给每个输入配置前处理，以”;”分隔，当某个输入没有前处理参数channel_swap，需要用nop占位</p></td>
+</tr>
+<tr class="row-odd"><td><p>pre_check</p></td>
+<td><p>string</p></td>
+<td><p>表示是否启动整个编译器级别的模型预检，仅针对OnnxParser有效，默认为true，即对模型中不支持的算子（如不支持Sin、Cos算子）、和算子不支持的边界条件（如Conv不支持五维输入）进行预检；设置为false时，只完成Parser组件的预检，即仅对模型中不支持的算子进行预检；预检不通过则不进行编译</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id3">
+<h4>1.2.1 前处理方式<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h4>
+<p>icraft内置四种前处理方式，分别是premethod、channel_swap、pre_mean、pre_scale。在icraft中，如果前处理方式存在，那么前处理方式的执行序是固定的，依次为
+premethod-&gt;channel_swap-&gt;pre_mean-&gt;pre_scale.</p>
+</section>
+</section>
+<section id="id4">
+<h3>1.3 组件的调用<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<p>通过CLI调用命令如下：
+icrat-parse –net_name resnet152 –network ./resnet152.onnx –log_path ./ –jr_path ./ –inputs 1,224,224,3 –pre_method nop –pre_scale nop
+–pre_mean 1,2,3 –channel_swap nop –inputs_layout nhwc</p>
+</section>
+<section id="id5">
+<h3>1.4 模型预检<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<p>调用icraft-parse命令，Icraft-Parser首先会针对模型的支持情况进行 <code class="docutils literal notranslate"><span class="pre">预检</span></code> ，如果预检通过，则向下执行解析；如果预检不过，即模型中存在icraft不支持的算子，则会打印预检不通过提示，预检结果保存在 <code class="docutils literal notranslate"><span class="pre">.icraft/logs/</span></code> 下的 <a href="#id6"><span class="problematic" id="id7">``</span></a>xx_precheck.csv``文件中。以一个包含了torch.softplus的模型为例，预检结果如下：</p>
+<table class="table" id="id18">
+<caption><span class="caption-text">Table Title</span><a class="headerlink" href="#id18" title="此表格的永久链接">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>pattern_num</p></th>
+<th class="head"><p>begin_index</p></th>
+<th class="head"><p>end_index</p></th>
+<th class="head"><p>input</p></th>
+<th class="head"><p>output</p></th>
+<th class="head"><p>op_serial</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>x.1 16 17</p></td>
+<td><p>18</p></td>
+<td><p>1(18)aten::softplus</p></td>
+</tr>
+</tbody>
+</table>
+<p>在深度学习框架中，会用一系列 <code class="docutils literal notranslate"><span class="pre">细粒度</span></code> 的算子序列来实现 <code class="docutils literal notranslate"><span class="pre">粗粒度</span></code> 的算子，因此我们拿到的模型文件，通常是采用细粒度的算子来描述的。Icraft-Parser的解析思想是，针对框架算子序列（即 <code class="docutils literal notranslate"><span class="pre">pattern</span></code> ）进行解析，将算子序列解析到icraft的算子。我们认为，连续出现的不支持算子序列大概率为同一个算子的底层实现，因此 <code class="docutils literal notranslate"><span class="pre">softplus_network_precheck.csv</span></code> 会将检测到的连续不支持算子放到一行中描述，以方便理解和添加解析实现。</p>
+<p>当前实例中，Icraft-Parser无法解析算子序列 <code class="docutils literal notranslate"><span class="pre">aten::softplus</span></code> （此处的序列，只有一个算子），因此我们需要利用Parser的自定义解析接口，将 <code class="docutils literal notranslate"><span class="pre">aten::softplus</span></code> 映射到Icraft XIR.</p>
+<section id="onnxparser">
+<h4>1.4.1 OnnxParser模型预检<a class="headerlink" href="#onnxparser" title="此标题的永久链接">#</a></h4>
+<p>OnnxParser模型预检除了上述基础功能外，还实现了对算子支持的边界条件、后续组件无法支持的边界条件等进行预检，比如onnx中conv包含conv1d、conv2d、conv3d，但OnnxParser不支持解析conv3d；
+预检的结果同样保存在 <code class="docutils literal notranslate"><span class="pre">.icraft/logs/</span></code> 下的 <a href="#id8"><span class="problematic" id="id9">``</span></a>xx_precheck.csv``文件中，csv文件中详细记录了不支持的算子，以及不支持的原因和组件。</p>
+<p>当预检失败时，表示当前模型有算子不支持解析，或者有算子无法等效到icraft的算子，亦或者有算子在后续组件无法编译，此时Parser将会停止模型解析，并输出错误信息；</p>
+<p>如果因后续组件无法支持的报错，且仍需查看解析后的模型，可以尝试配置pre_check=false强行进行模型编译。</p>
+</section>
+</section>
+</section>
+<section id="id10">
+<h2>二 组件结构<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h2>
+<p>该组件由两部分组成：</p>
+<ul class="simple">
+<li><p>icraft-parse.exe</p></li>
+<li><p>icraft-xxparser.dll</p></li>
+</ul>
+<section id="icraft-parse-exe">
+<h3>2.1 icraft-parse.exe<a class="headerlink" href="#icraft-parse-exe" title="此标题的永久链接">#</a></h3>
+<p>icraft-parse.exe作为组件的顶层，主要负责根据用户参数的配置调度相应的parser进行网络模型的解析。</p>
+</section>
+<section id="icraft-xxparser-dll">
+<h3>2.2 icraft-xxparser.dll<a class="headerlink" href="#icraft-xxparser-dll" title="此标题的永久链接">#</a></h3>
+<p>目前，Icraft平台支持的框架有：</p>
+<ul class="simple">
+<li><p>Pytoch，支持pytorch1.9原生的网络模型文件（.pt格式）</p></li>
+<li><p>Onnx，支持 <code class="docutils literal notranslate"><span class="pre">PaddlePaddle、Mindspore</span></code> 框架保存为onnx格式的模型文件， <code class="docutils literal notranslate"><span class="pre">opset=11</span></code>。</p></li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h2>三 自定义算子在解析组件中的接口<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h2>
+<p>Icraft当前已经包含了丰富的算子库(详见 《Icraft-Docs/算子支持》)，可以满足大部分神经网络模型的编译需求。但在某些场景下， 可能需要用户自定义算子来实现特定的计算过程。如：</p>
+<ul class="simple">
+<li><p>Icraft还未支持的算子，且无法通过其它算子组合实现；</p></li>
+<li><p>使用多个算子组合无法取得最佳计算性能，而自定义算子时通过自定义该算子在后端的实现可以提高性能。</p></li>
+</ul>
+<p>自定义算子功能允许用户自由地定义算子的输入输出和属性，以及在编译运行过程中的实现。比如，用户完成自定义算子的注册后，可以在前端解析中自定义框架算子到该算子的转换逻辑，可以在量化中自定义该算子的量化方式，还可以在各个后端中添加该算子的前向实现。本章节阐述解析组件提供的自定义算子接口，用于将icraft不支持的算子接入到网络。</p>
+<p>Icraft-parse目前提供pytorch、onnx两个框架的解析自定义算子的接口。</p>
+<section id="pytorchparser">
+<h3>3.1 PytorchParser<a class="headerlink" href="#pytorchparser" title="此标题的永久链接">#</a></h3>
+<p>如前所述，Icraft-Parser会在解析前针对模型文件进行预检，用户需要结合预检文件中的 <code class="docutils literal notranslate"><span class="pre">op_serial</span></code> 和模型确定不支持算子的pattern。</p>
+<ul class="simple">
+<li><p>【不推荐】按照模型文件中算子粒度来定自定义算子的粒度，这样很多情况下需要添加很多自定义算子，工作量大，上板运行的时效性也不好；</p></li>
+<li><p>【☆推荐】按照框架算子的粒度来定义自定义算子的粒度，好理解，工作量小，上板时效性高。</p></li>
+</ul>
+<p>pattern确定之后，就可以着手添加自定义算子的实现和解析实现了，自定义算子的解析依赖自定义算子的定义，请参考《XIR用户手册》，本文不做详细描述。</p>
+<section id="id12">
+<h4>3.1.1 准备工作<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h4>
+<p>PytorchParser的自定义算子接口依赖Pytorch2.0.1库文件，使用前请提前安装好Pytorch2.0.1。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>conda<span class="w"> </span>install<span class="w"> </span><span class="nv">pytorch</span><span class="o">==</span><span class="m">2</span>.0.1<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.15.2<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.0.2<span class="w"> </span>cpuonly<span class="w"> </span>-c<span class="w"> </span>pytorch
+</pre></div>
+</div>
+<p>PytorchParser基于.pt格式进行模型文件的解析
+PytorchParser的自定义算子实现步骤如下：</p>
+</section>
+<section id="id13">
+<h4>3.1.2 解析实现<a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h4>
+<p>PytorchParser提供接口函数 <code class="docutils literal notranslate"><span class="pre">parse_function</span></code> 来供用户实现解析函数，提供 <code class="docutils literal notranslate"><span class="pre">ICRAFT_ADD_PATTERN_TO_PARSER</span></code> 来实现相关pattern的注册，以torch.softplus为例。</p>
+<img alt="_images/PytorchParser.png" src="_images/PytorchParser.png" />
+</section>
+<section id="id14">
+<h4>3.1.3 编译链接<a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h4>
+<p>Icraft-Parser要求自定义解析生成 <code class="docutils literal notranslate"><span class="pre">动态链接库</span></code>，命名需以``icraft.parse.`` 开头。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># 在parser.cpp中使用了Libtorch的接口，因此需要链接Torch的库</span>
+<span class="linenos"> 2</span><span class="c1"># 如果用户安装了pytorch，可以使用pytorch安装包中的库</span>
+<span class="linenos"> 3</span><span class="c1"># 下面示例中将anaconda安装的pytorch的库中的CMAKE文件路径添加到了CMAKE_PREFIX_PATH</span>
+<span class="linenos"> 4</span><span class="c1"># 这样就可以使用find_package查找Torch库了</span>
+<span class="linenos"> 5</span><span class="nb">set</span><span class="p">(</span><span class="n">TORCH_PACKAGE_PATH</span> <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">chenghongxu</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span><span class="n">Lib</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="nb">set</span><span class="p">(</span><span class="n">CMAKE_PREFIX_PATH</span> <span class="err">$</span><span class="p">{</span><span class="n">TORCH_PACKAGE_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">cmake</span><span class="o">/</span><span class="n">Torch</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">find_package</span><span class="p">(</span><span class="n">Torch</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1"># 创建动态链接库icraft.parse.softplus</span>
+<span class="linenos">10</span><span class="n">add_library</span><span class="p">(</span><span class="n">icraft</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">softplus</span> <span class="n">SHARED</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="n">target_sources</span><span class="p">(</span><span class="n">icraft</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">softplus</span> <span class="n">PRIVATE</span>
+<span class="linenos">13</span>    <span class="n">parser</span><span class="o">.</span><span class="n">cpp</span>
+<span class="linenos">14</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1"># parser.cpp中使用了PytorchParser和Torch的接口，需要链接相应的库</span>
+<span class="linenos">17</span><span class="n">target_link_libraries</span><span class="p">(</span><span class="n">icraft</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">softplus</span> <span class="n">PRIVATE</span> <span class="n">Icraft</span><span class="p">::</span><span class="n">PytorchParser</span> <span class="n">torch</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>以上脚本在Windows下编译生成 <code class="docutils literal notranslate"><span class="pre">icraft.parse.softplus.dll</span></code> 文件。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Icraft-Domo中activate模块，提供了PytorchParser的自定义parser的接口使用demo，请结合相关demo阅读。</p>
+</div>
+</section>
+</section>
+<section id="id15">
+<h3>3.2 OnnxParser<a class="headerlink" href="#id15" title="此标题的永久链接">#</a></h3>
+<p>OnnxParser的自定义算子解析接口与PytorchParser基本一致，请结合Icraft-Domo中softop 模块进行应用。</p>
+</section>
+</section>
+<section id="id16">
+<h2>四 索引<a class="headerlink" href="#id16" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="changelogs/change_logs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">更新日志</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 安装与依赖</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cli">1.2 CLI说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.2.1 前处理方式</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.3 组件的调用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.4 模型预检</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnxparser">1.4.1 OnnxParser模型预检</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">二 组件结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-parse-exe">2.1 icraft-parse.exe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft-xxparser-dll">2.2 icraft-xxparser.dll</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">三 自定义算子在解析组件中的接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorchparser">3.1 PytorchParser</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.1.1 准备工作</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.1.2 解析实现</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.1.3 编译链接</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.2 OnnxParser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">四 索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： wangcan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

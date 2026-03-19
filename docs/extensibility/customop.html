@@ -1,0 +1,1107 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>自定义算子 &#8212; Icraft 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'extensibility/customop';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'http://192.168.124.133/icraft/latest/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="布衣架构排布说明" href="others/layout.html" />
+    <link rel="prev" title="Icraft 组件总览" href="../components/overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="24-12-23 14:12"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft 文档</p>
+  
+</a>
+        </div>
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+    v3.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft 文档</p>
+  
+</a>
+    </div>
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+    v3.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">快速开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/compilation.html">编译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/running.html">运行</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">用户接口</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../interface/cli_arguments.html">命令行参数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interface/apis.html">API Reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">算子支持</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../ops/op_support.html">框架支持列表</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">组件指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../components/overview.html">Icraft 组件总览</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">扩展机制</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">自定义算子</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">程序示例</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sample/demo.html">Icraft Demo</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">故障排除</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../troubles/trouble_shotting.html">故障排查</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">版本缺陷</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../defects/version_defects.html">版本缺陷</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/extensibility/customop.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>自定义算子</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 算子的意义</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 算子的编译和运行</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">三 自定义算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1 注册算子</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2 添加算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2.1 解析</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.2.2 优化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.2.3 实现前向</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">四 软算子和硬算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.1 自定义软算子</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.2 自定义硬算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.2.1 系统架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.2.2 硬件流程</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">4.2.3 软件流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1. 量化</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2. 排布</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">3. 前向</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">四 自定义激活</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>自定义算子<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<section id="id2">
+<h2>一 算子的意义<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>在Icraft XIR中，算子（Operation）是指表示计算或操作的最小单位。算子可以是任何一种计算，例如加法、乘法、卷积等。算子在XIR中被用来描述和表示计算图中的节点。</p>
+<p>算子在XIR中有以下几个重要的属性：</p>
+<ul class="simple">
+<li><p>ID（ <code class="docutils literal notranslate"><span class="pre">op_id</span></code> ）：算子的ID用于标识和访问算子。</p></li>
+<li><p>输入（ <code class="docutils literal notranslate"><span class="pre">inputs</span></code> ）：算子接收的输入数据，可以是其他算子的输出或者常量。</p></li>
+<li><p>输出（ <code class="docutils literal notranslate"><span class="pre">outputs</span></code> ）：算子的计算结果，可以作为其他算子的输入。</p></li>
+<li><p>属性：算子的附加信息，用于描述算子的特定属性，例如卷积的卷积核大小、步长等。</p></li>
+</ul>
+<p>算子在XIR中以一种统一的方式进行定义和操作，这使得进行计算图的转换和优化变得更加方便和灵活。</p>
+<p>以Conv2d为例，其序列化后的算子表达如下所示：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="nt">&quot;Conv2d&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">     </span><span class="nt">&quot;op_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">                 </span><span class="c1">// 算子ID</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">            </span><span class="c1">// 算子输入</span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="nt">&quot;outputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">           </span><span class="c1">// 算子输出</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="nt">&quot;dilation_height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">       </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：膨胀高度</span>
+<span class="linenos"> 6</span><span class="w">     </span><span class="nt">&quot;dilation_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：膨胀宽度</span>
+<span class="linenos"> 7</span><span class="w">     </span><span class="nt">&quot;groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：分组数量</span>
+<span class="linenos"> 8</span><span class="w">     </span><span class="nt">&quot;pad_bottom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：下方填充</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="nt">&quot;pad_left&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">              </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：左方填充</span>
+<span class="linenos">10</span><span class="w">     </span><span class="nt">&quot;pad_right&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">             </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：右方填充</span>
+<span class="linenos">11</span><span class="w">     </span><span class="nt">&quot;pad_top&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">               </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：上方填充</span>
+<span class="linenos">12</span><span class="w">     </span><span class="nt">&quot;padding_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ZEROS&quot;</span><span class="p">,</span><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：填充模式</span>
+<span class="linenos">13</span><span class="w">     </span><span class="nt">&quot;stride_height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">         </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：滑动高度</span>
+<span class="linenos">14</span><span class="w">     </span><span class="nt">&quot;stride_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">           </span><span class="err">#</span><span class="w"> </span><span class="err">算子属性：滑动宽度</span>
+<span class="linenos">15</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>在XIR中，一个算子的输入是其他算子的输出，一个算子的输出同时作为其他算子的输入，算子之间通过输入与输出之间的连接关系构成了有向无环图（DAG）。该DAG使用网络(Network)来表示。</p>
+<a class="reference internal image-reference" href="../_images/op_and_network.png"><img alt="../_images/op_and_network.png" src="../_images/op_and_network.png" style="height: 400px;" /></a>
+<p>如上图所示，一个网络了包含了算子以及算子之间的连接关系，网络中算子的排列顺序同时表示了其执行顺序，这就构成了一张计算图。</p>
+<p>在XIR种，每一种算子表示了一种特定的计算过程，即输入到输出的映射关系。比如，Relu算子表示将输入中的每个小于0的数映射到0作为输出。同时，算子也是表示计算过程的最小单位，网络通过算子的排列组合和连接表达了更加复杂的计算过程。因此，如果一种计算过程无法使用现有的算子排列组合和连接来表达，那么可能需要添加新的算子。</p>
+</section>
+<section id="id3">
+<h2>二 算子的编译和运行<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<img alt="../_images/icraftv3-pipeline.png" src="../_images/icraftv3-pipeline.png" />
+<p>上图展示了Icraft的整个编译过程。</p>
+<p>首先，算子的定义在XIR中注册。</p>
+<p>然后，在编译过程中，算子在前端（解析器）中被创建。</p>
+<p>接着，算子在优化、量化和指令生成等过程中被一系列Pass进行转换，有可能被改变了属性（参数），有可能被删除、也有可能被替换为其他算子。</p>
+<p>然而，由于Icraft需要支持任意(阶段)的网络在支持的计算资源上运行，因此，每个算子都需要实现在支持的计算资源上前向的逻辑。</p>
+<p>因此，要实现一个算子的编译和运行过程，需要实现算子的解析(创建)、算子的优化、量化等一些列转换以及算子在不同后端上的前向实现。</p>
+</section>
+<section id="id4">
+<h2>三 自定义算子<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>Icraft当前已经包含了丰富的算子库(详见 <span class="xref std std-ref">ops-reference</span>)，可以满足大部分神经网络模型的编译需求。但在某些场景下， 可能需要用户自定义算子来实现特定的计算过程。如：</p>
+<ul class="simple">
+<li><p><strong>Icraft还未支持的算子，且无法通过其它算子组合实现</strong></p></li>
+<li><p><strong>使用多个算子组合无法取得最佳计算性能，而自定义算子时通过自定义该算子在后端的实现可以提高性能</strong></p></li>
+</ul>
+<p>自定义算子功能允许用户自由地定义算子的输入输出和属性，以及在编译运行过程中的实现。比如，用户完成自定义算子的注册后，可以在前端解析中自定义框架算子到该算子的转换逻辑，可以在量化中自定义该算子的量化方式，还可以在各个后端中添加该算子的前向实现。</p>
+<section id="id5">
+<h3>3.1 注册算子<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<p>自定义算子的第一步是利用XIR的API来注册该算子。下面以 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子为例，说明如何注册该算子。</p>
+<p>我们定义 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子可以对两个相同大小的输入张量 <code class="docutils literal notranslate"><span class="pre">x</span></code> 和 <code class="docutils literal notranslate"><span class="pre">y</span></code> 按元素乘以不同的系数 <code class="docutils literal notranslate"><span class="pre">a</span></code> 和 <code class="docutils literal notranslate"><span class="pre">b</span></code> ，然后在进行加或减的操作，得到一个同样大小的输出张量 <code class="docutils literal notranslate"><span class="pre">z</span></code> ，即 <span class="math notranslate nohighlight">\(z = ax + by\)</span>，其中 <code class="docutils literal notranslate"><span class="pre">a</span></code> 和 <code class="docutils literal notranslate"><span class="pre">b</span></code> 都是标量。因此，该算子有两个输入、一个输出，以及一些必要的属性如下：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">op_mode</span></code> : 操作模式，可选 <code class="docutils literal notranslate"><span class="pre">Add</span></code> 表示相加， <code class="docutils literal notranslate"><span class="pre">Sub</span></code> 表示相减。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: 左操作数的系数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: 右操作数的系数。</p></li>
+</ul>
+<p>首先，新建一个C++工程，添加一个名为”eltwise.cpp”的文件，文件内容如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w"> </span><span class="c1">// 可以给一个自己喜欢的命名空间</span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">whatever</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EltwiseMode</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w">         </span><span class="n">Add</span><span class="p">,</span>
+<span class="linenos"> 7</span><span class="w">         </span><span class="n">Sub</span>
+<span class="linenos"> 8</span><span class="w">     </span><span class="p">}</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">EltwiseNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpNodeBase</span><span class="o">&lt;</span><span class="n">EltwiseNode</span><span class="p">,</span><span class="w"> </span><span class="n">OneResult</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">     </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">12</span><span class="w">         </span><span class="n">EltwiseMode</span><span class="w">     </span><span class="n">op_mode</span><span class="p">;</span><span class="w">    </span><span class="c1">// 按元素操作的模式</span>
+<span class="linenos">13</span><span class="w">         </span><span class="kt">float</span><span class="w">           </span><span class="n">a</span><span class="p">;</span><span class="w">          </span><span class="c1">// 左操作数的系数</span>
+<span class="linenos">14</span><span class="w">         </span><span class="kt">float</span><span class="w">           </span><span class="n">b</span><span class="p">;</span><span class="w">          </span><span class="c1">// 右操作数的系数</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="w">         </span><span class="n">ICRAFT_DECLARE_ATTRS</span><span class="p">(</span><span class="n">EltwiseNode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">17</span><span class="w">             </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">op_mode</span><span class="p">);</span>
+<span class="linenos">18</span><span class="w">             </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">a</span><span class="p">).</span><span class="n">set_default</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="linenos">19</span><span class="w">             </span><span class="n">ICRAFT_ATTR_FIELD</span><span class="p">(</span><span class="n">b</span><span class="p">).</span><span class="n">set_default</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="linenos">20</span><span class="w">         </span><span class="p">}</span>
+<span class="linenos">21</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">Eltwise</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpBase</span><span class="o">&lt;</span><span class="n">Eltwise</span><span class="p">,</span><span class="w"> </span><span class="n">EltwiseNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">24</span><span class="w">     </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">25</span><span class="w">         </span><span class="n">Eltwise</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="w">         </span><span class="c1">// 构造函数, 默认系数都为1</span>
+<span class="linenos">28</span><span class="w">         </span><span class="n">Eltwise</span><span class="p">(</span><span class="n">Value</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="n">rhs</span><span class="p">,</span><span class="w"> </span><span class="n">EltwiseMode</span><span class="w"> </span><span class="n">op_mode</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">29</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">EltwiseNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">30</span><span class="w">             </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">op_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op_mode</span><span class="p">;</span>
+<span class="linenos">31</span><span class="w">             </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="linenos">32</span><span class="w">             </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="linenos">33</span><span class="w">             </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="linenos">34</span><span class="w">             </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">setInputs</span><span class="p">({</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">rhs</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">35</span><span class="w">         </span><span class="p">};</span>
+<span class="linenos">36</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="w">     </span><span class="c1">// 注册算子，可以选择添加类型推断，也可以不添加</span>
+<span class="linenos">39</span><span class="w">     </span><span class="c1">// 如果不添加，向网络中添加该算子前需要自己给出输出数据类型</span>
+<span class="linenos">40</span><span class="w">     </span><span class="n">ICRAFT_REGISTER_OP_NODE</span><span class="p">(</span><span class="n">EltwiseNode</span><span class="p">)</span>
+<span class="linenos">41</span><span class="w">     </span><span class="p">.</span><span class="n">set_tinfer</span><span class="o">&lt;</span><span class="n">EltwiseNode</span><span class="p">,</span><span class="w"> </span><span class="n">HostTarget</span><span class="o">&gt;</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">42</span><span class="w">         </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">validate</span><span class="p">();</span>
+<span class="linenos">43</span><span class="w">         </span><span class="c1">// 该算子输出的类型和输入相同</span>
+<span class="linenos">44</span><span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="n">Array</span><span class="o">&lt;</span><span class="n">TensorType</span><span class="o">&gt;</span><span class="p">{</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">45</span><span class="w">     </span><span class="p">});</span>
+<span class="linenos">46</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>从上例可以看出，在XIR中，添加一个 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子需要定义 <code class="docutils literal notranslate"><span class="pre">EltwiseNode</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 两个类：</p>
+<ul class="simple">
+<li><p>其中 <code class="docutils literal notranslate"><span class="pre">EltwiseNode</span></code> 类型派生自 <code class="docutils literal notranslate"><span class="pre">OpNodeBase</span></code> , 表示该算子的容器类，即算子的属性真实存储在该类型中。用户需要在该类型中定义该算子的所有属性，属性的类型只可以为C++的POD类型，以及XIR中的ObjectRef类型及其子类；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 类型派生自 <code class="docutils literal notranslate"><span class="pre">OpBase</span></code> , 表示该算子的引用类，该类型实现了基于引用计数的内存管理，相当于算子的智能指针。</p></li>
+</ul>
+<p>类型定义完成后，接着调用 <code class="docutils literal notranslate"><span class="pre">ICRAFT_REGISTER_OP_NODE</span></code> 宏来注册算子，该宏可以为被注册的算子添加一些反射机制，方便序列化等功能的实现。</p>
+<p>在注册算子时，还可以调用 <code class="docutils literal notranslate"><span class="pre">set_tinfer</span></code> 方法为该算子添加类型推断，这样在构造算子时，只需要给定算子的输入(类型)，即可获取算子的输出(类型)。</p>
+<p>用户注册自定义算子和Icraft XIR中注册内置的算子的方式是完全一致的，因此关于算子注册的详细信息，请参考《Icraft XIR 用户手册》的”算子”部分。</p>
+</section>
+<section id="id6">
+<h3>3.2 添加算子<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h3>
+<p>算子注册完成后，需要添加到网络中去。根据不同的使用场景，自定义算子可以以不同的方式添加到网络：</p>
+<ul class="simple">
+<li><p><strong>Icraft的解析组件无法完成对框架模型的解析，因为框架模型上的算子及算子组合（模式）无法映射到Icraft的内置算子。此时用户可以通过解析组件的自定义接口，将框架上的算子及组合解析到自定义算子上。</strong></p></li>
+<li><p><strong>Icraft的解析组件能够将框架模型解析到Icraft的内置算子，但是某些内置算子及组合的实现无法满足性能指标。此时用户可以实现一些Pass，将内置算子及组合替换为自定义算子，并将这些Pass添加到优化组件的Pass调用列表。</strong></p></li>
+</ul>
+<p>下面分别描述两种添加自定义算子到网络的方式：</p>
+<section id="id7">
+<h4>3.2.1 解析<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h4>
+<p>解析组件提供了自定义接口，允许用户自己实现框架上某些算子序列（模式）到自定义算子的映射。</p>
+<p>下面以 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子为例，描述如何通过解析组件的自定义接口将算子添加到网络：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">auto</span><span class="w"> </span><span class="n">parse_function</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">torch</span><span class="o">::</span><span class="n">jit</span><span class="o">::</span><span class="n">Module</span><span class="o">&amp;</span><span class="w"> </span><span class="k">module</span><span class="p">,</span>
+<span class="linenos"> 2</span><span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">torch</span><span class="o">::</span><span class="n">jit</span><span class="o">::</span><span class="n">Node</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">node_pattern</span><span class="p">,</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="n">icraft</span><span class="o">::</span><span class="n">parser</span><span class="o">::</span><span class="n">Params</span><span class="o">&amp;</span><span class="w"> </span><span class="n">net_params</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Value</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">value_map</span><span class="p">,</span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">any</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">const_map</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">outftmp_index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="c1">// 从node_pattern和value_map中获取算子输入的相关信息</span>
+<span class="linenos"> 6</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">add_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node_pattern</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos"> 7</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add_node</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">();</span>
+<span class="linenos"> 8</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">input1_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">debugName</span><span class="p">();</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">input1_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">any_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">net_params</span><span class="p">[</span><span class="n">input1_name</span><span class="p">]);</span>
+<span class="linenos">10</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">input1_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value_map</span><span class="p">[</span><span class="n">input1_id</span><span class="p">];</span>
+<span class="linenos">11</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">input2_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">debugName</span><span class="p">();</span>
+<span class="linenos">12</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">input2_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">any_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">net_params</span><span class="p">[</span><span class="n">input2_name</span><span class="p">]);</span>
+<span class="linenos">13</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">input2_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value_map</span><span class="p">[</span><span class="n">input2_id</span><span class="p">];</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="w">     </span><span class="c1">// 构造自定义算子Eltwise</span>
+<span class="linenos">16</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="p">(</span><span class="n">input1_value</span><span class="p">,</span><span class="w"> </span><span class="n">input2_value</span><span class="p">,</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">EltwiseMode</span><span class="o">::</span><span class="n">Add</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">icraft</span><span class="o">::</span><span class="n">xir</span><span class="o">::</span><span class="n">Operation</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">18</span><span class="w">     </span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">eltwise</span><span class="p">);</span>
+<span class="linenos">19</span><span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="n">ops</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos">21</span><span class="w"> </span><span class="c1">//注册解析函数</span>
+<span class="linenos">22</span><span class="w"> </span><span class="n">ICRAFT_ADD_PATTERN_TO_PARSER</span><span class="p">(</span><span class="s">&quot;aten::add&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eltwise&quot;</span><span class="p">).</span><span class="n">set_parse</span><span class="p">(</span><span class="n">parse_function</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>关于解析自定义的详细流程，请参考《Icraft 解析使用手册》。</p>
+</section>
+<section id="id8">
+<h4>3.2.2 优化<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h4>
+<p>Icraft中，优化主要负责对网络结构进行一系列转换，使得网络能够在目标平台上更加高效的运行。在转换中，算子可能会被添加、更改、删除和替换。</p>
+<p>用户可以在优化阶段向网络中插入自定义算子，或者将网络中的一些算子替换成自定义算子。下面的示例展示了如何实现一个Pass，将网络中的Add算子替换为Eltwise。</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="c1">// 示例Pass，将Add替换为Eltwise</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Pass</span><span class="w"> </span><span class="nf">ReplaceAddWitdhEltwise</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">pass_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">Network</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">PassContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">pass_ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">         </span><span class="c1">// 创建模式，匹配Op</span>
+<span class="linenos"> 5</span><span class="w">         </span><span class="k">auto</span><span class="w"> </span><span class="n">add_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IsOp</span><span class="o">&lt;</span><span class="n">Add</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">         </span><span class="c1">// 重写网络，将匹配到的Add替换为Eltwise</span>
+<span class="linenos"> 8</span><span class="w">         </span><span class="n">network</span><span class="p">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">add_p</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">Network</span><span class="o">&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">MatchGroup</span><span class="o">&amp;</span><span class="w"> </span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">             </span><span class="c1">// 获取匹配到的Op</span>
+<span class="linenos">10</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">add_p</span><span class="p">);</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="w">             </span><span class="c1">// 获取add算子的两个输入</span>
+<span class="linenos">13</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">14</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">rhs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="w">             </span><span class="c1">// 创建Eltwise算子</span>
+<span class="linenos">17</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">rhs</span><span class="p">,</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">EltwiseMode</span><span class="o">::</span><span class="n">Add</span><span class="p">);</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">             </span><span class="c1">// 替换算子</span>
+<span class="linenos">20</span><span class="w">             </span><span class="n">network</span><span class="p">.</span><span class="n">replaceOpKeepUses</span><span class="p">(</span><span class="n">add</span><span class="p">,</span><span class="w"> </span><span class="n">eltwise</span><span class="p">);</span>
+<span class="linenos">21</span><span class="w">             </span><span class="p">});</span>
+<span class="linenos">22</span><span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="n">network</span><span class="p">;</span>
+<span class="linenos">23</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">NetworkPass</span><span class="p">(</span><span class="n">pass_func</span><span class="p">,</span><span class="w"> </span><span class="n">PassInfo</span><span class="p">(</span><span class="s">&quot;whatever.ReplaceAddWitdhEltwise&quot;</span><span class="p">));</span>
+<span class="linenos">26</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">27</span><span class="w"> </span><span class="c1">// 注册Pass</span>
+<span class="linenos">28</span><span class="w"> </span><span class="n">ICRAFT_REGISTER_PASS</span><span class="p">(</span><span class="s">&quot;whatever.ReplaceReluWitdhFlatten&quot;</span><span class="p">).</span><span class="n">set_creator</span><span class="p">(</span><span class="n">ReplaceAddWitdhEltwise</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>关于更详细的如何通过模式匹配来实现Pass，请参考《Icraft XIR 用户手册》。
+关于如何在优化组件中调用该Pass，请参考《Icraft 优化用户手册》。</p>
+</section>
+<section id="id9">
+<h4>3.2.3 实现前向<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h4>
+<p>智能计算平台中的硬件平台是FPAI的架构，其包含CPU、GPU、NPU和PL等计算资源。不同的计算资源对应着不同的后端。如果自定义算子想要利用某个计算资源完成前向，那么需要向相应的后端注册前向函数。</p>
+<p>目前，Icraft中主要有 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 两个后端：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 对应着CPU和GPU等计算资源，支持所有的内置算子；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 对应着NPU和PL等计算资源， 只支持 <code class="docutils literal notranslate"><span class="pre">HardOp</span></code> 和  <code class="docutils literal notranslate"><span class="pre">Cast</span></code> 等利用NPU完成前向的算子。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">HardOp</span></code> 和  <code class="docutils literal notranslate"><span class="pre">Cast</span></code> 也有 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 上的前向实现，但那是利用CPU来对NPU上的指令序列进行仿真。</p>
+<p>一般情况下，即使自定义算子最终要在NPU或者PL完成前向，仍然建议注册 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 上的前向，该前向可以利用CPU模拟在NPU或者PL上的前向实现，以方便仿真。</p>
+</div>
+<p>以下示例展示了如何给 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子注册 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 上的前向实现：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="c1">// 算子在目标后端上的初始化操作</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise_init</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="c1">// 算子在目标后端上的前向操作</span>
+<span class="linenos"> 7</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise_forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">     </span><span class="c1">// 返回表示前向结果的Tensor列表</span>
+<span class="linenos">12</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">output_tensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">...;</span>
+<span class="linenos">13</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">output_tensors</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="w"> </span><span class="c1">// 注册初始化函数和前向函数到后端</span>
+<span class="linenos">17</span><span class="w"> </span><span class="n">ICRAFT_ADD_OP_TO_BACKEND</span><span class="p">(</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="p">)</span>
+<span class="linenos">18</span><span class="w">                     </span><span class="p">.</span><span class="n">set_init</span><span class="p">(</span><span class="n">eltwise_init</span><span class="p">)</span>
+<span class="linenos">19</span><span class="w">                     </span><span class="p">.</span><span class="n">set_forward</span><span class="p">(</span><span class="n">eltwise_forward</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>如何给 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子注册 <code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 上的前向实现，请参考下文《自定义硬算子》。</p>
+</section>
+</section>
+</section>
+<section id="id10">
+<h2>四 软算子和硬算子<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h2>
+<p>一般情况下，我们称 <strong>只在CPU或GPU等计算资源上完成前向的算子称为软算子</strong>，而 <strong>需要利用NPU或PL等计算资源来完成前向的算子称为硬算子</strong>。软算子只需要在 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 上注册前向函数，而硬算子需要在 <code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 上注册前向函数，同时还需要在 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code> 注册前向函数以完成仿真。</p>
+<section id="id11">
+<h3>4.1 自定义软算子<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
+<p>自定义软算子的流程完全如第三节《自定义算子》的描述：</p>
+<ol class="arabic simple">
+<li><p>先根据需求注册算子</p></li>
+<li><p>根据场景选择在解析或优化时将自定义算子添加到网络</p></li>
+<li><p>将算子在CPU或GPU上的前向注册到 <code class="docutils literal notranslate"><span class="pre">HostBackend</span></code></p></li>
+</ol>
+</section>
+<section id="id12">
+<h3>4.2 自定义硬算子<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h3>
+<p>Icraft允许用户利用PL的资源来完成自定义算子的前向以优化计算性能，此时的自定义算子称为自定义硬算子。当用户认为 <strong>仅使用CPU或GPU计算资源实现自定义算子的前向难以满足性能等技术指标时，可以利用PL的资源针对该算子设计专用的电路来加速计算过程</strong>，从而获得理想的性能。</p>
+<section id="id13">
+<h4>4.2.1 系统架构<a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h4>
+<img alt="../_images/fpai.png" src="../_images/fpai.png" />
+<p>FPAI的系统架构如上图所示，其中GP和HP是处理器系统和PL系统交互的接口。GP口是处理器系统中总线的从设备接口，CPU可以通过GP口读写PL上的电路模块；HP口是访问PSDDR控制器的从设备接口，PL上的电路模块可以作为主设备通过该接口访问PS上的DDR；同时，PL上的电路模块也可以访问PLDDR。</p>
+<p>自定义硬算子的本质是在PL上实现一个专用的电路模块来加速算子前向，该模块可以通过GP口将一些控制寄存器挂载到处理器系统的总线上，从而可以通过CPU来访问控制；如有需要，该模块还可以通过HP口读写PSDDR，实现与处理器系统的数据交互；同时，该模块还可以访问PLDDR，实现与NPU的数据交互。</p>
+<p>实际上，处理器系统对NPU的控制也是通过GP口来实现的。因此在GP1和GP2的地址空间中，已经有一部分被占用了。目前的占用情况如下：</p>
+<p><strong>GP0:</strong>
+GP0接口的地址空间范围为 <code class="docutils literal notranslate"><span class="pre">0x4000_0000</span> <span class="pre">~</span> <span class="pre">0x7FFF_FFFF</span></code>，当前已经占用的范围如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>分支</p></th>
+<th class="head"><p>基地址</p></th>
+<th class="head"><p>用途</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>host_ctrl_upper</p></td>
+<td><p>0x4000_0000</p></td>
+<td><p>调整NPU工作时钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>host_ctrl_lower</p></td>
+<td><p>0x4002_0000</p></td>
+<td><p>NPU软核的一些状态寄存器</p></td>
+</tr>
+<tr class="row-even"><td><p>ai_ra</p></td>
+<td><p>0x4004_0000</p></td>
+<td><p>NPU硬核的一些状态寄存器</p></td>
+</tr>
+</tbody>
+</table>
+<p>自定义算子可以使用 <code class="docutils literal notranslate"><span class="pre">0x4008_0000</span> <span class="pre">~</span> <span class="pre">0x7FFF_FFFF</span></code> 范围的地址空间。</p>
+<p><strong>GP1:</strong>
+GP1接口的地址空间范围为 <code class="docutils literal notranslate"><span class="pre">0x8000_0000</span> <span class="pre">~</span> <span class="pre">0xBFFF_FFFF</span></code>，当前已经占用的范围如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>分支</p></th>
+<th class="head"><p>基地址</p></th>
+<th class="head"><p>用途</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cdma_ctrl</p></td>
+<td><p>0x8000_0000</p></td>
+<td><p>CDMA相关寄存器</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_make</p></td>
+<td><p>0x8000_0400</p></td>
+<td><p>ImageMake相关寄存器</p></td>
+</tr>
+<tr class="row-even"><td><p>icore_post</p></td>
+<td><p>0x8000_0800</p></td>
+<td><p>IcorePostx相关寄存器</p></td>
+</tr>
+<tr class="row-odd"><td><p>cache</p></td>
+<td><p>0x8000_0C00</p></td>
+<td><p>Cache相关寄存器</p></td>
+</tr>
+</tbody>
+</table>
+<p>自定义算子可以使用 <code class="docutils literal notranslate"><span class="pre">0x800C_0000</span> <span class="pre">~</span> <span class="pre">0xBFFF_FFFF</span></code> 范围的地址空间。</p>
+<aside class="sidebar">
+<p class="sidebar-title">GP口地址空间占用示意</p>
+<img alt="../_images/gp_space.png" src="../_images/gp_space.png" />
+</aside>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>NPU和DMA在GP0和GP1上挂载的地址不是绝对的，但是占用的空间是确定的。</p>
+<p>如右图所示，用户在设计硬件系统时可以将NPU和CDMA分别挂载到GP0或GP1的任意位置，NPU占用从起始位置开始的512KB的地址空间，CDMA以及其他模块占用起始位置开始的768K的地址空间。</p>
+</div>
+</section>
+<section id="id14">
+<h4>4.2.2 硬件流程<a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h4>
+<p>请参考《自定义硬算子FPGA设计流程》。</p>
+</section>
+<section id="id15">
+<h4>4.2.3 软件流程<a class="headerlink" href="#id15" title="此标题的永久链接">#</a></h4>
+<p>自定义硬算子的软件流程包含上文中自定义算子的流程，除此之外，自定义硬算子要根据加速模块的硬件实现来完成量化、排布和 <code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 上的前向接口。</p>
+<section id="id16">
+<h5>1. 量化<a class="headerlink" href="#id16" title="此标题的永久链接">#</a></h5>
+<p>量化组件在对网络进行量化时会遍历每一个算子，求取该算子的输入输出以及参数的量化缩放因子等量化参数。</p>
+<p><strong>如果在量化时，网络中包含自定义算子，即自定义算子要参与网络的量化，那么需要为该自定义算子实现量化接口。</strong></p>
+<p>量化组件提供了 <code class="docutils literal notranslate"><span class="pre">BuyiNormratio</span></code> , <code class="docutils literal notranslate"><span class="pre">BuyiNormalize</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BuyiQuantize</span></code> 三个接口来完成算子的量化过程。我们仍以 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子为例，为其实现量化接口如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="c1">// 实现接口BuyiNormratio，确定该算子输入输出的归一化系数</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BuyiNormratio</span><span class="p">)</span><span class="o">&lt;</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">qt</span><span class="o">::</span><span class="n">QuantizerLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">){</span>
+<span class="linenos"> 4</span><span class="w">         </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="p">});</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w"> </span><span class="c1">// 实现接口BuyiNormalize，对该算子的参数进行归一化</span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BuyiNormalize</span><span class="p">)</span><span class="o">&lt;</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">qt</span><span class="o">::</span><span class="n">QuantizerLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">){</span>
+<span class="linenos">10</span><span class="w">         </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">11</span><span class="w">     </span><span class="p">});</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="w"> </span><span class="c1">// 实现接口BuyiQuantize，对该算子的参数进行量化</span>
+<span class="linenos">14</span><span class="w"> </span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BuyiQuantize</span><span class="p">)</span><span class="o">&lt;</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="linenos">15</span><span class="w">     </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">qt</span><span class="o">::</span><span class="n">QuantizerLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">){</span>
+<span class="linenos">16</span><span class="w">         </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">17</span><span class="w">     </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>如何具体地实现以上三个接口，请参考《Icraft量化用户手册》。</p>
+</section>
+<section id="id17">
+<h5>2. 排布<a class="headerlink" href="#id17" title="此标题的永久链接">#</a></h5>
+<p>在智能计算平台中，不同的NPU对数据的排布方式都有特定的要求。因此， <strong>当自定义算子的输入为NPU的输出或自定义算子的输出给NPU作为输入时，需要格外注意数据排布的匹配</strong>。</p>
+<ul class="simple">
+<li><p>当自定义算子的输入为NPU的输出时，由于NPU的输出以特定的格式排布，因此实现自定义算子的前向时需要针对该排布格式进行设计。</p></li>
+<li><p>当自定义算子的输出给NPU作为输入时，在实现自定算子的前向时，要将结果以NPU需要的格式进行保存。除此之外，还需要将算子输出的 <code class="docutils literal notranslate"><span class="pre">TensorType</span></code> 的描述，比如 <code class="docutils literal notranslate"><span class="pre">shape</span></code> 和 <code class="docutils literal notranslate"><span class="pre">layout</span></code> 等，设置成和其排布相匹配的值。</p></li>
+</ul>
+<p>针对布衣架构，Icraft适配组件中提供了 <code class="docutils literal notranslate"><span class="pre">ByLayout</span></code> 接口来更改算子输出的描述。以 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子为例，实现该接口的方式如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BYLayout</span><span class="p">)</span><span class="o">&lt;</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&gt;</span><span class="w"> </span><span class="p">([](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">     </span><span class="c1">// 将Op转换为Eltwise</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="c1">// 获取其输出TensorType</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">ofm_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eltwise</span><span class="o">-&gt;</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">();</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">     </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="c1">// 设置合适的shape和layout</span>
+<span class="linenos">10</span><span class="w">     </span><span class="n">ofm_dtype</span><span class="p">.</span><span class="n">setShape</span><span class="p">(...);</span>
+<span class="linenos">11</span><span class="w">     </span><span class="n">ofm_dtype</span><span class="p">.</span><span class="n">setLayout</span><span class="p">(...);</span>
+<span class="linenos">12</span><span class="w">     </span><span class="n">ops</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">eltwise</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">ops</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w">     </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>关于布衣架构的NPU的数据排布要求，请参考:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</div>
+</section>
+<section id="id18">
+<h5>3. 前向<a class="headerlink" href="#id18" title="此标题的永久链接">#</a></h5>
+<p>自定义硬算子需要把算子利用PL上的加速模块的前向过程注册到 <code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 上，这是因为硬算子需要 <code class="docutils literal notranslate"><span class="pre">BuyiDevice</span></code> 来读写加速模块的寄存器，控制加速模块完成算子前向。</p>
+<p>以下示例展示了如何给 <code class="docutils literal notranslate"><span class="pre">Eltwise</span></code> 算子注册 <code class="docutils literal notranslate"><span class="pre">BuyiBackend</span></code> 上的前向实现：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="c1">// 算子在目标后端上的初始化操作</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise_init</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="c1">// 获取BuyiBackend绑定的BuyiDevice</span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backend</span><span class="o">-&gt;</span><span class="n">device</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiDevice</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">     </span><span class="c1">// 利用BuyiDevice配置一些初始化寄存器</span>
+<span class="linenos"> 7</span><span class="w">     </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">writeReg</span><span class="p">(</span><span class="mh">0x800C</span><span class="n">_0000</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="c1">// 可能还有一些其他初始化操作</span>
+<span class="linenos">10</span><span class="w">     </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">11</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="w"> </span><span class="c1">// 算子在目标后端上的前向操作</span>
+<span class="linenos">14</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">eltwise_forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">15</span><span class="w">     </span><span class="c1">// 获取两个输入Tensor</span>
+<span class="linenos">16</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">17</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">rhs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">     </span><span class="c1">// 获取算子的操作模式</span>
+<span class="linenos">20</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">op_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">op_mode</span><span class="p">;</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="w">     </span><span class="c1">// 获取两个输入的起始地址</span>
+<span class="linenos">23</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">lhs_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lhs</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">addr</span><span class="p">();</span>
+<span class="linenos">24</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">rhs_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rhs</span><span class="p">.</span><span class="n">data</span><span class="p">().</span><span class="n">addr</span><span class="p">();</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="w">     </span><span class="c1">// 获取输出地址和大小</span>
+<span class="linenos">27</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">28</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">output_dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output</span><span class="p">.</span><span class="n">tensorType</span><span class="p">();</span>
+<span class="linenos">29</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">output_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">mtype</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">ExternalMem</span><span class="o">&gt;</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">;</span>
+<span class="linenos">30</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">output_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_dtype</span><span class="p">.</span><span class="n">bytes</span><span class="p">();</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="w">     </span><span class="c1">// 配置操作模式寄存器，假设0代表Add, 1代表Sub</span>
+<span class="linenos">33</span><span class="w">     </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">writeReg</span><span class="p">(</span><span class="mh">0x800C0004</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">op_mode</span><span class="p">));</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span><span class="w">     </span><span class="c1">// 配置两个输入地址</span>
+<span class="linenos">36</span><span class="w">     </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">writeReg</span><span class="p">(</span><span class="mh">0x800C0008</span><span class="p">,</span><span class="w"> </span><span class="n">lhs_addr</span><span class="p">);</span>
+<span class="linenos">37</span><span class="w">     </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">writeReg</span><span class="p">(</span><span class="mh">0x800C000C</span><span class="p">,</span><span class="w"> </span><span class="n">hs_addr</span><span class="p">);</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="w">     </span><span class="c1">// 配置输出地址</span>
+<span class="linenos">40</span><span class="w">     </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">writeReg</span><span class="p">(</span><span class="mh">0x800C0010</span><span class="p">,</span><span class="w"> </span><span class="n">output_addr</span><span class="p">);</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="w">     </span><span class="c1">// 启动计算</span>
+<span class="linenos">43</span><span class="w">     </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">writeReg</span><span class="p">(</span><span class="mh">0x800C0014</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="w">     </span><span class="c1">// 不断查询状态寄存器，确认是否完成计算</span>
+<span class="linenos">46</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utils</span><span class="o">::</span><span class="n">WaitUntil</span><span class="p">([](){</span><span class="k">return</span><span class="w"> </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">readReg</span><span class="p">(</span><span class="mh">0x800C0018</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">;},</span><span class="w"> </span><span class="mi">1000</span><span class="n">ms</span><span class="p">);</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="w">     </span><span class="c1">// 如果在1000ms内完成计算，则构造输出Tensor返回，否则抛出异常</span>
+<span class="linenos">49</span><span class="w">     </span><span class="k">if</span><span class="p">(</span><span class="n">done</span><span class="p">){</span>
+<span class="linenos">50</span><span class="w">         </span><span class="k">auto</span><span class="w"> </span><span class="n">mem_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device</span><span class="p">.</span><span class="n">defaultMemRegion</span><span class="p">().</span><span class="n">malloc</span><span class="p">(</span><span class="n">MemPtr</span><span class="p">(</span><span class="n">output_addr</span><span class="p">),</span><span class="w"> </span><span class="n">output_bytes</span><span class="p">);</span>
+<span class="linenos">51</span><span class="w">         </span><span class="k">auto</span><span class="w"> </span><span class="n">ouput_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">output_dtype</span><span class="p">,</span><span class="w"> </span><span class="n">mem_chunk</span><span class="p">);</span>
+<span class="linenos">52</span><span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">ouput_tensor</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">53</span><span class="w">     </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="p">{</span>
+<span class="linenos">54</span><span class="w">         </span><span class="k">throw</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">55</span><span class="w">     </span><span class="p">}</span>
+<span class="linenos">56</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">57</span>
+<span class="linenos">58</span><span class="w"> </span><span class="c1">// 注册初始化函数和前向函数到后端</span>
+<span class="linenos">59</span><span class="w"> </span><span class="n">ICRAFT_ADD_OP_TO_BACKEND</span><span class="p">(</span><span class="n">whatever</span><span class="o">::</span><span class="n">Eltwise</span><span class="p">,</span><span class="w"> </span><span class="n">BuyiBackend</span><span class="p">)</span>
+<span class="linenos">60</span><span class="w">                     </span><span class="p">.</span><span class="n">set_init</span><span class="p">(</span><span class="n">eltwise_init</span><span class="p">)</span>
+<span class="linenos">61</span><span class="w">                     </span><span class="p">.</span><span class="n">set_forward</span><span class="p">(</span><span class="n">eltwise_forward</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>关于 <code class="docutils literal notranslate"><span class="pre">BuyiDevice</span></code> 的详细用法，请参考《Icraft XRT使用手册》。</p>
+</section>
+</section>
+</section>
+</section>
+<section id="id19">
+<h2>四 自定义激活<a class="headerlink" href="#id19" title="此标题的永久链接">#</a></h2>
+<p>在Icraft中， <strong>如果一个算子只有一个输入和输出，而且输入和输出张量的元素是一一映射的关系，我们称这个算子为激活算子</strong>，如Sigmoid、Tanh等算子。</p>
+<p>在NPU中，激活算子可以使用查找表来实现，查找表会在指令生成中生成。如果 <strong>用户的自定义算子是一个激活算子，也可以选择使用NPU中的查找表来实现前向，该过程称为自定义激活</strong>。</p>
+<p>自定义激活的流程和自定义软算子完全相同，只不过需要在定义算子时添加 <code class="docutils literal notranslate"><span class="pre">IsActivate</span></code> 的特质。</p>
+<p>假设用户想自定义一个激活算子，名为 <code class="docutils literal notranslate"><span class="pre">CustomActivate</span></code> ，其注册的方式如下：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w"> </span><span class="c1">// 可以给一个自己喜欢的命名空间</span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">whatever</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="c1">// 注意在OpNodeBase的模板参数中添加 IsActivate 的特质</span>
+<span class="hll"><span class="linenos"> 6</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">CustomActivateNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpNodeBase</span><span class="o">&lt;</span><span class="n">CustomActivateNode</span><span class="p">,</span><span class="w"> </span><span class="n">IsActivate</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span class="linenos"> 7</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="k">class</span><span class="w"> </span><span class="nc">CustomActivate</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OpBase</span><span class="o">&lt;</span><span class="n">CustomActivate</span><span class="p">,</span><span class="w"> </span><span class="n">CustomActivateNode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">     </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">11</span><span class="w">         </span><span class="n">CustomActivate</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="w">         </span><span class="c1">// 构造函数</span>
+<span class="linenos">14</span><span class="w">         </span><span class="n">CustomActivate</span><span class="p">(</span><span class="n">Value</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">15</span><span class="w">             </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_object</span><span class="o">&lt;</span><span class="n">CustomActivateNode</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">16</span><span class="w">             </span><span class="n">data_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">             </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">addInput</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="linenos">18</span><span class="w">         </span><span class="p">};</span>
+<span class="linenos">19</span><span class="w">     </span><span class="p">};</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="w">     </span><span class="c1">// 注册算子，可以选择添加类型推断，也可以不添加</span>
+<span class="linenos">22</span><span class="w">     </span><span class="c1">// 如果不添加，向网络中添加该算子前需要自己给出输出数据类型</span>
+<span class="linenos">23</span><span class="w">     </span><span class="n">ICRAFT_REGISTER_OP_NODE</span><span class="p">(</span><span class="n">CustomActivateNode</span><span class="p">)</span>
+<span class="linenos">24</span><span class="w">     </span><span class="p">.</span><span class="n">set_tinfer</span><span class="o">&lt;</span><span class="n">CustomActivateNode</span><span class="p">,</span><span class="w"> </span><span class="n">HostTarget</span><span class="o">&gt;</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">25</span><span class="w">         </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">validate</span><span class="p">();</span>
+<span class="linenos">26</span><span class="w">         </span><span class="c1">// 该算子输出的类型和输入相同</span>
+<span class="linenos">27</span><span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="n">Array</span><span class="o">&lt;</span><span class="n">TensorType</span><span class="o">&gt;</span><span class="p">{</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tensorType</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="linenos">28</span><span class="w">     </span><span class="p">});</span>
+<span class="linenos">29</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../components/overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Icraft 组件总览</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="others/layout.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">布衣架构排布说明</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 算子的意义</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 算子的编译和运行</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">三 自定义算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1 注册算子</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2 添加算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2.1 解析</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.2.2 优化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.2.3 实现前向</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">四 软算子和硬算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.1 自定义软算子</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.2 自定义硬算子</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.2.1 系统架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.2.2 硬件流程</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">4.2.3 软件流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1. 量化</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2. 排布</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">3. 前向</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">四 自定义激活</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 24-12-23 14:12.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

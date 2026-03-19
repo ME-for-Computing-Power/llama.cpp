@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>命令行参数 &#8212; Icraft 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'interface/cli_arguments';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'http://192.168.124.133/icraft/latest/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="API Reference" href="apis.html" />
+    <link rel="prev" title="运行" href="../start/running.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="24-12-23 14:12"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft 文档</p>
+  
+</a>
+        </div>
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+    v3.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft 文档</p>
+  
+</a>
+    </div>
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+    v3.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">快速开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/compilation.html">编译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/running.html">运行</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">用户接口</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">命令行参数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">API Reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">算子支持</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../ops/op_support.html">框架支持列表</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">组件指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../components/overview.html">Icraft 组件总览</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">扩展机制</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../extensibility/customop.html">自定义算子</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../extensibility/others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">程序示例</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sample/demo.html">Icraft Demo</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">故障排除</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../troubles/trouble_shotting.html">故障排查</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">版本缺陷</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../defects/version_defects.html">版本缺陷</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/interface/cli_arguments.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>命令行参数</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 调用方法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 参数配置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">三 参数列表</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>命令行参数<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<section id="id2">
+<h2>一 调用方法<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Icraft提供了CLI命令 <code class="docutils literal notranslate"><span class="pre">icraft</span></code> 来支持用户完成 <strong>解析</strong>、 <strong>优化</strong> 、 <strong>量化</strong> 、 <strong>适配</strong> 、 <strong>指令生成</strong> 以及 <strong>运行</strong> 等过程。其调用方法如下：</p>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Icraft CLI 命令格式</div>
+<p class="sd-card-text">icraft &lt;command&gt; [&lt;config file&gt;] <em>[–&lt;key&gt; &lt;value&gt;]…</em></p>
+</div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">command</span></code> 表示要执行的功能命令，当前支持的命令如下：</p>
+<p>例如，指令生成的命令行调用方法为 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">generate</span> <span class="pre">[&lt;config</span> <span class="pre">file&gt;]</span> <span class="pre">[--&lt;key&gt;</span> <span class="pre">&lt;value&gt;]...</span></code></p>
+</section>
+<section id="id3">
+<h2>二 参数配置<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>CLI命令 <code class="docutils literal notranslate"><span class="pre">icraft</span></code> 的参数可以在配置文件中指定，也可以通过命令行参数 <code class="docutils literal notranslate"><span class="pre">--&lt;key&gt;</span> <span class="pre">&lt;value&gt;</span></code> 的方式指定。</p>
+<p>CLI命令 <code class="docutils literal notranslate"><span class="pre">icraft</span></code> 的配置文件为 <code class="docutils literal notranslate"><span class="pre">toml</span></code> 格式。以 <code class="docutils literal notranslate"><span class="pre">yolov5s</span></code> 的编译配置为例，其配置文件内容如下：</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.72 3.22a.75.75 0 011.06 1.06L2.06 8l3.72 3.72a.75.75 0 11-1.06 1.06L.47 8.53a.75.75 0 010-1.06l4.25-4.25zm6.56 0a.75.75 0 10-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 101.06 1.06l4.25-4.25a.75.75 0 000-1.06l-4.25-4.25z"></path></svg></span>yolov5s.toml<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">[parse]</span>
+<span class="linenos"> 2</span><span class="n">net_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;yolov5s&quot;</span>
+<span class="linenos"> 3</span><span class="n">framework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytorch&quot;</span>
+<span class="linenos"> 4</span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span><span class="w"> </span><span class="mi">960</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="linenos"> 5</span><span class="n">inputs_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;NHWC&quot;</span>
+<span class="linenos"> 6</span><span class="n">pre_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nop&quot;</span>
+<span class="linenos"> 7</span><span class="n">pre_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mf">255.0</span><span class="p">,</span><span class="w"> </span><span class="mf">255.0</span><span class="p">,</span><span class="w"> </span><span class="mf">255.0</span><span class="p">]</span>
+<span class="linenos"> 8</span><span class="n">pre_mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="linenos"> 9</span><span class="n">channel_swap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">10</span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./models/YoloV5/yolov5s-v2.0-(512x960).pt&quot;</span>
+<span class="linenos">11</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">12</span><span class="n">frame_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.6&quot;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="k">[optimize]</span>
+<span class="linenos">15</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BUYI&quot;</span>
+<span class="linenos">16</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_parsed.json&quot;</span>
+<span class="linenos">17</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_parsed.raw&quot;</span>
+<span class="linenos">18</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="k">[quantize]</span>
+<span class="linenos">21</span><span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="linenos">22</span><span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;kld&quot;</span>
+<span class="linenos">23</span><span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./images/datasets/yolov5s&quot;</span>
+<span class="linenos">24</span><span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./images/pic_lists/pic_list_yolov5s.txt&quot;</span>
+<span class="linenos">25</span><span class="n">names_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./names/coco.names&quot;</span>
+<span class="linenos">26</span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="linenos">27</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_optimized.json&quot;</span>
+<span class="linenos">28</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_optimized.raw&quot;</span>
+<span class="linenos">29</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">30</span><span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="linenos">31</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="k">[adapt]</span>
+<span class="linenos">34</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BUYI&quot;</span>
+<span class="linenos">35</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_quantized.json&quot;</span>
+<span class="linenos">36</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_quantized.raw&quot;</span>
+<span class="linenos">37</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="k">[generate]</span>
+<span class="linenos">40</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_adapted.json&quot;</span>
+<span class="linenos">41</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/yolov5s_adapted.raw&quot;</span>
+<span class="linenos">42</span><span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span>
+<span class="linenos">43</span><span class="n">log_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./logs/&quot;</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="k">[run]</span>
+<span class="linenos">46</span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;json&amp;raw/yolov5s_BY.json&quot;</span>
+<span class="linenos">47</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;json&amp;raw/yolov5s_BY.raw&quot;</span>
+<span class="linenos">48</span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./images/test/test_640x640.jpg&quot;</span>
+<span class="linenos">49</span><span class="n">backends</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;BY,socket://ql100aiu@192.168.125.148:9981;Host&quot;</span>
+<span class="linenos">50</span><span class="n">dump_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;HQB&quot;</span>
+<span class="linenos">51</span><span class="n">log_io</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</pre></div>
+</div>
+</div>
+</details><p>如上所示， 在toml文件中，方括号括起来的部分，比如 <code class="docutils literal notranslate"><span class="pre">[parse]</span></code> 和 <code class="docutils literal notranslate"><span class="pre">[generate]</span></code> 等表示一个小节， icraft使用一个小节来配置一个命令。小节的名称，即 <code class="docutils literal notranslate"><span class="pre">parse</span></code> 和 <code class="docutils literal notranslate"><span class="pre">generate</span></code> 等表示被配置的命令，小节中使用 <code class="docutils literal notranslate"><span class="pre">=</span></code> 表达的键值对表示该命令的参数的键和值。例如，当执行 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">parse</span> <span class="pre">yolov5s.toml</span></code> 时， <code class="docutils literal notranslate"><span class="pre">icraft</span></code> 会使用 <code class="docutils literal notranslate"><span class="pre">[parse]</span></code> 这一小节的键值对来配置 <code class="docutils literal notranslate"><span class="pre">parse</span></code> 命令。</p>
+<p>除了使用配置文件外，CLI命令 <code class="docutils literal notranslate"><span class="pre">icraft</span></code> 还支持直接使用命令行来指定参数，比如上文中的 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">parse</span> <span class="pre">yolov5s.toml</span></code> ，等价于以下命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>icraft<span class="w"> </span>parse<span class="w">                                        </span><span class="se">\</span>
+--net_name<span class="w">  </span>yolov5s<span class="w">                                 </span><span class="se">\</span>
+--framework<span class="w">  </span>pytorch<span class="w">                                </span><span class="se">\</span>
+--inputs<span class="w">  </span><span class="m">1</span>,512,960,3<span class="w">                               </span><span class="se">\</span>
+--inputs_layout<span class="w"> </span>NHWC<span class="w">                                </span><span class="se">\</span>
+--pre_method<span class="w"> </span>nop<span class="w">                                    </span><span class="se">\</span>
+--pre_scale<span class="w"> </span><span class="m">255</span>.0,255.0,255.0<span class="w">                       </span><span class="se">\</span>
+--pre_mean<span class="w"> </span><span class="m">0</span>.0,0.0,0.0<span class="w">                              </span><span class="se">\</span>
+--channel_swap<span class="w"> </span><span class="m">2</span>,1,0<span class="w">                                </span><span class="se">\</span>
+--network<span class="w"> </span>./models/YoloV5/yolov5s-v2.0-<span class="o">(</span>512x960<span class="o">)</span>.pt<span class="w"> </span><span class="se">\</span>
+--jr_path<span class="w"> </span><span class="s2">&quot;./json&amp;raw/&quot;</span><span class="w">                             </span><span class="se">\</span>
+--frame_version<span class="w"> </span><span class="m">1</span>.6
+</pre></div>
+</div>
+<p>CLI命令还支持配置文件和命令行参数混用，在混用时，命令行参数中的配置将覆盖配置文件中的同名参数，比如 <code class="docutils literal notranslate"><span class="pre">icraft</span> <span class="pre">parser</span> <span class="pre">yolov5s.toml</span> <span class="pre">--frame_version</span> <span class="pre">1.9</span></code> 会将配置文件中的 <code class="docutils literal notranslate"><span class="pre">frame_version</span></code> 改为 <code class="docutils literal notranslate"><span class="pre">1.9</span></code> 。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">compile</span></code> 命令需要根据配置文件中各个命令的配置依次调用 <code class="docutils literal notranslate"><span class="pre">parse</span></code> , <code class="docutils literal notranslate"><span class="pre">optimize</span></code> , <code class="docutils literal notranslate"><span class="pre">quantize</span></code> , <code class="docutils literal notranslate"><span class="pre">adapt</span></code> , <code class="docutils literal notranslate"><span class="pre">generate</span></code> 等过程，因此不支持使用命令行来指定参数。</p>
+</div>
+</section>
+<section id="id4">
+<h2>三 参数列表<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>目前， <code class="docutils literal notranslate"><span class="pre">icraft</span></code> 支持的命令及其参数如下：</p>
+<table class="table" id="id5">
+<caption><span class="caption-text">组件命令行参数</span><a class="headerlink" href="#id5" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 29.4%" />
+<col style="width: 70.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>组件名称</p></th>
+<th class="head"><p>文档</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>parse</p></td>
+<td><p><a class="reference external" href="../parse/index.html#command-line">《icraft parse 参数说明表》</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>optimize</p></td>
+<td><p><a class="reference external" href="../adapt/index.html#command-line">《icraft optimize 参数说明表》</a></p></td>
+</tr>
+<tr class="row-even"><td><p>quantize</p></td>
+<td><p><a class="reference external" href="../quantizer/index.html#command-line">《icraft quantize 参数说明表》</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>adapt</p></td>
+<td><p><a class="reference external" href="../adapt/index.html#command-line">《icraft adapt 参数说明表》</a></p></td>
+</tr>
+<tr class="row-even"><td><p>generate</p></td>
+<td><p><a class="reference external" href="../codegen/index.html#command-line">《icraft generate 参数说明表》</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>run</p></td>
+<td><p><a class="reference external" href="../icraft-run/index.html#command-line">《icraft run 参数说明表》</a></p></td>
+</tr>
+<tr class="row-even"><td><p>show</p></td>
+<td><p><a class="reference external" href="../show/index.html#command-line">《icraft show 参数说明表》</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../start/running.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">运行</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="apis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 调用方法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 参数配置</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">三 参数列表</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 24-12-23 14:12.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

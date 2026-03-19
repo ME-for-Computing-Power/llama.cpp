@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Struct NetParam &#8212; Icraft Parser 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/structicraft_1_1parser_1_1_net_param';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Parser 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/structicraft_1_1parser_1_1_net_param.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Struct NetParam</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struct-documentation">Struct Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="struct-netparam">
+<span id="exhale-struct-structicraft-1-1parser-1-1-net-param"></span><h1>Struct NetParam<a class="headerlink" href="#struct-netparam" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-parserapi_netparam.h.html#file-icraft-parserapi-netparam-h"><span class="std std-ref">File netparam.h</span></a></p></li>
+</ul>
+<section id="struct-documentation">
+<h2>Struct Documentation<a class="headerlink" href="#struct-documentation" title="此标题的永久链接">#</a></h2>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParamE">
+<span id="_CPPv3N6icraft6parser8NetParamE"></span><span id="_CPPv2N6icraft6parser8NetParamE"></span><span id="icraft::parser::NetParam"></span><span class="target" id="structicraft_1_1parser_1_1_net_param"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NetParam</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParamE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>NetParam网络参数。将弃用。 </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam8net_nameE">
+<span id="_CPPv3N6icraft6parser8NetParam8net_nameE"></span><span id="_CPPv2N6icraft6parser8NetParam8net_nameE"></span><span id="icraft::parser::NetParam::net_name__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a67b44f01d423f696ef9bfd02f046ae90"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_name</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam8net_nameE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam9frameworkE">
+<span id="_CPPv3N6icraft6parser8NetParam9frameworkE"></span><span id="_CPPv2N6icraft6parser8NetParam9frameworkE"></span><span id="icraft::parser::NetParam::framework__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a1d0988627f90d51778d1084327239ea5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">framework</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam9frameworkE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam12custom_infosE">
+<span id="_CPPv3N6icraft6parser8NetParam12custom_infosE"></span><span id="_CPPv2N6icraft6parser8NetParam12custom_infosE"></span><span id="icraft::parser::NetParam::custom_infos__std::vector:CustomInfo:"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a0878237223691d3864f6879a2bcf2226"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structicraft_1_1parser_1_1_custom_info.html#_CPPv4N6icraft6parser10CustomInfoE" title="icraft::parser::CustomInfo"><span class="n"><span class="pre">CustomInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">custom_infos</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam12custom_infosE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam13exparam_infosE">
+<span id="_CPPv3N6icraft6parser8NetParam13exparam_infosE"></span><span id="_CPPv2N6icraft6parser8NetParam13exparam_infosE"></span><span id="icraft::parser::NetParam::exparam_infos__std::vector:ExParamInfo:"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1af35683b45bf366fa6d69d1523684d7f0"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structicraft_1_1parser_1_1_ex_param_info.html#_CPPv4N6icraft6parser11ExParamInfoE" title="icraft::parser::ExParamInfo"><span class="n"><span class="pre">ExParamInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exparam_infos</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam13exparam_infosE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam7networkE">
+<span id="_CPPv3N6icraft6parser8NetParam7networkE"></span><span id="_CPPv2N6icraft6parser8NetParam7networkE"></span><span id="icraft::parser::NetParam::network__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a0437905e58814d2f1d702ab862fb1f70"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">network</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam7networkE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam7jr_pathE">
+<span id="_CPPv3N6icraft6parser8NetParam7jr_pathE"></span><span id="_CPPv2N6icraft6parser8NetParam7jr_pathE"></span><span id="icraft::parser::NetParam::jr_path__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a1c7288cc3ebf998aa39eaed6101baf01"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">jr_path</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam7jr_pathE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam8log_pathE">
+<span id="_CPPv3N6icraft6parser8NetParam8log_pathE"></span><span id="_CPPv2N6icraft6parser8NetParam8log_pathE"></span><span id="icraft::parser::NetParam::log_path__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1ab9a5e2965a8a7be88b0a1e296d4cc0be"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">log_path</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam8log_pathE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam7weightsE">
+<span id="_CPPv3N6icraft6parser8NetParam7weightsE"></span><span id="_CPPv2N6icraft6parser8NetParam7weightsE"></span><span id="icraft::parser::NetParam::weights__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1ad94ffcf5588eb0ded550d59bbb858ab1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weights</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam7weightsE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam10pre_methodE">
+<span id="_CPPv3N6icraft6parser8NetParam10pre_methodE"></span><span id="_CPPv2N6icraft6parser8NetParam10pre_methodE"></span><span id="icraft::parser::NetParam::pre_method__std::map:i.ss:"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a40266c0a195410b3d2736ec69d1cf648"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pre_method</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam10pre_methodE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam16pre_method_inforE">
+<span id="_CPPv3N6icraft6parser8NetParam16pre_method_inforE"></span><span id="_CPPv2N6icraft6parser8NetParam16pre_method_inforE"></span><span id="icraft::parser::NetParam::pre_method_infor__PreMethodInfo"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1ab0e698b481643dba07be6d3873c49f61"></span><a class="reference internal" href="structicraft_1_1parser_1_1_pre_method_info.html#_CPPv4N6icraft6parser13PreMethodInfoE" title="icraft::parser::PreMethodInfo"><span class="n"><span class="pre">PreMethodInfo</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pre_method_infor</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam16pre_method_inforE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam11post_methodE">
+<span id="_CPPv3N6icraft6parser8NetParam11post_methodE"></span><span id="_CPPv2N6icraft6parser8NetParam11post_methodE"></span><span id="icraft::parser::NetParam::post_method__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a522bde284848332ffdbdd34df6ddb82f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">post_method</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam11post_methodE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam13frame_versionE">
+<span id="_CPPv3N6icraft6parser8NetParam13frame_versionE"></span><span id="_CPPv2N6icraft6parser8NetParam13frame_versionE"></span><span id="icraft::parser::NetParam::frame_version__ss"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a5f58471feed280666f58cc7b2d1badc9"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_version</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam13frame_versionE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam9pre_scaleE">
+<span id="_CPPv3N6icraft6parser8NetParam9pre_scaleE"></span><span id="_CPPv2N6icraft6parser8NetParam9pre_scaleE"></span><span id="icraft::parser::NetParam::pre_scale__std::map:i.std::vector:float::"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a6b305a30dda6ce2b5ca16916cce9b068"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pre_scale</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam9pre_scaleE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam8pre_meanE">
+<span id="_CPPv3N6icraft6parser8NetParam8pre_meanE"></span><span id="_CPPv2N6icraft6parser8NetParam8pre_meanE"></span><span id="icraft::parser::NetParam::pre_mean__std::map:i.std::vector:float::"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1adf2f91b0a01e3494105c596ac5684130"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pre_mean</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam8pre_meanE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam12channel_swapE">
+<span id="_CPPv3N6icraft6parser8NetParam12channel_swapE"></span><span id="_CPPv2N6icraft6parser8NetParam12channel_swapE"></span><span id="icraft::parser::NetParam::channel_swap__std::map:i.std::vector:i::"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a08ca61746f68b22c5d47b355c142f26e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_swap</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam12channel_swapE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam5inputE">
+<span id="_CPPv3N6icraft6parser8NetParam5inputE"></span><span id="_CPPv2N6icraft6parser8NetParam5inputE"></span><span id="icraft::parser::NetParam::input__std::map:i.std::vector:i::"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a7f1acb7b993947c4f94c67c542139db4"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam5inputE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam11custom_dllsE">
+<span id="_CPPv3N6icraft6parser8NetParam11custom_dllsE"></span><span id="_CPPv2N6icraft6parser8NetParam11custom_dllsE"></span><span id="icraft::parser::NetParam::custom_dlls__std::vector:std::tuple:ss.ss.ss::"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a92d82e157a2680a46408a155af232bf1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">custom_dlls</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam11custom_dllsE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam12input_layoutE">
+<span id="_CPPv3N6icraft6parser8NetParam12input_layoutE"></span><span id="_CPPv2N6icraft6parser8NetParam12input_layoutE"></span><span id="icraft::parser::NetParam::input_layout__std::map:i.ss:"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1adafcebe8b327359275eb2fd3edc9040a"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_layout</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam12input_layoutE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>弃用 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam9pre_checkE">
+<span id="_CPPv3N6icraft6parser8NetParam9pre_checkE"></span><span id="_CPPv2N6icraft6parser8NetParam9pre_checkE"></span><span id="icraft::parser::NetParam::pre_check__b"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a789aa57a3c368afc80188908554b4862"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pre_check</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam9pre_checkE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam6targetE">
+<span id="_CPPv3N6icraft6parser8NetParam6targetE"></span><span id="_CPPv2N6icraft6parser8NetParam6targetE"></span><span id="icraft::parser::NetParam::target__icraft::xir::CompileTarget"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1af2ebfd5eb740f6d9f7aca638017c623f"></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">CompileTarget</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam6targetE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6parser8NetParam11input_dtypeE">
+<span id="_CPPv3N6icraft6parser8NetParam11input_dtypeE"></span><span id="_CPPv2N6icraft6parser8NetParam11input_dtypeE"></span><span id="icraft::parser::NetParam::input_dtype__std::map:i.icraft::xir::ScalarType:"></span><span class="target" id="structicraft_1_1parser_1_1_net_param_1a0f5115dcb8614fa648bf34200df5791d"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ScalarType</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_dtype</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6parser8NetParam11input_dtypeE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struct-documentation">Struct Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： wangcan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

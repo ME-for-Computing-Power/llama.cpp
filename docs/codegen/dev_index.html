@@ -1,0 +1,986 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>开发部分 &#8212; Icraft CodeGen 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dev_index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft CodeGen 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__cg.html">Namespace icraft::cg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/structicraft_1_1cg_1_1_code_gen_options.html">Struct CodeGenOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_codegen__network_8h_1a857721c04b389bb7bcec81c193d1e4e5.html">Function icraft::cg::MakeNetworkCodeGen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1abeed94f57dc3be833a7dfb38aab86a8e.html">Variable ALIGNAXIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1ab0bd9291198e61d1642a841475d14fb0.html">Variable BIN_SUFFIX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a819e8b95d2d79be3cff191c37c6f640d.html">Variable BY</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a3f185c4947eccdf334c073549176c07f.html">Variable CONCAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1abb6c17c3732e995049eb32ba1845b866.html">Variable INSTANCENORM2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1aefecb3c2be85b8c46851e8fc8677655d.html">Variable JSON_SUFFIX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a49297a6569be798c67c749061a4dc280.html">Variable LAYERNORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a57c7b2987f14c695538e40fd36e299be.html">Variable no_inst_oplist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a0831676a3301bb5332be3cf6337a251a.html">Variable NORMALIZE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a7a3997742b390134bf3a57b4a0d60e8d.html">Variable PARAMS_SUFFIX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a55fc2cebb54d08952f24dad5a1072c1e.html">Variable PRUNEAXIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1ae349defe5a73f610785e5d81793a1004.html">Variable RESHAPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1abcb984dc5d0a0f0d3656c6e318d7a5d8.html">Variable SOFTMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/variable_codegen__options_8h_1a696055330a3214772ce99216566117c7.html">Variable SPLIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_codegen__options_8h_1abf27f602e2b50b92c4c5ddd6d1225703.html">Define BUYI_ETM_BYTE_UNIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_dll__export_8h_1ae115b0b180fcfa7267fddf08ddacc791.html">Define CG_API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_codegen__options_8h_1afff09866f7e501eaed371b52a2d09bd8.html">Define DDR_BYTE_UNIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_codegen__options_8h_1ac109b9414ae528145282e51e23d12683.html">Define INSTR_BYTE_UNIT</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/buyi_codegen.html">Python API reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/buyi_codegen.MakeNetworkCodeGen.html">buyi_codegen.MakeNetworkCodeGen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/buyi_codegen.CodeGenOptions.html">buyi_codegen.CodeGenOptions</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/dev_index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>开发部分</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 总体描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 简介</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.2 功能说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.2.1 模式匹配</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.2.2 算子替换</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.2.3 地址分配</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#task">1.2.4 task序列</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2.5 指令映射</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">二 优化与约束</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.1 优化配置说明</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.2 性能优化说明</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.3 约束说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">三 测试</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.1 单元测试</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.2 组件测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">四 特别说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug">4.1 绕开硬件bug</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>开发部分<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>新的指令生成更名为Icraft-CodeGen，其工程内部包括一个可执行程序外壳，实现加载和dump json和raw文件和三个DLL，分别是算子级的codegen，任务级的taskgen以及指令级的instgen，共三级逻辑。其中codegen用于实现各nn算子的操作，包括算子合并和替换、地址分配等，taskgen用于将合并和后算子转换为task序列，instgen则是根据task序列，生成对应的指令序列。</p>
+<section id="id2">
+<h2>一 总体描述<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<section id="id3">
+<h3>1.1 简介<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h3>
+<p>Icraft-CodeGen组件用于实现将Icraft网络转换为硬件指令的功能。包含可执行程序icraft-generate.exe以及动态依赖库icraft_buyi_codegen.dll、icraft_buyi_taskgen.dll、icraft_buyi_instgen.dll组成。并依赖Icraft::XIR、Icraft::Utils以及Icraft::SimForward。</p>
+</section>
+<section id="id4">
+<h3>1.2 功能说明<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<p>以下将根据指令生成组件内部功能的执行顺序对各功能进行介绍：</p>
+<section id="id5">
+<h4>1.2.1 模式匹配<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<p>相较于之前指令生成的版本对网络算子进行遍历并利用标记信号进行算子的融合方式，当前版本指令生成使用模式匹配的方式对满足要求的pattern进行操作。当硬件有新增计算通路或有新支持的算子，可以不再考虑原本已有的模式，而是直接创建新模式。一方面使可扩展性更高，无需修改原始经过测试的代码，另一方面对于软算子不再需要进行注册，之后Icraft新增软算子对于指令生成组件将没有任何工作量。</p>
+<p>目前所包含的pattern有：</p>
+<table class="table" id="id19">
+<caption><span class="caption-text">Table.pattern</span><a class="headerlink" href="#id19" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>rules</p></th>
+<th class="head"><p>priority</p></th>
+<th class="head"><p>pattern</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>act_rule</p></td>
+<td><p>1</p></td>
+<td><p>激活</p></td>
+</tr>
+<tr class="row-odd"><td><p>addact_rule</p></td>
+<td><p>2</p></td>
+<td><p>add+激活</p></td>
+</tr>
+<tr class="row-even"><td><p>add_rule</p></td>
+<td><p>1</p></td>
+<td><p>add</p></td>
+</tr>
+<tr class="row-odd"><td><p>align_axis_rule</p></td>
+<td><p>1</p></td>
+<td><p>补通道算子</p></td>
+</tr>
+<tr class="row-even"><td><p>bnact_rule</p></td>
+<td><p>2</p></td>
+<td><p>batchnorm+激活</p></td>
+</tr>
+<tr class="row-odd"><td><p>bn_rule</p></td>
+<td><p>1</p></td>
+<td><p>batchnorm</p></td>
+</tr>
+<tr class="row-even"><td><p>concat_rule</p></td>
+<td><p>2</p></td>
+<td><p>没有数据搬移的concat，只需通过修改地址即可实现（优先级高于需要搬移的concat）</p></td>
+</tr>
+<tr class="row-odd"><td><p>concat_real_rule</p></td>
+<td><p>1</p></td>
+<td><p>有实际数据搬移的concat</p></td>
+</tr>
+<tr class="row-even"><td><p>convact_rule</p></td>
+<td><p>2</p></td>
+<td><p>卷积或分组卷积或conv2d_ftmp算子与激活算子的组合</p></td>
+</tr>
+<tr class="row-odd"><td><p>convpool_rule</p></td>
+<td><p>2</p></td>
+<td><p>卷积或conv2d_ftmp算子与pool算子的组合</p></td>
+</tr>
+<tr class="row-even"><td><p>convrelupool_rule</p></td>
+<td><p>3</p></td>
+<td><p>卷积或conv2d_ftmp算子与relu以及pool算子的组合</p></td>
+</tr>
+<tr class="row-odd"><td><p>convtransposeact_rule</p></td>
+<td><p>2</p></td>
+<td><p>反卷积+激活</p></td>
+</tr>
+<tr class="row-even"><td><p>convtrans_rule</p></td>
+<td><p>1</p></td>
+<td><p>反卷积</p></td>
+</tr>
+<tr class="row-odd"><td><p>conv_rule</p></td>
+<td><p>1</p></td>
+<td><p>卷积或分组卷积或conv2d_ftmp算子</p></td>
+</tr>
+<tr class="row-even"><td><p>copy_rule</p></td>
+<td><p>1</p></td>
+<td><p>copy</p></td>
+</tr>
+<tr class="row-odd"><td><p>dwact_ftmp_rule</p></td>
+<td><p>3</p></td>
+<td><p>两个输入都为ftmp的深度可分离卷积+激活（优先级高于卷积）</p></td>
+</tr>
+<tr class="row-even"><td><p>dwact_rule</p></td>
+<td><p>3</p></td>
+<td><p>深度可分离卷积+激活（优先级高于卷积）</p></td>
+</tr>
+<tr class="row-odd"><td><p>dw_ftmp_rule</p></td>
+<td><p>2</p></td>
+<td><p>两个输入都为ftmp的深度可分离卷积（优先级高于卷积）</p></td>
+</tr>
+<tr class="row-even"><td><p>dw_rule</p></td>
+<td><p>2</p></td>
+<td><p>深度可分离卷积（优先级高于卷积）</p></td>
+</tr>
+<tr class="row-odd"><td><p>layernorm_rule</p></td>
+<td><p>1</p></td>
+<td><p>layernorm算子</p></td>
+</tr>
+<tr class="row-even"><td><p>matmulact_rule</p></td>
+<td><p>2</p></td>
+<td><p>matmul+激活</p></td>
+</tr>
+<tr class="row-odd"><td><p>matmul_rule</p></td>
+<td><p>1</p></td>
+<td><p>matmul</p></td>
+</tr>
+<tr class="row-even"><td><p>multiplyact_rule</p></td>
+<td><p>2</p></td>
+<td><p>multiply+激活</p></td>
+</tr>
+<tr class="row-odd"><td><p>multiply_rule</p></td>
+<td><p>1</p></td>
+<td><p>multiply</p></td>
+</tr>
+<tr class="row-even"><td><p>pad_rule</p></td>
+<td><p>1</p></td>
+<td><p>pad</p></td>
+</tr>
+<tr class="row-odd"><td><p>pool_rule</p></td>
+<td><p>1</p></td>
+<td><p>pool</p></td>
+</tr>
+<tr class="row-even"><td><p>prune_axis_rule</p></td>
+<td><p>1</p></td>
+<td><p>去无效通道算子</p></td>
+</tr>
+<tr class="row-odd"><td><p>reshape_rule</p></td>
+<td><p>1</p></td>
+<td><p>reshape</p></td>
+</tr>
+<tr class="row-even"><td><p>slice_rule</p></td>
+<td><p>1</p></td>
+<td><p>slice</p></td>
+</tr>
+<tr class="row-odd"><td><p>split_rule</p></td>
+<td><p>2</p></td>
+<td><p>没有数据搬移的split，通过修改地址实现最外层非1维度的切分（优先级高于需要搬移的split）</p></td>
+</tr>
+<tr class="row-even"><td><p>transpose_cw_rule</p></td>
+<td><p>5</p></td>
+<td><p>align_axis+reshape+transpose+reshape+prune_axis面与通道交换</p></td>
+</tr>
+<tr class="row-odd"><td><p>transpose_wh_rule</p></td>
+<td><p>1</p></td>
+<td><p>面上维度交换</p></td>
+</tr>
+<tr class="row-even"><td><p>upsample_rule</p></td>
+<td><p>1</p></td>
+<td><p>upsample</p></td>
+</tr>
+<tr class="row-odd"><td><p>expand_rule</p></td>
+<td><p>1</p></td>
+<td><p>广播算子，在单个维度上进行广播</p></td>
+</tr>
+</tbody>
+</table>
+<p>所有算子匹配完成后会对所有buyi-target的算子进行检查，查看是否匹配到pattern并被替换为hardop。若未替换，则表示匹配失败，抛出异常以便debug。</p>
+</section>
+<section id="id6">
+<h4>1.2.2 算子替换<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h4>
+<p>遍历网络，并根据优先级对上述pattern进行模式匹配，匹配到的算子集会被替换为hardop，并且将相应的算子参数存放在OpInfo中，以便后续生成task序列时使用。</p>
+<p>算子替换需要构建HardOp，并对其输入输出以及参数进行赋值，最后通过replaceGroup方法将被匹配到的算子集替换为新构建的hardop。
+除外，还需将所需参数存放在相应的OpInfo中。</p>
+</section>
+<section id="id7">
+<h4>1.2.3 地址分配<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h4>
+<p><em>ParamsMemManage</em></p>
+<blockquote>
+<div><p>参数地址分配：首先对hardop的参数进行地址分配，在上述算子替换过程中，所有原始算子的参数已经被赋值到hardop的params中，因此只需遍历网络对所有hardop的params进行地址分配即可完成参数的地址分配。</p>
+</div></blockquote>
+<p><em>FtmpETMMemManage</em></p>
+<blockquote>
+<div><p>特征图在ETM（ExternalMem）上的地址分配：根据各算子的target类型对算子的输入输出进行ETM地址分配（目前对BuyiTargte和FPGATarget的算子进行地址分配）。</p>
+</div></blockquote>
+<p><em>SpecialFtmpTreatment</em></p>
+<blockquote>
+<div><p>对特殊算子的输入输出地址进行处理：对于concat算子，修改其各输入地址，第一个输入基地址指向输出地址，依次连续存放其余输入；对于split，修改其输出地址，第一个输出基地址指向输入地址，依次连续存放其余输出；对于reshape算子，其输出地址指向输入。</p>
+</div></blockquote>
+<p><em>FtmpOcmMemManage</em></p>
+<blockquote>
+<div><p>特征图在OCM（OnChipMem）上的地址分配：当前架构有2MB的片上存储单元，根据存放需求。</p>
+<p>目前指令生成部分与OCM优化部分实现了解耦，后续可以支持开发新的优化方案而不依赖于指令生成组件的状态。</p>
+<p>目前有三种分配方式：
+1.以已知最优的方式对各特征图进行打分，并按分数由高到低进行ocm的地址分配，各特征图存放进ocm后对其所占的空间和时间片进行标记，保证各特征图的时间片和空间均无重叠即可完成ocm的地址分配。
+2.采用局部最优方案，每个节点记录M个最优（读写数据量最大的前M种情况），第N个节点分别在前N-1个节点各自的前M个最优情况下进行分配，并记录该节点的M个最优情况，以此类推，最后一个节点与前面所有节点的前M个最优进行组合，选取最终的最优解。
+3.按顺序遍历所有的特征图，能存放时即分配OCM地址，若遍历到某个特征图时发现OCM空间不够，则对比该特征图与已分配的特征图的得分，若该特征图得分较高，则按顺序踢出第一个得分较低的特征图，否则不给该特征图分配OCM空间。</p>
+<p>后续如果有其余优化方式，可以直接加入到指令生成组件中，指令生成在编译阶段可以针对每个网络根据每种算法的最终结果选取最优分配方案。或者用户可以制定已有的优化方案。</p>
+<p>OCM的带宽是DDR带宽的2倍，因此使用OCM能在一定程度上减少DDR的带宽压力，从而增加网络在硬件上的运行效率。</p>
+</div></blockquote>
+<p><em>SetFtmpMemInfo</em></p>
+<blockquote>
+<div><p>待所有特征图都分配好地址后，将分配好的ftmp的地址存放在各算子的info上，以便后续生成指令。</p>
+</div></blockquote>
+<p><em>PrintMemAssignInfo</em></p>
+<blockquote>
+<div><p>将所分配的地址信息（包括参数和特征图）存放在log中，以便后续debug，存放文件为“generated_netname.log”。</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>由于fireby的限制，需要在开头预留64个ETM（外部存储，此处为DDR）地址。</p>
+</div>
+<p>地址分配以byte为单位，json文件中的地址也为byte地址。因此对于存放格式有一定的要求：每个算子的参数以及输入输出特征图需要以ETM（64byte）第一个byte作为起始地址，即对齐64byte地址。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>对于concat的输入以及split的输出，由于要拼接成一个完整特征图或需要从一个完整特征图分离成多个特征图，因此多个输入或多个输出需要连续存放。</p>
+</div>
+<img alt="_images/memmanage.png" src="_images/memmanage.png" />
+</section>
+<section id="task">
+<h4>1.2.4 task序列<a class="headerlink" href="#task" title="此标题的永久链接">#</a></h4>
+<p>task列表：</p>
+<p><strong>数据搬移类task：</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AssignTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AssignWithPadTask</span></code></p></li>
+</ul>
+<p>用于实现各个通路上的数据搬移，布衣中包含的memory类型：</p>
+<table class="table" id="id20">
+<caption><span class="caption-text">Table.存储类型</span><a class="headerlink" href="#id20" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>MemType</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>etm</p></td>
+<td><p>外部存储</p></td>
+</tr>
+<tr class="row-odd"><td><p>klm</p></td>
+<td><p>MPE内存放kernel的本地存储</p></td>
+</tr>
+<tr class="row-even"><td><p>xlm</p></td>
+<td><p>MPE内存放ifm的本地存储</p></td>
+</tr>
+<tr class="row-odd"><td><p>ylm</p></td>
+<td><p>MPE内存放ofm的本地存储</p></td>
+</tr>
+<tr class="row-even"><td><p>plm</p></td>
+<td><p>VPE内存放pooling结果的本地存储</p></td>
+</tr>
+<tr class="row-odd"><td><p>olm</p></td>
+<td><p>one引擎内的本地存储</p></td>
+</tr>
+<tr class="row-even"><td><p>ocm</p></td>
+<td><p>片上共享存储</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>计算类task:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MulTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AddTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MatrixMulTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MpeConvTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MpeAccTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VpeAccToEtmTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VpeAccToPlmTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PoolMaxTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PoolAvgTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VlcuTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VactToEtmTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VactToPlmTask</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ResizeTask</span></code></p></li>
+</ul>
+<p>task列表详见：</p>
+</section>
+<section id="id9">
+<h4>1.2.5 指令映射<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h4>
+<p>该组件支持以下结构的指令映射：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">opConvPoolCompile</span></code>：（带pool的卷积）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opConvCompile</span></code>：（不带pool的卷积），支持kernel_w*kernel_h大于2048；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opDwCompile</span></code>：（深度可分离卷积）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opDwFtmpCompile</span></code>：（两个ftmp的深度可分离卷积）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opEltwiseCompile</span></code>：（Add算子，残差加，支持接激活，支持两个ftmp的加，或一个ftmp与常数tensor的加，没有顺序限制）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opPoolCompile</span></code>：（单独的池化），支持pool_w*pool_h大于2048的avgpool；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opScaleCompile</span></code>：（向量乘，即IR中的batchnorm）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opResizeCompile</span></code>：（整数倍nearest的resize，即IR中的upsample以及bilinear的resize）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opCopyCompile</span></code>：（复制ftmp）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opConcatCompile</span></code>：（拼接制定维度的两个ftmp或一个ftmp与一个常数tensor，没有顺序限制）；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opGroupConvCompile</span></code>：（分组卷积）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opPadCompile</span></code>：（单独的pad）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opConvTransposeCompile</span></code>：（反卷积）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opActCompile</span></code>：（单独的激活）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opSacMulCompile</span></code>：（multiply，支持两个ftmp的乘，或一个ftmp与常数tensor的乘，没有顺序限制）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opMatMulCompile</span></code>：（矩阵乘，支持两个ftmp的矩阵乘，或一个ftmp与常数tensor的矩阵乘，没有顺序限制）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opSliceCompile</span></code>：（切片）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opTransposeCWCompile</span></code>：（最后两个维度交换的transpose）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opTransposeWHCompile</span></code>：（面上两个维度交换的transpose）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opLNCompile</span></code>：（生成layernorm算子的指令）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opPruneAxisCompile</span></code>：（生成去无效通道算子的指令）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opAlignAxisCompile</span></code>：（生成补无效通道算子的指令）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opExpandCompile</span></code>：（生成广播算子的指令）</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id10">
+<h2>二 优化与约束<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h2>
+<section id="id11">
+<h3>2.1 优化配置说明<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
+<p>当前指令生成组件所支持的优化有以下几种：</p>
+<table class="table" id="id21">
+<caption><span class="caption-text">Table.优化类型</span><a class="headerlink" href="#id21" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>优化选项</p></th>
+<th class="head"><p>优化力度</p></th>
+<th class="head"><p>优化内容</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ocmopt</p></td>
+<td><p>-1</p></td>
+<td><p>-1：遍历所有ocm的优化方案，选取优化得分最高的方案；0：关闭ocm优化；1：选择优化方案1；2：选择优化方案2；3.选择方案3；</p></td>
+<td><p>Ocm=2MB，数据是否存放在ocm中，减小etm带宽压力</p></td>
+</tr>
+<tr class="row-odd"><td><p>xlmopt</p></td>
+<td><p>2</p></td>
+<td><p>通道折叠</p></td>
+<td><p>当面较小，通道较大时，将通道折叠到面上，减少tile数</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>3</p></td>
+<td><p>面上划tile分配到多个MPE并行计算</p></td>
+<td><p>避免只使用一个MPE计算，其他MPE空闲的情况</p></td>
+</tr>
+<tr class="row-odd"><td><p>klmopt</p></td>
+<td><p>2</p></td>
+<td><p>合并Etm2Klm task</p></td>
+<td><p>当相邻两个Etm2Klm task满足跳转一致，地址连续则合并为一个Etm2Klm task</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>3</p></td>
+<td><p>调整Etm2Klm位置</p></td>
+<td><p>将Etm2Klm所写的klm相邻的task放在一起，加快读写速度</p></td>
+</tr>
+<tr class="row-odd"><td><p>icropt</p></td>
+<td><p>1</p></td>
+<td><p>消除重复dii指令</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>目前ocm优化方案有3个，但是方案2对于算子数量较多的网络，其编译时间较长，因此我们建议当用户网络的算子个数大于500时，可以直接通过–ocmopt 1来选定优化方案1。编译时报出信息：”Please note: ops.size = {}, it is not suitable to use scheme 2 and is skipped. “</p>
+</div>
+</section>
+<section id="id12">
+<h3>2.2 性能优化说明<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h3>
+<p><cite>Add算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">待优化</span></code>：原实现方案为实现通用性，定位C位置，将其之前的当作loop，对C与c之间的维度进行划tile操作（其step0=1）；当C与c作为最后两维时，每个tile只有1，因此导致共有loop*Ct个tile，导致指令数量巨大，效率巨低。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">优化方案</span></code>：为解决该问题，对于当C与c作为最后两维的输入，对loop进行划tile操作（其step0=Ct），因此大大减少了tile的数量，提高了效率。</p></li>
+</ul>
+<p><cite>Multiply算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">同Add算子</span></code>：</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>2.3 约束说明<a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h3>
+<p><strong>截位限制:</strong></p>
+<p>目前指令生成支持relu和查表两种激活方式，其中relu通过激活模块实现，其余非线性激活可使用查表的方式实现。激活模块不仅实现激活功能，还肩负截位功能，对于所有需要做乘法运算的算子，无论是否与relu合并，都需要经过激活模块进行截位操作。量化阶段会根据硬件截位需求，提供相应满足要求的量化参数。激活模块如下图所示（以8bit模式为例）：</p>
+<img alt="_images/vact.png" src="_images/vact.png" />
+<p>利用MPE完成乘累加的算子，将经历两次显示截位和两次隐式截位。以8bit数据为例，乘累加完数据位宽为21bit，经过第一次截位pre_cut后保留16bit，再与正负半轴系数（8bit）乘积后强行截掉低8bit，保留高16bit，再加bias，保留低16bit，最后根据第二次截位post_cut（上图中的sft）将数据截位8bit。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><span class="math notranslate nohighlight">\(m×2^{-exp}\)</span>，scale包含两个参数：M和exp。</p>
+</div>
+<p><cite>Add算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：alpha和beta；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：alpha_scale = beta_scale。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：只截位一次，cut = alpha_scale.exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  alpha_scale.m * relu.alpha : alpha_scale.m; posa = alpha_scale.m。</p></li>
+</ul>
+<p>对于add算子，其量化系数记录在alpha和beta中，因此两个ftmp的加与ftmp与常数tensor的截位方式相同。</p>
+<p><cite>Batchnorm算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：variance和mean；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：variance_scale = mean_scale。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：只截位一次，cut = mean_scale.exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  mean_scale.m * relu.alpha : mean_scale.m; posa = mean_scale.m。</p></li>
+</ul>
+<p><cite>Conv2d类算子（卷积、分组卷积、反卷积）</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：weights和bias；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：weights_scale、bias_scale。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：两次截位：pre_cut = k_exp - b_exp; post_cut = b_exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  bias_scale.m * relu.alpha : bias_scale.m; posa = bias_scale.m。</p></li>
+</ul>
+<p><cite>Conv2d_ftmp类算子（卷积、分组卷积）</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：bias可选；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：cut_scale。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：两次截位：pre_cut = (scale_exp &gt;= 5 + qbits) ? 5 : (scale_exp - qbits); post_cut = scale_exp - pre_cut - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  cut_scale.m * relu.alpha : cut_scale.m; posa = cut_scale.m。</p></li>
+</ul>
+<p><cite>DW算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：weights和bias；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：weights_scale、bias_scale。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：一次截位: post_cut = b_exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  bias_scale.m * relu.alpha : bias_scale.m; posa = bias_scale.m。</p></li>
+</ul>
+<p><cite>DW_ftmp算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：bias可选；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：cut_scale。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：一次截位：post_cut = cut_exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  bias_scale.m * relu.alpha : bias_scale.m; posa = bias_scale.m。</p></li>
+</ul>
+<p><cite>Matmul算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：weights和bias；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：weights_scale、b_scale（两个ftmp矩阵乘：cut_scale; ftmp乘常数：bias_scale）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：两次截位：pre_cut = k_exp - b_exp; post_cut = b_exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  b_scale.m * relu.alpha : b_scale.m; posa = b_scale.m。</p></li>
+</ul>
+<p><cite>Multiply算子</cite></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数</span></code>：params；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">量化参数</span></code>：b_scale（两个ftmp矩阵乘：cut_scale; ftmp乘常数: params_scale）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">截位</span></code>：只截位一次： cut = b_exp - qbits。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">正负半轴系数</span></code>：nega = (有relu) ?  b_scale.m * relu.alpha : b_scale.m; posa = b_scale.m。</p></li>
+</ul>
+<p><strong>位宽限制:</strong></p>
+<p>对于8bit模式，布衣硬件posa和nega只有8bit，post_cut只有4bit。
+对于ETM，矩形寻址的w/h/ws/hs的位宽为16bit，对于LM，矩形寻址的w/h/ws/hs位宽为11bit；其中tile的unit参数，只有针对ETM时可以配置为1，2，4，8，16，32，对于LM的unit只能是32。对于OCM，矩形寻址的w/h/ws/hs的位宽为16bit，unit只能是32。</p>
+<p>更多算子的限制可查看：</p>
+</section>
+</section>
+<section id="id15">
+<h2>三 测试<a class="headerlink" href="#id15" title="此标题的永久链接">#</a></h2>
+<section id="id16">
+<h3>3.1 单元测试<a class="headerlink" href="#id16" title="此标题的永久链接">#</a></h3>
+<p><strong>pattern测试:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;conv-relu-maxpool&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;1-act-avgpool-upsample-act&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;2-add-addact-bn-bnact&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;3-conv-conv-pool-pool-conv-act-pool&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;4-convtrans-convtrans-act-pool&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;5-dw-dw-act-pad-split&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;6-copy-concat-slice-reshape&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;7-multiply-multiply-act&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;8-matmul-matmul-act&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;makeNetwork&quot;,</span> <span class="pre">&quot;[pattern]&quot;)</span></code></p></li>
+</ul>
+<p><strong>MemManage测试:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;params-mem-manage&quot;,</span> <span class="pre">&quot;[mem]&quot;)</span></code>：参数的分配检查，参数全部放在ExternalMem上</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;ftmp-mem-manage&quot;,</span> <span class="pre">&quot;[mem]&quot;)</span></code>：特征图在ExternalMem上的分配检查</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;ocm-mem-manage&quot;,</span> <span class="pre">&quot;[mem]&quot;)</span></code>：特征图在OnChipMem上的分配检查</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;ocm-info-mem-manage&quot;,</span> <span class="pre">&quot;[mem]&quot;)</span></code>：检查OnChipMem上的分配信息是否正确传递给buyi-taskgen</p></li>
+</ul>
+<p><strong>算子测试:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;conv2d_ftmp-relu-maxpool&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：conv_ftmp的算子功能测试</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;transpose_WH&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：面上HW维度交换的transpose算子功能测试，ftmp小尺寸</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;transpose_WH-1&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：面上HW维度交换的transpose算子功能测试，ftmp大尺寸</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;transpose_CtW&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：面上Ct与W维度交换的transpose算子功能测试</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;add_const-1&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：加常数的功能测试</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;concat_const-1&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：拼接ftmp与常数的功能测试</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;concat_const-2&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：拼接ftmp与常数的功能测试</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_CASE(&quot;align_prune-01&quot;,</span> <span class="pre">&quot;[op]&quot;)</span></code>：去通道和补通道算子的功能测试（用于实现软硬转换）</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3>3.2 组件测试<a class="headerlink" href="#id17" title="此标题的永久链接">#</a></h3>
+</section>
+</section>
+<section id="id18">
+<h2>四 特别说明<a class="headerlink" href="#id18" title="此标题的永久链接">#</a></h2>
+<section id="bug">
+<h3>4.1 绕开硬件bug<a class="headerlink" href="#bug" title="此标题的永久链接">#</a></h3>
+<p><strong>olm读写地址相同时写优先级高:</strong></p>
+<p>当存在wolm1-&gt;rolm1-&gt;wolm2-&gt;rolm2…的情况，本应先完成第一组wolm1-&gt;rolm1再完成第二组wolm2-&gt;rolm2，但是硬件bug导致前一个rolm1的地址与后一个wolm2的地址相同时，wolm2的优先级更高，
+因此会导致第二组的wolm2先执行，第一组的rolm1后执行，从而导致读取数据错误；为避免这种情况，需要避免前一个rolm1的地址与后一个wolm2的地址相同的task，注意需要通过地址偏移来避免。</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">一 总体描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 简介</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.2 功能说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.2.1 模式匹配</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.2.2 算子替换</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.2.3 地址分配</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#task">1.2.4 task序列</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2.5 指令映射</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">二 优化与约束</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.1 优化配置说明</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.2 性能优化说明</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.3 约束说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">三 测试</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.1 单元测试</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.2 组件测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">四 特别说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug">4.1 绕开硬件bug</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： LiMengyu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

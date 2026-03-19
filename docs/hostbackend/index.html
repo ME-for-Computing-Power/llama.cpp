@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft HostBackend &#8212; Icraft HostBackend 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="API" href="_cppapi/api_root.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft HostBackend 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__hostbackend.html">Namespace icraft::hostbackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__hostbackend__utils.html">Namespace icraft::hostbackend::utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/namespace_icraft__xrt.html">Namespace icraft::xrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/structicraft_1_1hostbackend_1_1utils_1_1_detected_box.html">Struct DetectedBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/class_custom_decoder.html">Class CustomDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_cuda_device.html">Class CudaDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_cuda_device_node.html">Class CudaDeviceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_cuda_mem_region.html">Class CudaMemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_cuda_mem_region_node.html">Class CudaMemRegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_backend.html">Class HostBackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_backend_cuda_utils.html">Class HostBackendCudaUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_backend_node.html">Class HostBackendNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/classicraft_1_1xrt_1_1_host_bknd_cuda_utils__impl.html">Class HostBkndCudaUtils_impl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_decode__custom_8h_1a199ab221e6aa20c6869f3bf8fb5da774.html">Function GetCustomDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_utils_8h_1a704a357e97c78bae7f337215cfbe1baf.html">Function icraft::hostbackend::utils::Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_utils_8h_1a4d8e44308abe110615756d8e68398d33.html">Function icraft::hostbackend::utils::DecodeWithDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_utils_8h_1acfeb377b1e816a56509b840d4718b64f.html">Function icraft::hostbackend::utils::Ftmp2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_utils_8h_1a7e652666ee5a9874d9a2806583da066e.html">Function icraft::hostbackend::utils::Image2Tensor(const std::string&amp;, int, int)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_utils_8h_1ab87c76f8821611e5770ee29dfdb93af9.html">Function icraft::hostbackend::utils::Image2Tensor(const std::string&amp;, const xir::Value&amp;)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/function_utils_8h_1a6a7a8b3adaf70dd20719cbdc13c67946.html">Function icraft::hostbackend::utils::TensorToDetectedBoxes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_decode__custom_8h_1a1806ab788d6406379b257e6ff1a6a511.html">Define CUSTOM_API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_backend_8h_1a752ea8558ede9147ff7da1419cae3ce5.html">Define HOSTBKND_BACKEND_PCH_GUARD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_decode__custom_8h_1a83b0e76a4801540cb2392db5f5f7ce9c.html">Define HOSTBKND_DECODE_CUSTOM_PCH_GUARD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_utils_8h_1aeb8150f9d88c067d16bef2238a1fd1a1.html">Define HOSTBKND_UTILS_PCH_GUARD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_cuda_2utils_8h_1ae027d7f23c8aec74bc7d8b7520de81b2.html">Define REGISTER_CUDAUTILS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/define_decode__custom_8h_1a82087e87ec686c93353427b9e5befb20.html">Define REGISTER_CUSTOM_DECODER</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/host_backend.html">Python API reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.Cast.html">host_backend.Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.DecodeWithDecoder.html">host_backend.DecodeWithDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.Ftmp2Tensor.html">host_backend.Ftmp2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.Image2Tensor.html">host_backend.Image2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.CudaDevice.html">host_backend.CudaDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.CudaMemRegion.html">host_backend.CudaMemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.HostBackend.html">host_backend.HostBackend</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft HostBackend</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 简介</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二 接口说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">2.1 C++接口使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hostdevicecudadevicesession">2.1.1 创建基于HostDevice或CudaDevice的Session</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fakeqf">2.1.2 fakeQf模式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#utils">2.1.3 Utils使用方法</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python">2.2 Python接口使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2.1 创建基于HostDevice或CudaDevice的Session</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2.2 fakeQf模式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2.3 Utils使用方法</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hostbackend">2.3 其他HostBackend接口</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">三 算子说明</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#errorcode">四 错误码 errorcode</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.1 错误码说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">五 License</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">六 索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-hostbackend">
+<h1>Icraft HostBackend<a class="headerlink" href="#icraft-hostbackend" title="此标题的永久链接">#</a></h1>
+<section id="id1">
+<h2>一 简介<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>Icraft HostBackend(以下简称HostBackend)是Icraft XRT的计算后端之一，主要负责Host(CPU)和Cuda(NvidiaGpu)计算资源的初始化和前向计算。</p>
+<p>从用户角度上，HostBackend模块包括HostBackend、CudaDevice、CudaMemRegion三个数据结构（因为其特殊性，HostDevice和HostMemRegion由XRT直接定义和管理），分别是XRT的Backend、Device、MemRegion在CPU和CUDA
+计算资源上的具体实现。用户可以通过C++或Python的API实例化并使用HostBackend、HostDevice、CudaDevice，具体用法请见文档API说明和下文中的代码用例。</p>
+<p>在内部实现上，HostBackend负责Icraft算子在CPU和CUDA后端硬件上的初始化和前向计算。</p>
+<p>此外，为了方便用户和开发者，HostBackend提供了一个Utils接口，提供了若干功能函数，包括Image2Tensor、Ftmp2Tensor、Cast、DecodeWithDecoder、DecodeTensorToDetectedBoxes，使用方法请见文档API说明和下文中的代码用例。</p>
+</section>
+<section id="id2">
+<h2>二 接口说明<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>下面的代码说明了如何使用HostBackend、HostDevice和CudaDevice。</p>
+<section id="c">
+<h3>2.1 C++接口使用说明<a class="headerlink" href="#c" title="此标题的永久链接">#</a></h3>
+<section id="hostdevicecudadevicesession">
+<h4>2.1.1 创建基于HostDevice或CudaDevice的Session<a class="headerlink" href="#hostdevicecudadevicesession" title="此标题的永久链接">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/SSD_BY.json&quot;</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;D:/Workspace/V3.0/SSD_BY.raw&quot;</span><span class="p">;</span>
+
+<span class="c1">// 初始化设备</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">cuda_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CudaDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">();</span>
+
+<span class="c1">// 加载网络</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="n">network</span><span class="p">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+
+<span class="c1">// 创建基于CudaDevice的Session,</span>
+<span class="c1">// 仅限于有Cuda设备的环境里，否则无法运行;</span>
+<span class="c1">// 在某些无法运行在Cuda设备上的算子会自动跳转到host_device上运行；</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sess_cuda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">cuda_device</span><span class="w"> </span><span class="p">});</span>
+
+<span class="c1">// 创建基于HostDevice的Session</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sess_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">host_device</span><span class="w"> </span><span class="p">});</span>
+
+<span class="c1">// 创建Session2</span>
+<span class="c1">// 如果不适用模板Create方法，也可以使用CreateByOrder方法</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sess_cuda1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">host_backend</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">cuda_device</span><span class="p">});</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sess_host1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Session</span><span class="o">::</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">host_backend</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">host_device</span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="fakeqf">
+<h4>2.1.2 fakeQf模式<a class="headerlink" href="#fakeqf" title="此标题的永久链接">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 创建Backend对象</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">host_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+
+<span class="c1">// HostBackend有两个独有的接口：setFakeQf和getFakeQf。通过它们可以设置和查询HostBackend算子定点前向（数据类型非FP32的前向）是否以fake模式进行。</span>
+<span class="c1">// fakeQf是fake quantize forward的简称，该模式下定点前向过程中不做截位和饱和操作，</span>
+<span class="c1">// 因此可以直接对比HostBackend的指令前向结果和adapted模型的前向结果</span>
+<span class="n">host_backend</span><span class="p">.</span><span class="n">setFakeQf</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// 激活fakeQF模式</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">fakeQf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">host_backend</span><span class="p">.</span><span class="n">getFakeQf</span><span class="p">();</span><span class="w"> </span><span class="c1">// 查询fakeQF模式</span>
+<span class="k">if</span><span class="p">(</span><span class="n">fakeQf</span><span class="p">){</span>
+<span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Xrt HostBackend FakeQf mode on.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">host_backend</span><span class="p">.</span><span class="n">setFakeQf</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w"> </span><span class="c1">// 关闭fakeQF模式</span>
+<span class="n">fakeQf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">host_backend</span><span class="p">.</span><span class="n">getFakeQf</span><span class="p">();</span><span class="w"> </span><span class="c1">// 查询fakeQF模式</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">fakeQf</span><span class="p">){</span>
+<span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Xrt HostBackend FakeQf mode off.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="utils">
+<h4>2.1.3 Utils使用方法<a class="headerlink" href="#utils" title="此标题的永久链接">#</a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span>// Image2Tensor使用方法
+// 读取image(opencv支持的图片类型，如png,jpg,jpng等）转为xrt::Tensor
+auto img_file = &quot;D:/Workspace/imgs/cat224.png&quot;;
+// 读取img_file路径上的图片转为Tensor，高和宽均为原图大小
+auto img_tensor_orig = Image2Tensor(img_file);
+// 读取img_file路径上的图片转为Tensor，height resize为300, width保留原图大小
+auto img_tensor_300_224 = Image2Tensor(img_file, 300, -1）
+// 读取img_file路径上的图片转为Tensor，height保留原图大小, width resize为300
+auto img_tensor_224_300 = Image2Tensor(img_file, -1, 300）
+
+// Ftmp2Tensor使用方法
+// 读取ftmp二进制文件转为xrt::Tensor
+auto ftmp_file = &quot;D:/Workspace/ftmp/value0.ftmp&quot;;
+// 读取ftmp_file路径下的ftmp二进制文件转为value对应的Tensor, value为xir的Value类数据
+// 根据value创建一个Tensor，把读取自ftmp_file的数据绑定到该Tensor上
+auto v_tensor = Ftmp2Tensor(ftmp_file, value);
+
+// Cast使用方法
+// 输出的Tensor是输入Tensor的数据类型(int8_t, float32等)和Layout(NHWC等)
+// 从input_dtype转为output_dtype的结果。需要注意，数据类型的转换需要由data_type提供normratio。
+// auto tensor_new = Cast(tensor_old, tensor_old_dtype, tensor_new_dtype, host_backend);
+
+// DecodeWithDecoder使用方法
+// 将数据文件使用用户提供的CustomDecoder模块解析为HostDevice上的Xrt Tensor
+// tensor_new = DecodeWithDecoder(dll_path, file_path, data_type);
+
+// TensorToDetectedBoxes
+// 用于把后处理算子输出Tensor转为检测框，后面会废弃，这里不多赘述。
+</pre></div>
+</div>
+</section>
+</section>
+<section id="python">
+<h3>2.2 Python接口使用说明<a class="headerlink" href="#python" title="此标题的永久链接">#</a></h3>
+<section id="id3">
+<h4>2.2.1 创建基于HostDevice或CudaDevice的Session<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xir</span>
+<span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">host_backend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">json_file</span> <span class="o">=</span> <span class="s2">&quot;D:\debugs\hostbknd\jr\optimized\Resnet18_optimized.json&quot;</span>
+<span class="n">raw_file</span> <span class="o">=</span> <span class="s2">&quot;D:\debugs\hostbknd\jr\optimized\Resnet18_optimized.raw&quot;</span>
+<span class="n">img_file</span> <span class="o">=</span> <span class="s2">&quot;D:\debugs\hostbknd\imgs\cat224.png&quot;</span>
+
+<span class="c1"># 初始化设备</span>
+<span class="n">host_device</span> <span class="o">=</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
+<span class="n">cuda_device</span> <span class="o">=</span> <span class="n">CudaDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
+
+<span class="c1"># 加载网络</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">xir</span><span class="o">.</span><span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">loadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">)</span>
+
+<span class="c1"># 创建基于CudaDevice的Session,</span>
+<span class="c1"># 仅限于有Cuda设备的环境里，否则无法运行;</span>
+<span class="c1"># 在某些无法运行在Cuda设备上的算子会自动跳转到host_device上运行；</span>
+<span class="n">sess_cuda</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span><span class="n">HostBackend</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">cuda_device</span><span class="p">])</span>
+
+<span class="c1"># 创建基于HostDevice的Session</span>
+<span class="n">sess_host</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span><span class="n">HostBackend</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">host_device</span><span class="p">])</span>
+
+<span class="c1"># 创建Session2</span>
+<span class="c1"># 如果不适用模板Create方法，也可以使用CreateByOrder方法</span>
+<span class="n">sess_cuda1</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">HostBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">()],</span> <span class="p">[</span><span class="n">CudaDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+<span class="n">sess_host1</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">CreateByOrder</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">HostBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">()],</span> <span class="p">[</span><span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h4>2.2.2 fakeQf模式<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建Backend对象</span>
+<span class="n">host_backend</span> <span class="o">=</span> <span class="n">HostBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">()</span>
+
+<span class="c1"># fakeQF模式</span>
+<span class="c1"># HostBackend有两个独有的接口：setFakeQf和getFakeQf。通过它们可以设置和查询HostBackend算子定点前向（数据类型非FP32的前向）是否以fake模式进行。</span>
+<span class="c1"># fakeQf模式下定点前向过程中不做截位和饱和操作，因此可以直接对比HostBackend的指令前向结果和adapted模型的前向结果</span>
+<span class="n">host_bknd</span> <span class="o">=</span> <span class="n">HostBackend</span><span class="o">.</span><span class="n">Init</span><span class="p">()</span>
+<span class="n">host_bknd</span><span class="o">.</span><span class="n">setFakeQf</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># 激活fakeQF模式</span>
+<span class="n">fakeQf</span> <span class="o">=</span> <span class="n">host_bknd</span><span class="o">.</span><span class="n">getFakeQf</span><span class="p">()</span> <span class="c1"># 查询fakeQF模式</span>
+<span class="k">if</span> <span class="n">fakeQf</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HostBackend fakeQf mode is on.&quot;</span><span class="p">)</span>
+<span class="n">host_bknd</span><span class="o">.</span><span class="n">setFakeQf</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># 关闭fakeQF模式</span>
+<span class="n">fakeQf</span> <span class="o">=</span> <span class="n">host_bknd</span><span class="o">.</span><span class="n">getFakeQf</span><span class="p">()</span> <span class="c1"># 查询fakeQF模式</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">fakeQf</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HostBackend fakeQf mode is off.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h4>2.2.3 Utils使用方法<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span># Image2Tensor使用方法
+# 读取image(opencv支持的图片类型，如png,jpg,jpng等）转为xrt::Tensor
+img_file = &quot;D:/Workspace/imgs/cat224.png&quot;;
+# 读取img_file路径上的图片转为Tensor，高和宽均为原图大小
+img_tensor_orig = Image2Tensor(img_file);
+# 读取img_file路径上的图片转为Tensor，height resize为300, width保留原图大小
+img_tensor_300_224 = Image2Tensor(img_file, 300, -1）
+# 读取img_file路径上的图片转为Tensor，height保留原图大小, width resize为300
+img_tensor_224_300 = Image2Tensor(img_file, -1, 300）
+
+# Ftmp2Tensor使用方法
+# 读取ftmp二进制文件转为xrt::Tensor
+ftmp_file = &quot;D:/Workspace/ftmp/value0.ftmp&quot;;
+# 读取ftmp_file路径下的ftmp二进制文件转为value对应的Tensor, value为xir的Value类数据
+# 根据value创建一个Tensor，把读取自ftmp_file的数据绑定到该Tensor上
+v_tensor = Ftmp2Tensor(ftmp_file, value);
+
+# Cast使用方法
+# 输出的Tensor是输入Tensor的数据类型(int8_t, float32等)和Layout(NHWC等)
+# 从input_dtype转为output_dtype的结果。需要注意，数据类型的转换需要由data_type提供normratio。
+#tensor_new = Cast(tensor_old, tensor_old_dtype, tensor_new_dtype, host_backend);
+
+# DecodeWithDecoder使用方法
+# 将数据文件使用用户提供的CustomDecoder模块解析为HostDevice上的Xrt Tensor
+#tensor_new = DecodeWithDecoder(dll_path, file_path, data_type);
+
+# TensorToDetectedBoxes
+# 用于把后处理算子输出Tensor转为检测框，后面会废弃，这里不多赘述。
+</pre></div>
+</div>
+</section>
+</section>
+<section id="hostbackend">
+<h3>2.3 其他HostBackend接口<a class="headerlink" href="#hostbackend" title="此标题的永久链接">#</a></h3>
+<p>除了上述几个接口之外，HostBackend还提供了若干其他接口，c++/Python接口使用方法和fakeQf模式类似，这里不再赘述，具体请参考API文档。</p>
+</section>
+</section>
+<section id="id6">
+<h2>三 算子说明<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
+<p>HostBackend主要实现内容是Icraft所有算子在HostBackend上的初始化、前向计算以及相关数据管理。
+目前实现了所有Icraft算子在HostDevice(CPU)上的实现，由于一些约束，部分计算尚未支持CUDA，在前向计算过程中CUDA不支持时会自动回落到Host上进行计算。
+下表是HostBackend支持的算子以及支持情况。</p>
+<table class="table">
+<colgroup>
+<col style="width: 10.4%" />
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 52.1%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>算子名称</p></th>
+<th class="head"><p>CPU支持</p></th>
+<th class="head"><p>CUDA支持</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>add</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>align_axis</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>avgpool</p></td>
+<td><p>√</p></td>
+<td><p>部分支持</p></td>
+<td><p>仅在左右pad相等且上下pad相等时支持CUDA</p></td>
+</tr>
+<tr class="row-odd"><td><p>batchnorm</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>cast</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>concat</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>conv2d</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>conv2d_transpose</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>copy</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>divide_scalar</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>elu</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>gelu</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hardop</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>hardop是硬件指令前向，暂不支持CUDA</p></td>
+</tr>
+<tr class="row-odd"><td><p>hardsigmoid</p></td>
+<td><p>√</p></td>
+<td><p>部分支持</p></td>
+<td><p>仅当alpha参数为3时支持CUDA</p></td>
+</tr>
+<tr class="row-even"><td><p>hardswish</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>input</p></td>
+<td><p>x 标记算子，无需计算</p></td>
+<td><p>x 标记算子，无需计算</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>layernorm</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>matmul</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>maxpool</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mish</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>multiply</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>multiyolo</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>属于后处理算子，不支持CUDA计算</p></td>
+</tr>
+<tr class="row-even"><td><p>output</p></td>
+<td><p>x 标记算子，无需计算</p></td>
+<td><p>x 标记算子，无需计算</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pad</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pixel_shuffle</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>prelu</p></td>
+<td><p>尚未支持定点前向</p></td>
+<td><p>尚未支持定点前向</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>prune_axis</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>region</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>后处理算子，不支持CUDA计算</p></td>
+</tr>
+<tr class="row-even"><td><p>relu</p></td>
+<td><p>√</p></td>
+<td><p>部分支持</p></td>
+<td><p>max_value != DBL_MAX 或 threshold != 0时不支持CUDA计算</p></td>
+</tr>
+<tr class="row-odd"><td><p>reorg</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>Darknet算子，暂不支持CUDA计算</p></td>
+</tr>
+<tr class="row-even"><td><p>reshape</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>resize</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>通过opencv实现，暂不支持CUDA计算</p></td>
+</tr>
+<tr class="row-even"><td><p>route</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>Darknet算子，暂不支持CUDA计算</p></td>
+</tr>
+<tr class="row-odd"><td><p>sigmoid</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>silu</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>slice</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>softmax</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>split</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>squeeze</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>只是维度信息的更新，不需要CUDA加速</p></td>
+</tr>
+<tr class="row-odd"><td><p>ssd_output</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>后处理算子，暂不支持CUDA计算</p></td>
+</tr>
+<tr class="row-even"><td><p>swap_order</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>tanh</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>transpose</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>upsample</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>yolo</p></td>
+<td><p>√</p></td>
+<td><p>x</p></td>
+<td><p>后处理算子，暂不支持CUDA计算</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="errorcode">
+<h2>四 错误码 errorcode<a class="headerlink" href="#errorcode" title="此标题的永久链接">#</a></h2>
+<section id="id7">
+<h3>4.1 错误码说明<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<p><strong>12000:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">argueparse解析报错</span></code></p></li>
+</ul>
+<p><strong>12001:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">缺少必须参数</span></code></p></li>
+</ul>
+<p><strong>12002:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">文件或路径不存在</span></code></p></li>
+</ul>
+<p><strong>12003:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数超出范围、格式错误</span></code></p></li>
+</ul>
+<p><strong>12004-12009:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">预留错误码</span></code></p></li>
+</ul>
+<p><strong>12010:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Dll加载相关错误</span></code></p></li>
+</ul>
+<p><strong>12011:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数类型或值错误</span></code></p></li>
+</ul>
+<p><strong>12012:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">文件加载失败</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="license">
+<h2>五 License<a class="headerlink" href="#license" title="此标题的永久链接">#</a></h2>
+<p>This project includes the following third-party libraries:</p>
+<ul class="simple">
+<li><p>[MNN](<a class="github reference external" href="https://github.com/alibaba/MNN">alibaba/MNN</a>): Licensed under the Apache License 2.0. See the LICENSE file in the third-party library.</p></li>
+<li><p>[Libtorch](<a class="github reference external" href="https://github.com/pytorch/pytorch">pytorch/pytorch</a>): Licensed under the BSD-style. See the LICENSE file in the third-party library.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h2>六 索引<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_cppapi/api_root.html">C++ API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_cppapi/api_root.html#full-api">Full API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/host_backend.html">Python API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.Cast.html">host_backend.Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.DecodeWithDecoder.html">host_backend.DecodeWithDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.Ftmp2Tensor.html">host_backend.Ftmp2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.Image2Tensor.html">host_backend.Image2Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.CudaDevice.html">host_backend.CudaDevice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.CudaMemRegion.html">host_backend.CudaMemRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/host_backend.HostBackend.html">host_backend.HostBackend</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="_cppapi/api_root.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 简介</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二 接口说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">2.1 C++接口使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hostdevicecudadevicesession">2.1.1 创建基于HostDevice或CudaDevice的Session</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fakeqf">2.1.2 fakeQf模式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#utils">2.1.3 Utils使用方法</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python">2.2 Python接口使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2.1 创建基于HostDevice或CudaDevice的Session</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2.2 fakeQf模式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2.3 Utils使用方法</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hostbackend">2.3 其他HostBackend接口</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">三 算子说明</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#errorcode">四 错误码 errorcode</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.1 错误码说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">五 License</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">六 索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： linzhengnan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,546 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft SocketQL100AIUDevice &#8212; Icraft SocketQL100AIUDevice 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft SocketQL100AIUDevice 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft SocketQL100AIUDevice</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 设备资源</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#url">二 URL和参数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">三 复位</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">四 检查</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">五 状态</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">六 版本</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">七 其他</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">三 索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-socketql100aiudevice">
+<h1>Icraft SocketQL100AIUDevice<a class="headerlink" href="#icraft-socketql100aiudevice" title="此标题的永久链接">#</a></h1>
+<p>Icraft XRT是统一前向后的运行时，XRT把不同的计算资源抽象为不同的后端，使得Icraft中的网络能够在任意的计算资源上完成计算。
+由于计算需要在具体的设备上进行，因此XRT使用数据结构 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 抽象了具体的硬件设备，比如一个板卡。</p>
+<p>一个 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 中包含若干个 <code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MemRegion</span></code> ，其意义分别如下所示：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MemRegion</span></code>： 表示设备上的一块独立的内存区域，不同的内存区域的内存访问实现方式可能不相同，比如布衣架构设备上的PLDDR和交换空间的区域。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RegRegion</span></code>： 表示设备上的一块独立的寄存器区域，不同的寄存器区域的内存访问实现方式可能不相同。</p></li>
+</ul>
+<p>Icraft中，设备设备采用插件式的方式进行开发，并使用URL进行加载。每个设备都有特定的URL，其规则如下：</p>
+<p><code class="docutils literal notranslate"><span class="pre">PROTOCOL://DEVICE[&#64;IP:PORT][?key=value&amp;...]</span></code></p>
+<p>其中Protocol表示的是设备数据传输的接口或协议，如AXI、PCIE和Socket等；Device表示的是设备的名称，比如7100aiu等；中括号表示可选项，当Protocol为Socket时，IP和PORT分别表示目标设备的地址和端口；而?后的键值对序列则表示传给Device的参数。</p>
+<section id="id1">
+<h2>一 设备资源<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>SocketQL100AIUDevice实现了通过SOCKET接口对QL100T开发板上与NPU（布衣架构）相关的资源的管理与控制，具体包含以下资源：</p>
+<ul class="simple">
+<li><p>MemRegion <code class="docutils literal notranslate"><span class="pre">udma</span></code>:  表示使用一块系统的CMA空间实现的交换空间，用于操作系统和PL DDR之间的数据交换。</p></li>
+<li><p>MemRegion <code class="docutils literal notranslate"><span class="pre">plddr</span></code>: 表示NPU和PL所共同使用的PL DDR内存。</p></li>
+<li><p>RegRegion <code class="docutils literal notranslate"><span class="pre">npu</span></code>:   表示NPU上的寄存器区域。</p></li>
+</ul>
+</section>
+<section id="url">
+<h2>二 URL和参数<a class="headerlink" href="#url" title="此标题的永久链接">#</a></h2>
+<p>SocketQL100AIUDevice的设备URL如下所示：</p>
+<p><code class="docutils literal notranslate"><span class="pre">socket://ql100aiu[&#64;IP:PORT][?key=value&amp;...]</span></code></p>
+<p>其中?后的键值对序列表示传给Device的参数，该设备支持的参数如下：</p>
+<ul class="simple">
+<li><p>npu: 表示NPU被挂载在GP0的起始地址，默认为0x40000000，即GP0接口的起始地址</p></li>
+<li><p>dma: 表示DMA被挂载在GP1的起始地址，默认为0x80000000，即GP1接口的起始地址</p></li>
+</ul>
+<p>以上参数主要是用于做系统集成时，如果不能把NPU和DMA放到GP0和GP1的起始位置，则需要将Device的URL参数设置到其真正的位置，以保证Device能够正确的访问以上模块的寄存器。需要注意的是，URL参数中的npu和dma永远需要指向NPU和DMA的起始位置。比如URL为 <code class="docutils literal notranslate"><span class="pre">socket://ql100aiu&#64;192.168.125.148:9981?npu=0x43c00000&amp;dma=0x83c00000</span></code>，则必须保证NPU被挂载到了0x43c00000而且DMA被挂载到了0x83c00000。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">RegRegion</span></code> 的 <code class="docutils literal notranslate"><span class="pre">read</span></code> 和 <code class="docutils literal notranslate"><span class="pre">write</span></code> 方法有 <code class="docutils literal notranslate"><span class="pre">relative</span></code> 参数，其默认为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。当 <code class="docutils literal notranslate"><span class="pre">relative</span></code> 为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 时，将以相对地址来访问寄存器。当地址为 <code class="docutils literal notranslate"><span class="pre">0x0_XXXX_XXXX</span></code> （X表示16进制占位符）时，访问的是相对URL参数中GP0的地址；当地址为 <code class="docutils literal notranslate"><span class="pre">0x1_XXXX_XXXX</span></code> 时，访问的时相对URL参数中GP1的地址。比如， <code class="docutils literal notranslate"><span class="pre">regregion.read(0x04,</span> <span class="pre">true)</span></code> 访问的是 <code class="docutils literal notranslate"><span class="pre">0x40000004</span></code> ， <code class="docutils literal notranslate"><span class="pre">regregion.read(0x100000004,</span> <span class="pre">true)</span></code> 访问的是 <code class="docutils literal notranslate"><span class="pre">0x80000004</span></code> 。</p>
+</div>
+<p>可以通过 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Open</span></code> 方法来打开设备，获取 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 对象：</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">C++</span><a class="headerlink" href="#id8" title="此代码块的永久链接">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xrt</span><span class="p">;</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">// 打开设备，URL不带任何参数，默认NPU挂载在0x40000000，DMA挂载在0x80000000</span>
+<span class="linenos">4</span><span class="k">auto</span><span class="w"> </span><span class="n">device1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981&quot;</span><span class="p">);</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">// 打开设备，URL指定参数，NPU被挂载到了0x43c00000而且DMA被挂载到了0x83c00000</span>
+<span class="linenos">7</span><span class="k">auto</span><span class="w"> </span><span class="n">device2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x43c00000&amp;dma=0x83c00000&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Python</span><a class="headerlink" href="#id9" title="此代码块的永久链接">#</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1"># 打开设备，URL不带任何参数，默认NPU挂载在0x40000000，DMA挂载在0x80000000</span>
+<span class="linenos">4</span><span class="n">device1</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981&quot;</span><span class="p">);</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1"># 打开设备，URL指定参数，NPU被挂载到了0x43c00000而且DMA被挂载到了0x83c00000</span>
+<span class="linenos">7</span><span class="n">device2</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x43c00000&amp;dma=0x83c00000&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>三 复位<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Device</span></code> 提供了 <code class="docutils literal notranslate"><span class="pre">reset</span></code> 方法来对设备进行复位，该方法接受一个参数 <code class="docutils literal notranslate"><span class="pre">level</span></code>，表示复位等级。
+不同设备对复位等级有着不同的实现，SocketQL100AIUDevice的复位等级如下：</p>
+<ul class="simple">
+<li><p>0 : 复位全部状态，包括FPGA, NPU</p></li>
+<li><p>1 : 只复位NPU的计数状态</p></li>
+<li><p>其他： 无效值，不会做任何操作</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>四 检查<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Device</span></code> 提供了 <code class="docutils literal notranslate"><span class="pre">check</span></code> 方法来对设备进行检查，该方法接受一个参数 <code class="docutils literal notranslate"><span class="pre">level</span></code>，表示检查等级。
+不同设备对检查等级有着不同的实现，SocketQL100AIUDevice的检查等级如下：</p>
+<ul class="simple">
+<li><p>0 : 检查全部功能，包括寄存器读写和DMA读写</p></li>
+<li><p>1 : 只检查寄存器读写</p></li>
+<li><p>2 : 只检查DMA读写</p></li>
+<li><p>其他： 无效值，不会做任何操作， 返回 <code class="docutils literal notranslate"><span class="pre">false</span></code></p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>五 状态<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Device</span></code> 提供了 <code class="docutils literal notranslate"><span class="pre">showStatus</span></code> 方法来显示设备的状态，该方法接受一个参数 <code class="docutils literal notranslate"><span class="pre">level</span></code>，表示显示等级。
+不同设备对状态显示等级有着不同的实现，SocketQL100AIUDevice的显示等级如下：</p>
+<ul class="simple">
+<li><p>0 : 显示全部信息，包括状态寄存器、计数寄存器和错误寄存器</p></li>
+<li><p>1 : 只显示状态寄存器</p></li>
+<li><p>2 : 只显示计数寄存器</p></li>
+<li><p>3 : 只显示错误寄存器</p></li>
+<li><p>其他： 无效值，不会做任何操作</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2>六 版本<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Device</span></code> 提供了 <code class="docutils literal notranslate"><span class="pre">version</span></code> 方法来显示设备的版本。
+SocketQL100AIUDevice的版本信息如下：</p>
+<ul class="simple">
+<li><p>device : 设备的版本，即系统位流的版本，比如 <code class="docutils literal notranslate"><span class="pre">101844d2</span></code></p></li>
+<li><p>icore  : NPU的版本，即架构设计的版本，比如 <code class="docutils literal notranslate"><span class="pre">FMSHBYV1-20200903</span></code></p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>七 其他<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
+<p>SocketQL100AIUDevice派生自 <code class="docutils literal notranslate"><span class="pre">icraft::xrt::BuyiDevice</span></code> ，因此除了以上基本的Device接口外，还实现了 <code class="docutils literal notranslate"><span class="pre">BuyiDevice</span></code> 中定义的对布衣架构的NPU进行控制的接口。</p>
+<p>设备打开后获取到的是基类 <code class="docutils literal notranslate"><span class="pre">Device</span></code> 类型的对象，如果要调用 <code class="docutils literal notranslate"><span class="pre">BuyiDevice</span></code> 的接口，还需要进行转换：</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">C++</span><a class="headerlink" href="#id10" title="此代码块的永久链接">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xrt</span><span class="p">;</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">// 打开设备，URL不带任何参数，默认NPU挂载在0x40000000，DMA挂载在0x80000000</span>
+<span class="linenos">4</span><span class="k">auto</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981&quot;</span><span class="p">);</span>
+<span class="linenos">5</span><span class="c1">// 转为子类 BuyiDevice</span>
+<span class="linenos">6</span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiDevice</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span><span class="c1">// 调用getRowsCol获取使能的MPE的行数和列数</span>
+<span class="linenos">9</span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">cols</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buyi_device</span><span class="p">.</span><span class="n">getRowsCols</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Python</span><a class="headerlink" href="#id11" title="此代码块的永久链接">#</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1"># 打开设备，URL不带任何参数，默认NPU挂载在0x40000000，DMA挂载在0x80000000</span>
+<span class="linenos">4</span><span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981&quot;</span><span class="p">);</span>
+<span class="linenos">5</span><span class="c1"># 转为子类 BuyiDevice</span>
+<span class="linenos">6</span><span class="n">buyi_device</span> <span class="o">=</span> <span class="n">BuyiDevice</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span><span class="c1"># 调用getRowsCol获取使能的MPE的行数和列数</span>
+<span class="linenos">9</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">buyi_device</span><span class="o">.</span><span class="n">getRowsCols</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>更多  <code class="docutils literal notranslate"><span class="pre">BuyiDevice</span></code> 的接口以及更详细的用法请参考相应的API说明。</p>
+</section>
+<section id="id7">
+<h2>三 索引<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 设备资源</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#url">二 URL和参数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">三 复位</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">四 检查</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">五 状态</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">六 版本</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">七 其他</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">三 索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： tangxiao
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

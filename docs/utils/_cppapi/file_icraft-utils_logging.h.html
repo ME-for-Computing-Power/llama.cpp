@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>File logging.h &#8212; Icraft Utils 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/file_icraft-utils_logging.h';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Utils 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/file_icraft-utils_logging.h.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>File logging.h</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-icraft-utils-logging-h">Definition (<code class="docutils literal notranslate"><span class="pre">icraft-utils\logging.h</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#includes">Includes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#included-by">Included By</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#namespaces">Namespaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enums">Enums</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defines">Defines</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="file-logging-h">
+<span id="file-icraft-utils-logging-h"></span><h1>File logging.h<a class="headerlink" href="#file-logging-h" title="此标题的永久链接">#</a></h1>
+<p>↰ <a class="reference internal" href="dir_icraft-utils.html#dir-icraft-utils"><span class="std std-ref">Parent directory</span></a> (<code class="docutils literal notranslate"><span class="pre">icraft-utils</span></code>)</p>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#definition-icraft-utils-logging-h" id="id1">Definition (<code class="docutils literal notranslate"><span class="pre">icraft-utils\logging.h</span></code>)</a></p></li>
+<li><p><a class="reference internal" href="#includes" id="id2">Includes</a></p></li>
+<li><p><a class="reference internal" href="#included-by" id="id3">Included By</a></p></li>
+<li><p><a class="reference internal" href="#namespaces" id="id4">Namespaces</a></p></li>
+<li><p><a class="reference internal" href="#classes" id="id5">Classes</a></p></li>
+<li><p><a class="reference internal" href="#enums" id="id6">Enums</a></p></li>
+<li><p><a class="reference internal" href="#defines" id="id7">Defines</a></p></li>
+</ul>
+</nav>
+<section id="definition-icraft-utils-logging-h">
+<h2>Definition (<code class="docutils literal notranslate"><span class="pre">icraft-utils\logging.h</span></code>)<a class="headerlink" href="#definition-icraft-utils-logging-h" title="此标题的永久链接">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="program_listing_file_icraft-utils_logging.h.html">Program Listing for File logging.h</a></li>
+</ul>
+</div>
+</section>
+<section id="includes">
+<h2>Includes<a class="headerlink" href="#includes" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chrono</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cstdlib</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filesystem</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fmt/core.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fstream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">icraft-utils/dllexport.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iostream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spdlog/sinks/ansicolor_sink.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spdlog/sinks/basic_file_sink.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spdlog/spdlog.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sstream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stdexcept</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> (<a class="reference internal" href="file_icraft-utils_string.h.html#file-icraft-utils-string-h"><span class="std std-ref">File string.h</span></a>)</p></li>
+</ul>
+</section>
+<section id="included-by">
+<h2>Included By<a class="headerlink" href="#included-by" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="file_icraft-utils_progress.h.html#file-icraft-utils-progress-h"><span class="std std-ref">File progress.h</span></a></p></li>
+</ul>
+</section>
+<section id="namespaces">
+<h2>Namespaces<a class="headerlink" href="#namespaces" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="namespace_icraft.html#namespace-icraft"><span class="std std-ref">Namespace icraft</span></a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="classicraft_1_1_back_trace.html#exhale-class-classicraft-1-1-back-trace"><span class="std std-ref">Class BackTrace</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_basic_sink.html#exhale-class-classicraft-1-1-basic-sink"><span class="std std-ref">Class BasicSink</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_error.html#exhale-class-classicraft-1-1-error"><span class="std std-ref">Class Error</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_file_sink.html#exhale-class-classicraft-1-1-file-sink"><span class="std std-ref">Class FileSink</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_internal_error.html#exhale-class-classicraft-1-1-internal-error"><span class="std std-ref">Class InternalError</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_log_color.html#exhale-class-classicraft-1-1-log-color"><span class="std std-ref">Class LogColor</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_logger.html#exhale-class-classicraft-1-1-logger"><span class="std std-ref">Class Logger</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_stderr_sink.html#exhale-class-classicraft-1-1-stderr-sink"><span class="std std-ref">Class StderrSink</span></a></p></li>
+<li><p><a class="reference internal" href="classicraft_1_1_stdout_sink.html#exhale-class-classicraft-1-1-stdout-sink"><span class="std std-ref">Class StdoutSink</span></a></p></li>
+</ul>
+</section>
+<section id="enums">
+<h2>Enums<a class="headerlink" href="#enums" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="enum_logging_8h_1a28a5006d884ff9c53f42abaa398b08cf.html#exhale-enum-logging-8h-1a28a5006d884ff9c53f42abaa398b08cf"><span class="std std-ref">Enum ColorName</span></a></p></li>
+<li><p><a class="reference internal" href="enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#exhale-enum-logging-8h-1aca1fd1d8935433e6ba2e3918214e07f9"><span class="std std-ref">Enum LogLevel</span></a></p></li>
+</ul>
+</section>
+<section id="defines">
+<h2>Defines<a class="headerlink" href="#defines" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="define_logging_8h_1a910ff16eb80dee5af0a8dfc474429c48.html#exhale-define-logging-8h-1a910ff16eb80dee5af0a8dfc474429c48"><span class="std std-ref">Define ICRAFT_CHECK</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1ad329b75790225efee1757acc89a3e4bf.html#exhale-define-logging-8h-1ad329b75790225efee1757acc89a3e4bf"><span class="std std-ref">Define ICRAFT_CHECK_BINARY_OP</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1a8b26bd8fdc90b70d2e86821124f84a76.html#exhale-define-logging-8h-1a8b26bd8fdc90b70d2e86821124f84a76"><span class="std std-ref">Define ICRAFT_CHECK_EQ</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1a22c88ec8749c96c5d2f8c895bcc41cb1.html#exhale-define-logging-8h-1a22c88ec8749c96c5d2f8c895bcc41cb1"><span class="std std-ref">Define ICRAFT_CHECK_GE</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1a4ad775af6bf58d24abd1a747822016e0.html#exhale-define-logging-8h-1a4ad775af6bf58d24abd1a747822016e0"><span class="std std-ref">Define ICRAFT_CHECK_GT</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1a6e13b7532cbc77127ebab3d5e09c559b.html#exhale-define-logging-8h-1a6e13b7532cbc77127ebab3d5e09c559b"><span class="std std-ref">Define ICRAFT_CHECK_LE</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1abff1c512a5032bf72b34d8b516e4efcb.html#exhale-define-logging-8h-1abff1c512a5032bf72b34d8b516e4efcb"><span class="std std-ref">Define ICRAFT_CHECK_LT</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1ae7e17f1ea192ef0dee1b03889ab1abac.html#exhale-define-logging-8h-1ae7e17f1ea192ef0dee1b03889ab1abac"><span class="std std-ref">Define ICRAFT_CHECK_NE</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1ae0fd6d30f78d095768ea32ba785374e4.html#exhale-define-logging-8h-1ae0fd6d30f78d095768ea32ba785374e4"><span class="std std-ref">Define ICRAFT_CONSOLE_USE_UTF8</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1a400915d5fb2a8cbdf3fc69b4f68618d4.html#exhale-define-logging-8h-1a400915d5fb2a8cbdf3fc69b4f68618d4"><span class="std std-ref">Define ICRAFT_LOG</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1a9ffd66dc98c7c8cca81ce3578ceae11d.html#exhale-define-logging-8h-1a9ffd66dc98c7c8cca81ce3578ceae11d"><span class="std std-ref">Define ICRAFT_SET_LOG_LEVEL</span></a></p></li>
+<li><p><a class="reference internal" href="define_logging_8h_1ab7f45c684305cc7c9c6a031c24da7c6d.html#exhale-define-logging-8h-1ab7f45c684305cc7c9c6a031c24da7c6d"><span class="std std-ref">Define ICRAFT_TRY</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-icraft-utils-logging-h">Definition (<code class="docutils literal notranslate"><span class="pre">icraft-utils\logging.h</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#includes">Includes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#included-by">Included By</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#namespaces">Namespaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enums">Enums</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defines">Defines</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

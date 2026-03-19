@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>索引 &#8212; Icraft Quantizer 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="索引" href="#" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Quantizer 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+
+<h1 id="index">索引</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/function_buyi__adapt_8h_1afa964ca346f14c1c5313d842b6dec626.html#_CPPv417adaptChannelScaleRNSt6vectorINSt4pairIiiEEEERNSt6vectorINSt4pairIiiEEEENSt6vectorIiEEiiRN6icraft2qt15QuantizerLoggerE">adaptChannelScale（C++ function）</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/function_buyi__adapt_8h_1ad7e2cb7989ecd4d4828acdb7d7545c32.html#_CPPv415adaptDepthScaleNSt6vectorIdEENSt6vectorIdEEiNSt6stringERN6icraft2qt15QuantizerLoggerE">adaptDepthScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/function_buyi__adapt_8h_1a266d79d882434574966edfa4c067d893.html#_CPPv410adaptScaleNSt6vectorIdEENSt6vectorIdEEiNSt6stringERN6icraft2qt15QuantizerLoggerE">adaptScale（C++ function）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/define_dllexport_8h_1a05ff738fe4c81e0087ac8cc2b1190cf5.html#c.BQ_API">BQ_API（C macro）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_check.html#_CPPv4I0EN9BuyiCheck9BuyiCheckE1T">BuyiCheck::BuyiCheck（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_check.html#_CPPv49BuyiCheck">BuyiCheck（C++ class）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_normalize.html#_CPPv4I0EN13BuyiNormalize13BuyiNormalizeE1T">BuyiNormalize::BuyiNormalize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_normalize.html#_CPPv413BuyiNormalize">BuyiNormalize（C++ class）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_normratio.html#_CPPv4I0EN13BuyiNormratio13BuyiNormratioE1T">BuyiNormratio::BuyiNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_normratio.html#_CPPv413BuyiNormratio">BuyiNormratio（C++ class）</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/class_buyi_quantize.html#_CPPv4I0EN12BuyiQuantize12BuyiQuantizeE1T">BuyiQuantize::BuyiQuantize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_quantizer.html#_CPPv4N13BuyiQuantizer5checkERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">BuyiQuantizer::check（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_quantizer.html#_CPPv4N13BuyiQuantizer9normalizeERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">BuyiQuantizer::normalize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_quantizer.html#_CPPv4N13BuyiQuantizer9normratioERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">BuyiQuantizer::normratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_quantizer.html#_CPPv4N13BuyiQuantizer8quantizeERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">BuyiQuantizer::quantize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_quantizer.html#_CPPv413BuyiQuantizer">BuyiQuantizer（C++ class）</a>
+</li>
+      <li><a href="_cppapi/class_buyi_quantize.html#_CPPv412BuyiQuantize">BuyiQuantize（C++ class）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/typedef_quantizer__utils_8h_1adeea4e0cf55e08c21c764f9458c9e3dd.html#_CPPv46GetDll">GetDll（C++ type）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer12adjustScaleCEdiii">icraft::qt::Quantizer::adjustScaleC（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer11adjustScaleEdiii">icraft::qt::Quantizer::adjustScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer14calcBNormratioERKN6icraft3xir9OperationEb">icraft::qt::Quantizer::calcBNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13calcNormratioERKN6icraft3xir9OperationE">icraft::qt::Quantizer::calcNormratio（C++ function）</a>, <a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13calcNormratioERN6icraft3xir7NetworkE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer18calibrateByForwardERN6icraft3xir7NetworkE">icraft::qt::Quantizer::calibrateByForward（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer15calibrateByFtmpERN6icraft3xir7NetworkE">icraft::qt::Quantizer::calibrateByFtmp（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer9calibrateERN6icraft3xir7NetworkE">icraft::qt::Quantizer::calibrate（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13castInNetworkERN6icraft3xir7NetworkENSt3mapIiNSt6stringEEE">icraft::qt::Quantizer::castInNetwork（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer12catNormratioERKN6icraft3xir9OperationEi">icraft::qt::Quantizer::catNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer22changeNetworkInputNormERN6icraft3xir7NetworkE">icraft::qt::Quantizer::changeNetworkInputNorm（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer5checkERN6icraft3xir7NetworkE">icraft::qt::Quantizer::check（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer12dtype_value_E">icraft::qt::Quantizer::dtype_value_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer6dtype_E">icraft::qt::Quantizer::dtype_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer15dumpFtmpLogFileEv">icraft::qt::Quantizer::dumpFtmpLogFile（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer6dumpJRERN6icraft3xir7NetworkERNSt6stringENSt6stringE">icraft::qt::Quantizer::dumpJR（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer14dumpRawLogFileEv">icraft::qt::Quantizer::dumpRawLogFile（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer15dumpSmoothScaleEv">icraft::qt::Quantizer::dumpSmoothScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer7FtmpMapE">icraft::qt::Quantizer::FtmpMap（C++ type）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10getBiasSatERKN6icraft3xir9OperationE">icraft::qt::Quantizer::getBiasSat（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer9getLoggerEv">icraft::qt::Quantizer::getLogger（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10getOptionsEv">icraft::qt::Quantizer::getOptions（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer8getScaleENSt6vectorIfEEi">icraft::qt::Quantizer::getScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer15initInputTensorERKN6icraft3xir7NetworkE">icraft::qt::Quantizer::initInputTensor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10insertCastERiRN6icraft3xir7NetworkERKN6icraft3xir5ValueERKN6icraft3xir9OperationEiNSt6stringENSt6stringENSt6vectorI7int64_tEEN6icraft3xir6LayoutENSt6stringE">icraft::qt::Quantizer::insertCast（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer8loadFtmpEN6icraft3xir9OperationENSt6vectorINSt6stringEEE">icraft::qt::Quantizer::loadFtmp（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer7logger_E">icraft::qt::Quantizer::logger_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE">icraft::qt::Quantizer::makeQDtype（C++ function）</a>, <a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10makeQDtypeEN6icraft3xir5ArrayI7int64_tEEN6icraft3xir6LayoutEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13measureAScaleERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi">icraft::qt::Quantizer::measureAScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13measureOnAxisERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEi">icraft::qt::Quantizer::measureOnAxis（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer14measureOnGroupERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationEii">icraft::qt::Quantizer::measureOnGroup（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer15measureOnTensorERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationE">icraft::qt::Quantizer::measureOnTensor（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13measureWeightERKN6icraft3xir5ValueENSt6stringERKN16QuantizerOptions10SaturationERKi">icraft::qt::Quantizer::measureWeight（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer7measureER7FtmpMapN16QuantizerOptions10SaturationE">icraft::qt::Quantizer::measure（C++ function）</a>, <a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer7measureERNSt6vectorIN6icraft3xrt6TensorEEENSt6vectorIiEERN16QuantizerOptions10SaturationENSt6stringE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer9normalizeERN6icraft3xir7NetworkE">icraft::qt::Quantizer::normalize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer12optimizeCastERN6icraft3xir7NetworkE">icraft::qt::Quantizer::optimizeCast（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer8options_E">icraft::qt::Quantizer::options_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer19passChangedNormDownEKN6icraft3xir9OperationE">icraft::qt::Quantizer::passChangedNormDown（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer17passChangedNormUpEKN6icraft3xir9OperationEi">icraft::qt::Quantizer::passChangedNormUp（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13passNormratioERKN6icraft3xir9OperationE">icraft::qt::Quantizer::passNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10patchOnActERN6icraft3xir7NetworkE">icraft::qt::Quantizer::patchOnAct（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer4per_E">icraft::qt::Quantizer::per_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer12quantizeFtmpERKN6icraft3xir9OperationE">icraft::qt::Quantizer::quantizeFtmp（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorINSt4pairIiiEEEENSt6vectorIdEENSt6vectorIdEE">icraft::qt::Quantizer::quantizeParams（C++ function）</a>, <a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer14quantizeParamsERN6icraft3xir5ValueEiNSt6vectorINSt4pairIiiEEEENSt6vectorIdEE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer14quantizertool_E">icraft::qt::Quantizer::quantizertool_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer9QuantizerERK16QuantizerOptionsRKN6icraft3xir7NetworkE">icraft::qt::Quantizer::Quantizer（C++ function）</a>, <a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer9QuantizerERKN6icraft3xir7NetworkE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer8quantizeEPf6size_tiiNSt6vectorIdEE">icraft::qt::Quantizer::quantize（C++ function）</a>, <a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer8quantizeERN6icraft3xir7NetworkE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer16reshapeNormratioERKN6icraft3xir9OperationE">icraft::qt::Quantizer::reshapeNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer11saturation_E">icraft::qt::Quantizer::saturation_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13setAutoConfigERKN6icraft3xir7NetworkERK16QuantizerOptions">icraft::qt::Quantizer::setAutoConfig（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10setOptionsERK16QuantizerOptions">icraft::qt::Quantizer::setOptions（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer18setQuantizerConfigERK16QuantizerOptionsRKN6icraft3xir7NetworkE">icraft::qt::Quantizer::setQuantizerConfig（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer16setQuantizerToolERK16QuantizerOptions">icraft::qt::Quantizer::setQuantizerTool（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer13smoothNetworkERN6icraft3xir7NetworkE">icraft::qt::Quantizer::smoothNetwork（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer10transInputERN6icraft3xir7NetworkENSt6vectorIiEE">icraft::qt::Quantizer::transInput（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9Quantizer12value_range_E">icraft::qt::Quantizer::value_range_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8a_scale_E">icraft::qt::QuantizerLogger::a_scale_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger9cast_typeE">icraft::qt::QuantizerLogger::cast_type（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger13clearFtmpInfoEv">icraft::qt::QuantizerLogger::clearFtmpInfo（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger12dtype_value_E">icraft::qt::QuantizerLogger::dtype_value_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger6dtype_E">icraft::qt::QuantizerLogger::dtype_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger13dumpFtmpSheetEv">icraft::qt::QuantizerLogger::dumpFtmpSheet（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger12dumpRawSheetEv">icraft::qt::QuantizerLogger::dumpRawSheet（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger15dumpSmoothScaleEv">icraft::qt::QuantizerLogger::dumpSmoothScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo4dimsE">icraft::qt::QuantizerLogger::FtmpInfo::dims（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo4dimsE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3expE">icraft::qt::QuantizerLogger::FtmpInfo::exp（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3expE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3maxE">icraft::qt::QuantizerLogger::FtmpInfo::max（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3maxE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo9normratioE">icraft::qt::QuantizerLogger::FtmpInfo::normratio（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo9normratioE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger8FtmpInfocvNSt6stringEEv">icraft::qt::QuantizerLogger::FtmpInfo::operator std::string（C++ function）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4NK6icraft2qt15QuantizerLogger8FtmpInfocvNSt6stringEEv">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3satE">icraft::qt::QuantizerLogger::FtmpInfo::sat（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3satE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo5scaleE">icraft::qt::QuantizerLogger::FtmpInfo::scale（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo5scaleE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfoE">icraft::qt::QuantizerLogger::FtmpInfo（C++ struct）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfoE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger11getFtmpInfoERKi">icraft::qt::QuantizerLogger::getFtmpInfo（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger10getFtmpMaxERKi">icraft::qt::QuantizerLogger::getFtmpMax（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger16getFtmpNormratioERKi">icraft::qt::QuantizerLogger::getFtmpNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger10getFtmpSatERKi">icraft::qt::QuantizerLogger::getFtmpSat（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger10getRawInfoERKi">icraft::qt::QuantizerLogger::getRawInfo（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger9getRawMaxERKi">icraft::qt::QuantizerLogger::getRawMax（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger9getRawSatERKi">icraft::qt::QuantizerLogger::getRawSat（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger5info_E">icraft::qt::QuantizerLogger::info_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger9isVerboseEv">icraft::qt::QuantizerLogger::isVerbose（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger13loadFtmpSheetERKNSt6stringE">icraft::qt::QuantizerLogger::loadFtmpSheet（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger12loadRawSheetERKNSt6stringE">icraft::qt::QuantizerLogger::loadRawSheet（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger13logAvgFtmpMaxERKiRKNSt6vectorIfEERKi">icraft::qt::QuantizerLogger::logAvgFtmpMax（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger13logAvgFtmpSatERKiRKNSt6vectorIfEERKi">icraft::qt::QuantizerLogger::logAvgFtmpSat（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger11logFtmpDimsERKiRKNSt6vectorI7int64_tEE">icraft::qt::QuantizerLogger::logFtmpDims（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10logFtmpExpERKiRKi">icraft::qt::QuantizerLogger::logFtmpExp（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger11logFtmpInfoERKiRK8FtmpInfo">icraft::qt::QuantizerLogger::logFtmpInfo（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10logFtmpMaxERKiRKNSt6vectorIfEE">icraft::qt::QuantizerLogger::logFtmpMax（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger16logFtmpNormratioERKiRKNSt6vectorIdEE">icraft::qt::QuantizerLogger::logFtmpNormratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10logFtmpSatERKiRKNSt6vectorIfEE">icraft::qt::QuantizerLogger::logFtmpSat（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger12logFtmpScaleERKiRKf">icraft::qt::QuantizerLogger::logFtmpScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10logRawDimsERKiRKNSt6vectorI7int64_tEE">icraft::qt::QuantizerLogger::logRawDims（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger9logRawExpERKiRKNSt6vectorI7int64_tEE">icraft::qt::QuantizerLogger::logRawExp（C++ function）</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10logRawInfoERKiRK7RawInfo">icraft::qt::QuantizerLogger::logRawInfo（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger9logRawMaxERKiRKNSt6vectorIfEE">icraft::qt::QuantizerLogger::logRawMax（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger9logRawSatERKiRKNSt6vectorIfEE">icraft::qt::QuantizerLogger::logRawSat（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger11logRawScaleERKiRKNSt6vectorIdEE">icraft::qt::QuantizerLogger::logRawScale（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger15QuantizerLoggerEv">icraft::qt::QuantizerLogger::QuantizerLogger（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo4dimsE">icraft::qt::QuantizerLogger::RawInfo::dims（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo4dimsE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3expE">icraft::qt::QuantizerLogger::RawInfo::exp（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3expE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3maxE">icraft::qt::QuantizerLogger::RawInfo::max（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3maxE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4NK6icraft2qt15QuantizerLogger7RawInfocvNSt6stringEEv">icraft::qt::QuantizerLogger::RawInfo::operator std::string（C++ function）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4NK6icraft2qt15QuantizerLogger7RawInfocvNSt6stringEEv">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3satE">icraft::qt::QuantizerLogger::RawInfo::sat（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3satE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo5scaleE">icraft::qt::QuantizerLogger::RawInfo::scale（C++ member）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo5scaleE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfoE">icraft::qt::QuantizerLogger::RawInfo（C++ struct）</a>, <a href="_cppapi/structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#_CPPv4N6icraft2qt15QuantizerLogger7RawInfoE">[1]</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger12setDebugInfoEN6icraft6LoggerE">icraft::qt::QuantizerLogger::setDebugInfo（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10setLogPathERKNSt10filesystem4pathENSt6stringE">icraft::qt::QuantizerLogger::setLogPath（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger10setVerboseEb">icraft::qt::QuantizerLogger::setVerbose（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger9sm_scale_E">icraft::qt::QuantizerLogger::sm_scale_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLogger8w_scale_E">icraft::qt::QuantizerLogger::w_scale_（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_logger.html#_CPPv4N6icraft2qt15QuantizerLoggerE">icraft::qt::QuantizerLogger（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions8auto_mixE">icraft::qt::QuantizerOptions::auto_mix（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions4axisE">icraft::qt::QuantizerOptions::axis（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions5batchE">icraft::qt::QuantizerOptions::batch（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions11before_reluE">icraft::qt::QuantizerOptions::before_relu（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions7bin_numE">icraft::qt::QuantizerOptions::bin_num（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions4bitsE">icraft::qt::QuantizerOptions::bits（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions5debugE">icraft::qt::QuantizerOptions::debug（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions10decode_dllE">icraft::qt::QuantizerOptions::decode_dll（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions11forward_dirE">icraft::qt::QuantizerOptions::forward_dir（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions12forward_listE">icraft::qt::QuantizerOptions::forward_list（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions8ftmp_csvE">icraft::qt::QuantizerOptions::ftmp_csv（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions10input_normE">icraft::qt::QuantizerOptions::input_norm（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions7jr_pathE">icraft::qt::QuantizerOptions::jr_path（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions8log_pathE">icraft::qt::QuantizerOptions::log_path（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions13mix_precisionE">icraft::qt::QuantizerOptions::mix_precision（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions10names_fileE">icraft::qt::QuantizerOptions::names_file（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions10no_imgmakeE">icraft::qt::QuantizerOptions::no_imgmake（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions10no_imk_idsE">icraft::qt::QuantizerOptions::no_imk_ids（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions6no_imkE">icraft::qt::QuantizerOptions::no_imk（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions12no_normalizeE">icraft::qt::QuantizerOptions::no_normalize（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions12no_trans_idsE">icraft::qt::QuantizerOptions::no_trans_ids（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions13no_transinputE">icraft::qt::QuantizerOptions::no_transinput（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions8no_transE">icraft::qt::QuantizerOptions::no_trans（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions1nE">icraft::qt::QuantizerOptions::n（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions3perE">icraft::qt::QuantizerOptions::per（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions8precheckE">icraft::qt::QuantizerOptions::precheck（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions7raw_csvE">icraft::qt::QuantizerOptions::raw_csv（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions10saturationE">icraft::qt::QuantizerOptions::saturation（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions12smooth_alphaE">icraft::qt::QuantizerOptions::smooth_alpha（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptions6targetE">icraft::qt::QuantizerOptions::target（C++ member）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_options.html#_CPPv4N6icraft2qt16QuantizerOptionsE">icraft::qt::QuantizerOptions（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool10AutoMixCalER7FtmpMapRKN6icraft3xir9OperationE">icraft::qt::QuantizerTool::AutoMixCal（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool13AutoMixDecideERN6icraft3xir7NetworkERNSt10filesystem4pathE">icraft::qt::QuantizerTool::AutoMixDecide（C++ function）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo10cal_amountE">icraft::qt::QuantizerTool::ConfigInfo::cal_amount（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo5dtypeE">icraft::qt::QuantizerTool::ConfigInfo::dtype（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo5op_idE">icraft::qt::QuantizerTool::ConfigInfo::op_id（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo7op_typeE">icraft::qt::QuantizerTool::ConfigInfo::op_type（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4NK6icraft2qt13QuantizerTool10ConfigInfocvNSt6stringEEv">icraft::qt::QuantizerTool::ConfigInfo::operator std::string（C++ function）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo3perE">icraft::qt::QuantizerTool::ConfigInfo::per（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo10saturationE">icraft::qt::QuantizerTool::ConfigInfo::saturation（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo19value_range_in_bitsE">icraft::qt::QuantizerTool::ConfigInfo::value_range_in_bits（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfo8varianceE">icraft::qt::QuantizerTool::ConfigInfo::variance（C++ member）</a>
+</li>
+      <li><a href="_cppapi/structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#_CPPv4N6icraft2qt13QuantizerTool10ConfigInfoE">icraft::qt::QuantizerTool::ConfigInfo（C++ struct）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool15dumpConfigSheetERNSt6stringERNSt10filesystem4pathE">icraft::qt::QuantizerTool::dumpConfigSheet（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool7FtmpMapE">icraft::qt::QuantizerTool::FtmpMap（C++ type）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool9GetAmountERKi">icraft::qt::QuantizerTool::GetAmount（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool8GetDtypeERKi">icraft::qt::QuantizerTool::GetDtype（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool6GetPerERKi">icraft::qt::QuantizerTool::GetPer（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool13GetSaturationERKi">icraft::qt::QuantizerTool::GetSaturation（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool13GetValueRangeERKi">icraft::qt::QuantizerTool::GetValueRange（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool11GetVarianceERKi">icraft::qt::QuantizerTool::GetVariance（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool9SetAmountERKiRKf">icraft::qt::QuantizerTool::SetAmount（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool6setBitERKi">icraft::qt::QuantizerTool::setBit（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool8SetDtypeERKiRKNSt6stringE">icraft::qt::QuantizerTool::SetDtype（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool7SetOpidERKi">icraft::qt::QuantizerTool::SetOpid（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool9SetOpTypeERKiRKNSt6stringE">icraft::qt::QuantizerTool::SetOpType（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool6SetPerERKiRKNSt6stringE">icraft::qt::QuantizerTool::SetPer（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool6setPerERKNSt6stringE">icraft::qt::QuantizerTool::setPer（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool13SetSaturationERKiRKNSt6stringE">icraft::qt::QuantizerTool::SetSaturation（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool13setSaturationERKNSt6stringE">icraft::qt::QuantizerTool::setSaturation（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool13SetValueRangeERKiRKNSt6stringE">icraft::qt::QuantizerTool::SetValueRange（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerTool11SetVarianceERKiRKf">icraft::qt::QuantizerTool::SetVariance（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_tool.html#_CPPv4N6icraft2qt13QuantizerToolE">icraft::qt::QuantizerTool（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4N6icraft2qt14QuantizerUtils10fileExistsERKNSt6stringE">icraft::qt::QuantizerUtils::fileExists（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4N6icraft2qt14QuantizerUtils8fileSizeERNSt8ifstreamE">icraft::qt::QuantizerUtils::fileSize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4N6icraft2qt14QuantizerUtils12getQuantizerEPv">icraft::qt::QuantizerUtils::getQuantizer（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4N6icraft2qt14QuantizerUtils13loadDLLByPathERKNSt6stringE">icraft::qt::QuantizerUtils::loadDLLByPath（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils18transposeHwio2oihwEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposeHwio2oihw（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils18transposeHwoi2oihwEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposeHwoi2oihw（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils18transposeNhwc2cnhwEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposeNhwc2cnhw（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils16transposenio2oinEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposenio2oin（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils18transposeOihw2hwioEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposeOihw2hwio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils18transposeOihw2hwoiEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposeOihw2hwoi（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4I00EN6icraft2qt14QuantizerUtils16transposeoin2nioEvPK2T1P2T2KNSt6vectorI7int64_tEE">icraft::qt::QuantizerUtils::transposeoin2nio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer_utils.html#_CPPv4N6icraft2qt14QuantizerUtilsE">icraft::qt::QuantizerUtils（C++ class）</a>
+</li>
+      <li><a href="_cppapi/classicraft_1_1qt_1_1_quantizer.html#_CPPv4N6icraft2qt9QuantizerE">icraft::qt::Quantizer（C++ class）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/define_dllexport_8h_1a80e9eeb2a960ba71445f45899b0549d9.html#c.QT_API">QT_API（C macro）</a>
+</li>
+      <li><a href="_cppapi/class_quantizer_adapt.html#_CPPv4N14QuantizerAdapt5checkERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">QuantizerAdapt::check（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_quantizer_adapt.html#_CPPv4N14QuantizerAdapt9normalizeERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">QuantizerAdapt::normalize（C++ function）</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/class_quantizer_adapt.html#_CPPv4N14QuantizerAdapt9normratioERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">QuantizerAdapt::normratio（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_quantizer_adapt.html#_CPPv4N14QuantizerAdapt8quantizeERN6icraft3xir7NetworkERN6icraft2qt15QuantizerLoggerE">QuantizerAdapt::quantize（C++ function）</a>
+</li>
+      <li><a href="_cppapi/class_quantizer_adapt.html#_CPPv414QuantizerAdapt">QuantizerAdapt（C++ class）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_cppapi/define_buyi__quantizer_8h_1af0105fc1fb2c3790dd407c1be77c31f7.html#c.REGISTER_QUANTIZER">REGISTER_QUANTIZER（C macro）</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： GuoPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

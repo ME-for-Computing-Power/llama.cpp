@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft Utils &#8212; Icraft Utils 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Utils 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft Utils</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 背景</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二 安装</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">三 使用</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1 日志记录</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.1 开箱即用的宏定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.1.2 正确配置以获取详细调用栈</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#windows">Windows</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#logger">3.1.2 自定义Logger</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1. 基本用法</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2. 一些设置</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#sink">2. 多个Sink</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.2 进度条生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">四 接口</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">五 索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-utils">
+<h1>Icraft Utils<a class="headerlink" href="#icraft-utils" title="此标题的永久链接">#</a></h1>
+<p>Icraft Utils为Icraft各组件提供了一些通用的功能，目前包含以下功能：</p>
+<ol class="arabic simple">
+<li><p>日志记录</p></li>
+<li><p>进度条生成</p></li>
+</ol>
+<section id="id1">
+<h2>一 背景<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>Icraft组件越来越多，很多组件都需要命令行参数、记录日志和生成进度条等功能。原来这些功能都是各个组件独自实现，没有做到代码的复用，不利于维护和调试。另外不同组件实现的风格不统一，这样不利于形成统一的用户界面。因此，Icraft-Utils中统一实现了以上功能，提供了统一的风格和接口，减少了大家的开发和维护压力。</p>
+</section>
+<section id="id2">
+<h2>二 安装<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Icraft-Utils组件是一个纯头文件的C++库，因此只需要把它作为子模块，然后将其头文件路径添加到父模块的头文件搜索路径即可。</p>
+</section>
+<section id="id3">
+<h2>三 使用<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<section id="id4">
+<h3>3.1 日志记录<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<section id="id5">
+<h4>3.1.1 开箱即用的宏定义<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<p>Icraft-Utils定义了LOG(level)宏来提供开箱即用的日志功能。level的级别和默认颜色如下所示：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>level</p></th>
+<th class="head"><p>含义</p></th>
+<th class="head"><p>颜色</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEBUG</span></code></p></li>
+</ul>
+</td>
+<td><p>调试</p></td>
+<td><p>蓝色</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INFO</span></code></p></li>
+</ul>
+</td>
+<td><p>信息</p></td>
+<td><p>青色</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">WARNING</span></code></p></li>
+</ul>
+</td>
+<td><p>警告</p></td>
+<td><p>黄色</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ERROR</span></code></p></li>
+</ul>
+</td>
+<td><p>错误</p></td>
+<td><p>红色</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FATAL</span></code></p></li>
+</ul>
+</td>
+<td><p>致命</p></td>
+<td><p>品红</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EXCEPT</span></code></p></li>
+</ul>
+</td>
+<td><p>异常</p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>其中， <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 到 <code class="docutils literal notranslate"><span class="pre">FATAL</span></code> 都输出到标准输出(stdout)，而 <code class="docutils literal notranslate"><span class="pre">EXCEPT</span></code> 则会抛出 <code class="docutils literal notranslate"><span class="pre">icraft::InternalError</span></code> 异常，需要用户捕获。</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例1<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-utils/logging.hpp&gt;</span>
+<span class="linenos"> 2</span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 3</span><span class="n">LOG</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;这是一条Debug信息&quot;</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="n">LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;这是一条INFO信息&quot;</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="n">LOG</span><span class="p">(</span><span class="n">WARNING</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;这是一条WARNING信息&quot;</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="n">LOG</span><span class="p">(</span><span class="n">ERROR</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;这是一条ERROR信息&quot;</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="n">LOG</span><span class="p">(</span><span class="n">FATAL</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;这是一条很长很长很长很长长长长长长长长长的FATAL信息&quot;</span><span class="p">;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">   </span><span class="n">LOG</span><span class="p">(</span><span class="n">EXCEPT</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;除数不能为0&quot;</span><span class="p">;</span>
+<span class="linenos">11</span><span class="p">}</span>
+<span class="linenos">12</span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span><span class="w"> </span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">13</span><span class="w">   </span><span class="n">LOG</span><span class="p">(</span><span class="n">FATAL</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+<span class="linenos">14</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>以上示例的输出效果如下图所示：</p>
+<img alt="_images/log_sample1.png" src="_images/log_sample1.png" />
+<p>以上示例使用的是IO流式的方式来记录日志，Icraft-Utils的日志还支持采用format的方式来记录，只需要调用 <code class="docutils literal notranslate"><span class="pre">append</span></code> 方法。
+另外，为了方便捕捉 <code class="docutils literal notranslate"><span class="pre">LOG(EXCEPT)</span></code> 抛出的异常，Icraft-Utils提供了 <code class="docutils literal notranslate"><span class="pre">ICRAFT_TRY</span></code> 的宏。</p>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例2<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-utils/logging.hpp&gt;</span>
+<span class="linenos"> 2</span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 3</span><span class="n">LOG</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;这是一条Debug信息&quot;</span><span class="p">);</span>
+<span class="linenos"> 4</span><span class="n">LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;这是一条{}信息&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;INFO&quot;</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="n">LOG</span><span class="p">(</span><span class="n">WARNING</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;这是一条&quot;</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;WARNING信息&quot;</span><span class="p">);</span>
+<span class="linenos"> 6</span><span class="n">LOG</span><span class="p">(</span><span class="n">ERROR</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;这是一条&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ERROR信息&quot;</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="p">(</span><span class="n">LOG</span><span class="p">(</span><span class="n">FATAL</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;这是一条很长很长很长很长&quot;</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;长长长长长长长长的{}信息&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;FATAL&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">ICRAFT_TRY</span><span class="p">(</span>
+<span class="linenos">10</span><span class="w">   </span><span class="n">LOG</span><span class="p">(</span><span class="n">EXCEPT</span><span class="p">).</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;除数不能为{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">11</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>以上示例的输出和示例1完全相同。</p>
+</section>
+<section id="id6">
+<h4>3.1.2 正确配置以获取详细调用栈<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h4>
+<p>如上所示， <code class="docutils literal notranslate"><span class="pre">LOG(EXCEPT)</span></code> 抛出的 <code class="docutils literal notranslate"><span class="pre">icraft::InternalError</span></code> 异常携带调用栈的信息，方便追溯问题所在的位置。但是默认情况下，Visual Studio和CMake的Relase模式不包含Debug信息，需要对编译和链接参数进行调整。</p>
+<section id="windows">
+<h5>Windows<a class="headerlink" href="#windows" title="此标题的永久链接">#</a></h5>
+<p>当使用Visual Studio的编译器(cl)编译Windows平台的程序时，需要对工程属性做以下参数设置：</p>
+<ol class="arabic simple">
+<li><p>C/C++: 设置 <code class="docutils literal notranslate"><span class="pre">Debug</span> <span class="pre">Information</span> <span class="pre">Format</span></code> 为 <code class="docutils literal notranslate"><span class="pre">/Zi</span></code></p></li>
+<li><p>Linker/General: 设置 <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Incremental</span> <span class="pre">Linking</span></code> 为 <code class="docutils literal notranslate"><span class="pre">No</span></code></p></li>
+<li><p>Linker/Debugging: 设置 <code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">Debug</span> <span class="pre">Info</span></code> 为 <code class="docutils literal notranslate"><span class="pre">Yes</span></code></p></li>
+<li><p>Linker/Optimization: 设置 <code class="docutils literal notranslate"><span class="pre">References</span></code> 为 <code class="docutils literal notranslate"><span class="pre">/OPT:REF</span></code>, <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">COMDAT</span> <span class="pre">Folding</span></code> 为 <code class="docutils literal notranslate"><span class="pre">/OPT:ICF</span></code></p></li>
+</ol>
+<p>如果使用CMake构建工程，可以在CMakeLists.txt添加以下代码:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">add_compile_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;C_COMPILER_ID:MSVC&gt;:/Zi&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="nb">add_compile_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;CXX_COMPILER_ID:MSVC&gt;:/Zi&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;C_COMPILER_ID:MSVC&gt;:/INCREMENTAL:NO&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;CXX_COMPILER_ID:MSVC&gt;:/INCREMENTAL:NO&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;C_COMPILER_ID:MSVC&gt;:/DEBUG&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;CXX_COMPILER_ID:MSVC&gt;:/DEBUG&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;C_COMPILER_ID:MSVC&gt;:/OPT:REF&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;CXX_COMPILER_ID:MSVC&gt;:/OPT:REF&gt;&quot;</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;C_COMPILER_ID:MSVC&gt;:/OPT:ICF&gt;&quot;</span><span class="p">)</span>
+<span class="linenos">10</span><span class="nb">add_link_options</span><span class="p">(</span><span class="s2">&quot;$&lt;$&lt;CXX_COMPILER_ID:MSVC&gt;:/OPT:ICF&gt;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>以上代码在CMake v3.20上测试通过，低版本的CMake可能不兼容。</p>
+</div>
+</section>
+<section id="linux">
+<h5>Linux<a class="headerlink" href="#linux" title="此标题的永久链接">#</a></h5>
+<p>当使用gcc/clang编译Linux的程序时，可以在编译选项中添加 <code class="docutils literal notranslate"><span class="pre">-g</span></code> 选项来生成Debug信息。
+Linux下还需要 <code class="docutils literal notranslate"><span class="pre">libbfd</span></code> 来提供Debug信息的读取功能，在Ubuntu下，可以通过以下命令安装：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>binutils-dev
+</pre></div>
+</div>
+<p>由于 <code class="docutils literal notranslate"><span class="pre">libbfd</span></code> 是动态加载的，因此还需要依赖 <code class="docutils literal notranslate"><span class="pre">libdl</span></code> ，所以需要指定链接库： <code class="docutils literal notranslate"><span class="pre">-lbfd</span> <span class="pre">-dl</span></code></p>
+</section>
+</section>
+<section id="logger">
+<h4>3.1.2 自定义Logger<a class="headerlink" href="#logger" title="此标题的永久链接">#</a></h4>
+<section id="id7">
+<h5>1. 基本用法<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h5>
+<p>除了使用上文所介绍的 <code class="docutils literal notranslate"><span class="pre">LOG(level)</span></code> 宏来记录日志以外，用户还可以自建 <code class="docutils literal notranslate"><span class="pre">icraft::Logger</span></code> (<a class="reference internal" href="_cppapi/classicraft_1_1_logger.html#exhale-class-classicraft-1-1-logger"><span class="std std-ref">Class Logger</span></a>)实例。 <code class="docutils literal notranslate"><span class="pre">icraft::Logger</span></code> 对象需要绑定一个或多个 <code class="docutils literal notranslate"><span class="pre">icraft::BasicSink</span></code> 的, 每个表示不同的输出通道。目前Icraft-Utils中实现的Sink有以下几个:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">icraft::StdoutSink</span></code> (<a class="reference internal" href="_cppapi/classicraft_1_1_stdout_sink.html#exhale-class-classicraft-1-1-stdout-sink"><span class="std std-ref">Class StdoutSink</span></a>): 表示标准输出</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">icraft::StderrSink</span></code> (<a class="reference internal" href="_cppapi/classicraft_1_1_stderr_sink.html#exhale-class-classicraft-1-1-stderr-sink"><span class="std std-ref">Class StderrSink</span></a>): 表示错误输出</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">icraft::FileSink</span></code> (<a class="reference internal" href="_cppapi/classicraft_1_1_file_sink.html#exhale-class-classicraft-1-1-file-sink"><span class="std std-ref">Class FileSink</span></a>): 表示输出到文件</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">icraft::Logger</span></code> 提供了 <code class="docutils literal notranslate"><span class="pre">debug</span></code> , <code class="docutils literal notranslate"><span class="pre">info</span></code> , <code class="docutils literal notranslate"><span class="pre">warn</span></code> , <code class="docutils literal notranslate"><span class="pre">error</span></code> , <code class="docutils literal notranslate"><span class="pre">fatal</span></code> 等方法来支持不同等级的日志输出，这些方法只支持format方式地使用。</p>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例3<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//实例化标准输出的Sink</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">stdout_sink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">StdoutSink</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="c1">//使用该Sink构造一个Logger</span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">stdout_logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">Logger</span><span class="p">(</span><span class="s">&quot;stdout&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">stdout_sink</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="c1">//下面是不同等级的日志</span>
+<span class="linenos"> 6</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;这是一条Debug日志&quot;</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;这是一条{}日志&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Info&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;stdout_logger的输出等级为{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">level</span><span class="p">()));</span>
+<span class="linenos"> 9</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Logger只能使用format形式的写法&quot;</span><span class="p">);</span>
+<span class="linenos">10</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">&quot;IO流的方式不被支持&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>以上示例的输出效果如下图所示：</p>
+<img alt="_images/log_sample2.png" src="_images/log_sample2.png" />
+</section>
+<section id="id8">
+<h5>2. 一些设置<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h5>
+<p><code class="docutils literal notranslate"><span class="pre">icraft::BasicSink</span></code> 支持设置自己的输出格式、输出等级和输出颜色。而Logger也支持设置输出格式和输出等级 。</p>
+<ul>
+<li><dl>
+<dt>输出格式定义了日志信息的排版</dt><dd><p>默认的格式字符串为</p>
+<p><code class="docutils literal notranslate"><span class="pre">%^[%D</span> <span class="pre">%T.%e]</span> <span class="pre">[%L]</span> <span class="pre">%v%$</span></code></p>
+<p>其表示的意义为：</p>
+<p><code class="docutils literal notranslate"><span class="pre">{颜色开始}[MM/DD/YY</span> <span class="pre">hh:mm:ss.ms]</span> <span class="pre">[日志等级(缩写)]</span> <span class="pre">日志信息{颜色结束}</span></code></p>
+<p>具体的格式字符串请参考 <a class="reference external" href="https://spdlog.docsforge.com/v1.x/3.custom-formatting/">自定义格式</a>。</p>
+</dd>
+</dl>
+</li>
+<li><p>输出等级定义了日志输出的最低等级，高于或等于该等级的日志信息才能被输出。</p></li>
+<li><p>输出颜色可以定义在终端输出时每个等级的颜色，颜色的范围则是ANSI Color的标准8色。</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例4<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//实例化标准输出的Sink</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">stdout_sink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">StdoutSink</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="c1">//使用该Sink构造一个Logger</span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">stdout_logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">Logger</span><span class="p">(</span><span class="s">&quot;stdout&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">stdout_sink</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="c1">//将该Sink的INFO等级的输出颜色改为白色</span>
+<span class="linenos"> 6</span><span class="n">stdout_sink</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">INFO</span><span class="p">,</span><span class="w"> </span><span class="n">LogColor</span><span class="o">::</span><span class="n">Foregroud</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">WHITE</span><span class="p">));</span>
+<span class="linenos"> 7</span><span class="c1">//将该Sink的FATAL等级的输出颜色改为前景红色，背景黑色</span>
+<span class="linenos"> 8</span><span class="n">stdout_sink</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">FATAL</span><span class="p">,</span><span class="w"> </span><span class="n">LogColor</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">WHITE</span><span class="p">,</span><span class="w"> </span><span class="n">ColorName</span><span class="o">::</span><span class="n">BLACK</span><span class="p">));</span>
+<span class="linenos"> 9</span><span class="c1">//设置Logger的输出等级为INFO，高于等于该等级的日志才会被输出</span>
+<span class="linenos">10</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">INFO</span><span class="p">);</span>
+<span class="linenos">11</span><span class="c1">//DEBUG等级低于INFO，不会输出</span>
+<span class="linenos">12</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;该句话不会被输出&quot;</span><span class="p">);</span>
+<span class="linenos">13</span><span class="c1">//INFO等级被改为白色</span>
+<span class="linenos">14</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;该句话颜色为白色&quot;</span><span class="p">);</span>
+<span class="linenos">15</span><span class="c1">//FATAL等级被改为前景白色，背景黑色</span>
+<span class="linenos">16</span><span class="n">stdout_logger</span><span class="p">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">&quot;这句话的颜色为前景{}, 背景{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;白色&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;黑色&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>以上示例的输出效果如下图所示：</p>
+<img alt="_images/log_sample3.png" src="_images/log_sample3.png" />
+</section>
+<section id="sink">
+<h5>2. 多个Sink<a class="headerlink" href="#sink" title="此标题的永久链接">#</a></h5>
+<p><code class="docutils literal notranslate"><span class="pre">icraft::Logger</span></code> 可以绑定多个Sink，每个Sink可以单独设置输出格式，输出等级和输出颜色。</p>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例5<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//实例化标准输出的Sink</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">stdout_sink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">StdoutSink</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="c1">//实例化错误输出的Sink</span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">stderr_sink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">StderrSink</span><span class="p">();</span>
+<span class="linenos"> 5</span><span class="c1">//实例化FileSink</span>
+<span class="linenos"> 6</span><span class="k">auto</span><span class="w"> </span><span class="n">file_sink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">FileSink</span><span class="p">(</span><span class="s">&quot;./logging.txt&quot;</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="c1">//前以上Sink构造一个Logger</span>
+<span class="linenos"> 8</span><span class="k">auto</span><span class="w"> </span><span class="n">multi_sink_logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">Logger</span><span class="p">(</span><span class="s">&quot;stdout&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">stdout_sink</span><span class="p">,</span><span class="w"> </span><span class="n">stderr_sink</span><span class="p">,</span><span class="w"> </span><span class="n">file_sink</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos"> 9</span><span class="c1">//将该stdout_sink的INFO等级的输出颜色改为白色</span>
+<span class="linenos">10</span><span class="n">stdout_sink</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">INFO</span><span class="p">,</span><span class="w"> </span><span class="n">LogColor</span><span class="o">::</span><span class="n">Foregroud</span>
+<span class="linenos">11</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">WHITE</span><span class="p">));</span>
+<span class="linenos">12</span><span class="c1">//将该stderr_sink的FATAL等级的输出颜色改为前景红色，背景黑色</span>
+<span class="linenos">13</span><span class="n">stderr_sink</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">FATAL</span><span class="p">,</span><span class="w"> </span><span class="n">LogColor</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">WHITE</span><span class="p">,</span><span class="w"> </span><span class="n">ColorName</span><span class="o">::</span><span class="n">BLACK</span><span class="p">));</span>
+<span class="linenos">14</span><span class="c1">//修改file_sink的输出格式</span>
+<span class="linenos">15</span><span class="n">file_sink</span><span class="p">.</span><span class="n">setPattern</span><span class="p">(</span><span class="s">&quot;&gt;&gt;&gt;&gt;&gt;[%D %T] [%n]-[%L] %v&lt;&lt;&lt;&lt;&lt;&quot;</span><span class="p">);</span>
+<span class="linenos">16</span><span class="c1">//设置file_sink的输出等级为INFO</span>
+<span class="linenos">17</span><span class="n">file_sink</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">INFO</span><span class="p">);</span>
+<span class="linenos">18</span><span class="c1">//DEBUG等级低于INFO，不会输出</span>
+<span class="linenos">19</span><span class="n">multi_sink_logger</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;该句话在FileSink不会被输出&quot;</span><span class="p">);</span>
+<span class="linenos">20</span><span class="c1">//INFO等级被改为白色</span>
+<span class="linenos">21</span><span class="n">multi_sink_logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;该句话在标准输出颜色为白色&quot;</span><span class="p">);</span>
+<span class="linenos">22</span><span class="c1">//FATAL等级被改为前景白色，背景黑色</span>
+<span class="linenos">23</span><span class="n">multi_sink_logger</span><span class="p">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">&quot;这句话在错误输出颜色为前景{}, 背景{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;白色&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;黑色&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>以上示例的输出效果如下图所示：</p>
+<img alt="_images/log_sample4-1.png" src="_images/log_sample4-1.png" />
+<p>而日志文件 <code class="docutils literal notranslate"><span class="pre">logging.txt</span></code> 中内容为：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>./logging.txt
+&gt;&gt;&gt;&gt;&gt;<span class="o">[</span><span class="m">10</span>/19/22<span class="w"> </span><span class="m">10</span>:45:03<span class="o">]</span><span class="w"> </span><span class="o">[</span>stdout<span class="o">]</span>-<span class="o">[</span>I<span class="o">]</span><span class="w"> </span>该句话在标准输出颜色为白色<span class="o">&lt;&lt;&lt;</span>&lt;&lt;
+&gt;&gt;&gt;&gt;&gt;<span class="o">[</span><span class="m">10</span>/19/22<span class="w"> </span><span class="m">10</span>:45:03<span class="o">]</span><span class="w"> </span><span class="o">[</span>stdout<span class="o">]</span>-<span class="o">[</span>F<span class="o">]</span><span class="w"> </span>这句话在错误输出颜色为前景白色,<span class="w"> </span>背景黑色<span class="o">&lt;&lt;&lt;</span>&lt;&lt;
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id10">
+<h3>3.2 进度条生成<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">icraft::ProgressBar</span></code> 表示单个进度条，一个进度条的结构如下所示：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">prefix</span><span class="p">}</span> <span class="p">{</span><span class="n">start</span><span class="p">}</span> <span class="p">{</span><span class="n">fill</span><span class="p">}</span> <span class="p">{</span><span class="n">lead</span><span class="p">}</span> <span class="p">{</span><span class="n">remaining</span><span class="p">}</span> <span class="p">{</span><span class="n">end</span><span class="p">}</span> <span class="p">{</span><span class="n">percentage</span><span class="p">}</span> <span class="p">[{</span><span class="n">elapsed</span><span class="p">}</span><span class="o">&lt;</span><span class="p">{</span><span class="n">remaining</span><span class="p">}]</span> <span class="p">{</span><span class="n">postfix</span><span class="p">}</span>
+      <span class="o">^^^^^^^^^^^^^</span> <span class="n">Bar</span> <span class="n">Width</span> <span class="o">^^^^^^^^^^^^^^^</span>
+</pre></div>
+</div>
+<p>进度条的进度是在[0, 100]的范围内的浮点数，当进度达到100时，表示进度完成。</p>
+<p>用户可以调用 <a class="reference internal" href="_cppapi/classicraft_1_1_progress_bar.html#exhale-class-classicraft-1-1-progress-bar"><span class="std std-ref">Class ProgressBar</span></a> 的相应方法来设置相应的属性，进度的设置可以使用 <code class="docutils literal notranslate"><span class="pre">bar.setProgress(float)</span></code> 来直接指定进度值，也可以使用 <code class="docutils literal notranslate"><span class="pre">bar.tick(float)</span></code> 来指定进度前进了多少，或者使用 <code class="docutils literal notranslate"><span class="pre">bar.tick()</span></code> 来表示前进1。</p>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例6<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//实例化进度条</span>
+<span class="linenos"> 2</span><span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">bar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ProgressBar</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="c1">//设置进度条前缀</span>
+<span class="linenos"> 4</span><span class="n">bar</span><span class="p">.</span><span class="n">setPrefixText</span><span class="p">(</span><span class="s">&quot;Trying &quot;</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="c1">//设置进度条后缀</span>
+<span class="linenos"> 6</span><span class="n">bar</span><span class="p">.</span><span class="n">setPostfixText</span><span class="p">(</span><span class="s">&quot; Done!&quot;</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="c1">//显示消耗时间</span>
+<span class="linenos"> 8</span><span class="n">bar</span><span class="p">.</span><span class="n">showElapsedTime</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="c1">//显示剩余时间</span>
+<span class="linenos">10</span><span class="n">bar</span><span class="p">.</span><span class="n">showRemainingTime</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos">11</span><span class="k">auto</span><span class="w"> </span><span class="n">progress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="linenos">12</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">13</span><span class="w">   </span><span class="n">bar</span><span class="p">.</span><span class="n">setProgress</span><span class="p">(</span><span class="n">progress</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">   </span><span class="n">progress</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.25f</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">   </span><span class="c1">//进度过程中可以正常打印日志</span>
+<span class="linenos">16</span><span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">progress</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="n">LOG</span><span class="p">(</span><span class="n">WARNING</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;当前进度已经过半&quot;</span><span class="p">;</span>
+<span class="linenos">17</span><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bar</span><span class="p">.</span><span class="n">isCompleted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">18</span><span class="w">     </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">19</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">20</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+<span class="linenos">21</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>以上示例的输出效果如下图所示：</p>
+<img alt="_images/progress.gif" src="_images/progress.gif" />
+<p><code class="docutils literal notranslate"><span class="pre">icraft::DynamicProgressBars</span></code> 能够支持多个进度条的动态添加。</p>
+<dl class="field-list simple">
+<dt class="field-odd">使用示例7<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-utils/progress.hpp&gt;</span>
+<span class="linenos"> 2</span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 3</span><span class="c1">//实例化进度条1</span>
+<span class="linenos"> 4</span><span class="n">ProgressBar</span><span class="w"> </span><span class="n">bar1</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">CYAN</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="n">bar1</span><span class="p">.</span><span class="n">showElapsedTime</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos"> 6</span><span class="n">bar1</span><span class="p">.</span><span class="n">showRemainingTime</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="n">bar1</span><span class="p">.</span><span class="n">setPrefixText</span><span class="p">(</span><span class="s">&quot;Downloading &quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="c1">//实例化进度条2</span>
+<span class="linenos"> 9</span><span class="n">ProgressBar</span><span class="w"> </span><span class="nf">bar2</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">RED</span><span class="p">);</span>
+<span class="linenos">10</span><span class="n">bar2</span><span class="p">.</span><span class="n">setPrefixText</span><span class="p">(</span><span class="s">&quot;Quantizing &quot;</span><span class="p">);</span>
+<span class="linenos">11</span><span class="c1">//实例化进度条3</span>
+<span class="linenos">12</span><span class="n">ProgressBar</span><span class="w"> </span><span class="nf">bar3</span><span class="p">(</span><span class="n">ColorName</span><span class="o">::</span><span class="n">BLUE</span><span class="p">);</span>
+<span class="linenos">13</span><span class="n">bar3</span><span class="p">.</span><span class="n">setPrefixText</span><span class="p">(</span><span class="s">&quot;Running &quot;</span><span class="p">);</span>
+<span class="linenos">14</span><span class="c1">//使用bar1和bar2构造动态进度条</span>
+<span class="linenos">15</span><span class="n">DynamicProgressBars</span><span class="w"> </span><span class="nf">bars</span><span class="p">({</span><span class="w"> </span><span class="n">bar1</span><span class="p">,</span><span class="w"> </span><span class="n">bar2</span><span class="w"> </span><span class="p">});</span>
+<span class="linenos">16</span><span class="c1">//设置进度条完成时就隐藏</span>
+<span class="linenos">17</span><span class="c1">//bars.hideBarWhenComplete(true);</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="k">auto</span><span class="w"> </span><span class="n">job1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="n">bars</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">     </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">21</span><span class="w">             </span><span class="n">bars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">tick</span><span class="p">();</span>
+<span class="linenos">22</span><span class="w">             </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">isCompleted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">23</span><span class="w">                     </span><span class="n">bars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">setPrefixText</span><span class="p">(</span><span class="s">&quot;Download Completed!&quot;</span><span class="p">);</span>
+<span class="linenos">24</span><span class="w">                     </span><span class="n">bars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">markAsCompleted</span><span class="p">();</span>
+<span class="linenos">25</span><span class="w">                     </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">26</span><span class="w">             </span><span class="p">}</span>
+<span class="linenos">27</span><span class="w">             </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">50</span><span class="p">));</span>
+<span class="linenos">28</span><span class="w">     </span><span class="p">}</span>
+<span class="linenos">29</span><span class="p">};</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="k">auto</span><span class="w"> </span><span class="n">job3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="n">bars</span><span class="p">](</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">32</span><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">33</span><span class="w">      </span><span class="n">bars</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">tick</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos">34</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bars</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">isCompleted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">35</span><span class="w">         </span><span class="n">bars</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setPostfixText</span><span class="p">(</span><span class="s">&quot; &lt;&lt;&lt; Done!&quot;</span><span class="p">);</span>
+<span class="linenos">36</span><span class="w">         </span><span class="n">bars</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">markAsCompleted</span><span class="p">();</span>
+<span class="linenos">37</span><span class="w">         </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">38</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">39</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">30</span><span class="p">));</span>
+<span class="linenos">40</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">41</span><span class="p">};</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span><span class="k">auto</span><span class="w"> </span><span class="n">job2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="n">bars</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bar3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">job3</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">44</span><span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">51</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">45</span><span class="w">      </span><span class="n">bars</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">setProgress</span><span class="p">((</span><span class="kt">float</span><span class="p">)(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">51</span><span class="p">);</span>
+<span class="linenos">46</span><span class="w">      </span><span class="n">bars</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">setPostfixText</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/51&quot;</span><span class="p">);</span>
+<span class="linenos">47</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="linenos">48</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">49</span><span class="w">   </span><span class="n">bars</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">markAsCompleted</span><span class="p">();</span>
+<span class="linenos">50</span><span class="w">   </span><span class="c1">//向动态进度条中添加bar3</span>
+<span class="linenos">51</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bars</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">bar3</span><span class="p">);</span>
+<span class="linenos">52</span><span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w"> </span><span class="nf">third_job</span><span class="p">(</span><span class="n">job3</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="linenos">53</span><span class="w">   </span><span class="n">third_job</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="linenos">54</span><span class="p">};</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w"> </span><span class="nf">first_job</span><span class="p">(</span><span class="n">job1</span><span class="p">);</span>
+<span class="linenos">57</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w"> </span><span class="nf">second_job</span><span class="p">(</span><span class="n">job2</span><span class="p">);</span>
+<span class="linenos">58</span><span class="n">first_job</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="linenos">59</span><span class="n">second_job</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="linenos">60</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">termcolor</span><span class="o">::</span><span class="n">bold</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">termcolor</span><span class="o">::</span><span class="n">green</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;✔ All is over!!!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">61</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">termcolor</span><span class="o">::</span><span class="n">reset</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>以上示例的输出效果如下图所示：</p>
+<img alt="_images/dynamic_progress.gif" src="_images/dynamic_progress.gif" />
+<p>如果把 <code class="docutils literal notranslate"><span class="pre">bars.hideBarWhenComplete(true);</span></code> 取消注释，则输出效果如下：</p>
+<img alt="_images/dynamic_progress_hide.gif" src="_images/dynamic_progress_hide.gif" />
+</section>
+</section>
+<section id="id11">
+<h2>四 接口<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="id12">
+<h2>五 索引<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 背景</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">二 安装</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">三 使用</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1 日志记录</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.1 开箱即用的宏定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.1.2 正确配置以获取详细调用栈</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#windows">Windows</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#logger">3.1.2 自定义Logger</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1. 基本用法</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2. 一些设置</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#sink">2. 多个Sink</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.2 进度条生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">四 接口</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">五 索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

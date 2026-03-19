@@ -1,0 +1,2 @@
+pattern_num,start_index,end_index,inputs,outputs,op_serial
+0,2,2,p2o.Reshape.1,p2o.InstanceNormalization.1,InstanceNormalization 

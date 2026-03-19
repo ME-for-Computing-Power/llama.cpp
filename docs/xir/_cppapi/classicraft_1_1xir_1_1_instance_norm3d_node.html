@@ -1,0 +1,957 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class InstanceNorm3dNode &#8212; Icraft XIR 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/classicraft_1_1xir_1_1_instance_norm3d_node';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Class IntegerType" href="classicraft_1_1xir_1_1_integer_type.html" />
+    <link rel="prev" title="Class InstanceNorm3d" href="classicraft_1_1xir_1_1_instance_norm3d.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft XIR 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Icraft XIR
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="api_root.html">C++ API reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="namespace_icraft.html">Namespace icraft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_icraft__xir.html">Namespace icraft::xir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_icraft__xir__detail.html">Namespace icraft::xir::detail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structicraft_1_1xir_1_1_null_opt_type.html">Struct NullOptType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_abs.html">Class Abs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_abs_node.html">Class AbsNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_add.html">Class Add</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_add_node.html">Class AddNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_align_axis.html">Class AlignAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_align_axis_node.html">Class AlignAxisNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_aligned_unit.html">Class AlignedUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_aligned_unit_node.html">Class AlignedUnitNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_and_pattern.html">Class AndPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_and_pattern_node.html">Class AndPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_any.html">Class Any</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_anycards_pattern.html">Class AnycardsPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_anycards_pattern_node.html">Class AnycardsPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_any_node.html">Class AnyNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_argmax.html">Class Argmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_argmax_node.html">Class ArgmaxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_array.html">Template Class Array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_array_node.html">Template Class ArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_attr_field_info.html">Class AttrFieldInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_attr_field_info_node.html">Class AttrFieldInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_attr_pattern.html">Class AttrPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_attr_pattern_node.html">Class AttrPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_attr_visitor.html">Class AttrVisitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_avgpool.html">Class Avgpool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_avg_pool1d.html">Class AvgPool1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_avg_pool1d_node.html">Class AvgPool1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_avg_pool3d.html">Class AvgPool3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_avg_pool3d_node.html">Class AvgPool3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_avgpool_node.html">Class AvgpoolNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_axis_name.html">Class AxisName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_axis_name_node.html">Class AxisNameNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_axis_unit.html">Class AxisUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_axis_unit_node.html">Class AxisUnitNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_base_quantized_type.html">Class BaseQuantizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_base_quantized_type_node.html">Class BaseQuantizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_batchnorm.html">Class Batchnorm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_batch_norm1d.html">Class BatchNorm1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_batch_norm1d_node.html">Class BatchNorm1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_batch_norm3d.html">Class BatchNorm3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_batch_norm3d_node.html">Class BatchNorm3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_batchnorm_node.html">Class BatchnormNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_bool.html">Class Bool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_bool_node.html">Class BoolNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_buyi_target.html">Class BuyiTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_buyi_target_node.html">Class BuyiTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_calibrated_type.html">Class CalibratedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_calibrated_type_node.html">Class CalibratedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_cast.html">Class Cast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_cast_node.html">Class CastNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_channel_shuffle.html">Class ChannelShuffle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_channel_shuffle_node.html">Class ChannelShuffleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_chunk_mem.html">Class ChunkMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_chunk_mem_node.html">Class ChunkMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_clamp_scalar.html">Class ClampScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_clamp_scalar_node.html">Class ClampScalarNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_compile_target.html">Class CompileTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_compile_target_node.html">Class CompileTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_concat.html">Class Concat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_concat_node.html">Class ConcatNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv1d.html">Class Conv1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv1d_node.html">Class Conv1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv1d_transpose.html">Class Conv1dTranspose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv1d_transpose_node.html">Class Conv1dTransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv2d.html">Class Conv2d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv2d_node.html">Class Conv2dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv2d_transpose.html">Class Conv2dTranspose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv2d_transpose_node.html">Class Conv2dTransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv3d.html">Class Conv3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv3d_node.html">Class Conv3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv3d_transpose.html">Class Conv3dTranspose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_conv3d_transpose_node.html">Class Conv3dTransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_copy.html">Class Copy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_copy_node.html">Class CopyNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_custom_target.html">Class CustomTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_custom_target_node.html">Class CustomTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_data.html">Class Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_data_node.html">Class DataNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_data_type.html">Class DataType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_data_type_node.html">Class DataTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1detail_1_1_base_array_node.html">Template Class BaseArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1detail_1_1_base_array_node_3_01bool_01_4.html">Template Class BaseArrayNode&lt; bool &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_divide_scalar.html">Class DivideScalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_divide_scalar_node.html">Class DivideScalarNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_einsum.html">Class Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_einsum_node.html">Class EinsumNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_elu.html">Class Elu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_elu_node.html">Class EluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_equal.html">Class Equal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_equal_node.html">Class EqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_expand.html">Class Expand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_expand_node.html">Class ExpandNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_exp_quantized_scale.html">Class ExpQuantizedScale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_exp_quantized_scale_array.html">Class ExpQuantizedScaleArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_exp_quantized_scale_array_node.html">Class ExpQuantizedScaleArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_exp_quantized_scale_node.html">Class ExpQuantizedScaleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_external_mem.html">Class ExternalMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_external_mem_node.html">Class ExternalMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_float_imm.html">Class FloatImm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_float_imm_node.html">Class FloatImmNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_float_type.html">Class FloatType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_float_type_1_1_semantics.html">Class FloatType::Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_float_type_node.html">Class FloatTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_f_p_g_a_target.html">Class FPGATarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_f_p_g_a_target_node.html">Class FPGATargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_gelu.html">Class Gelu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_gelu_node.html">Class GeluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_get_attr_nums.html">Class GetAttrNums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_greater.html">Class Greater</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_greater_equal.html">Class GreaterEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_greater_equal_node.html">Class GreaterEqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_greater_node.html">Class GreaterNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_handle.html">Class Handle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_handle_base.html">Template Class HandleBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hard_op.html">Class HardOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hard_op_node.html">Class HardOpNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardshrink.html">Class Hardshrink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardshrink_node.html">Class HardshrinkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardsigmoid.html">Class Hardsigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardsigmoid_node.html">Class HardsigmoidNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardswish.html">Class Hardswish</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardswish_node.html">Class HardswishNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardtanh.html">Class Hardtanh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_hardtanh_node.html">Class HardtanhNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_host_mem.html">Class HostMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_host_mem_node.html">Class HostMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_host_target.html">Class HostTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_host_target_node.html">Class HostTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_input.html">Class Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_input_node.html">Class InputNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_instance_norm1d.html">Class InstanceNorm1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_instance_norm1d_node.html">Class InstanceNorm1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_instance_norm2d.html">Class InstanceNorm2d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_instance_norm2d_node.html">Class InstanceNorm2dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_instance_norm3d.html">Class InstanceNorm3d</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Class InstanceNorm3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_integer_type.html">Class IntegerType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_integer_type_node.html">Class IntegerTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_int_imm.html">Class IntImm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_int_imm_node.html">Class IntImmNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_is_activate.html">Template Class IsActivate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_json_parser.html">Class JsonParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_json_printer.html">Class JsonPrinter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_layernorm.html">Class Layernorm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_layernorm_node.html">Class LayernormNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_layout.html">Class Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_layout_node.html">Class LayoutNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_less.html">Class Less</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_less_equal.html">Class LessEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_less_equal_node.html">Class LessEqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_less_node.html">Class LessNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_log.html">Class Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_log_node.html">Class LogNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_log_sigmoid.html">Class LogSigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_log_sigmoid_node.html">Class LogSigmoidNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_log_softmax.html">Class LogSoftmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_log_softmax_node.html">Class LogSoftmaxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_map.html">Template Class Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_map_node.html">Class MapNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_matmul.html">Class Matmul</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_matmul_node.html">Class MatmulNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_maxpool.html">Class Maxpool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_max_pool1d.html">Class MaxPool1d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_max_pool1d_node.html">Class MaxPool1dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_max_pool3d.html">Class MaxPool3d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_max_pool3d_node.html">Class MaxPool3dNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_maxpool_node.html">Class MaxpoolNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mean.html">Class Mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mean_node.html">Class MeanNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mem_type.html">Class MemType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mem_type_node.html">Class MemTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_merged_axis_distr.html">Class MergedAxisDistr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_merged_axis_distr_node.html">Class MergedAxisDistrNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mish.html">Class Mish</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mish_node.html">Class MishNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_m_s_g_dumper.html">Class MSGDumper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_m_s_g_parser.html">Class MSGParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_multiply.html">Class Multiply</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_multiply_node.html">Class MultiplyNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_multi_yolo.html">Class MultiYolo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_multi_yolo_node.html">Class MultiYoloNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_mutable_handle_base.html">Template Class MutableHandleBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_neg.html">Class Neg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_neg_node.html">Class NegNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network.html">Class Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_base.html">Class NetworkBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_base_node.html">Class NetworkBaseNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_node.html">Class NetworkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_pass.html">Class NetworkPass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_pass_node.html">Class NetworkPassNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_rewriter.html">Class NetworkRewriter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_view.html">Class NetworkView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_network_view_node.html">Class NetworkViewNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_node.html">Class Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_node_base.html">Template Class NodeBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normalize.html">Class Normalize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normalized_quantized_type.html">Class NormalizedQuantizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normalized_quantized_type_node.html">Class NormalizedQuantizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normalized_type.html">Class NormalizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normalized_type_node.html">Class NormalizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normalize_node.html">Class NormalizeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normratio_array.html">Class NormratioArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_normratio_array_node.html">Class NormratioArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_not_equal.html">Class NotEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_not_equal_node.html">Class NotEqualNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_object.html">Class Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_object_ptr.html">Template Class ObjectPtr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_object_ref.html">Class ObjectRef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_on_chip_mem.html">Class OnChipMem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_on_chip_mem_node.html">Class OnChipMemNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_one_result.html">Template Class OneResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_op_base.html">Template Class OpBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_operation.html">Class Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_operation_node.html">Class OperationNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_op_node_base.html">Template Class OpNodeBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_op_pattern.html">Class OpPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_op_pattern_node.html">Class OpPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_optional.html">Template Class Optional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_optional_op_pattern.html">Class OptionalOpPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_optional_op_pattern_node.html">Class OptionalOpPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_op_trait.html">Template Class OpTrait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_or_pattern.html">Class OrPattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_or_pattern_node.html">Class OrPatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_output.html">Class Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_output_like.html">Template Class OutputLike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_output_node.html">Class OutputNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_overide_clone.html">Class OverideClone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_overide_equal.html">Class OverideEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pad.html">Class Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pad_node.html">Class PadNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_params.html">Class Params</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_params_dumper.html">Class ParamsDumper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_params_lazy_loader.html">Class ParamsLazyLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_params_loader.html">Class ParamsLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_params_node.html">Class ParamsNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass.html">Class Pass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass_context.html">Class PassContext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass_context_node.html">Class PassContextNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass_info.html">Class PassInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass_info_node.html">Class PassInfoNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass_node.html">Class PassNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pass_registry.html">Class PassRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pattern.html">Class Pattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pattern_node.html">Class PatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pixel_shuffle.html">Class PixelShuffle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_pixel_shuffle_node.html">Class PixelShuffleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_prelu.html">Class Prelu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_prelu_node.html">Class PreluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_prior_box.html">Class PriorBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_prior_box_node.html">Class PriorBoxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_prune_axis.html">Class PruneAxis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_prune_axis_node.html">Class PruneAxisNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_quantized_scale.html">Class QuantizedScale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_quantized_scale_array.html">Class QuantizedScaleArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_quantized_scale_array_node.html">Class QuantizedScaleArrayNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_quantized_scale_node.html">Class QuantizedScaleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_quantized_type.html">Class QuantizedType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_quantized_type_node.html">Class QuantizedTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reduce_visitor.html">Class ReduceVisitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reflection_table.html">Class ReflectionTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reflection_table_1_1_registry.html">Class ReflectionTable::Registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_region.html">Class Region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_region_node.html">Class RegionNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_relu.html">Class Relu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_relu_node.html">Class ReluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reorg.html">Class Reorg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reorg_node.html">Class ReorgNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reshape.html">Class Reshape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_reshape_node.html">Class ReshapeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_resize.html">Class Resize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_resize_node.html">Class ResizeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_roll.html">Class Roll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_roll_node.html">Class RollNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_route.html">Class Route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_route_node.html">Class RouteNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_scalar_imm.html">Class ScalarImm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_scalar_imm_node.html">Class ScalarImmNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_scalar_type.html">Class ScalarType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_scalar_type_node.html">Class ScalarTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sequential_pass.html">Class SequentialPass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sequential_pass_node.html">Class SequentialPassNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sigmoid.html">Class Sigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sigmoid_node.html">Class SigmoidNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_silu.html">Class Silu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_silu_node.html">Class SiluNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_slice.html">Class Slice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_slice_node.html">Class SliceNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softmax.html">Class Softmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softmax_node.html">Class SoftmaxNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softplus.html">Class Softplus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softplus_node.html">Class SoftplusNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softshrink.html">Class Softshrink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softshrink_node.html">Class SoftshrinkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softsign.html">Class Softsign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_softsign_node.html">Class SoftsignNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_split.html">Class Split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_split_node.html">Class SplitNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sqrt.html">Class Sqrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sqrt_node.html">Class SqrtNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_squeeze.html">Class Squeeze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_squeeze_node.html">Class SqueezeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_s_s_d_output.html">Class SSDOutput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_s_s_d_output_node.html">Class SSDOutputNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_stack.html">Class Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_stack_node.html">Class StackNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_string.html">Class String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_string_node.html">Class StringNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_string_node_1_1_from_std.html">Class StringNode::FromStd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sum.html">Class Sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_sum_node.html">Class SumNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_swap_order.html">Class SwapOrder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_swap_order_node.html">Class SwapOrderNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_tanh.html">Class Tanh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_tanh_node.html">Class TanhNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_tanhshrink.html">Class Tanhshrink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_tanhshrink_node.html">Class TanhshrinkNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_tensor_type.html">Class TensorType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_tensor_type_node.html">Class TensorTypeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_transpose.html">Class Transpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_transpose_node.html">Class TransposeNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_unknown.html">Class Unknown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_unknown_node.html">Class UnknownNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_unstack.html">Class Unstack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_unstack_node.html">Class UnstackNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_unsupport.html">Class Unsupport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_unsupport_node.html">Class UnsupportNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_upsample.html">Class Upsample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_upsample_node.html">Class UpsampleNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_value.html">Class Value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_value_node.html">Class ValueNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_value_pattern.html">Class ValuePattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_value_pattern_node.html">Class ValuePatternNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_virtual_base.html">Template Class VirtualBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_with.html">Template Class With</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_yolo.html">Class Yolo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_yolo_node.html">Class YoloNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_zhuge_target.html">Class ZhugeTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classicraft_1_1xir_1_1_zhuge_target_node.html">Class ZhugeTargetNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_data__type__attr_8h_1a62ff75f1944688b8ce141c9a82843ad4.html">Enum DistrUnvalidValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_network_8h_1a52f12ca1331504c9536b043a7d4d2ed7.html">Enum Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_conv2d_8h_1a14d24d90ab4ba2956e92e27890ba4c91.html">Enum PaddingMode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enum_resize_8h_1a1ac915a3b32e62d66d8a635bdbeab46f.html">Enum ResizeInterpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_network_8h_1a0de9c90f68a97dc71657583095adee7e.html">Function icraft::xir::_OverrideNetworkClone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_network_8h_1afb6d1ccafd83813b52fc572c57ef1848.html">Function icraft::xir::_OverrideNetworkEqual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_pattern_8h_1a93542529bb000fda0aaf54b90534a76c.html">Function icraft::xir::Anycards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a6abe8cca6a8061bdc0f366bcaeb282fe.html">Function icraft::xir::BuildTime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_json_8h_1a4be591f3b222e460eabd4f1f2bd15a63.html">Function icraft::xir::CalcMD5()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_json_8h_1a0185d16d44e07b98bc5b409791036be6.html">Function icraft::xir::CalcMD5()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a497b6f9e829feb7bc58477a0a3d78151.html">Function icraft::xir::CommitID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a96c8adafd6a10fbafa925be8d8b51716.html">Function icraft::xir::CommitSinceTag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_msgpack_8h_1a7abf2c4fea34765c1e1bab229ebf9681.html">Function icraft::xir::CreateNetworkFromMSG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_object_8h_1a68c32a41efd1aa99afca70837565cced.html">Function icraft::xir::Downcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a78754a280a4e70b6192eb9464bafd33f.html">Function icraft::xir::FullVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_object_8h_1a6bb897ef1c79fef652856160d3d825a4.html">Function icraft::xir::GetObjectPtr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_object_8h_1ae36a387dcf54c696cda7318084dd0d55.html">Function icraft::xir::GetRef()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_object_8h_1ac798b7092b8c4c6665631be6db1d4327.html">Function icraft::xir::GetRef()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_reflection_8h_1a55e9abf1358f73936d0c260df59e3a48.html">Function icraft::xir::GetReprBytes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_reflection_8h_1a3f420755305a0d0bbc43dd197083aafd.html">Function icraft::xir::HasReprOf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a70608457f1404249247900dd3a5638df.html">Function icraft::xir::IcraftVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_optional_8h_1ad0ce019e3fe7379a117a081af3a4c881.html">Function icraft::xir::is_optional()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_optional_8h_1a9daee3d26c5a475c024034ccf4134954.html">Function icraft::xir::is_optional()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_optional_8h_1a6fc9e3d36fec62302706492a13e206ac.html">Function icraft::xir::is_optional()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a234487798ed47026f728ac29b136cf0e.html">Function icraft::xir::IsModified</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_pattern_8h_1a0ae8a90d05e570283e126b308826ff7f.html">Function icraft::xir::IsOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_pattern_8h_1adf41480d0a206cbafb0f59eae92e7b95.html">Function icraft::xir::IsOptionalOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1aec81871e7ddcd07a5b76e701f54944f2.html">Function icraft::xir::MainVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a54db24f732df50a1b1ecde8e3eae4431.html">Function icraft::xir::MajorVersionNum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_object_8h_1a79b91b13ca6d5d54352daa3a7de8de1f.html">Function icraft::xir::make_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a70a34ef712f6bee084e34fa3136a2241.html">Function icraft::xir::MinorVersionNum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a29475156e730e27c5e1cba18c5177ef6.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1af6dfa63e8765ba8f0c05a7d40fa1c584.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1ac4e429cee0b2f43d16eca3b016f5185c.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a1cadc42fadabb1c9aaa455d8f857a6db.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1acab3e9f8bdf2c08f6cf2fc285558c1ce.html">Function icraft::xir::operator!=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1af1ce218b03c384d2aad50a6295fb096d.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1a9c0be3c7885099d93fa52204c5e3ff29.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1a13f31d0631d8054ec6cbe16e5aa5c246.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_pattern_8h_1af0a441249e3041ef4d8b7a7ee7e96925.html">Function icraft::xir::operator&amp;&amp;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a346acdf3143412eaab63e8f3664cd575.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1af71ae061ba27c966204712cf13558437.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a4ed702c701164539de5ce6b332c45d07.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1ae3cd285a0b3bcf7d5f1b89dba89035d1.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a90015386d12dcad1a1150e0e3c6a0d8a.html">Function icraft::xir::operator+()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1aae232265e2908fc6e59999597d6441aa.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1abb89216adbfc3f69204c0a4ecbe67458.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1ad94401dcf2dfb1476aa89ca9835170b5.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1ab6704f416891347d26ebbc5bc9401a3a.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a29ed7eb9bc181d1df7f5c55ca6246b60.html">Function icraft::xir::operator&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1af4c6e48b61b0f04d2b0beda40a19706b.html">Function icraft::xir::operator&lt;&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_json_8h_1a047703dc2d7e22991c7dd29dc42a46d9.html">Function icraft::xir::operator&lt;&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_json_8h_1a50b7e723472acf1ca28b86c386460d18.html">Function icraft::xir::operator&lt;&lt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a721f0ec88d549e1301a0635b695a1a88.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a713de56481110a0598ff3f418b9896d8.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a48545cc6c63142caa4dcce85a1b6feda.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a990a88794f4e1678fd932c84de435e26.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a8849265e14282c47ef7327ce79e14d0e.html">Function icraft::xir::operator&lt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a9ae517eb66873b84094560f4a3698609.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a4ff932db1e5a280b017075c85d2856a8.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a57204d6cb68b449d9db9eae4883571c1.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a4cf760d9d1b68bcf1cd43e9f5c54feb1.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a0ccb8b7286ed4a45f31b6c936a9a98c2.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1a9bcac01c289f96bdbf3f3d398592098b.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1ace1bec728e7401063e26ebc9e83481a0.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1aabc2762937ed01fdce00372551019afb.html">Function icraft::xir::operator==()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a522339d5ba8ef44cfee16c46aa6911e0.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1acee3f0570836bfe9f9bd769aafda6e75.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a1d1bcc50e73c2538ca16f3aec01eef87.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1ab4a443eed7b8adb78c5aadca1354b49b.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a0ac76ec24bc20d38967c451767fa76bd.html">Function icraft::xir::operator&gt;()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1aa98dbbb67f5b5fce8330bd3b43993f1b.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1ab9706925fd70fabd0427b0dd44ed39a5.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a8aaac987f17f693b727f6f61c82ef59d.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1adce2f798f94879309cef872d5c0cf70c.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_string_8h_1a5415fd0bce16fb23ec98e50c0b82b42e.html">Function icraft::xir::operator&gt;=()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1ae841cffb9297b1e03dd333546492082a.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1ae7f269258f554b475a1fb22eb0901162.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_data_8h_1a3d2186da2c5fe38cd4cde2ed9fabae42.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_pattern_8h_1a3402e2566a4fa926faa7d5916b90eec9.html">Function icraft::xir::operator||()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_version_8h_1a8ea066b50a4aaa0bc27455912d914c0e.html">Function icraft::xir::PatchVersionNum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1a514210b2ae6e2613ae6cf148878edd72.html">Function icraft::xir::TypeName</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1a56ef9d55f16f19d811cba1376dc640f6.html">Function icraft::xir::TypeName&lt; Array&lt; int64_t &gt; &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1a84dffb7ee42896fb6ea04898e999d72e.html">Function icraft::xir::TypeName&lt; Array&lt; std::string &gt; &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1a013317811d164c81105f3136cd86a1df.html">Function icraft::xir::TypeName&lt; Array&lt; uint64_t &gt; &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1a60496d73028f462c51917f875c020888.html">Function icraft::xir::TypeName&lt; int64_t &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1aebf768e337b4e10fcd5041388d56abc1.html">Function icraft::xir::TypeName&lt; std::string &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1a97198a9f0338592d7fa15cbb4de2b468.html">Function icraft::xir::TypeName&lt; uint64_t &gt;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_pattern_8h_1a1280260bbcab517cafd62246c537eb06.html">Function icraft::xir::Wildcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_type__trait_8h_1ae1e19e2edb2ea7b737e3bbfd46c3e065.html">Template Function IcraftGetSignature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variable_array_8h_1abe3b18e913ce2f292a029a1846ee5ae3.html">Variable icraft::xir::is_iterator_v</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variable_optional_8h_1abf9f9d97c8d614e485dc36b63e62a8d3.html">Variable icraft::xir::NullOpt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_operation_8h_1a589fc08fd078a46929285ba7af07ec96.html">Define ICRAFT_ATTR_FIELD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_operation_8h_1a0587adc4fa59710015e27ce34a6d4f20.html">Define ICRAFT_DECLARE_ATTRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_reflection_8h_1a50e6659d2ac383e62abed02ffe66c6a7.html">Define ICRAFT_PASS_REG_VAR_DEF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_reflection_8h_1a53097a5ba6b07fccef71a666acbbb533.html">Define ICRAFT_REFLECTION_REG_VAR_DEF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_reflection_8h_1a13afd72846c27ef4972a204be15ca40e.html">Define ICRAFT_REGISTER_NODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_operation_8h_1ad94829967e485c9a41f57ce3dc2dd69a.html">Define ICRAFT_REGISTER_OP_NODE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_reflection_8h_1a696c33a608037514a095ed4cf00c230b.html">Define ICRAFT_REGISTER_PASS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_reflection_8h_1a0cd1b598ffe2d7953e852ea4cfbf7670.html">Define ICRAFT_REGISTER_REFLECTION_VTABLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_operation_8h_1ab6c5eefe51f60d0617b743d3bdf95b1f.html">Define ICRAFT_REGISTER_TINFER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define_pattern_8h_1a34e9a7009fa4c7b0bbf683e280c52fa2.html">Define PATTERN_REQUIRE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typedef_json_8h_1af13a1979f9e8f62c101433fac6511cc6.html">Typedef icraft::xir::Json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typedef_pattern_8h_1a4d205bdcf25db1c169d605a29aa44357.html">Typedef icraft::xir::MatchGroup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/xir.html">Python API reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">验证规则</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/Network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/Operation.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/TensorType.html">TensorType</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate_rule/Value.html">Value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">算子spec</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Abs.html">Abs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Add.html">Add</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/AlignAxis.html">AlignAxis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Argmax.html">Argmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Avgpool.html">Avgpool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/AvgPool1d.html">AvgPool1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/AvgPool3d.html">AvgPool3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Batchnorm.html">Batchnorm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/BatchNorm1d.html">BatchNorm1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/BatchNorm3d.html">BatchNorm3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/ChannelShuffle.html">ChannelShuffle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/ClampScalar.html">ClampScalar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Concat.html">Concat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv1d.html">Conv1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv1dTranspose.html">Conv1dTranspose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv2d.html">Conv2d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv2dTranspose.html">Conv2dTranspose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv3d.html">Conv3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Conv3dTranspose.html">Conv3dTranspose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Copy.html">Copy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/DivideScalar.html">DivideScalar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Einsum.html">Einsum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Elu.html">Elu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Equal.html">Equal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Expand.html">Expand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Gelu.html">Gelu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Greater.html">Greater</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/GreaterEqual.html">GreaterEqual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/HardOp.html">HardOp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardshrink.html">Hardshrink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardsigmoid.html">Hardsigmoid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardswish.html">Hardswish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Hardtanh.html">Hardtanh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/InstanceNorm1d.html">InstanceNorm1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/InstanceNorm2d.html">InstanceNorm2d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/InstanceNorm3d.html">InstanceNorm3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Layernorm.html">Layernorm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Less.html">Less</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/LessEqual.html">LessEqual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/LogSigmoid.html">LogSigmoid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/LogSoftmax.html">LogSoftmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Matmul.html">Matmul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Maxpool.html">Maxpool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/MaxPool1d.html">MaxPool1d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/MaxPool3d.html">MaxPool3d</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Mean.html">Mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Mish.html">Mish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Multiply.html">Multiply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/MultiYolo.html">MultiYolo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Neg.html">Neg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Normalize.html">Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/NotEqual.html">NotEqual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Pad.html">Pad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/PixelShuffle.html">PixelShuffle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Prelu.html">Prelu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/PruneAxis.html">PruneAxis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Region.html">Region</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Relu.html">Relu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Reorg.html">Reorg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Reshape.html">Reshape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Resize.html">Resize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Roll.html">Roll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Route.html">Route</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Sigmoid.html">Sigmoid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Silu.html">Silu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Slice.html">Slice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softmax.html">Softmax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softplus.html">Softplus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softshrink.html">Softshrink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Softsign.html">Softsign</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Split.html">Split</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Sqrt.html">Sqrt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Squeeze.html">Squeeze</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/SSDOutput.html">SSDOutput</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Stack.html">Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Sum.html">Sum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/SwapOrder.html">SwapOrder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Swish.html">Swish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Tanh.html">Tanh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Tanhshrink.html">Tanhshrink</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Transpose.html">Transpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unbind.html">Unbind</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unknown.html">Unknown</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unstack.html">Unstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Unsupport.html">Unsupport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Upsample.html">Upsample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../op_spec/Yolo.html">Yolo</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Class InstanceNorm3dNode</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-relationships">Inheritance Relationships</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-instancenorm3dnode">
+<span id="exhale-class-classicraft-1-1xir-1-1-instance-norm3d-node"></span><h1>Class InstanceNorm3dNode<a class="headerlink" href="#class-instancenorm3dnode" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-xir_ops_instance_norm3d.h.html#file-icraft-xir-ops-instance-norm3d-h"><span class="std std-ref">File instance_norm3d.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="此标题的永久链接">#</a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="此标题的永久链接">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">OpNodeBase&lt;</span> <span class="pre">InstanceNorm3dNode,</span> <span class="pre">OneResult</span> <span class="pre">&gt;</span></code> (<a class="reference internal" href="classicraft_1_1xir_1_1_op_node_base.html#exhale-class-classicraft-1-1xir-1-1-op-node-base"><span class="std std-ref">Template Class OpNodeBase</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="此标题的永久链接">#</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>doxygenclass: Cannot find class “icraft::xir::InstanceNorm3dNode” in doxygen xml output for project “Icraft XIR” from directory: ........\_doxygen\xml</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="classicraft_1_1xir_1_1_instance_norm3d.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Class InstanceNorm3d</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="classicraft_1_1xir_1_1_integer_type.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Class IntegerType</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-relationships">Inheritance Relationships</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

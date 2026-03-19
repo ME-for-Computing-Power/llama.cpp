@@ -1,0 +1,2253 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>框架支持列表 &#8212; Icraft 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ops/op_support';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'http://192.168.124.133/icraft/latest/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Icraft 组件总览" href="../components/overview.html" />
+    <link rel="prev" title="API Reference" href="../interface/apis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+    <meta name="docbuild:last-update" content="24-12-23 14:12"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft 文档</p>
+  
+</a>
+        </div>
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+    v3.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft 文档</p>
+  
+</a>
+    </div>
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+    v3.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">快速开始</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../start/installation.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/compilation.html">编译</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start/running.html">运行</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">用户接口</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../interface/cli_arguments.html">命令行参数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interface/apis.html">API Reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">算子支持</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">框架支持列表</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">组件指南</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../components/overview.html">Icraft 组件总览</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">扩展机制</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../extensibility/customop.html">自定义算子</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../extensibility/others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">程序示例</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sample/demo.html">Icraft Demo</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">故障排除</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../troubles/trouble_shotting.html">故障排查</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">版本缺陷</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../defects/version_defects.html">版本缺陷</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/ops/op_support.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>框架支持列表</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch">Pytorch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paddlepaddle">PaddlePaddle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorflow">TensorFlow</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="id1">
+<h1>框架支持列表<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>目前，Icraft平台支持的框架有：</p>
+<ul class="simple">
+<li><p>Pytoch，支持pytorch1.9.0、pytorch2.0.1两个版本的原生网络模型文件（.pt格式），以及pytorch框架保存为onnx（opset=17）格式的模型文件（.onnx格式）；</p></li>
+<li><p>PaddlePaddle，仅支持PaddlePaddle框架保存为onnx（opset=11）格式的模型文件（.onnx格式），不支持框架原生网络模型文件；</p></li>
+<li><p>TensorFlow，仅支持PaddlePaddle框架保存为onnx（opset=14）格式的模型文件（.onnx格式），不支持框架原生网络模型文件；</p></li>
+</ul>
+<section id="pytorch">
+<h2>Pytorch<a class="headerlink" href="#pytorch" title="此标题的永久链接">#</a></h2>
+<p>Pytorch支持框架原生模型以及保存为onnx格式的模型，即pt格式和onnx格式；</p>
+<p>Pytorch原生框架支持 <code class="docutils literal notranslate"><span class="pre">pytorch1.9.0、pytorch2.0.1</span></code> 两个版本，具体算子支持如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pytorch Op</p></th>
+<th class="head"><p>Icraft Op</p></th>
+<th class="head"><p>支持情况</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a [ :, 1:2 ]</p></td>
+<td><p>Slice</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>abs</p></td>
+<td><p>Abs</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveAvgPool1d</p></td>
+<td><p>Avgpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveAvgPool2d</p></td>
+<td><p>Avgpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveMaxPool1d</p></td>
+<td><p>Maxpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveMaxPool2d</p></td>
+<td><p>Maxpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>add</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>addmm</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AvgPool1d</p></td>
+<td><p>Avgpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>AvgPool2d</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>BatchNorm1d</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm2d</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>bmm</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>cat</p></td>
+<td><p>Concat</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>ChannelShuffle</p></td>
+<td><p>ChannelShuffle</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>chunk</p></td>
+<td><p>Split</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>clamp</p></td>
+<td><p>Clamp</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>min、max不支持为tensor</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Conv1d</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode = same</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Conv2d</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+<li><p>(pad_size != 0 || dilation != 1) &amp;&amp; (dilation_w * (k_w - 1) + 1) * (dilation_h * (k_h - 1) + 1) &gt; 2048</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ConvTranspose2d</p></td>
+<td><p>Conv2dTranspose</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>group != 1</p></li>
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>div</p></td>
+<td><p>DivideScalar</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>除数不为常数标量</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>einsum</p></td>
+<td><p>Einsum</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>ELU</p></td>
+<td><p>Elu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>expand</p></td>
+<td><p>Expand</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>expand_as</p></td>
+<td><p>Expand</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flatten</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>GELU</p></td>
+<td><p>Gelu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>GRU</p></td>
+<td><p>小粒度算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>GRUCell</p></td>
+<td><p>小粒度算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardsigmoid</p></td>
+<td><p>Hardsigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Hardswish</p></td>
+<td><p>Hardswish</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardtanh</p></td>
+<td><p>Hardtanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>InstanceNorm1d</p></td>
+<td><p>InstanceNorm2d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>InstanceNorm2d</p></td>
+<td><p>InstanceNorm2d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LayerNorm</p></td>
+<td><p>Layernorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>LeakyReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Linear</p></td>
+<td><p>InnerProduct</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSTM</p></td>
+<td><p>小粒度算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LSTMCell</p></td>
+<td><p>小粒度算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>MaxPool1d</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>return_indices</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>MaxPool2d</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>return_indices</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>mean</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>ifm_dim.size() != 4 || dim != [2,3]</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Mish</p></td>
+<td><p>Mish</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>multiply</p></td>
+<td><p>Multiply</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>normalize</p></td>
+<td><p>Normalize</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>pad</p></td>
+<td><p>Pad</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input的排布为NHWC或NCHW且pad常数外的其他情况</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>permute</p></td>
+<td><p>Transpose</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>pixel_shuffle</p></td>
+<td><p>PixelShuffle</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>PReLU</p></td>
+<td><p>Prelu</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>不支持 alpha 为常数和 vector 外的情况</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>ReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>ReLU6</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>roll</p></td>
+<td><p>Roll</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>shifts为空；</p></li>
+<li><p>dims包含最后一维，即针对最后一维做滚动；</p></li>
+<li><p>算子存在data_format描述，不可以对C维度做滚动；算子不存在data_format描述，则不仅而已对最后一维做滚动。</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>rsub</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>select</p></td>
+<td><p>Slice</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>SiLU</p></td>
+<td><p>Silu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>SoftShrink</p></td>
+<td><p>SoftShrink</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>split</p></td>
+<td><p>Split</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>sqrt</p></td>
+<td><p>Sqrt</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>stack</p></td>
+<td><p>Stack</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>sub</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>sum</p></td>
+<td><p>Sum</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>unsqueeze</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Upsample 系列</p></td>
+<td><p>Upsample</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>time=h_size/ifm_height，不支持time的质因数&gt;22</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>unbind</p></td>
+<td><p>Unstack</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>view</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+<p>Pytorch还支持保存为onnx格式模型文件，支持版本为 <code class="docutils literal notranslate"><span class="pre">opset=17</span></code> ，具体算子支持如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pytorch Op</p></th>
+<th class="head"><p>ONNX Op</p></th>
+<th class="head"><p>Icraft Op</p></th>
+<th class="head"><p>支持情况</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a [ :, 1:2 ]</p></td>
+<td><p>Slice</p></td>
+<td><p>Slice</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>abs</p></td>
+<td><p>Abs</p></td>
+<td><p>Abs</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveAvgPool1d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_L % output_L != 0（此限制来自torch2onnx）</p></li>
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveAvgPool2d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自torch2onnx）</p></li>
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveAvgPool3d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>AvgPool3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自torch2onnx）</p></li>
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+<li><p>不支持pad</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveMaxPool1d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_L % output_L != 0（此限制来自torch2onnx）</p></li>
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveMaxPool2d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自torch2onnx）</p></li>
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveMaxPool3d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>MaxPool3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自torch2onnx）</p></li>
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>add</p></td>
+<td><p>Add</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>addmm</p></td>
+<td><p>Matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AvgPool1d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AvgPool2d</p></td>
+<td><p>AvgragePool
+/GlobalAveragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AvgPool3d</p></td>
+<td><p>AvgragePool
+/GlobalAveragePool</p></td>
+<td><p>AvgPool3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+<li><p>不支持pad</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm1d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>BatchNorm2d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm3d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>BatchNorm3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>bmm</p></td>
+<td><p>Matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>cat</p></td>
+<td><p>Concat</p></td>
+<td><p>Concat</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>ChannelShuffle</p></td>
+<td><p>×</p></td>
+<td><p>×</p></td>
+<td><p>以下feature不支持：</p>
+<blockquote>
+<div><p>不支持torch2onnx（此限制来自onnx）</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-odd"><td><p>chunk</p></td>
+<td><p>Slice</p></td>
+<td><p>Slice</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>clamp</p></td>
+<td><p>Clip</p></td>
+<td><p>Clamp</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>min、max不支持为tensor</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Conv1d</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode = same（此限制来自torch2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Conv2d</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode = same（此限制来自torch2onnx）</p></li>
+<li><p>padding value != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Conv3d</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode = same（此限制来自torch2onnx）</p></li>
+<li><p>padding value != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>ConvTranspose2d</p></td>
+<td><p>ConvTranspose</p></td>
+<td><p>Conv2dTranspose</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>group != 1</p></li>
+<li><p>padding value != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>div</p></td>
+<td><p>Div</p></td>
+<td><p>DivideScalar</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>除数不为常数标量</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>einsum</p></td>
+<td><p>Einsum</p></td>
+<td><p>Einsum</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>ELU</p></td>
+<td><p>Elu</p></td>
+<td><p>Elu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>equal</p></td>
+<td><p>Equal</p></td>
+<td><p>Equal</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>expand</p></td>
+<td><p>Expand</p></td>
+<td><p>Expand</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>step &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>expand_as</p></td>
+<td><p>Expand</p></td>
+<td><p>Expand</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flatten</p></td>
+<td><p>Flatten</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>GELU</p></td>
+<td><p>Gelu</p></td>
+<td><p>Gelu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>greater</p></td>
+<td><p>Greater</p></td>
+<td><p>Greater</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>great_equal</p></td>
+<td><p>Less+Not
+/GreaterOrEqual</p></td>
+<td><p>GreaterEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>GRU</p></td>
+<td><p>GRU</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>GRUCell</p></td>
+<td><p>GRU</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardsigmoid</p></td>
+<td><p>HardSigmoid</p></td>
+<td><p>Hardsigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Hardswish</p></td>
+<td><p>HardSwish</p></td>
+<td><p>Hardswich</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardtanh</p></td>
+<td><p>Clip</p></td>
+<td><p>Hardtanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>InstanceNorm1d</p></td>
+<td><p>InstanceNormalization</p></td>
+<td><p>InstanceNorm2d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>InstanceNorm2d</p></td>
+<td><p>InstanceNormalization</p></td>
+<td><p>InstanceNorm2d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>InstanceNorm3d</p></td>
+<td><p>InstanceNormalization</p></td>
+<td><p>InstanceNorm3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>LayerNorm</p></td>
+<td><p>LayerNormalization</p></td>
+<td><p>Layernorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LeakyReLU</p></td>
+<td><p>LeakyRelU</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>less</p></td>
+<td><p>Less</p></td>
+<td><p>Less</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>less_equal</p></td>
+<td><p>Great+NotEqual
+/LessOrEqual</p></td>
+<td><p>LessEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Linear</p></td>
+<td><p>Gemm</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LSTM</p></td>
+<td><p>LSTM</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSTMCell</p></td>
+<td><p>LSTM</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>matmul</p></td>
+<td><p>Matmul(+Add)</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>max</p></td>
+<td><p>ReduceMax</p></td>
+<td><p>MaxPool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>return_indices</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>MaxPool1d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>不支持二维输入（此限制来自onnx）</p></li>
+<li><p>return_indices</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>MaxPool2d</p></td>
+<td><p>MaxPool
+/GlobalMaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>return_indices</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>MaxPool3d</p></td>
+<td><p>MaxPool
+/GlobalMaxPool</p></td>
+<td><p>MaxPool3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>mean</p></td>
+<td><p>ReduceMean</p></td>
+<td><p>Mean</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Mish</p></td>
+<td><p>Softplus+Tanh+Mul</p></td>
+<td><p>Mish</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>multiply</p></td>
+<td><p>Mul</p></td>
+<td><p>Multiply</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>normalize</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Normalize</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>pad</p></td>
+<td><p>Pad</p></td>
+<td><p>Pad</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>不支持四维、五维以外的输入</p></li>
+<li><p>不支持对N、C维度pad</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>permute</p></td>
+<td><p>Transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>pixel_shuffle</p></td>
+<td><p>DepthToSpace</p></td>
+<td><p>PixelShuffle</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>PReLU</p></td>
+<td><p>PRelu</p></td>
+<td><p>Prelu/Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>ReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>ReLU6</p></td>
+<td><p>Clip</p></td>
+<td><p>Hardtanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>roll</p></td>
+<td><p>Slice+Concat</p></td>
+<td><p>Slice+Concat</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>dims不支持为空（此限制来自torch2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>rsub</p></td>
+<td><p>Sub</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>select</p></td>
+<td><p>Gather</p></td>
+<td><p>Slice+Reshape</p></td>
+<td><p>以下feature不支持：
+- indices.size() &gt;= 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>SiLU</p></td>
+<td><p>Sigmoid+Mul</p></td>
+<td><p>Silu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>SoftShrink</p></td>
+<td><p>小算子集合</p></td>
+<td><p>SoftShrink</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>split</p></td>
+<td><p>Split</p></td>
+<td><p>Split</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>sqrt</p></td>
+<td><p>Sqrt</p></td>
+<td><p>Sqrt</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>不支持dims.size() &gt; 1（此限制来自torch2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>stack</p></td>
+<td><p>小算子集合</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>sub</p></td>
+<td><p>Sub</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>sum</p></td>
+<td><p>ReduceSum</p></td>
+<td><p>Sum</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>unsqueeze</p></td>
+<td><p>Unsqueeze</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Upsample系列</p></td>
+<td><p>Resize</p></td>
+<td><p>Upsample</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>time=h_size/ifm_height，不支持time的质因数&gt;22</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>unbind</p></td>
+<td><p>小算子集合</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>view</p></td>
+<td><p>Reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>表格中列 <code class="docutils literal notranslate"><span class="pre">支持情况</span></code> 根据算子的特性，罗列了各算子不支持的参数配置。</p>
+</div>
+</section>
+<section id="paddlepaddle">
+<h2>PaddlePaddle<a class="headerlink" href="#paddlepaddle" title="此标题的永久链接">#</a></h2>
+<p>PaddlePaddle不支持原生框架模型，仅支持PaddlePaddle框架保存为onnx格式的模型文件，支持版本为 <code class="docutils literal notranslate"><span class="pre">opset=11</span></code> ，具体算子支持如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>PaddlePaddle Op</p></th>
+<th class="head"><p>ONNX Op</p></th>
+<th class="head"><p>Icraft Op</p></th>
+<th class="head"><p>支持情况</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>abs</p></td>
+<td><p>Abs</p></td>
+<td><p>Abs</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveAvgPool1d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_L % output_L != 0（此限制来自paddle2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveAvgPool2d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自paddle2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveAvgPool3d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自paddle2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveMaxPool1d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_L % output_L != 0（此限制来自paddle2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AdaptiveMaxPool2d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自paddle2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AdaptiveMaxPool3d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>MaxPool3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>input_H % output_H != 0 || input_W % output_W != 0（此限制来自paddle2onnx）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>add</p></td>
+<td><p>Add</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AvgPool1d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>AvgPool2d</p></td>
+<td><p>AvgragePool
+/GlobalAveragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AvgPool3d</p></td>
+<td><p>AvgragePool
+/GlobalAveragePool</p></td>
+<td><p>AvgPool3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+<li><p>不支持pad</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm1d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>BatchNorm2d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm3d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>BatchNorm3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>bmm</p></td>
+<td><p>Matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>concat</p></td>
+<td><p>Concat</p></td>
+<td><p>Concat</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Conv1D</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Conv2D</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Conv3D</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Conv2DTranspose</p></td>
+<td><p>ConvTranspose</p></td>
+<td><p>Conv2DTranspose</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>group != 1</p></li>
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>divide</p></td>
+<td><p>Div</p></td>
+<td><p>DivideScalar</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>除数不为常数标量</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ELU</p></td>
+<td><p>Elu</p></td>
+<td><p>Elu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>equal</p></td>
+<td><p>Equal</p></td>
+<td><p>Equal</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flatten</p></td>
+<td><p>Flatten</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>GELU</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Gelu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>greater_equal</p></td>
+<td><p>Less+Not</p></td>
+<td><p>GreaterEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>greater_than</p></td>
+<td><p>Greater</p></td>
+<td><p>Greater</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardsigmoid</p></td>
+<td><p>HardSigmoid</p></td>
+<td><p>Hardsigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Hardwish</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Hardwish</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardtanh</p></td>
+<td><p>Clip</p></td>
+<td><p>Hardtanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>InstanceNorm1d</p></td>
+<td><p>InstanceNormalization</p></td>
+<td><p>InstanceNorm2d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>InstanceNorm2d</p></td>
+<td><p>InstanceNormalization</p></td>
+<td><p>InstanceNorm2d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>InstanceNorm3d</p></td>
+<td><p>InstanceNormalization</p></td>
+<td><p>InstanceNorm3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>LayerNorm</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Layernorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LeakyReLU</p></td>
+<td><p>LeakyReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>less_equal</p></td>
+<td><p>Greater+Not</p></td>
+<td><p>LessEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>less_than</p></td>
+<td><p>Less</p></td>
+<td><p>Less</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Linear</p></td>
+<td><p>Gemm</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LSTMCell</p></td>
+<td><p>LSTMCell</p></td>
+<td><p>小算子集合</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>MaxPool1d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>MaxPool2d</p></td>
+<td><p>MaxPool
+/GlobalMaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>MaxPool3d</p></td>
+<td><p>MaxPool
+/GlobalMaxPool</p></td>
+<td><p>MaxPool3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>mean</p></td>
+<td><p>ReduceMean</p></td>
+<td><p>Mean</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Mish</p></td>
+<td><p>Softplus+Tanh+Mul</p></td>
+<td><p>Mish</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>multiply</p></td>
+<td><p>Mul</p></td>
+<td><p>Multiply</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>not_equal</p></td>
+<td><p>Equal+Not</p></td>
+<td><p>NotEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pad1D</p></td>
+<td><p>Unsqueeze+Pad+Squeeze</p></td>
+<td><p>Unsqueeze+Pad+Squeeze</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Pad2D</p></td>
+<td><p>pad</p></td>
+<td><p>Pad</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pad3D</p></td>
+<td><p>pad</p></td>
+<td><p>Pad</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>PixelShuffle</p></td>
+<td><p>DepthToSpace</p></td>
+<td><p>PixelShuffle</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>PReLU</p></td>
+<td><p>PRelu</p></td>
+<td><p>Prelu/Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>ReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>ReLU6</p></td>
+<td><p>Relu</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Silu</p></td>
+<td><p>Sigmoid+Mul</p></td>
+<td><p>Silu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>slice</p></td>
+<td><p>Slice</p></td>
+<td><p>Slice</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>SoftShrink</p></td>
+<td><p>Shrink</p></td>
+<td><p>SoftShrink</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>split</p></td>
+<td><p>Split</p></td>
+<td><p>Split</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>strided_slice</p></td>
+<td><p>Slice</p></td>
+<td><p>Slice</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>不支持stride &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>unsqueeze</p></td>
+<td><p>Unsqueeze</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>UpsamplingBilinear2D</p></td>
+<td><p>Resize</p></td>
+<td><p>Upsample</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>time=h_size/ifm_height，不支持time的质因数&gt;22</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>UpsamplingNearest2D</p></td>
+<td><p>Resize</p></td>
+<td><p>Upsample</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>time=h_size/ifm_height，不支持time的质因数&gt;22</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ZeroPad2D</p></td>
+<td><p>Unsqueeze+Pad+Squeeze</p></td>
+<td><p>Pad</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>表格中列 <code class="docutils literal notranslate"><span class="pre">支持情况</span></code> 根据算子的特性，罗列了各算子不支持的参数配置。</p>
+</div>
+</section>
+<section id="tensorflow">
+<h2>TensorFlow<a class="headerlink" href="#tensorflow" title="此标题的永久链接">#</a></h2>
+<p>TensorFlow不支持原生框架模型，仅支持TensorFlow框架保存为onnx格式的模型文件，支持版本为 <code class="docutils literal notranslate"><span class="pre">opset=14</span></code> ，具体算子支持如下：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>TensorFlow Op</p></th>
+<th class="head"><p>ONNX Op</p></th>
+<th class="head"><p>Icraft Op</p></th>
+<th class="head"><p>支持情况</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>abs</p></td>
+<td><p>Abs</p></td>
+<td><p>Abs</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>add</p></td>
+<td><p>Add</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>AvgPool1d</p></td>
+<td><p>AvgragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>AvgPool2d</p></td>
+<td><p>AvgragePool
+/GlobalAveragePool</p></td>
+<td><p>Avgpool</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>AvgPool3d</p></td>
+<td><p>AvgragePool
+/GlobalAveragePool</p></td>
+<td><p>AvgPool3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>count_include_pad=false，icraft强制修改为true</p></li>
+<li><p>divisor_override &lt; 0</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm1d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>BatchNorm2d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>Batchnorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>BatchNorm3d</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>BatchNorm3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>concat</p></td>
+<td><p>Concat</p></td>
+<td><p>Concat</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conv1D</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Conv2D</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv2d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Conv3D</p></td>
+<td><p>Conv</p></td>
+<td><p>Conv3d</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Conv2DTranspose</p></td>
+<td><p>ConvTranspose</p></td>
+<td><p>Conv2DTranspose</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>group != 1</p></li>
+<li><p>padding_mode != zeros的其他pad形式</p></li>
+<li><p>pads参数为负数</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>dense</p></td>
+<td><p>Matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>divide</p></td>
+<td><p>Div</p></td>
+<td><p>DivideScalar</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>除数不为常数标量</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ELU</p></td>
+<td><p>Elu</p></td>
+<td><p>Elu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>equal</p></td>
+<td><p>Equal</p></td>
+<td><p>Equal</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flatten</p></td>
+<td><p>Flatten</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>gelu</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Gelu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>greater_equal</p></td>
+<td><p>Less+Not</p></td>
+<td><p>GreaterEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>greater_than</p></td>
+<td><p>Greater</p></td>
+<td><p>Greater</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>hard_sigmoid</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Hardsigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>LayerNormalization</p></td>
+<td><p>小算子集合</p></td>
+<td><p>Layernorm</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>LeakyReLU</p></td>
+<td><p>LeakyReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>less_equal</p></td>
+<td><p>Greater+Not</p></td>
+<td><p>LessEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>less_than</p></td>
+<td><p>Less</p></td>
+<td><p>Less</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>Matmul</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>MaxPool1d</p></td>
+<td><p>MaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>MaxPool2d</p></td>
+<td><p>MaxPool
+/GlobalMaxPool</p></td>
+<td><p>Maxpool</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>MaxPool3d</p></td>
+<td><p>MaxPool
+/GlobalMaxPool</p></td>
+<td><p>MaxPool3d</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>mish</p></td>
+<td><p>Softplus+Tanh+Mul</p></td>
+<td><p>Mish</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>multiply</p></td>
+<td><p>Mul</p></td>
+<td><p>Multiply</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>not_equal</p></td>
+<td><p>Equal+Not</p></td>
+<td><p>NotEqual</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>pad</p></td>
+<td><p>pad</p></td>
+<td><p>Pad</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>PixelShuffle</p></td>
+<td><p>DepthToSpace</p></td>
+<td><p>PixelShuffle</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>PReLU</p></td>
+<td><p>PRelu</p></td>
+<td><p>Prelu/Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>ReLU</p></td>
+<td><p>Relu</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>relu6</p></td>
+<td><p>Relu</p></td>
+<td><p>Relu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>Sigmoid</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>silu</p></td>
+<td><p>Sigmoid+Mul</p></td>
+<td><p>Silu</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>slice</p></td>
+<td><p>Slice</p></td>
+<td><p>Slice</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>Softmax</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>Softplus</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>split</p></td>
+<td><p>Split</p></td>
+<td><p>Split</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>Squeeze</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>subtract</p></td>
+<td><p>Sub</p></td>
+<td><p>Add</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>Tanh</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>Transpose</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>unsqueeze</p></td>
+<td><p>Unsqueeze</p></td>
+<td><p>Reshape</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>UpSampling2D</p></td>
+<td><p>Resize</p></td>
+<td><p>Upsample</p></td>
+<td><p>以下feature不支持：</p>
+<ul class="simple">
+<li><p>time=h_size/ifm_height，不支持time的质因数&gt;22</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>表格中列 <code class="docutils literal notranslate"><span class="pre">支持情况</span></code> 根据算子的特性，罗列了各算子不支持的参数配置。</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../interface/apis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../components/overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Icraft 组件总览</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch">Pytorch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paddlepaddle">PaddlePaddle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorflow">TensorFlow</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  最后更新于 24-12-23 14:12.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

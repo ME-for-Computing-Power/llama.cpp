@@ -1,0 +1,1431 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft Quantizer &#8212; Icraft Quantizer 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script src="_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="更新日志" href="changelogs/change_logs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Quantizer 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft Quantizer</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一、整体介绍</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft">1.1 Icraft编译流程中的量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 量化功能概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.3 量化流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1）准备浮点网络与校准集</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2）加载网络</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3）变换输入</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4）前向校准</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5）测量特征图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">6）计算归一化系数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">7）归一化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">8）量化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">9）生成网络</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">10）精度测试与分析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">二、使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">2.1 参数配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.2 校准集前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1）图片校准集</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2）二进制文件校准集</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.3 校准集分批测量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.4 量化粒度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.5 饱和方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-imagemake">2.6 no_imagemake接口</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-transinput">2.7 no_transinput功能</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothquant">2.8 smoothquant功能</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#customop">2.9 CustomOp接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">1）自定义软算子</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2）自定义硬算子</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">三、混合量化配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">3.1 混合精度量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#customconfig">3.2 自定义量化配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#value-range">1）value_range</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#per-saturation">2）per &amp; saturation</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">3.4 使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">1）混合位宽</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#value-range-per-saturation">2）自定义value_range&amp;per&amp;saturation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">四、量化效果分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">4.1 精度损失分析指南</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">1）量化位数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">2）校准集</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">3）饱和方法</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">4）网络参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">4.2 量化误差可视化分析</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">五、算子量化方案</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyi">5.1 BUYI架构</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">六、报错说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">6.1 错误码说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">七、索引</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-quantizer">
+<h1>Icraft Quantizer<a class="headerlink" href="#icraft-quantizer" title="此标题的永久链接">#</a></h1>
+<section id="id1">
+<h2>一、整体介绍<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="icraft">
+<h3>1.1 Icraft编译流程中的量化<a class="headerlink" href="#icraft" title="此标题的永久链接">#</a></h3>
+<img alt="_images/icraft_struct.png" src="_images/icraft_struct.png" />
+<p>Icraft的整体架构组成主要分为三部分——编译、运行时和仿真测试。按功能分为多个组件，
+各组件采用统一的自定义的中间层数据结构（Icraft IR），组件与组件之间的通信通过统一格式的json文件和raw文件。</p>
+<p>编译部分的流程包括解析、优化、量化、适配和指令生成。
+解析时将框架模型转换为Icraft IR表达的模型。
+优化会针对模型的算子进行等价的合并与消除以减少计算量，不会改变模型结果与精度。
+量化会将网络各层的输入输出以及权重参数都转换为定点值来表示，同时支持混合精度量化，
+从而在保证网络精度的基础上，大幅减少功耗和内存占用以及数据传输延迟。
+指令生成会将量化后的模型进行硬件适配与编译，生成最终在AI芯片上执行的指令序列。</p>
+</section>
+<section id="id2">
+<h3>1.2 量化功能概述<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<p>量化本质上是将浮点计算转化为定点计算以部署到支持定点计算的后端芯片上的过程。
+为简化模型定点前向时的计算，模型参数从浮点映射为定点通常使用线性变换，也即线性量化，映射公式表示如下：</p>
+<img alt="_images/linear_quant.PNG" src="_images/linear_quant.PNG" />
+<p>其中，x表示量化前浮点数，x_int表示量化后定点数，S表示缩放因子，Z表示零点。
+当采用对称量化方案时，零点便等于0。</p>
+<p>在对称量化方案下，量化的过程便是确定缩放因子并将浮点数转变为定点数的过程。
+目前Icraft量化提供KLD、EMS和NULL等算法获取合适的缩放因子，同时支持将浮点数映射为INT8和INT16两种定点数据类型。
+Icraft量化还支持选择将浮点映射为定点时的粒度，也即按层量化/按通道量化，按层量化通常指该层的参数共享同一个缩放因子，
+按通道量化指的是不同输出通道上的参数共享同一个缩放因子。</p>
+<p>在将网络中所有参数定点化成INT8/INT16后，量化组件便将模型保存成INT8/INT16格式的json&amp;raw文件，
+最后便能使用量化分析工具来验证该定点网络模型的精度。</p>
+</section>
+<section id="id3">
+<h3>1.3 量化流程<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h3>
+<p>Icraft量化组件支持一键式的训练后量化，但其中包括多个重要步骤，因此对其分步介绍可以对量化流程有更直接的了解。
+量化的流程图如下：</p>
+<img alt="_images/quantizer_flow.png" src="_images/quantizer_flow.png" />
+<p>对输入的浮点网络进行量化主要经历了加载网络、变换输入、前向校准、测量特征图、计算归一化系数、归一化、量化参数、生成网络等步骤。
+以下对每个步骤进行详细说明：</p>
+<section id="id4">
+<h4>1）准备浮点网络与校准集<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h4>
+<p>Icraft量化的过程中会使用一定数量的校准集在浮点网络上进行推理，然后统计每层输入输出的数据范围作为量化
+特征图时的参考，因此需首先保证浮点网络的推理结果正确，同时校准集应来自于实际测试环境中才能确保量化统计的
+数据范围有实际意义。</p>
+</section>
+<section id="id5">
+<h4>2）加载网络<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h4>
+<p>从json&amp;raw文件中加载浮点网络到内存中，在内存中表示为IR中定义的Network类型的对象。
+使用该对象可以访问和改变网络中每一个算子的参数和属性等，可以方便的对网络进行归一化和量化等变换处理。</p>
+</section>
+<section id="id6">
+<h4>3）变换输入<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h4>
+<p>输入转换的目的是合并pre_scale和pre_mean参数到第一层卷积，并将pre_mean调整为128，使输入层的动态范围在（-128，127）。
+该步骤严格说属于优化的内容，后续可能会被迁移到优化组件中。</p>
+</section>
+<section id="id7">
+<h4>4）前向校准<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h4>
+<p>前向即对校准数据集在浮点网络上进行推断，从而获得每一层特征图的分布。</p>
+<p>当校准集太大时，一次对所有图片进行前向会对电脑的可用内存造成很大的压力。因此当电脑的内存较小时，可以使用batch对校准集进行分批前向。
+比如校准集中有100张图片，指定batch = 5则会对校准集测量5次，每次测量20张图片。量化组件会对多次测量的结果取平均，作为最终的测量结果。</p>
+</section>
+<section id="id8">
+<h4>5）测量特征图<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h4>
+<p>测量的过程即根据saturation指定的饱和方法确定每一个特征图的饱和点。</p>
+</section>
+<section id="id9">
+<h4>6）计算归一化系数<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h4>
+<p>根据测量确定的饱和点，计算每一个特征图的归一化系数。计算公式如下：</p>
+<img alt="_images/calc_norm.PNG" src="_images/calc_norm.PNG" />
+</section>
+<section id="id10">
+<h4>7）归一化<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h4>
+<p>在测量特征图和计算归一化系数后，需要对网络的参数进行归一化处理。</p>
+<p>根据每个特征图的归一化系数对网络进行归一化，实际操作便是算子输入和输出的归一化系数要融合到网络参数中去，
+以卷积为例介绍归一化系数融合的方法：</p>
+<img alt="_images/conv_norm.PNG" src="_images/conv_norm.PNG" />
+<p>归一化后，网络和之前的网络是完全等价的浮点网络，只是每个特征图的动态范围是相同的。
+归一化操作保证了所有特征图的动态范围恰好在量化能表达的范围内，简化了量化确定截位信息时对特征图scale的考虑。</p>
+</section>
+<section id="id11">
+<h4>8）量化<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h4>
+<p>量化首先要确定特征图和网络参数的scale，其中由于归一化后所有特征图的scale为1，
+因此量化的过程主要是确定网络参数的scale。
+在根据saturation指定的饱和方式统计出参数的饱和点后，便能根据要量化成何种数据格式计算得到scale（其中scale参数
+需要根据硬件特性进行调整，将在算子介绍中进行说明），最后根据该scale将浮点数映射为定点数。</p>
+</section>
+<section id="id12">
+<h4>9）生成网络<a class="headerlink" href="#id12" title="此标题的永久链接">#</a></h4>
+<p>将量化后的网络序列化为中间层文件。</p>
+</section>
+<section id="id13">
+<h4>10）精度测试与分析<a class="headerlink" href="#id13" title="此标题的永久链接">#</a></h4>
+<p>在获得量化后的json&amp;raw文件后，便能通过Icraft的仿真工具来验证该量化后的模型是否满足精度要求，若不满足
+还可通过调节量化的配置参数再次量化，或者采用混合精度量化直到达到精度要求。后文将对精度评估工具和
+量化调优手段进行详细介绍。</p>
+</section>
+</section>
+</section>
+<section id="id14">
+<h2>二、使用说明<a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h2>
+<p>量化组件（Icraft Quantizer）通过icraft quantize命令进行调用，后面可以跟配置文件，
+也可以直接通过命令参数进行配置。
+量化组件的参数可以在Icraft的toml配置文件中的[quantize]段进行配置，也可以直接在命令行通过直接配置，
+还可以两者结合，命令行中配置的参数会覆盖toml文件中的对应参数。调用方式如下所示：</p>
+<p>icraft  quantize        [&lt;config file&gt;]         [–&lt;key&gt; &lt;value&gt;]</p>
+<section id="command-line">
+<span id="id15"></span><h3>2.1 参数配置<a class="headerlink" href="#command-line" title="此标题的永久链接">#</a></h3>
+<p>量化组件提供给用户的接口为命令行接口（CLI），用户可以通过CLI选择前向方式、饱和方式、量化粒度和量化位数等。
+具体的参数配置如表所示。</p>
+<table class="table" id="id42">
+<caption><span class="caption-text">Table.量化参数列表</span><a class="headerlink" href="#id42" title="此表格的永久链接">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名字</p></th>
+<th class="head"><p>数据格式</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>json</p></td>
+<td><p>string</p></td>
+<td><p>表示输入的中间层json文件路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>raw</p></td>
+<td><p>string</p></td>
+<td><p>表示输入的中间层raw文件路径</p></td>
+</tr>
+<tr class="row-even"><td><p>jr_path</p></td>
+<td><p>string</p></td>
+<td><p>表示输出的中间文件存放的路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>target</p></td>
+<td><p>string</p></td>
+<td><p>表示量化面向的后端架构（buyi）</p></td>
+</tr>
+<tr class="row-even"><td><p>bits</p></td>
+<td><p>int</p></td>
+<td><p>表示量化位数（8/16）</p></td>
+</tr>
+<tr class="row-odd"><td><p>forward_dir</p></td>
+<td><p>string</p></td>
+<td><p>表示校准集图片所在的文件夹</p></td>
+</tr>
+<tr class="row-even"><td><p>forward_list</p></td>
+<td><p>string</p></td>
+<td><p>表示校准集包含的图片列表</p></td>
+</tr>
+<tr class="row-odd"><td><p>saturation</p></td>
+<td><p>string</p></td>
+<td><p>表示统计饱和点的方法（kld/ems/null）</p></td>
+</tr>
+<tr class="row-even"><td><p>per</p></td>
+<td><p>string</p></td>
+<td><p>表示按层还是按通道量化（tensor/channel）</p></td>
+</tr>
+<tr class="row-odd"><td><p>no_imagemake</p></td>
+<td><p>bool/string（optional）</p></td>
+<td><p>表示是否根据imagemake硬件要求来约束输入的量化系数，默认false表示会约束输入的量化系数，同时支持指定某些输入不做约束</p></td>
+</tr>
+<tr class="row-even"><td><p>batch</p></td>
+<td><p>int（optional）</p></td>
+<td><p>将校准集分为几份，依次进行前向计算（电脑内存较小时使用），默认为1</p></td>
+</tr>
+<tr class="row-odd"><td><p>bin_num</p></td>
+<td><p>int（optional）</p></td>
+<td><p>表示统计饱和点时将数据分成多少个bin，默认4096</p></td>
+</tr>
+<tr class="row-even"><td><p>no_transinput</p></td>
+<td><p>bool/string（optional）</p></td>
+<td><p>表示是否对输入减去128以调整输入的动态范围，默认false表示会减去128，同时支持指定某些输入不做调整</p></td>
+</tr>
+<tr class="row-odd"><td><p>no_normalize</p></td>
+<td><p>bool（optional）</p></td>
+<td><p>表示是否做归一化，默认false</p></td>
+</tr>
+<tr class="row-even"><td><p>before_relu</p></td>
+<td><p>bool（optional）</p></td>
+<td><p>表示卷积输出ftmp是否用relu之前的统计，默认false</p></td>
+</tr>
+<tr class="row-odd"><td><p>ftmp_csv</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示ftmp_csv的路径，从该ftmp_csv中获取ftmp的饱和点时使用</p></td>
+</tr>
+<tr class="row-even"><td><p>raw_csv</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示raw_csv的路径，从该raw_csv中获取weight的饱和点时使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>decode_dll</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示调用的解码图片dll的路径</p></td>
+</tr>
+<tr class="row-even"><td><p>input_norm</p></td>
+<td><p>string（optional）</p></td>
+<td><p>表示input算子的ftmp使用网络中某些ftmp的normratio</p></td>
+</tr>
+<tr class="row-odd"><td><p>mix_precision</p></td>
+<td><p>string（optional）</p></td>
+<td><p>配置mix_precision= “auto”：表示自动实现混合精度量化，并按默认混合方案进行混合精度配置；
+配置mix_precision= “xxx.csv”：表示根据用户自定义的位宽配置文件实现混合精度量化。</p></td>
+</tr>
+<tr class="row-even"><td><p>smooth_alpha</p></td>
+<td><p>double（optional）</p></td>
+<td><p>表示smoothquant方法中的alpha系数，可调整特征图与参数间的放缩比例关系，建议选择（0，1）之间的数</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id16">
+<h3>2.2 校准集前向<a class="headerlink" href="#id16" title="此标题的永久链接">#</a></h3>
+<section id="id17">
+<h4>1）图片校准集<a class="headerlink" href="#id17" title="此标题的永久链接">#</a></h4>
+<p>当校准集由图片组成时（以文件后缀为jpg/jpeg/png/bmp做区分），量化组件会使用OpenCV加载图片进行前向推理获得所有层的特征图，从而测量特征图的分布范围。
+此时forward_dir表示存放校准集的文件夹，forward_list表示描述相对于forward_dir的图片路径，每行表示一个图片路径。示例配置如下：</p>
+<img alt="_images/image_config.PNG" src="_images/image_config.PNG" />
+<p>其中，pic_list_coco.txt如下所示：</p>
+<img alt="_images/image_pic_lists.PNG" src="_images/image_pic_lists.PNG" />
+<p>当模型存在多输入时，pic_list_coco.txt如下所示，多输入之间用分号隔开。</p>
+<img alt="_images/image_pic_lists_multi_input.PNG" src="_images/image_pic_lists_multi_input.PNG" />
+</section>
+<section id="id18">
+<h4>2）二进制文件校准集<a class="headerlink" href="#id18" title="此标题的永久链接">#</a></h4>
+<p>当校准集由二进制文件组成时（文件后缀非image），量化组件会默认以float32类型读取二进制文件中的数据作为网络的输入，
+进而前向推理获得各层特征图。当用户想要将图片转为二进制文件作为校准集时，需注意原图片保存数据均为uint8，需转换为float32。
+forward_dir和forward_list的配置方法与上述一致。</p>
+</section>
+</section>
+<section id="id19">
+<h3>2.3 校准集分批测量<a class="headerlink" href="#id19" title="此标题的永久链接">#</a></h3>
+<p>量化需要测量每个特征图的分布，从而确定合适的量化缩放因子。校准集的作用就是使用一部分图片代表整个测试集来测量每个特征图的分布范围，
+因此理论上来讲，校准集中图片的数量越多越好。但是校准集越大，量化过程需要的内存或者时间也就越多。</p>
+<p><strong>考虑到量化效果，建议校准集的容量不小于50张图片。</strong></p>
+<p>在对校准集做前向时，默认会一次对forward_list中指定的所有图片做前向进行测量，这会对电脑的可用内存造成很大的压力。当电脑内存比较小时，
+可以使用batch对校准集分批测量。比如校准集中有50张图片，指定batch = 5则会对校准集测量5次，每次测量10张图片。量化组件会对多次测量的结果取平均，
+作为最终的测量结果。</p>
+<p><strong>注意：校准集的图片总量要能被batch参数整除！</strong></p>
+</section>
+<section id="id20">
+<h3>2.4 量化粒度<a class="headerlink" href="#id20" title="此标题的永久链接">#</a></h3>
+<p>对权重进行量化，首先需要通过算法确定权重的饱和点，进而得到该权重的scale参数，然后所有浮点值便按照该scale映射为定点值。
+在某些网络的权重参数中，不同通道的数据动态范围差异较大，只使用一个scale值难以反映这种差异，会导致量化误差较大，
+因此可以通过更改量化粒度来实现不同通道对应不同的scale值。
+以卷积为例，权重的数据排布格式为（h,w,ci,co），当per = tensor时所有权重对应1个scale值；per = channel时co个通道的数据对应co个scale值。</p>
+<p><strong>一般来说，per_channel量化的表现会优于per_tensor</strong></p>
+</section>
+<section id="id21">
+<h3>2.5 饱和方式<a class="headerlink" href="#id21" title="此标题的永久链接">#</a></h3>
+<img alt="_images/saturation.png" src="_images/saturation.png" />
+<p>非饱和量化，如上左图所示，会将浮点数绝对值的最大值|max|映射到定点数的最大值。而饱和量化，如右图所示，则是通过一些方法找到一个更加合适的阈值映射到定点数的最大值。
+饱和的目的是去除特征图的奇异点，当浮点数据分布不够均匀时，会使量化的缩放因子偏大，由于定点数的单位精度远小于浮点数，就会让浮点数中的很多数值集中映射到定点数的某几个数字上，
+严重影响了量化的精度和效果。</p>
+<p>量化组件支持三种饱和方式：null（非饱和），kld（KL散度最小），ems（误差的平方和最小）。下面以kld为例简单进行介绍：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">KLD</span></code></p></li>
+</ul>
+<p>当saturation = kld时，量化组件会采用KL散度最小的饱和的方式测量特征图和权重的分布。
+P(x)表示浮点数据分布，Q(x)表示量化以后的定点数据分布，那么其KL散度为：</p>
+<img alt="_images/kld.PNG" src="_images/kld.PNG" />
+<p>为了计算KL散度，需要分别统计浮点和定点的数据分布，以8位对称量化为例，其统计方法如下：</p>
+<ul class="simple">
+<li><p>对校准数据集做前向，得到每层浮点数的数值分布，并统计|max|</p></li>
+<li><p>将0~|max|分成N个bin，统计每层的特征图落到各个bin中的数目</p></li>
+<li><dl class="simple">
+<dt>遍历第128~N个bin，遍历间隔为128：</dt><dd><ul>
+<li><p>以当前bin的中值作为阈值T做截断，将大于当前bin以外的bin的数目加到当前bin上，减少直接抹去这些数值带来的影响</p></li>
+<li><p>计算此时的概率分布P，每个bin的概率即其统计数目除以数值的总数</p></li>
+<li><p>创建一个新的编码，其长度为128，其元素值即P量化后的INT8数值</p></li>
+<li><p>因为Q分布只有128个编码，为了计算相对熵，将其扩展到和P相同的长度</p></li>
+<li><p>计算P和Q的相对熵</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>选择最小的相对熵对应的bin，其对应的阈值即为最终的饱和阈值</p></li>
+</ul>
+<p>使用KLD的饱和方式时，可以通过bin_num来指定划分bin的数目，默认bin_num = 4096。
+bin_num越大，划分的精度越高，但是量化占用的内存或时间也会越多。</p>
+</section>
+<section id="no-imagemake">
+<span id="noimagemake"></span><h3>2.6 no_imagemake接口<a class="headerlink" href="#no-imagemake" title="此标题的永久链接">#</a></h3>
+<p>Icraft工具链提供了imagemake硬算子来加速图片的预处理，但是该硬算子对输入的量化系数有一定的约束。考虑到大多数情况下都会使用imagemake硬算子，
+所以量化组件默认按照硬算子的约束去适配输入的量化系数。当用户不使用imagemake硬算子时，可通过no_imagemake = true来关闭该适配，toml配置示例如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[quantize]</span>
+<span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./superglue-input/&quot;</span>
+<span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./image.txt&quot;</span>
+<span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.json&quot;</span>
+<span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.raw&quot;</span>
+<span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/&quot;</span>
+<span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="n">no_imagemake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</pre></div>
+</div>
+<p>具体来说，在数值大小上imagemake要求输入的normratio大于1/32；
+在数值精度上，假定统计所得normratio为raw_norm，调整后的normratio为new_norm，则两者需满足如下关系：
+1/new_norm = round(1/raw_norm*1024)/1024</p>
+<p>另外，如果用户需要指定某些输入不做imagemake的适配，则可以通过no_imagemake = 1,2来关闭iftmp_ID = 1,2的适配，toml配置示例如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[quantize]</span>
+<span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./superglue-input/&quot;</span>
+<span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./image.txt&quot;</span>
+<span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.json&quot;</span>
+<span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.raw&quot;</span>
+<span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/&quot;</span>
+<span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="n">no_imagemake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1,2&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="no-transinput">
+<h3>2.7 no_transinput功能<a class="headerlink" href="#no-transinput" title="此标题的永久链接">#</a></h3>
+<p>量化组件默认输入是动态范围为[0,255]的图片，因此提供了transinput功能将输入全部减去128（为了等价变换，该功能需修改第一个卷积的bias），
+从[0,255]的动态范围调整为[-128,127]以充分利用数值表示的空间，
+但当输入不是[0,255]的图片时，该功能可能会引入较大的浮点误差，可通过配置no_transinput参数来关闭该功能，toml配置示例如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[quantize]</span>
+<span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./superglue-input/&quot;</span>
+<span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./image.txt&quot;</span>
+<span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.json&quot;</span>
+<span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.raw&quot;</span>
+<span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/&quot;</span>
+<span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="n">no_transinput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</pre></div>
+</div>
+<p>另外，如果用户需要指定某些输入不做transinput的适配，则可以通过no_transinput = 1,2来关闭iftmp_ID = 1,2的适配，toml配置示例如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[quantize]</span>
+<span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./superglue-input/&quot;</span>
+<span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./image.txt&quot;</span>
+<span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.json&quot;</span>
+<span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/superglue_optimized.raw&quot;</span>
+<span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/&quot;</span>
+<span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="n">no_transinput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1,2&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="smoothquant">
+<span id="id22"></span><h3>2.8 smoothquant功能<a class="headerlink" href="#smoothquant" title="此标题的永久链接">#</a></h3>
+<p>smoothquant针对transformer中的layernorm+matmul结构，认为layernorm的输出在通道维度上动态范围差异很大，导致量化困难，
+因此通过将layernorm中的gamma和beta在不同通道上乘以不同的系数以降低输出的动态范围差异，同时该系数被融入matmul的参数中保证了matmul的输出结果不变。</p>
+<p>smoothquant介绍了确定不同通道系数的方法，该方法以smooth_alpha为参数以控制参数放缩的程度，根据不同网络特点可设置不同的smooth_alpha参数，
+toml配置示例如下：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[quantize]</span>
+<span class="n">forward_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;image&quot;</span>
+<span class="n">saturation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="n">forward_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./vit-input/&quot;</span>
+<span class="n">forward_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./image.txt&quot;</span>
+<span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/vit_optimized.json&quot;</span>
+<span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/vit_optimized.raw&quot;</span>
+<span class="n">jr_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./jsonraw/&quot;</span>
+<span class="n">per</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tensor&quot;</span>
+<span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;buyi&quot;</span>
+<span class="n">smooth_alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>需注意的是原作者的smoothquant方法中，layernorm和softmax均使用浮点计算，因此用户在使用该功能时若效果不及预期，
+可将optimized.json中matmul之前的layernorm+multiply+add的compile target修改为host target以获得和原始smoothquant完全一致的效果。</p>
+<p><a class="reference external" href="https://github.com/mit-han-lab/smoothquant">参考链接</a></p>
+</section>
+<section id="customop">
+<h3>2.9 CustomOp接口<a class="headerlink" href="#customop" title="此标题的永久链接">#</a></h3>
+<p>Icraft目前已经包含丰富的算子库，但当用户想要通过自定义算子来实现某些功能时，量化组件也提供了相应的
+CustomOp接口来自定义该算子的量化方式。下面分两类CustomOp分别进行介绍：</p>
+<section id="id24">
+<h4>1）自定义软算子<a class="headerlink" href="#id24" title="此标题的永久链接">#</a></h4>
+<p>只在CPU或GPU等计算资源上完成前向的算子称为软算子，该类算子进行的是浮点计算，无需量化。</p>
+</section>
+<section id="id25">
+<h4>2）自定义硬算子<a class="headerlink" href="#id25" title="此标题的永久链接">#</a></h4>
+<p>需要利用NPU或PL等计算资源来完成前向的算子称为硬算子,该类算子进行的是定点计算，需要实现如下三个量化接口函数：</p>
+<ol class="arabic simple">
+<li><p>计算归一化系数</p></li>
+</ol>
+<p>归一化系数指的是每一层特征图的scale，CustomOp需根据该层的数据位宽来计算输出特征图的scale。
+在logger中记录有该层输出特征图的饱和点以及计算位宽，使用这两个参数便能计算得到归一化系数。</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BuyiNormratio</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">expand</span><span class="o">::</span><span class="n">GroupNorm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">expand</span><span class="o">::</span><span class="n">GroupNorm</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">QuantizerLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logger</span><span class="p">.</span><span class="n">dtype_value_</span><span class="p">[</span><span class="n">op</span><span class="o">-&gt;</span><span class="n">op_id</span><span class="p">];</span><span class="w">  </span><span class="c1">//获取该算子的计算位宽，可根据实际情况修改</span>
+<span class="linenos"> 3</span><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">qt_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">bits</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">oftmp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">outputs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">              </span><span class="k">auto</span><span class="w"> </span><span class="n">oftmp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oftmp</span><span class="o">-&gt;</span><span class="n">v_id</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">              </span><span class="k">auto</span><span class="w"> </span><span class="n">sat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logger</span><span class="p">.</span><span class="n">getFtmpSat</span><span class="p">(</span><span class="n">oftmp_id</span><span class="p">);</span><span class="w">  </span><span class="c1">//获取输出特征图的饱和点</span>
+<span class="linenos"> 7</span><span class="w">              </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nr</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">              </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">sat</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">                      </span><span class="k">auto</span><span class="w"> </span><span class="n">nr_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">qt_max</span><span class="p">;</span><span class="w">  </span><span class="c1">//根据饱和点计算归一化系数</span>
+<span class="linenos">10</span><span class="w">                      </span><span class="n">nr</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">nr_value</span><span class="p">);</span>
+<span class="linenos">11</span><span class="w">              </span><span class="p">}</span>
+<span class="linenos">12</span><span class="w">              </span><span class="n">logger</span><span class="p">.</span><span class="n">info_</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">ftmp id: {}, calculate normratio = {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">oftmp_id</span><span class="p">,</span><span class="w"> </span><span class="n">nr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="linenos">13</span><span class="w">              </span><span class="n">logger</span><span class="p">.</span><span class="n">logFtmpNormratio</span><span class="p">(</span><span class="n">oftmp_id</span><span class="p">,</span><span class="w"> </span><span class="n">nr</span><span class="p">);</span><span class="w">  </span><span class="c1">//将输出特征图的归一化系数记录到logger中</span>
+<span class="linenos">14</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">15</span><span class="w">      </span><span class="p">});</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>归一化</p></li>
+</ol>
+<p>归一化是指将特征图的归一化系数融入权重参数中，使得各层特征图都符合统一分布。
+以卷积为例，从logger中获取输入输出特征图的归一化系数后，按照归一化的公式将这两个系数融入参数中。</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BuyiNormalize</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">expand</span><span class="o">::</span><span class="n">Conv2d</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">expand</span><span class="o">::</span><span class="n">Conv2d</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">QuantizerLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">conv2d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">Conv2d</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">processor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">compile_target</span><span class="o">-&gt;</span><span class="n">typeKey</span><span class="p">();</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">auto</span><span class="w"> </span><span class="n">op_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">typeKey</span><span class="p">());</span>
+<span class="linenos"> 6</span><span class="n">logger</span><span class="p">.</span><span class="n">info_</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Normalizing Op Id: {}, Type: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">op_id</span><span class="p">,</span><span class="w"> </span><span class="n">op_type</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="k">auto</span><span class="w"> </span><span class="n">iftmp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">v_id</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="k">auto</span><span class="w"> </span><span class="n">oftmp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">v_id</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input_norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logger</span><span class="p">.</span><span class="n">getFtmpNormratio</span><span class="p">(</span><span class="n">iftmp_id</span><span class="p">);</span><span class="w">  </span><span class="c1">//获取输入特征图的归一化系数</span>
+<span class="linenos">10</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">output_norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logger</span><span class="p">.</span><span class="n">getFtmpNormratio</span><span class="p">(</span><span class="n">oftmp_id</span><span class="p">);</span><span class="w">  </span><span class="c1">//获取输出特征图的归一化系数</span>
+<span class="linenos">11</span><span class="k">auto</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">12</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">weight_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">.</span><span class="n">tensorType</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">;</span>
+<span class="linenos">13</span><span class="k">auto</span><span class="w"> </span><span class="n">wh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">14</span><span class="k">auto</span><span class="w"> </span><span class="n">ww</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos">15</span><span class="k">auto</span><span class="w"> </span><span class="n">input_chann</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight_dim</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="linenos">16</span><span class="k">auto</span><span class="w"> </span><span class="n">output_chann</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight_dim</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="k">auto</span><span class="w"> </span><span class="n">weight_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">Params</span><span class="o">&gt;</span><span class="p">().</span><span class="n">data</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">19</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">wh</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ww</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">21</span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">input_chann</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">22</span><span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">output_chann</span><span class="p">;</span><span class="w"> </span><span class="n">o</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">23</span><span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ww</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">input_chann</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">output_chann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">input_chann</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">output_chann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">output_chann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
+<span class="linenos">24</span><span class="w">        </span><span class="c1">//根据输入和输出的归一化系数调整权重参数</span>
+<span class="linenos">25</span><span class="w">        </span><span class="n">weight_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">input_norm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">output_norm</span><span class="p">[</span><span class="n">o</span><span class="p">];</span>
+<span class="linenos">26</span><span class="w">      </span><span class="p">}</span>
+<span class="linenos">27</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">28</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">29</span><span class="p">}</span>
+<span class="linenos">30</span><span class="k">auto</span><span class="w"> </span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conv2d</span><span class="o">-&gt;</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="linenos">31</span><span class="k">auto</span><span class="w"> </span><span class="n">bias_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bias</span><span class="p">.</span><span class="n">tensorType</span><span class="p">().</span><span class="n">numElements</span><span class="p">();</span>
+<span class="linenos">32</span><span class="k">auto</span><span class="w"> </span><span class="n">bias_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bias</span><span class="p">.</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">Params</span><span class="o">&gt;</span><span class="p">().</span><span class="n">data</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">33</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">bias_size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">34</span><span class="w">  </span><span class="c1">//根据输出的归一化系数调整bias</span>
+<span class="linenos">35</span><span class="w">  </span><span class="n">bias_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">output_norm</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="linenos">36</span><span class="p">}</span>
+<span class="linenos">37</span><span class="p">});</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>量化</p></li>
+</ol>
+<p>在量化接口中需将权重参数和输出特征图都转变为量化类型，下面是转变输出特征图类型的范例。</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">ICRAFT_IMPL_FUNCTOR</span><span class="p">(</span><span class="n">BuyiQuantize</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">expand</span><span class="o">::</span><span class="n">GroupNorm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">expand</span><span class="o">::</span><span class="n">GroupNorm</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="n">QuantizerLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logger</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="k">auto</span><span class="w"> </span><span class="n">op_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">op_id</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logger</span><span class="p">.</span><span class="n">dtype_value_</span><span class="p">[</span><span class="n">op_id</span><span class="p">];</span><span class="w">  </span><span class="c1">//获取该算子的计算位宽，可根据实际情况修改</span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">output_ftmps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op</span><span class="o">-&gt;</span><span class="n">outputs</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="c1">//设置输出特征图为量化类型</span>
+<span class="linenos"> 6</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">output_ftmp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">output_ftmps</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">output_ftmp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_ftmp</span><span class="o">-&gt;</span><span class="n">v_id</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logger</span><span class="p">.</span><span class="n">getFtmpNormratio</span><span class="p">(</span><span class="n">output_ftmp_id</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_ftmp</span><span class="p">.</span><span class="n">dtype</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shape</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">output_ftmp</span><span class="p">.</span><span class="n">dtype</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">layout</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">co</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shape</span><span class="p">[</span><span class="mi">-1</span><span class="p">];</span>
+<span class="linenos">12</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">hard_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">co</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">});</span><span class="w">  </span><span class="c1">//归一化后特征图的scale均为1</span>
+<span class="linenos">13</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">co</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">o_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">makeQDtype</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">layout</span><span class="p">,</span><span class="w"> </span><span class="n">bits</span><span class="p">,</span><span class="w"> </span><span class="n">hard_scale</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="n">norm</span><span class="p">);</span>
+<span class="linenos">15</span><span class="w">  </span><span class="n">output_ftmp</span><span class="p">.</span><span class="n">setDType</span><span class="p">(</span><span class="n">o_type</span><span class="p">);</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">  </span><span class="n">logger</span><span class="p">.</span><span class="n">logFtmpScale</span><span class="p">(</span><span class="n">output_ftmp_id</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">18</span><span class="w">  </span><span class="n">logger</span><span class="p">.</span><span class="n">logFtmpExp</span><span class="p">(</span><span class="n">output_ftmp_id</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">19</span><span class="w">  </span><span class="n">logger</span><span class="p">.</span><span class="n">info_</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Quantizing ftmp id: {}, scale: {}, exp: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">output_ftmp_id</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos">20</span><span class="p">}</span>
+<span class="linenos">21</span><span class="w">      </span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id26">
+<h2>三、混合量化配置<a class="headerlink" href="#id26" title="此标题的永久链接">#</a></h2>
+<section id="id27">
+<h3>3.1 混合精度量化<a class="headerlink" href="#id27" title="此标题的永久链接">#</a></h3>
+<p>当对网络的运行速度和精度都有较高要求时，即希望同时实现INT8的速度和INT16的精度，可以尝试使用混合精度量化。
+混合精度量化通过采用特定策略选择网络中量化影响较大的算子，并使用INT16进行计算，旨在减少量化损失并提高网络的精度。
+通过将关键算子使用INT16进行计算，可以在一定程度上缓解量化引入的精度损失。
+在混合精度量化中，位宽配置可以通过两种方式实现：</p>
+<p>1、内置选取策略：
+量化组件内置了一种选取策略，根据各层数据分布的差异，自动选择需要使用更高精度计算的层，通过配置mix_precision=auto实现。
+这种策略会分析网络中各个算子的数据以及特征，选取出需要使用INT16进行计算的算子，自动实现混合精度量化。</p>
+<p>2、用户自定义配置：
+另一种方式是用户根据自己的需求自定义配置网络中各层算子使用的计算位宽，通过配置mix_precision=”xx.csv”。
+用户可以针对不同层的特性和精度要求，手动指定算子的计算位宽。在量化时，量化组件会根据用户的配置，实现混合精度量化。
+这种方式提供了更大的灵活性，使用户可以根据具体情况对网络进行精细的控制。</p>
+</section>
+<section id="customconfig">
+<span id="id28"></span><h3>3.2 自定义量化配置<a class="headerlink" href="#customconfig" title="此标题的永久链接">#</a></h3>
+<p>除了上述混合精度量化外，mix_precision参数还支持用户自定义配置各层使用的量化算法、量化粒度以及量化范围。</p>
+<section id="value-range">
+<h4>1）value_range<a class="headerlink" href="#value-range" title="此标题的永久链接">#</a></h4>
+<p>由于硬件在实际前向推理过程中不能保存全精度的数据，因此可能存在卷积和矩阵乘算子的乘累加中间值溢出现象。
+对于这种问题的解决办法是将对应卷积或矩阵乘算子的权重参数和输入特征图量化到更小的数据范围内以避免溢出，例如
+在8bit量化下，可自由设置特征图和权重量化为7bit。</p>
+</section>
+<section id="per-saturation">
+<h4>2）per &amp; saturation<a class="headerlink" href="#per-saturation" title="此标题的永久链接">#</a></h4>
+<p>在某些数据分布特殊的网络中，需要精细化地针对不同层设置不同的量化参数，包括量化算法kld/null/ems
+以及量化粒度per_tensor/per_channel/per_group，
+其中per_group=n表示针对被量化的tensor的最后一维分成n个组分别统计量化系数。</p>
+</section>
+</section>
+<section id="id29">
+<h3>3.4 使用说明<a class="headerlink" href="#id29" title="此标题的永久链接">#</a></h3>
+<section id="id30">
+<h4>1）混合位宽<a class="headerlink" href="#id30" title="此标题的永久链接">#</a></h4>
+<p>根据是否自定义位宽配置方案，使用接口上会有略微差异。</p>
+<p>当使用mix_precision=auto时，表示量化组件将根据内置策略自动分配各层算子的计算位宽，实现混合精度量化。</p>
+<p>当使用mix_precision=”xx.csv”时，表示量化组件将根据用户自定义的位宽配置方案实现混合精度量化。
+在这种情况下，用户需要提供一个包含位宽配置信息的CSV文件。该文件内部需要包含以下内容，
+其中op_id需要与当前网络匹配，dtype仅支持INT8、INT16、FP32；</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>op_id</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>dtype</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>conv</p></td>
+<td><p>INT8</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>relu</p></td>
+<td><p>INT8</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>conv</p></td>
+<td><p>INT16</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>relu</p></td>
+<td><p>INT16</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>conv</p></td>
+<td><p>INT8</p></td>
+</tr>
+<tr class="row-odd"><td><p>···</p></td>
+<td><p>···</p></td>
+<td><p>···</p></td>
+</tr>
+</tbody>
+</table>
+<p>另外，在使用混合精度量化时，以下是一些建议：</p>
+<ol class="loweralpha simple">
+<li><p>对输出层使用更高的计算位宽</p></li>
+<li><p>对量化前后余弦相似度低的算子使用更高的计算位宽</p></li>
+</ol>
+<p>这些Tips旨在帮助优化混合精度量化的效果。根据具体的网络结构和任务需求，可以进一步调整和优化计算位宽的选择，以平衡精度和速度的需求。</p>
+</section>
+<section id="value-range-per-saturation">
+<h4>2）自定义value_range&amp;per&amp;saturation<a class="headerlink" href="#value-range-per-saturation" title="此标题的永久链接">#</a></h4>
+<p>当需要解决乘累加溢出问题时，可通过配置下表中的value_range_in_bits列，
+其中6;7表示将第一个卷积的参数量化到6bit范围，输出特征图量化到7bit范围，其中value_range
+不得大于dtype列配置的数据范围。</p>
+<p>当某些层的数据在通道间存在较大差异时可通过配置下表对应层的per来实现按通道量化，其中tensor;group=4表示该算子的参数按层量化，
+输出特征图根据最后一维分成四组进行量化。
+例如，在self attention层的输入中由于不同head间的数据差异较为明显，可通过配置group=head_num来实现按组量化。
+在连接不同transformer block的add算子上，输入输出使用per_channel量化有较为明显的效果。</p>
+<p>当某些算子对输入的饱和点较为敏感时，可通过配置下表的saturation来实现特定算子的特定量化算法，其中kld;null表示该层的参数使用kld算子，
+输出特征图使用null算法。
+例如，softmax的输入输出在选取kld时可能会导致较大值均被饱和从而放大输出误差，这时可设置为null以减少饱和的影响。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>op_id</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>value_range_in_bits</p></th>
+<th class="head"><p>per</p></th>
+<th class="head"><p>saturation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>conv</p></td>
+<td><p>INT8</p></td>
+<td><p>6;7</p></td>
+<td><p>channel;tensor</p></td>
+<td><p>kld;kld</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>relu</p></td>
+<td><p>INT8</p></td>
+<td><p>8;8</p></td>
+<td><p>tensor;channel</p></td>
+<td><p>kld;kld</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>conv</p></td>
+<td><p>INT16</p></td>
+<td><p>14;14</p></td>
+<td><p>tensor;group=4</p></td>
+<td><p>null;null</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>relu</p></td>
+<td><p>INT16</p></td>
+<td><p>16;16</p></td>
+<td><p>tensor;group=4</p></td>
+<td><p>null;null</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>conv</p></td>
+<td><p>INT8</p></td>
+<td><p>8;8</p></td>
+<td><p>tensor;tensor</p></td>
+<td><p>ems;ems</p></td>
+</tr>
+<tr class="row-odd"><td><p>···</p></td>
+<td><p>···</p></td>
+<td><p>···</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="id31">
+<h2>四、量化效果分析<a class="headerlink" href="#id31" title="此标题的永久链接">#</a></h2>
+<section id="id32">
+<h3>4.1 精度损失分析指南<a class="headerlink" href="#id32" title="此标题的永久链接">#</a></h3>
+<p>量化会造成网络精度的损失，主要和以下几个方面相关：</p>
+<section id="id33">
+<h4>1）量化位数<a class="headerlink" href="#id33" title="此标题的永久链接">#</a></h4>
+<p>量化是使用较少位数的定点数的运算来表示浮点数的运算。一般来说，量化位数越高，量化的精度损失越少。
+量化位数的支持一方面和量化组件有关，另一方面也取决于加速器对不同位数定点数的支持。
+本量化组件支持布衣架构，支持8或16bit量化。
+如果8位量化不能满足精度的需求，则可以尝试16位量化或混合精度量化</p>
+</section>
+<section id="id34">
+<h4>2）校准集<a class="headerlink" href="#id34" title="此标题的永久链接">#</a></h4>
+<p>量化的精度损失也和选择的校准集有关。校准集的选择最好能够很好地代表真实检测/识别图片的数据分布。
+因此，校准集可以从测试集或者训练集中选择。
+一般情况下，校准集越大，越可能获得较好的量化效果。因此，当量化损失过大时，可以考虑增加/更换校准集。</p>
+</section>
+<section id="id35">
+<h4>3）饱和方法<a class="headerlink" href="#id35" title="此标题的永久链接">#</a></h4>
+<p>饱和能够减少校准集特征图的奇异点带来的精度损失，因此相对于非饱和量化，使用饱和量化的方式能够提高量化效果。
+本量化组件支持NULL、KLD和EMS的量化方式，当量化精度损失过大时，可以尝试更换饱和方式。</p>
+</section>
+<section id="id36">
+<h4>4）网络参数<a class="headerlink" href="#id36" title="此标题的永久链接">#</a></h4>
+<p>量化误差和网络参数的分布有关，不同的参数分布对量化损失的容忍度不同。
+当所使用的网络无论采取何种方式都不能获得很好的量化效果时，可以考虑采用量化感知训练微调网络参数，
+使得网络参数更适于量化。量化感知训练的具体使用方法见《QAT用户手册》。</p>
+</section>
+</section>
+<section id="id37">
+<h3>4.2 量化误差可视化分析<a class="headerlink" href="#id37" title="此标题的永久链接">#</a></h3>
+<p>Icraft-Show通过运行浮点模型和量化模型并对每层的输出进行统计分析，以图形化的界面展示每层数据的量化误差。
+该工具使用余弦相似度、平均绝对误差和相对欧氏距离作为量化误差的评价标准。</p>
+<p>该工具分析完毕后通过网页展示分析结果以及模型的各项信息，网页内容包括分析结果（网页上方），网络结构（网页左下），
+每层FeatureMap的数据对比（网页右中），分析结果表（网页右下）。</p>
+<img alt="_images/icraft_show.png" src="_images/icraft_show.png" />
+<p>该工具的具体使用方法见《Icraft-Show使用手册》。</p>
+</section>
+</section>
+<section id="id38">
+<h2>五、算子量化方案<a class="headerlink" href="#id38" title="此标题的永久链接">#</a></h2>
+<section id="buyi">
+<h3>5.1 BUYI架构<a class="headerlink" href="#buyi" title="此标题的永久链接">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Add</span></code></p></li>
+</ul>
+<p><strong>add_const</strong>：该算子浮点前向是Y = a X + b C，</p>
+<p>归一化后便是Yn = Xn * (a * Nx / Ny) + (b * C * Nx / Ny)，</p>
+<p>令I = a * Nx / Ny， J = b * C * Nx / Ny，</p>
+<p>则Yn = Xn * I + J，因为该算子使用VPE进行前向，则I和J需要被量化，</p>
+<p>则Yn = (Xn * Iq + Jq) * S；S = Si = Sj，其中S是通过I和J计算得到的scale系数。</p>
+<p>S满足硬件p*2(-q)的格式，其中p数值范围[0,255], q数值范围[bits,2*bits]。</p>
+<p><strong>add_ftmp</strong>：
+该浮点算子对应的公式是Z = a X + b Y，</p>
+<p>归一化后便是Zn = Xn * Nx * a / Nz + Yn * Ny * b / Nz，</p>
+<p>假定I = Nx * a / Nz，J = Ny * b / Nz，则上式变为Zn = Xn * I + Yn * J，
+该算子需在VPE上计算，因此需将I和J两个值量化，</p>
+<p>从而公式进一步转换为Zn = Xn*Iq*Si + Yn*Jq*Sj，又因为VPE中只有一次截位且位于乘加运算之后，</p>
+<p>因此公式进一步转换为Zn = (Xn*Iq + Yn*Jq) * S；S = Si = Sj，其中S是通过I和J计算得到的scale系数。</p>
+<p>S满足硬件p*2(-q)的格式，其中p数值范围[0,255], q数值范围[bits,2*bits]。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Avgpool</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Batchnorm</span></code></p></li>
+</ul>
+<p>由于该算子的特性，不同通道间的数据可能差异较大，因此无论”per”参数配置如何，均使用按通道量化实现。</p>
+<p>Batchnorm的浮点前向为Y = X * W + B，主要是矩阵和向量的乘加计算，</p>
+<p>量化前向公式如下：
+Yq = Xq * Wq * (Sw * Sx / Sy) + Bq * (Sb / Sy)，</p>
+<p>由于归一化之后Sx = Sy = 1，且该算子使用VPE进行计算，则
+Yq = (Wq * Xq + Bq) * Sw , Sw = Sb</p>
+<p>因此要求w_scale等于b_scale，
+经验表明，w对结果的影响往往更大，因此选取w_scale作为两者共同的scale</p>
+<p>scale满足m*2^(-n)的格式，其中m数值范围[0,255], n数值范围[bits,2*bits]。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Concat</span></code></p></li>
+</ul>
+<p><strong>concat_const</strong>：设定输出的normratio等于输入的normratio，然后使用该normratio对const做归一化操作，
+最后在量化阶段将该const近似为Int值。</p>
+<p><strong>concat_ftmp</strong>：将输入的normratio在最后一维concat起来作为输出的normratio。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Conv2d</span></code></p></li>
+</ul>
+<p><strong>conv_ftmp</strong>：
+该算子只支持两个ftmp的卷积运算，暂不支持bias，其浮点前向为Z = X * Y，
+则量化前向为Zq = (Xq * Yq) * (Nx * Ny / Nz)，其中N表示ftmp的normratio，
+算子中的cut_scale表示(Nx * Ny / Nz)。</p>
+<p>如果是深度可分离卷积，则前向使用VPE实现，算子中的cut_scale属性用来记录VPE中的截位信息，
+假定cut_scale = m*2^(-n)，其中m对应VPE中的乘法，数值范围[0,255]，n的数值范围[bits, 2*bits].</p>
+<p>如果不是深度可分离卷积，则前向使用MPE+VPE实现，算子中的cut_scale属性记录MPE和VPE中的两次截位。
+假定cut_scale = m*2^(-n)，其中m对应VPE中的乘法，数值范围[0,255]，n对应两次截位，数值范围[bits, 2*bits + 5]</p>
+<p>通过调整Nz的数值保证cut_scale满足上述的截位要求。</p>
+<p><strong>conv_const</strong>：
+统计normratio和归一化操作比较常规，无需赘述。
+该算子的浮点前向为Z = X * W + B，主要是矩阵和矩阵的乘加运算以及矩阵和向量的加法运算。</p>
+<p>如果是深度可分离卷积，则只包括矩阵向量计算，前向使用VPE实现，前向计算公式同Batchnorm，w_scale需等于b_scale，这个共同的scale作为VPE中的截位。
+至于如何确定这个共同的scale，优先采用w_scale，当w_scale接近零时才会采用b_scale，当两者都接近零时
+则认为scale数值不重要，采用默认值1。scale采用m*2^(-n)表达，其中m的数值范围[0,255]，n的数值范围[bits, 2*bits]。</p>
+<p>如果不是深度可分离卷积，则包括矩阵矩阵运算以及矩阵向量运算，前向使用MPE+VPE实现，
+量化前向公式为Yq = (Xq * Wq) * (Sx * Sw / Sy)，Zq = (Yq + Bq) * (Sy / Sz)，Sb = Sy。</p>
+<p>由于做过归一化，因此Sx = Sz = 1,
+w_scale/b_scale表示MPE中的第一次截位，b_scale表示VPE中的第二次截位。
+假定w_scale=a*2^(-b)，b_scale=m*2^(-n)，在优先将w_scale的浮点值近似为a和b后，需保证
+a = m、0 &lt;= n-b &lt;= 5以及bits &lt;= n &lt;= 2*bits得到b_scale的近似。</p>
+<p>需注意的是，如果是按通道量化，由于硬件的限制，MPE的不同输出通道的截位需相等，因此会在前述截位信息的基础上，
+再次调整各通道的w_scale和b_scale使得第一次截位相等。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Conv2dTranspose</span></code></p></li>
+</ul>
+<p>实现参考Conv2d</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Elu</span></code> <code class="docutils literal notranslate"><span class="pre">Gelu</span></code> <code class="docutils literal notranslate"><span class="pre">Hardsigmoid</span></code> <code class="docutils literal notranslate"><span class="pre">Hardswish</span></code></p></li>
+</ul>
+<p>只需统计输出的normratio，交给后端制作查找表</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Layernorm</span></code></p></li>
+</ul>
+<p>只完成了统计输出normratio，交由硬算子。
+后续针对该算子的优化可能实现特征图的按通道统计normratio</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Matmul</span></code></p></li>
+</ul>
+<p><strong>matmul_ftmp</strong>：
+参考conv_ftmp算子中非深度可分离卷积情况下的实现方式</p>
+<p><strong>matmul_const</strong>：
+参考conv_const算子中非深度可分离卷积情况下的实现方式，但该算子暂不支持按通道量化</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Maxpool</span></code></p></li>
+</ul>
+<p>直接把输入normratio传递给输出normratio</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Mish</span></code></p></li>
+</ul>
+<p>只需统计输出的normratio，交给后端制作查找表</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Multiply</span></code></p></li>
+</ul>
+<p><strong>mul_ftmp</strong>：
+参考conv_ftmp算子中深度可分离卷积情况下的实现方式</p>
+<p><strong>mul_const</strong>：
+参考conv_const算子中深度可分离卷积情况下的实现方式，但该算子暂不支持按通道量化</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MultiYolo</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Output</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pad</span></code></p></li>
+</ul>
+<p>在归一化时，输入的normratio直接传递给输出，同时pad_value使用该normratio进行归一化操作。
+针对归一化后的pad_value，将其转换为Int值并做饱和操作。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PixelShuffle</span></code></p></li>
+</ul>
+<p>只需统计输出的normratio</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Region</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Relu</span></code></p></li>
+</ul>
+<p>在量化中没有特殊操作，但在指令生成中需要获取前一个算子的b_scale用在正半轴，将该b_scale结合alpha系数
+用在负半轴。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Reorg</span></code></p></li>
+</ul>
+<p>只需统计输出的normratio</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Reshape</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Resize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Route</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code></p></li>
+</ul>
+<p>待补充关于减小查找表误差的内容</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Silu</span></code></p></li>
+</ul>
+<p>只需统计输出的normratio</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Slice</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Softmax</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Split</span></code></p></li>
+</ul>
+<p>如果针对最后一维split，则输出的normratio也根据输入的normratio进行Split
+如果针对的不是最后一维，则直接传递输入的normratio给输出。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Squeeze</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SSDOutput</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SwapOrder</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tanh</span></code></p></li>
+</ul>
+<p>待补充关于减小查找表误差的内容</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Transpose</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Upsample</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Yolo</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="id39">
+<h2>六、报错说明<a class="headerlink" href="#id39" title="此标题的永久链接">#</a></h2>
+<section id="id40">
+<h3>6.1 错误码说明<a class="headerlink" href="#id40" title="此标题的永久链接">#</a></h3>
+<p><strong>21000:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">缺少必须参数</span></code></p></li>
+</ul>
+<p><strong>21001:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">文件或路径不存在</span></code></p></li>
+</ul>
+<p><strong>21002:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">参数超出范围、格式错误</span></code></p></li>
+</ul>
+<p><strong>21003-21009:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">预留错误码</span></code></p></li>
+</ul>
+<p><strong>21010:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Dll加载相关错误</span></code></p></li>
+</ul>
+<p><strong>21011:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">量化系数不符合要求相关错误</span></code></p></li>
+</ul>
+<p><strong>21012:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">算子输入与参数相关错误</span></code></p></li>
+</ul>
+<p><strong>21013:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">配置文件不符合要求错误</span></code></p></li>
+</ul>
+<p><strong>21014:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">文件读取错误</span></code></p></li>
+</ul>
+<p><strong>21015:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TransInput相关错误</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="id41">
+<h2>七、索引<a class="headerlink" href="#id41" title="此标题的永久链接">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+</ul>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="changelogs/change_logs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">更新日志</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一、整体介绍</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icraft">1.1 Icraft编译流程中的量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 量化功能概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.3 量化流程</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1）准备浮点网络与校准集</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2）加载网络</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3）变换输入</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4）前向校准</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5）测量特征图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">6）计算归一化系数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">7）归一化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">8）量化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">9）生成网络</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">10）精度测试与分析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">二、使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">2.1 参数配置</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.2 校准集前向</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1）图片校准集</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2）二进制文件校准集</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.3 校准集分批测量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.4 量化粒度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.5 饱和方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-imagemake">2.6 no_imagemake接口</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-transinput">2.7 no_transinput功能</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothquant">2.8 smoothquant功能</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#customop">2.9 CustomOp接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">1）自定义软算子</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2）自定义硬算子</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">三、混合量化配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">3.1 混合精度量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#customconfig">3.2 自定义量化配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#value-range">1）value_range</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#per-saturation">2）per &amp; saturation</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">3.4 使用说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">1）混合位宽</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#value-range-per-saturation">2）自定义value_range&amp;per&amp;saturation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">四、量化效果分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">4.1 精度损失分析指南</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">1）量化位数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">2）校准集</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">3）饱和方法</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">4）网络参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">4.2 量化误差可视化分析</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">五、算子量化方案</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyi">5.1 BUYI架构</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">六、报错说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">6.1 错误码说明</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">七、索引</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： GuoPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

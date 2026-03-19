@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class QuantizerLogger &#8212; Icraft Quantizer 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/classicraft_1_1qt_1_1_quantizer_logger';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Quantizer 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/classicraft_1_1qt_1_1_quantizer_logger.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Class QuantizerLogger</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-relationships">Nested Relationships</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-quantizerlogger">
+<span id="exhale-class-classicraft-1-1qt-1-1-quantizer-logger"></span><h1>Class QuantizerLogger<a class="headerlink" href="#class-quantizerlogger" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-qt_core_quantizer_logger.h.html#file-icraft-qt-core-quantizer-logger-h"><span class="std std-ref">File quantizer_logger.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="此标题的永久链接">#</a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="此标题的永久链接">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info.html#exhale-struct-structicraft-1-1qt-1-1-quantizer-logger-1-1-ftmp-info"><span class="std std-ref">Struct QuantizerLogger::FtmpInfo</span></a></p></li>
+<li><p><a class="reference internal" href="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info.html#exhale-struct-structicraft-1-1qt-1-1-quantizer-logger-1-1-raw-info"><span class="std std-ref">Struct QuantizerLogger::RawInfo</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="此标题的永久链接">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLoggerE">
+<span id="_CPPv3N6icraft2qt15QuantizerLoggerE"></span><span id="_CPPv2N6icraft2qt15QuantizerLoggerE"></span><span id="icraft::qt::QuantizerLogger"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuantizerLogger</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLoggerE" title="永久链接至目标">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger15QuantizerLoggerEv">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger15QuantizerLoggerEv"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger15QuantizerLoggerEv"></span><span id="icraft::qt::QuantizerLogger::QuantizerLogger"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a3a6904ff667d6a02a9058741126eb9ce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuantizerLogger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger15QuantizerLoggerEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger12setDebugInfoEN6icraft6LoggerE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger12setDebugInfoEN6icraft6LoggerE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger12setDebugInfoEN6icraft6LoggerE"></span><span id="icraft::qt::QuantizerLogger::setDebugInfo__icraft::Logger"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1aa76f160da6838b869cadb1b9c0de65ba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDebugInfo</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Logger</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">debug_info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger12setDebugInfoEN6icraft6LoggerE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10setLogPathERKNSt10filesystem4pathENSt6stringE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10setLogPathERKNSt10filesystem4pathENSt6stringE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10setLogPathERKNSt10filesystem4pathENSt6stringE"></span><span id="icraft::qt::QuantizerLogger::setLogPath__std::filesystem::pathCR.ss"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1ae676e87bf4a020e609952e74bce7cd5b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setLogPath</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">log_path</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">network_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10setLogPathERKNSt10filesystem4pathENSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10setVerboseEb">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10setVerboseEb"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10setVerboseEb"></span><span id="icraft::qt::QuantizerLogger::setVerbose__b"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a939c88bf50b5af948cd67690222907a8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setVerbose</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">verbose</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10setVerboseEb" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger9isVerboseEv">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger9isVerboseEv"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger9isVerboseEv"></span><span id="icraft::qt::QuantizerLogger::isVerbose"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1aba222260974b4798a1ba4a76d1590c8f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isVerbose</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger9isVerboseEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger11logFtmpInfoERKiRK8FtmpInfo">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger11logFtmpInfoERKiRK8FtmpInfo"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger11logFtmpInfoERKiRK8FtmpInfo"></span><span id="icraft::qt::QuantizerLogger::logFtmpInfo__iCR.FtmpInfoCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a855777e3579821b5c1ffcd5d840c0b53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpInfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfoE" title="icraft::qt::QuantizerLogger::FtmpInfo"><span class="n"><span class="pre">FtmpInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp_info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger11logFtmpInfoERKiRK8FtmpInfo" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger11logFtmpDimsERKiRKNSt6vectorI7int64_tEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger11logFtmpDimsERKiRKNSt6vectorI7int64_tEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger11logFtmpDimsERKiRKNSt6vectorI7int64_tEE"></span><span id="icraft::qt::QuantizerLogger::logFtmpDims__iCR.std::vector:int64_t:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a086046adf9be2b2cc146d60013af0167"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpDims</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dims</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger11logFtmpDimsERKiRKNSt6vectorI7int64_tEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10logFtmpMaxERKiRKNSt6vectorIfEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10logFtmpMaxERKiRKNSt6vectorIfEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10logFtmpMaxERKiRKNSt6vectorIfEE"></span><span id="icraft::qt::QuantizerLogger::logFtmpMax__iCR.std::vector:float:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a8fd433708ac299c2f6c1c1ce473084b2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpMax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10logFtmpMaxERKiRKNSt6vectorIfEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10logFtmpSatERKiRKNSt6vectorIfEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10logFtmpSatERKiRKNSt6vectorIfEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10logFtmpSatERKiRKNSt6vectorIfEE"></span><span id="icraft::qt::QuantizerLogger::logFtmpSat__iCR.std::vector:float:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a3ed1ee890a35a7ce36535e2d8452d003"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpSat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10logFtmpSatERKiRKNSt6vectorIfEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger13logAvgFtmpMaxERKiRKNSt6vectorIfEERKi">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger13logAvgFtmpMaxERKiRKNSt6vectorIfEERKi"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger13logAvgFtmpMaxERKiRKNSt6vectorIfEERKi"></span><span id="icraft::qt::QuantizerLogger::logAvgFtmpMax__iCR.std::vector:float:CR.iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1aeddf538893fc4b37cded18db6db4512b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logAvgFtmpMax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">batch</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger13logAvgFtmpMaxERKiRKNSt6vectorIfEERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger13logAvgFtmpSatERKiRKNSt6vectorIfEERKi">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger13logAvgFtmpSatERKiRKNSt6vectorIfEERKi"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger13logAvgFtmpSatERKiRKNSt6vectorIfEERKi"></span><span id="icraft::qt::QuantizerLogger::logAvgFtmpSat__iCR.std::vector:float:CR.iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a56ed8298b6dc12bd4df94fb7c7bb31ce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logAvgFtmpSat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sat</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">batch</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger13logAvgFtmpSatERKiRKNSt6vectorIfEERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger16logFtmpNormratioERKiRKNSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger16logFtmpNormratioERKiRKNSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger16logFtmpNormratioERKiRKNSt6vectorIdEE"></span><span id="icraft::qt::QuantizerLogger::logFtmpNormratio__iCR.std::vector:double:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a1fc9cb818eb224430857e12c914648f1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">normratio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger16logFtmpNormratioERKiRKNSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger12logFtmpScaleERKiRKf">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger12logFtmpScaleERKiRKf"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger12logFtmpScaleERKiRKf"></span><span id="icraft::qt::QuantizerLogger::logFtmpScale__iCR.floatCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a3ab506f7d3d0b693e70602eba5cc93f9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpScale</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger12logFtmpScaleERKiRKf" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10logFtmpExpERKiRKi">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10logFtmpExpERKiRKi"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10logFtmpExpERKiRKi"></span><span id="icraft::qt::QuantizerLogger::logFtmpExp__iCR.iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1ad149b6fc9a834ecd06c2aea1a0f6aeb7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logFtmpExp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10logFtmpExpERKiRKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger13clearFtmpInfoEv">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger13clearFtmpInfoEv"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger13clearFtmpInfoEv"></span><span id="icraft::qt::QuantizerLogger::clearFtmpInfo"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a18dd176d1119aca933291fb74a1090a5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clearFtmpInfo</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger13clearFtmpInfoEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger11getFtmpInfoERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger11getFtmpInfoERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger11getFtmpInfoERKi"></span><span id="icraft::qt::QuantizerLogger::getFtmpInfo__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1af0ff7e56022c939b419fdfaeecfc1c12"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfoE" title="icraft::qt::QuantizerLogger::FtmpInfo"><span class="n"><span class="pre">FtmpInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getFtmpInfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger11getFtmpInfoERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger10getFtmpMaxERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger10getFtmpMaxERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger10getFtmpMaxERKi"></span><span id="icraft::qt::QuantizerLogger::getFtmpMax__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a4b4326eb07b0455847f663c4ea0f77bf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFtmpMax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger10getFtmpMaxERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger10getFtmpSatERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger10getFtmpSatERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger10getFtmpSatERKi"></span><span id="icraft::qt::QuantizerLogger::getFtmpSat__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a65898e0e714ce1e6a353fc710765618c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFtmpSat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger10getFtmpSatERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger16getFtmpNormratioERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger16getFtmpNormratioERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger16getFtmpNormratioERKi"></span><span id="icraft::qt::QuantizerLogger::getFtmpNormratio__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a7c2ea487431682988906e78843e579e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getFtmpNormratio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger16getFtmpNormratioERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10logRawInfoERKiRK7RawInfo">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10logRawInfoERKiRK7RawInfo"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10logRawInfoERKiRK7RawInfo"></span><span id="icraft::qt::QuantizerLogger::logRawInfo__iCR.RawInfoCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a7f3530cb8f215e039b212fb99250b96d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logRawInfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfoE" title="icraft::qt::QuantizerLogger::RawInfo"><span class="n"><span class="pre">RawInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">raw_info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10logRawInfoERKiRK7RawInfo" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger10logRawDimsERKiRKNSt6vectorI7int64_tEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger10logRawDimsERKiRKNSt6vectorI7int64_tEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger10logRawDimsERKiRKNSt6vectorI7int64_tEE"></span><span id="icraft::qt::QuantizerLogger::logRawDims__iCR.std::vector:int64_t:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1ad17d2996fcf7ea4a623eb698c29785f6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logRawDims</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dims</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger10logRawDimsERKiRKNSt6vectorI7int64_tEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger9logRawMaxERKiRKNSt6vectorIfEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger9logRawMaxERKiRKNSt6vectorIfEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger9logRawMaxERKiRKNSt6vectorIfEE"></span><span id="icraft::qt::QuantizerLogger::logRawMax__iCR.std::vector:float:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a4aa9955c563b515eb7b110ea53d4cea6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logRawMax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger9logRawMaxERKiRKNSt6vectorIfEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger9logRawSatERKiRKNSt6vectorIfEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger9logRawSatERKiRKNSt6vectorIfEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger9logRawSatERKiRKNSt6vectorIfEE"></span><span id="icraft::qt::QuantizerLogger::logRawSat__iCR.std::vector:float:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a63b1ff65d6d9c87a5f8647a6e5de5e6d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logRawSat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger9logRawSatERKiRKNSt6vectorIfEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger11logRawScaleERKiRKNSt6vectorIdEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger11logRawScaleERKiRKNSt6vectorIdEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger11logRawScaleERKiRKNSt6vectorIdEE"></span><span id="icraft::qt::QuantizerLogger::logRawScale__iCR.std::vector:double:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a0e410f9a498c92bbea86f1c5300559da"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logRawScale</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger11logRawScaleERKiRKNSt6vectorIdEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger9logRawExpERKiRKNSt6vectorI7int64_tEE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger9logRawExpERKiRKNSt6vectorI7int64_tEE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger9logRawExpERKiRKNSt6vectorI7int64_tEE"></span><span id="icraft::qt::QuantizerLogger::logRawExp__iCR.std::vector:int64_t:CR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1aeca1c3956ed2dd97bf1d60328a38fb38"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logRawExp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger9logRawExpERKiRKNSt6vectorI7int64_tEE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger10getRawInfoERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger10getRawInfoERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger10getRawInfoERKi"></span><span id="icraft::qt::QuantizerLogger::getRawInfo__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a779569c8cacd395896de2eed6b3eeab3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfoE" title="icraft::qt::QuantizerLogger::RawInfo"><span class="n"><span class="pre">RawInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getRawInfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger10getRawInfoERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger9getRawSatERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger9getRawSatERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger9getRawSatERKi"></span><span id="icraft::qt::QuantizerLogger::getRawSat__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a12b9eb0ece7427d89c1ad2095a8a2cbe"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRawSat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger9getRawSatERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger9getRawMaxERKi">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger9getRawMaxERKi"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger9getRawMaxERKi"></span><span id="icraft::qt::QuantizerLogger::getRawMax__iCRC"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a183487fcdfde8b0840a3a22160f17e01"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRawMax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger9getRawMaxERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger13dumpFtmpSheetEv">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger13dumpFtmpSheetEv"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger13dumpFtmpSheetEv"></span><span id="icraft::qt::QuantizerLogger::dumpFtmpSheet"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a24adf13402891107992ef525d7add70a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpFtmpSheet</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger13dumpFtmpSheetEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger12dumpRawSheetEv">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger12dumpRawSheetEv"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger12dumpRawSheetEv"></span><span id="icraft::qt::QuantizerLogger::dumpRawSheet"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a4141e71ecda927b7f2fdd3d23e0c2bbe"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpRawSheet</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger12dumpRawSheetEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger15dumpSmoothScaleEv">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger15dumpSmoothScaleEv"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger15dumpSmoothScaleEv"></span><span id="icraft::qt::QuantizerLogger::dumpSmoothScale"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1ad72751e23f6d0c43ddb150ba04aa7787"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpSmoothScale</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger15dumpSmoothScaleEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger13loadFtmpSheetERKNSt6stringE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger13loadFtmpSheetERKNSt6stringE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger13loadFtmpSheetERKNSt6stringE"></span><span id="icraft::qt::QuantizerLogger::loadFtmpSheet__ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1ac735822af15916d0a2bd3f083e321ccf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loadFtmpSheet</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp_csv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger13loadFtmpSheetERKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger12loadRawSheetERKNSt6stringE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger12loadRawSheetERKNSt6stringE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger12loadRawSheetERKNSt6stringE"></span><span id="icraft::qt::QuantizerLogger::loadRawSheet__ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a8de1c3f99026de0b095334d7f8f5c206"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loadRawSheet</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">raw_csv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger12loadRawSheetERKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8a_scale_E">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8a_scale_E"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8a_scale_E"></span><span id="icraft::qt::QuantizerLogger::a_scale___std::map:i.std::vector:float::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a5e3cbef730567a85e66b216cc867ce7e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">a_scale_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8a_scale_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8w_scale_E">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8w_scale_E"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8w_scale_E"></span><span id="icraft::qt::QuantizerLogger::w_scale___std::map:i.std::vector:float::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a4323cf38b6cffb4c52f24055c8e28738"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">w_scale_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8w_scale_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger9sm_scale_E">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger9sm_scale_E"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger9sm_scale_E"></span><span id="icraft::qt::QuantizerLogger::sm_scale___std::map:i.std::vector:float::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a7076080f05402294a96a2707b9228fe9"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sm_scale_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger9sm_scale_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger9cast_typeE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger9cast_typeE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger9cast_typeE"></span><span id="icraft::qt::QuantizerLogger::cast_type__std::map:i.std::pair:ss.ss::"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1ab978b1daf44f4c27054ed4035c083d33"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cast_type</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger9cast_typeE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger6dtype_E">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger6dtype_E"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger6dtype_E"></span><span id="icraft::qt::QuantizerLogger::dtype___std::map:i.ss:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a31939e73032e2148b23cef1360b530d7"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dtype_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger6dtype_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger12dtype_value_E">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger12dtype_value_E"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger12dtype_value_E"></span><span id="icraft::qt::QuantizerLogger::dtype_value___std::map:i.i:"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1a844f97a46364b87249c02199769100f2"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dtype_value_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger12dtype_value_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger5info_E">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger5info_E"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger5info_E"></span><span id="icraft::qt::QuantizerLogger::info___icraft::Logger"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_logger_1aac1afcac7461d252398f9a86b3cfc0e3"></span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Logger</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">info_</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger5info_E" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfoE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfoE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfoE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FtmpInfo</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfoE" title="永久链接至目标">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger8FtmpInfocvNSt6stringEEv">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger8FtmpInfocvNSt6stringEEv"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger8FtmpInfocvNSt6stringEEv"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::castto-ss-operatorC"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1a3888dcd59dd5acd1ca5b9bee4c2e252a"></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger8FtmpInfocvNSt6stringEEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo4dimsE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfo4dimsE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfo4dimsE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::dims__std::vector:int64_t:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1a04a1cb9d31df7830945be27fd2296b46"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dims</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo4dimsE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3maxE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfo3maxE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfo3maxE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::max__std::vector:float:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1aa1fb531af859de95123e8832b1419455"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3maxE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3satE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfo3satE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfo3satE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::sat__std::vector:float:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1ae107394d935c045362999f586c91acf8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sat</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3satE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo9normratioE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfo9normratioE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfo9normratioE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::normratio__std::vector:double:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1aff7c358cad8ff10572c5ffc7fe31af8e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">normratio</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo9normratioE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo5scaleE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfo5scaleE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfo5scaleE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::scale__float"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1a1d28dec57cce925ad92342891bd71e7c"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scale</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo5scaleE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3expE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger8FtmpInfo3expE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger8FtmpInfo3expE"></span><span id="icraft::qt::QuantizerLogger::FtmpInfo::exp__i"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_ftmp_info_1a3bb4af16b31e7979f424cf66f1bfa6e2"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exp</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger8FtmpInfo3expE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger7RawInfoE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger7RawInfoE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger7RawInfoE"></span><span id="icraft::qt::QuantizerLogger::RawInfo"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RawInfo</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfoE" title="永久链接至目标">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft2qt15QuantizerLogger7RawInfocvNSt6stringEEv">
+<span id="_CPPv3NK6icraft2qt15QuantizerLogger7RawInfocvNSt6stringEEv"></span><span id="_CPPv2NK6icraft2qt15QuantizerLogger7RawInfocvNSt6stringEEv"></span><span id="icraft::qt::QuantizerLogger::RawInfo::castto-ss-operatorC"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info_1a3888dcd59dd5acd1ca5b9bee4c2e252a"></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft2qt15QuantizerLogger7RawInfocvNSt6stringEEv" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger7RawInfo4dimsE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger7RawInfo4dimsE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger7RawInfo4dimsE"></span><span id="icraft::qt::QuantizerLogger::RawInfo::dims__std::vector:int64_t:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info_1a04a1cb9d31df7830945be27fd2296b46"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dims</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo4dimsE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3maxE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger7RawInfo3maxE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger7RawInfo3maxE"></span><span id="icraft::qt::QuantizerLogger::RawInfo::max__std::vector:float:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info_1aa1fb531af859de95123e8832b1419455"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3maxE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3satE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger7RawInfo3satE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger7RawInfo3satE"></span><span id="icraft::qt::QuantizerLogger::RawInfo::sat__std::vector:float:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info_1ae107394d935c045362999f586c91acf8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sat</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3satE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger7RawInfo5scaleE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger7RawInfo5scaleE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger7RawInfo5scaleE"></span><span id="icraft::qt::QuantizerLogger::RawInfo::scale__std::vector:double:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info_1a0259f27c0d34eea68b90162a03795326"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scale</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo5scaleE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3expE">
+<span id="_CPPv3N6icraft2qt15QuantizerLogger7RawInfo3expE"></span><span id="_CPPv2N6icraft2qt15QuantizerLogger7RawInfo3expE"></span><span id="icraft::qt::QuantizerLogger::RawInfo::exp__std::vector:int64_t:"></span><span class="target" id="structicraft_1_1qt_1_1_quantizer_logger_1_1_raw_info_1a3e2ec1aa562d97b2e8387660ff7eec54"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exp</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt15QuantizerLogger7RawInfo3expE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-relationships">Nested Relationships</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： GuoPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

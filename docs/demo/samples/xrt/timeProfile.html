@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft XRT: timeProfile &#8212; Icraft Demo  文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/xrt/timeProfile';</script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Icraft XRT: snapshot" href="snapshot.html" />
+    <link rel="prev" title="Icraft XRT: multiNetwork" href="multiNetwork.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Demo  文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../customop/index.html">自定义算子</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../customop/activate.html">自定义激活</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../customop/softop.html">自定义软算子</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../customop/hardop.html">自定义硬算子</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customop/others/layout.html">布衣架构排布说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pass/index.html">Pass</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pass/pass.html">自定义pass</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">xrt运行相关用例</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yolov5s.html">yolov5s运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiNetwork.html">多网络连接</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">计时</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snapshot.html">快照</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/samples/xrt/timeProfile.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft XRT: timeProfile</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo">1.1 Demo结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 Demo说明</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-xrt-timeprofile">
+<h1>Icraft XRT: timeProfile<a class="headerlink" href="#icraft-xrt-timeprofile" title="此标题的永久链接">#</a></h1>
+<p>该Demo主要展示了如何通过xrt提供的相关接口来统计运行时间，帮助用户进行分析统计</p>
+<p><strong>注意</strong> xrt正常执行的过程是异构并行，开启计时模式后会为了统计相关计算单元执行时间，软件时间会不可避免增长，所以加在一起的总时间仅供参考</p>
+<section id="id1">
+<h2>一 工程配置<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<section id="demo">
+<h3>1.1 Demo结构<a class="headerlink" href="#demo" title="此标题的永久链接">#</a></h3>
+<div class="line-block">
+<div class="line">samples/xrt/timeProfile</div>
+<div class="line-block">
+<div class="line">├───timeProfile.py</div>
+<div class="line">└───timeProfile.cpp</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>1.2 编译生成<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<p>以上工程文件属于 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 工程的一部分，具体的编译生成方法请参考 <code class="docutils literal notranslate"><span class="pre">Icraft-Demo</span></code> 的编译生成的说明。</p>
+</section>
+</section>
+<section id="id3">
+<h2>二 Demo说明<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>通过session 部署apply之前，调用enableTimeProfile(true)接口可以开启计时模式，之后所有的时间数据都可以通过timeProfileResults()接口获得</p>
+<p>以下示例中将时间数据保存文件txt中,</p>
+<ul class="simple">
+<li><p>.cpp文件 samples/xrt/timeProfile/time_profile.cpp</p></li>
+<li><p>.py文件 samples/xrt/timeProfile/time_profile.py</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/core/session.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/dev/host_device.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-xrt/dev/buyi_device.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/buyibackend/buyibackend.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/hostbackend/backend.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;icraft-backends/hostbackend/utils.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;filesystem&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;chrono&gt;</span>
+
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xrt</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">icraft</span><span class="o">::</span><span class="nn">xir</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="o">::</span><span class="nn">chrono</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="o">::</span><span class="nn">chrono_literals</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">std</span><span class="o">::</span><span class="nn">filesystem</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">calctime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">Session</span><span class="w"> </span><span class="n">session</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">session</span><span class="o">-&gt;</span><span class="n">network_view</span><span class="p">.</span><span class="n">network</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fs</span><span class="o">::</span><span class="n">is_directory</span><span class="p">(</span><span class="s">&quot;./TimeResult&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">fs</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="s">&quot;./TimeResult&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fs</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="s">&quot;./TimeResult&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">filePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./TimeResult/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_time&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.txt&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="nf">ofs</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">out</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">total_hard_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">total_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">total_memcpy_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">total_other_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">buyi_backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">session</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="n">timeProfileResults</span><span class="p">();</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">k_v</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">time1</span><span class="p">,</span><span class="w"> </span><span class="n">time2</span><span class="p">,</span><span class="w"> </span><span class="n">time3</span><span class="p">,</span><span class="w"> </span><span class="n">time4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k_v</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">hardop_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buyi_backend</span><span class="o">-&gt;</span><span class="n">forward_info</span><span class="o">-&gt;</span><span class="n">hardop_map</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hardop_map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">hardop_map</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ofs</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fmt</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;op_id: {}, op_type: {}, op_name: {}, total_time: {}, memcpy_time: {}, hard_time: {}, other_time: {}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">buyi_backend</span><span class="o">-&gt;</span><span class="n">forward_info</span><span class="o">-&gt;</span><span class="n">hardop_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">net_hardop</span><span class="o">-&gt;</span><span class="n">typeKey</span><span class="p">(),</span><span class="w"> </span><span class="n">buyi_backend</span><span class="o">-&gt;</span><span class="n">forward_info</span><span class="o">-&gt;</span><span class="n">hardop_map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">net_hardop</span><span class="o">-&gt;</span><span class="n">name</span>
+<span class="w">                </span><span class="p">,</span><span class="w"> </span><span class="n">time1</span><span class="p">,</span><span class="w"> </span><span class="n">time2</span><span class="p">,</span><span class="w"> </span><span class="n">time3</span><span class="p">,</span><span class="w"> </span><span class="n">time4</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ofs</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fmt</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;op_id: {}, op_type: {}, op_name: {}, total_time: {}, memcpy_time: {}, hard_time: {}, other_time: {}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">session</span><span class="o">-&gt;</span><span class="n">network_view</span><span class="p">.</span><span class="n">network</span><span class="p">().</span><span class="n">getOpById</span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">typeKey</span><span class="p">(),</span><span class="w"> </span><span class="n">session</span><span class="o">-&gt;</span><span class="n">network_view</span><span class="p">.</span><span class="n">network</span><span class="p">().</span><span class="n">getOpById</span><span class="p">(</span><span class="n">k_v</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">name</span>
+<span class="w">                </span><span class="p">,</span><span class="w"> </span><span class="n">time1</span><span class="p">,</span><span class="w"> </span><span class="n">time2</span><span class="p">,</span><span class="w"> </span><span class="n">time3</span><span class="p">,</span><span class="w"> </span><span class="n">time4</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">total_time</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">time1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">total_memcpy_time</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">time2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">total_hard_time</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">time3</span><span class="p">;</span>
+<span class="w">        </span><span class="n">total_other_time</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">time4</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">ofs</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;************************************&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ofs</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fmt</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;Session_TotalTime: {}, Total_Time: {}, Total_MemcpyTime: {}, Total_HardTime: {}, Total_OtherTime: {}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">session</span><span class="p">.</span><span class="n">totalTime</span><span class="o">&lt;</span><span class="n">milliseconds</span><span class="o">&gt;</span><span class="p">(),</span><span class="w"> </span><span class="n">total_time</span><span class="p">,</span><span class="w"> </span><span class="n">total_memcpy_time</span><span class="p">,</span><span class="w"> </span><span class="n">total_hard_time</span><span class="p">,</span><span class="w"> </span><span class="n">total_other_time</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ofs</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="c1">//我们使用不同的url字符串去区分不同的Device设备</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;axi://ql100aiu?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">dev_url_socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;socket://ql100aiu@192.168.125.148:9981?npu=0x40000000&amp;dma=0x80000000&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">Device</span><span class="w"> </span><span class="n">device</span><span class="p">;</span>
+
+<span class="cp">#ifdef _WIN32</span>
+<span class="w">        </span><span class="c1">//Demo默认在windows环境中打开socket Device</span>
+<span class="w">        </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url_socket</span><span class="p">);</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="c1">//Demo默认在windows环境中打开axi Device</span>
+<span class="w">        </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Device</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">dev_url</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="c1">//配置网络名以及输入图片</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;yolov5s&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">image_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dog.png&quot;</span><span class="p">;</span>
+
+<span class="c1">//根据网络名以及输入图片在不同的环境下寻找对应的文件</span>
+<span class="cp">#ifdef _WIN32</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/json&amp;raw/30/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.json&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/json&amp;raw/30/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.raw&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;E:/test/images/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">image_file</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">json_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./json&amp;raw/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.json&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">raw_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./json&amp;raw/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">network_name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;_BY.raw&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">img_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./images/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">image_file</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="c1">//根据序列化的网络json文件反序列化成icraft::xir::network对象</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Network</span><span class="o">::</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//network加载raw_file</span>
+<span class="w">        </span><span class="n">network</span><span class="p">.</span><span class="n">lazyLoadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//创建session，将buyibackend以及hostbackend绑定到sess对象上</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">sess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">xrt</span><span class="o">::</span><span class="n">Session</span><span class="o">::</span><span class="n">Create</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="p">,</span><span class="w"> </span><span class="n">HostBackend</span><span class="o">&gt;</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">HostDevice</span><span class="o">::</span><span class="n">Default</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+
+<span class="w">        </span><span class="c1">//获取session第一个绑定的backend并将其cast成BuyiBackend</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">buyibackend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="o">-&gt;</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">cast</span><span class="o">&lt;</span><span class="n">BuyiBackend</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">//打开计时模式</span>
+<span class="w">        </span><span class="n">sess</span><span class="p">.</span><span class="n">enableTimeProfile</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">//session执行前必须进行apply部署操作</span>
+<span class="w">        </span><span class="n">sess</span><span class="p">.</span><span class="n">apply</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">//借助HostBackend的工具函数将输入图片转成Tensor</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">icraft</span><span class="o">::</span><span class="n">hostbackend</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//前向</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sess</span><span class="p">.</span><span class="n">forward</span><span class="p">({</span><span class="w"> </span><span class="n">input_tensor</span><span class="w"> </span><span class="p">});</span>
+
+<span class="w">        </span><span class="c1">//输出时间统计log</span>
+<span class="w">        </span><span class="n">calctime</span><span class="p">(</span><span class="n">sess</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">//关闭设备</span>
+<span class="w">        </span><span class="n">Device</span><span class="o">::</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icraft.xir</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">icraft.xrt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">icraft.buyibackend</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">icraft.host_backend</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">os_name</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span>
+
+<span class="k">def</span> <span class="nf">calctime</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">network</span><span class="p">):</span>
+    <span class="n">network_name</span> <span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s2">&quot;./TimeResult&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;./TimeResult&quot;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;./TimeResult&quot;</span><span class="p">)</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;./TimeResult/</span><span class="si">{</span><span class="n">network_name</span><span class="si">}</span><span class="s2">_time.txt&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofs</span><span class="p">:</span>
+        <span class="n">total_hard_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_memcpy_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_other_time</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">buyi_backend</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">timeProfileResults</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k_v</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">op_id</span><span class="p">,</span> <span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">time2</span><span class="p">,</span> <span class="n">time3</span><span class="p">,</span> <span class="n">time4</span><span class="p">)</span> <span class="o">=</span> <span class="n">k_v</span>
+            <span class="n">hardop_map</span> <span class="o">=</span> <span class="n">buyi_backend</span><span class="o">.</span><span class="n">forward_info</span><span class="o">.</span><span class="n">hardop_map</span>
+            <span class="k">if</span> <span class="n">op_id</span> <span class="ow">in</span> <span class="n">hardop_map</span><span class="p">:</span>
+                <span class="n">op_type</span> <span class="o">=</span> <span class="n">buyi_backend</span><span class="o">.</span><span class="n">forward_info</span><span class="o">.</span><span class="n">hardop_map</span><span class="p">[</span><span class="n">op_id</span><span class="p">]</span><span class="o">.</span><span class="n">net_hardop</span><span class="o">.</span><span class="n">typeKey</span><span class="p">()</span>
+                <span class="n">op_name</span> <span class="o">=</span> <span class="n">buyi_backend</span><span class="o">.</span><span class="n">forward_info</span><span class="o">.</span><span class="n">hardop_map</span><span class="p">[</span><span class="n">op_id</span><span class="p">]</span><span class="o">.</span><span class="n">net_hardop</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">op_type</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">getOpById</span><span class="p">(</span><span class="n">op_id</span><span class="p">)</span><span class="o">.</span><span class="n">typeKey</span><span class="p">()</span>
+                <span class="n">op_name</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">getOpById</span><span class="p">(</span><span class="n">op_id</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+            <span class="n">ofs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;op_id: </span><span class="si">{</span><span class="n">op_id</span><span class="si">}</span><span class="s2">, op_type: </span><span class="si">{</span><span class="n">op_type</span><span class="si">}</span><span class="s2">, op_name: </span><span class="si">{</span><span class="n">op_name</span><span class="si">}</span><span class="s2">, total_time: </span><span class="si">{</span><span class="n">time1</span><span class="si">}</span><span class="s2">, memcpy_time: </span><span class="si">{</span><span class="n">time2</span><span class="si">}</span><span class="s2">, hard_time: </span><span class="si">{</span><span class="n">time3</span><span class="si">}</span><span class="s2">, other_time: </span><span class="si">{</span><span class="n">time4</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">total_time</span> <span class="o">+=</span> <span class="n">time1</span>
+            <span class="n">total_memcpy_time</span> <span class="o">+=</span> <span class="n">time2</span>
+            <span class="n">total_hard_time</span> <span class="o">+=</span> <span class="n">time3</span>
+            <span class="n">total_other_time</span> <span class="o">+=</span> <span class="n">time4</span>
+
+        <span class="n">ofs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;************************************</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ofs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Session_TotalTime: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">totalTime</span><span class="p">()</span><span class="si">}</span><span class="s2">, Total_Time: </span><span class="si">{</span><span class="n">total_time</span><span class="si">}</span><span class="s2">, Total_MemcpyTime: </span><span class="si">{</span><span class="n">total_memcpy_time</span><span class="si">}</span><span class="s2">, Total_HardTime: </span><span class="si">{</span><span class="n">total_hard_time</span><span class="si">}</span><span class="s2">, Total_OtherTime: </span><span class="si">{</span><span class="n">total_other_time</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">os_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;win&#39;</span><span class="p">):</span>
+    <span class="n">device_url</span> <span class="o">=</span> <span class="s2">&quot;socket://ql100aiu@192.168.125.148:9981&quot;</span>
+    <span class="n">json_file</span> <span class="o">=</span> <span class="s2">&quot;E:/test/json&amp;raw/30/yolov5s_BY.json&quot;</span>
+    <span class="n">raw_file</span> <span class="o">=</span> <span class="s2">&quot;E:/test/json&amp;raw/30/yolov5s_BY.raw&quot;</span>
+    <span class="n">img_file</span> <span class="o">=</span> <span class="s2">&quot;E:/test/images/dog.png&quot;</span><span class="p">;</span>
+<span class="k">elif</span> <span class="n">os_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;linux&#39;</span><span class="p">):</span>
+    <span class="n">device_url</span> <span class="o">=</span> <span class="s2">&quot;axi://ql100aiu&quot;</span>
+    <span class="n">json_file</span> <span class="o">=</span> <span class="s2">&quot;./test/json&amp;raw/yolov5s_BY.json&quot;</span>
+    <span class="n">raw_file</span> <span class="o">=</span> <span class="s2">&quot;./test/json&amp;raw/yolov5s_BY.raw&quot;</span>
+    <span class="n">img_file</span> <span class="o">=</span> <span class="s2">&quot;./images/dog.png&quot;</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">device_url</span><span class="p">)</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">CreateFromJsonFile</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">lazyLoadParamsFromFile</span><span class="p">(</span><span class="n">raw_file</span><span class="p">)</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">Create</span><span class="p">([</span> <span class="n">BuyiBackend</span><span class="p">,</span> <span class="n">HostBackend</span> <span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">device</span><span class="p">,</span> <span class="n">HostDevice</span><span class="o">.</span><span class="n">Default</span><span class="p">()])</span>
+
+<span class="n">buyibackend</span> <span class="o">=</span> <span class="n">BuyiBackend</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">backends</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">enableTimeProfile</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">Image2Tensor</span><span class="p">(</span><span class="n">img_file</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># 前向，获取输出</span>
+<span class="n">output_tensors</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">forward</span><span class="p">([</span> <span class="n">input_tensor</span> <span class="p">])</span>
+
+<span class="n">calctime</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">network</span><span class="p">)</span>
+
+<span class="n">Device</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>输出文件会如图所示，如果用户有需求可以自行更改</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>op_id: 295, op_type: icraft::xir::AlignAxisNode, op_name: , total_time: 3.686, memcpy_time: 0, hard_time: 0, other_time: 3.686
+op_id: 0, op_type: icraft::xir::InputNode, op_name: , total_time: 0.0052, memcpy_time: 0, hard_time: 0, other_time: 0.0052
+op_id: 442, op_type: icraft::xir::PruneAxisNode, op_name: , total_time: 0.9008, memcpy_time: 0, hard_time: 0, other_time: 0.9008
+op_id: 1, op_type: icraft::xir::ResizeNode, op_name: , total_time: 0.1013, memcpy_time: 0, hard_time: 0, other_time: 0.1013
+op_id: 2, op_type: icraft::xir::SwapOrderNode, op_name: , total_time: 0.0025, memcpy_time: 0, hard_time: 0, other_time: 0.0025
+op_id: 3, op_type: icraft::xir::AddNode, op_name: , total_time: 6.9922, memcpy_time: 0, hard_time: 0, other_time: 6.9922
+op_id: 4, op_type: icraft::xir::MultiplyNode, op_name: , total_time: 2.9634, memcpy_time: 0, hard_time: 0, other_time: 2.9634
+op_id: 296, op_type: icraft::xir::CastNode, op_name: , total_time: 12.6121, memcpy_time: 0.0006, hard_time: 0, other_time: 12.6115
+op_id: 531, op_type: icraft::xir::HardOpNode, op_name: , total_time: 31.9805, memcpy_time: 21.214, hard_time: 6.155311584472656, other_time: 4.611188415527344
+op_id: 439, op_type: icraft::xir::CastNode, op_name: , total_time: 30.7359, memcpy_time: 23.6564, hard_time: 0, other_time: 7.0794999999999995
+op_id: 440, op_type: icraft::xir::PruneAxisNode, op_name: , total_time: 6.3363, memcpy_time: 0, hard_time: 0, other_time: 6.3363
+op_id: 441, op_type: icraft::xir::CastNode, op_name: , total_time: 7.6616, memcpy_time: 5.649, hard_time: 0, other_time: 2.0126
+op_id: 443, op_type: icraft::xir::CastNode, op_name: , total_time: 1.9992, memcpy_time: 1.701, hard_time: 0, other_time: 0.2982
+op_id: 444, op_type: icraft::xir::PruneAxisNode, op_name: , total_time: 0.1836, memcpy_time: 0, hard_time: 0, other_time: 0.1836
+op_id: 147, op_type: icraft::xir::OutputNode, op_name: , total_time: 0, memcpy_time: 0, hard_time: 0, other_time: 0
+************************************
+Session_TotalTime: 108.6299, Total_Time: 106.1606, Total_MemcpyTime: 52.220997, Total_HardTime: 6.1553116, Total_OtherTime: 47.784286
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="multiNetwork.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">Icraft XRT: multiNetwork</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="snapshot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">Icraft XRT: snapshot</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">一 工程配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo">1.1 Demo结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 编译生成</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">二 Demo说明</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

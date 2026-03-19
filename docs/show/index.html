@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Icraft Show &#8212; Icraft Show 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="更新日志" href="changelogs/change_logs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Show 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Icraft Show</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">命令行参数列表</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view">一、网络参数可视化</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view-input">1.1 输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view-example">1.2 显示</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view-search">1.3 搜索</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qua-analy">二、量化分析工具</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qua-analy-start">2.1 开始新分析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qua-analy-load">2.2 加载已有结果</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mem-opt">三、内存优化分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mem-opt-input">3.1 输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mem-opt-introduce">3.2 功能说明</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="icraft-show">
+<h1>Icraft Show<a class="headerlink" href="#icraft-show" title="此标题的永久链接">#</a></h1>
+<section id="command-line">
+<span id="id1"></span><h2>命令行参数列表<a class="headerlink" href="#command-line" title="此标题的永久链接">#</a></h2>
+<p><em>每次使用命令行参数时请不要混用不同功能</em></p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名</p></th>
+<th class="head"><p>参数取值</p></th>
+<th class="head"><p>功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>–json</p></td>
+<td><p>json或imodel文件路径</p></td>
+<td><p>可视化</p></td>
+</tr>
+<tr class="row-odd"><td><p>–raw</p></td>
+<td><p>raw文件路径</p></td>
+<td><p>可视化</p></td>
+</tr>
+<tr class="row-even"><td><p>–analyse</p></td>
+<td><p>量化分析结果文件夹</p></td>
+<td><p>量化分析工具</p></td>
+</tr>
+<tr class="row-odd"><td><p>–ftmp_dir1</p></td>
+<td><p>要对比的ftmp结果文件夹A</p></td>
+<td><p>对比ftmp (以fp32类型读取，故需要SFB形式dump)</p></td>
+</tr>
+<tr class="row-even"><td><p>–ftmp_dir2</p></td>
+<td><p>要对比的ftmp结果文件夹B</p></td>
+<td><p>对比ftmp (以fp32类型读取，故需要SFB形式dump)</p></td>
+</tr>
+<tr class="row-odd"><td><p>–log_path</p></td>
+<td><p>默认值.icraft/log</p></td>
+<td><p>设置生成文件的路径</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="net-view">
+<span id="id2"></span><h2>一、网络参数可视化<a class="headerlink" href="#net-view" title="此标题的永久链接">#</a></h2>
+<section id="net-view-input">
+<span id="id3"></span><h3>1.1 输入<a class="headerlink" href="#net-view-input" title="此标题的永久链接">#</a></h3>
+<p>点击可视化按键后会弹出输入文件窗口，当前支持三种输入模式</p>
+<ul class="simple">
+<li><p>输入模型的json文件</p></li>
+<li><p>输入模型的json和raw文件</p></li>
+<li><p>输入模型的imodel文件（imodel文件等效于json和raw）</p></li>
+</ul>
+</section>
+<section id="net-view-example">
+<span id="id4"></span><h3>1.2 显示<a class="headerlink" href="#net-view-example" title="此标题的永久链接">#</a></h3>
+<p>左上的固定节点表示了一些全局信息</p>
+<ul class="simple">
+<li><p>网络名称</p></li>
+<li><p>源网络所处框架</p></li>
+<li><p>算子节点数目</p></li>
+<li><p>当前网络所处阶段</p></li>
+</ul>
+<img alt="_images/graphTitle.png" src="_images/graphTitle.png" />
+<p>每个节点表示一个算子，包括算子类型、算子id以及算子参数的维度信息（如果有权重的话）</p>
+<p>每个边字表示算子间输入输出的ftmp，冒号前是ftmp的id, 冒号后面是ftmp的维度信息</p>
+<img alt="_images/graph.png" src="_images/graph.png" />
+<p>左键点击节点会在右侧侧边栏弹出算子的详细信息，如果在输入时输入了raw文件则可以在侧边栏 <strong>查看weights</strong> 按钮切换显示算子的参数信息,参数信息提供了 <strong>十进制</strong> 和 <strong>十六进制</strong> 切换显示，并且可以保存到文件按钮放到一个csv文件或二进制文件进行查看</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><em>值得注意的是BY阶段网络HardOp算子instr参数表示硬件指令，其十进制无特别含义</em></p>
+</div>
+</section>
+<section id="net-view-search">
+<span id="id5"></span><h3>1.3 搜索<a class="headerlink" href="#net-view-search" title="此标题的永久链接">#</a></h3>
+<p>通过快捷键 <strong>Ctrl+F</strong> 打开功能，通过 <strong>Esc</strong> 退出搜索界面</p>
+<p>输入关键字后按下回车即可将对应节点或者边导航到屏幕中心,搜索关键字包括以下三种</p>
+<ul class="simple">
+<li><p>算子类型（支持不完全匹配）</p></li>
+<li><p>算子id（完全匹配）</p></li>
+<li><p>ftmp id（完全匹配）</p></li>
+</ul>
+</section>
+</section>
+<section id="qua-analy">
+<span id="id6"></span><h2>二、量化分析工具<a class="headerlink" href="#qua-analy" title="此标题的永久链接">#</a></h2>
+<p>为了更加方便的分析编译器对模型的量化效果，我们使用XRun工具对optmizer阶段和quantize阶段的模型进行相同输入前向，通过对比各算子输出ftmp的余弦相似度、相对欧氏距离和平均绝对误差来评判量化效果</p>
+<p>v3.6.0 之后适配了其他阶段的网络模型进行对比，可以任意输入两个阶段的模型，便于分析哪个阶段引入了误差</p>
+<section id="qua-analy-start">
+<span id="id7"></span><h3>2.1 开始新分析<a class="headerlink" href="#qua-analy-start" title="此标题的永久链接">#</a></h3>
+<p>两阶段的模型需要输入完整的模型(json&amp;raw文件)</p>
+<p>当模型是单输入时，输入图片选择n张图片输入即代表进行n次前向
+当模型是多输入，输入数量为num时，当输入n*num张图片,需要额外输入一个用于匹配各组输入的txt文本文件
+每行代表一组输入，以分号进行分隔</p>
+<img alt="_images/Minput.png" src="_images/Minput.png" />
+<p>Cuda模式注意设备的cuda可用，默认是CPU前向</p>
+<p>Fake_qf_n 选项表示对量化前向使用fake_qf功能，取消截位限制，并乘以normratio,主要用于对比分析乘累加溢出的问题</p>
+<p>DecodeDll 表示网络输入预处理所使用的动态链接库</p>
+<p>输入完成后点击开始分析即可，视模型大小需要稍等一段时间</p>
+<p>分析完成即会在 .icraft\log 目录下生成对应模型名称的文件夹,包含了model_structure.json 、analysis_results.json文件和对应每组输入的ftmp文件夹</p>
+<p><em>请勿修改生成的文件名称</em></p>
+</section>
+<section id="qua-analy-load">
+<span id="id8"></span><h3>2.2 加载已有结果<a class="headerlink" href="#qua-analy-load" title="此标题的永久链接">#</a></h3>
+<p>将分析结果得到的model_structure.json 、analysis_results.json两个文件上传即可看到两个阶段的ftmp对比</p>
+<img alt="_images/quaAnaly.png" src="_images/quaAnaly.png" />
+<p>左上角下拉框可以选择每组输入对应结果或者所有输入结果的平均值</p>
+<p>上方折线图横坐标以算子在网络中的执行序排列, 三条线分别表示余弦相似度、相对欧氏距离和平均绝对误差，可以通过点击对应表头来隐藏对应折线段，计算公式如下：</p>
+<p>余弦相似度：</p>
+<img alt="static/cos.png" src="static/cos.png" />
+<p>相对欧式距离：</p>
+<img alt="static/dist.png" src="static/dist.png" />
+<p>平均绝对误差：</p>
+<img alt="static/mae.png" src="static/mae.png" />
+<p>输入源选择具体的一组输入（不是平均值选项）时，中间的折线图会显示每个ftmp的具体值，通过点击上方折线图的点切换ftmp，最大显示1000个采样点
+初次切换为均匀采样，步长和起始点选项可以通过上下方向键或者输入对应数字调节，按回车键刷新
+基于显示效果考虑限制了最大显示采样点数量，比如起始点为0，步长为1表示取前1000个点，可根据需要调节采样范围</p>
+</section>
+</section>
+<section id="mem-opt">
+<span id="id9"></span><h2>三、内存优化分析<a class="headerlink" href="#mem-opt" title="此标题的永久链接">#</a></h2>
+<p>内存优化分析旨在对CodeGen组件内存分配策略进行可视化分析</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>CodeGen组件根据需求对网络模型中的参数、输入输出进行地址分配。其中模型参数按顺序依次存放在外部存储（External Memory，以下简称ETM）中，
+输入输出特征图紧随其后依次存放。由于ETM存储AI核的通信带宽受限，为了提高效率，CodeGen组件将部分满足条件的输入输出特征图存放在片上存储
+（On-Chip Memory，以下简称OCM）中，从而减小读写ETM的带宽压力，提高模型在硬件上的运行效率。</p>
+</div>
+<section id="mem-opt-input">
+<span id="id10"></span><h3>3.1 输入<a class="headerlink" href="#mem-opt-input" title="此标题的永久链接">#</a></h3>
+<p>内存分析要求输入为generate程序输出的_generate_memopt.log文件，需要generate开启对应配置（默认为打开）产生ETM和OCM两种优化信息</p>
+</section>
+<section id="mem-opt-introduce">
+<span id="id11"></span><h3>3.2 功能说明<a class="headerlink" href="#mem-opt-introduce" title="此标题的永久链接">#</a></h3>
+<p>图表横坐标代表时间周期，纵坐标表示对应存储的范围（OCM最大为2MB）</p>
+<p>每个矩形元素即代表一个ftmp在对应存储上的生命周期、占据的位置和大小</p>
+<p>通过最上方下拉框可以选择展示OCM或ETM，鼠标悬浮对应矩形可以查看对应的横纵坐标，通过鼠标滚轮和点击拖拽功能可以实现x轴的缩放与平移，方便查看相对密集的信息</p>
+<img alt="_images/memOpt.png" src="_images/memOpt.png" />
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="changelogs/change_logs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">更新日志</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">命令行参数列表</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view">一、网络参数可视化</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view-input">1.1 输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view-example">1.2 显示</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#net-view-search">1.3 搜索</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qua-analy">二、量化分析工具</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qua-analy-start">2.1 开始新分析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qua-analy-load">2.2 加载已有结果</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mem-opt">三、内存优化分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mem-opt-input">3.1 输入</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mem-opt-introduce">3.2 功能说明</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： yueyaoteng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

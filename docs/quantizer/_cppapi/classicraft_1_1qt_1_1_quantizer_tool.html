@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class QuantizerTool &#8212; Icraft Quantizer 3.7.1.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/classicraft_1_1qt_1_1_quantizer_tool';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Quantizer 3.7.1.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">更新日志</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelogs/change_logs.html">更新日志</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/classicraft_1_1qt_1_1_quantizer_tool.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Class QuantizerTool</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-relationships">Nested Relationships</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-quantizertool">
+<span id="exhale-class-classicraft-1-1qt-1-1-quantizer-tool"></span><h1>Class QuantizerTool<a class="headerlink" href="#class-quantizertool" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-qt_core_quantizer_tool.h.html#file-icraft-qt-core-quantizer-tool-h"><span class="std std-ref">File quantizer_tool.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="此标题的永久链接">#</a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="此标题的永久链接">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="structicraft_1_1qt_1_1_quantizer_tool_1_1_config_info.html#exhale-struct-structicraft-1-1qt-1-1-quantizer-tool-1-1-config-info"><span class="std std-ref">Struct QuantizerTool::ConfigInfo</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="此标题的永久链接">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerToolE">
+<span id="_CPPv3N6icraft2qt13QuantizerToolE"></span><span id="_CPPv2N6icraft2qt13QuantizerToolE"></span><span id="icraft::qt::QuantizerTool"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuantizerTool</span></span></span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerToolE" title="永久链接至目标">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool7FtmpMapE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool7FtmpMapE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool7FtmpMapE"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a3595519f32c02487c53e06d58457ce4a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FtmpMap</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool7FtmpMapE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool10AutoMixCalER7FtmpMapRKN6icraft3xir9OperationE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool10AutoMixCalER7FtmpMapRKN6icraft3xir9OperationE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool10AutoMixCalER7FtmpMapRKN6icraft3xir9OperationE"></span><span id="icraft::qt::QuantizerTool::AutoMixCal__FtmpMapR.icraft::xir::OperationCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a987bf0f770a8471aa6b984f2240c8378"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AutoMixCal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6icraft2qt13QuantizerTool7FtmpMapE" title="icraft::qt::QuantizerTool::FtmpMap"><span class="n"><span class="pre">FtmpMap</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ftmp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Operation</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool10AutoMixCalER7FtmpMapRKN6icraft3xir9OperationE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool13AutoMixDecideERN6icraft3xir7NetworkERNSt10filesystem4pathE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool13AutoMixDecideERN6icraft3xir7NetworkERNSt10filesystem4pathE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool13AutoMixDecideERN6icraft3xir7NetworkERNSt10filesystem4pathE"></span><span id="icraft::qt::QuantizerTool::AutoMixDecide__icraft::xir::NetworkR.std::filesystem::pathR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a0dc068b188c5006bba3042af9b336d2f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AutoMixDecide</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">icraft</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">xir</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Network</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">log_path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool13AutoMixDecideERN6icraft3xir7NetworkERNSt10filesystem4pathE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool7SetOpidERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool7SetOpidERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool7SetOpidERKi"></span><span id="icraft::qt::QuantizerTool::SetOpid__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a8f5e317fc312d2142bc85467188a4ae8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetOpid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool7SetOpidERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool9SetOpTypeERKiRKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool9SetOpTypeERKiRKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool9SetOpTypeERKiRKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::SetOpType__iCR.ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a2d6f0344a1183098143064d3d5417110"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetOpType</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">optype</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool9SetOpTypeERKiRKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool11SetVarianceERKiRKf">
+<span id="_CPPv3N6icraft2qt13QuantizerTool11SetVarianceERKiRKf"></span><span id="_CPPv2N6icraft2qt13QuantizerTool11SetVarianceERKiRKf"></span><span id="icraft::qt::QuantizerTool::SetVariance__iCR.floatCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a77779cdc1bd51d5d1322bb5d5ea1c681"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetVariance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">variance</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool11SetVarianceERKiRKf" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool9SetAmountERKiRKf">
+<span id="_CPPv3N6icraft2qt13QuantizerTool9SetAmountERKiRKf"></span><span id="_CPPv2N6icraft2qt13QuantizerTool9SetAmountERKiRKf"></span><span id="icraft::qt::QuantizerTool::SetAmount__iCR.floatCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1ad20b8f7246564eeb88e8c050c4585ed0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetAmount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">cal_amount</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool9SetAmountERKiRKf" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool8SetDtypeERKiRKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool8SetDtypeERKiRKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool8SetDtypeERKiRKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::SetDtype__iCR.ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a2d8daf5057d8db4f57f2a214e6175a76"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetDtype</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dtype</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool8SetDtypeERKiRKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool13SetValueRangeERKiRKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool13SetValueRangeERKiRKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool13SetValueRangeERKiRKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::SetValueRange__iCR.ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1accf76eb68d6f7c4c8de51872e05863c7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetValueRange</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">bits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool13SetValueRangeERKiRKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool13SetSaturationERKiRKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool13SetSaturationERKiRKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool13SetSaturationERKiRKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::SetSaturation__iCR.ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a2b814a1b19fbb543236253094d95f317"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetSaturation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool13SetSaturationERKiRKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool6SetPerERKiRKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool6SetPerERKiRKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool6SetPerERKiRKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::SetPer__iCR.ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a82b65dbf5b7434f1778c34102374df94"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetPer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">per</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool6SetPerERKiRKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool9GetAmountERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool9GetAmountERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool9GetAmountERKi"></span><span id="icraft::qt::QuantizerTool::GetAmount__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a6b2bdc608882e8dd4a380e7d2f13bda8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetAmount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool9GetAmountERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool11GetVarianceERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool11GetVarianceERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool11GetVarianceERKi"></span><span id="icraft::qt::QuantizerTool::GetVariance__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a930fc4b817e3934903935859375b50c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetVariance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool11GetVarianceERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool8GetDtypeERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool8GetDtypeERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool8GetDtypeERKi"></span><span id="icraft::qt::QuantizerTool::GetDtype__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1ab79abf29fe2f25d79666c39aaecd1fc7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetDtype</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool8GetDtypeERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool13GetValueRangeERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool13GetValueRangeERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool13GetValueRangeERKi"></span><span id="icraft::qt::QuantizerTool::GetValueRange__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a135f04b4f3097d31dff9bfa47a32b351"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetValueRange</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool13GetValueRangeERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool13GetSaturationERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool13GetSaturationERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool13GetSaturationERKi"></span><span id="icraft::qt::QuantizerTool::GetSaturation__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a7201e74857de2e3b2a5cbf0c2b647d7a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSaturation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool13GetSaturationERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool6GetPerERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool6GetPerERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool6GetPerERKi"></span><span id="icraft::qt::QuantizerTool::GetPer__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1ab8d86043d77423d6081005a5aca66990"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetPer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">op_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool6GetPerERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool6setBitERKi">
+<span id="_CPPv3N6icraft2qt13QuantizerTool6setBitERKi"></span><span id="_CPPv2N6icraft2qt13QuantizerTool6setBitERKi"></span><span id="icraft::qt::QuantizerTool::setBit__iCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a734998e0159f62e6edf5bc51fcd3624b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setBit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">bit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool6setBitERKi" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool13setSaturationERKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool13setSaturationERKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool13setSaturationERKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::setSaturation__ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1ab88a05d97a78900c3c79bbc71902d4b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setSaturation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saturation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool13setSaturationERKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool6setPerERKNSt6stringE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool6setPerERKNSt6stringE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool6setPerERKNSt6stringE"></span><span id="icraft::qt::QuantizerTool::setPer__ssCR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1a2bdbfb83b2f7884af3c770f6a3693899"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">per</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool6setPerERKNSt6stringE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft2qt13QuantizerTool15dumpConfigSheetERNSt6stringERNSt10filesystem4pathE">
+<span id="_CPPv3N6icraft2qt13QuantizerTool15dumpConfigSheetERNSt6stringERNSt10filesystem4pathE"></span><span id="_CPPv2N6icraft2qt13QuantizerTool15dumpConfigSheetERNSt6stringERNSt10filesystem4pathE"></span><span id="icraft::qt::QuantizerTool::dumpConfigSheet__ssR.std::filesystem::pathR"></span><span class="target" id="classicraft_1_1qt_1_1_quantizer_tool_1abc41c23a97dd65dd13bdd471716f1722"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpConfigSheet</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">network_name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft2qt13QuantizerTool15dumpConfigSheetERNSt6stringERNSt10filesystem4pathE" title="永久链接至目标">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-relationships">Nested Relationships</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： GuoPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

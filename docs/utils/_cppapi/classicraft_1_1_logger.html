@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class Logger &#8212; Icraft Utils 3.7.0.0 文档</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_cppapi/classicraft_1_1_logger';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Icraft Utils 3.7.0.0 文档</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/_cppapi/classicraft_1_1_logger.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Class Logger</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-logger">
+<span id="exhale-class-classicraft-1-1-logger"></span><h1>Class Logger<a class="headerlink" href="#class-logger" title="此标题的永久链接">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_icraft-utils_logging.h.html#file-icraft-utils-logging-h"><span class="std std-ref">File logging.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="此标题的永久链接">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6LoggerE">
+<span id="_CPPv3N6icraft6LoggerE"></span><span id="_CPPv2N6icraft6LoggerE"></span><span id="icraft::Logger"></span><span class="target" id="classicraft_1_1_logger"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Logger</span></span></span><a class="headerlink" href="#_CPPv4N6icraft6LoggerE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>表示日志的类 * </p>
+<p>使用Logger类可以记录各个级别的日志 </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It">
+<span id="_CPPv3I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It"></span><span id="_CPPv2I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">It</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classicraft_1_1_logger_1a51bef502f1104e00f092d67b4b826891"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Logger</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <a class="reference internal" href="#_CPPv4I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It" title="icraft::Logger::Logger::It"><span class="n"><span class="pre">It</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">begin</span></span>, <a class="reference internal" href="#_CPPv4I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It" title="icraft::Logger::Logger::It"><span class="n"><span class="pre">It</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">end</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6icraft6Logger6LoggerERKNSt6stringE2It2It" title="永久链接至目标">#</a><br /></dt>
+<dd><p>构造函数，从Sink容器的迭代器构造 * </p>
+<p>该构造方法用于将Logger绑定到多个Sink </p>
+<dl class="field-list simple">
+<dt class="field-odd">模板参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>It</strong> – Sink容器的迭代器类型 </p>
+</dd>
+<dt class="field-even">参数<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>name</strong> – Logger的名称 </p></li>
+<li><p><strong>begin</strong> – Sink容器迭代器的起始位置 </p></li>
+<li><p><strong>end</strong> – Sink容器迭代器的结束位置 </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger6LoggerERKNSt6stringERK9BasicSink">
+<span id="_CPPv3N6icraft6Logger6LoggerERKNSt6stringERK9BasicSink"></span><span id="_CPPv2N6icraft6Logger6LoggerERKNSt6stringERK9BasicSink"></span><span id="icraft::Logger::Logger__ssCR.BasicSinkCR"></span><span class="target" id="classicraft_1_1_logger_1afa4c4ef1035c6df8e9b32f7c17c5f8b2"></span><span class="sig-name descname"><span class="n"><span class="pre">Logger</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classicraft_1_1_basic_sink.html#_CPPv4N6icraft9BasicSinkE" title="icraft::BasicSink"><span class="n"><span class="pre">BasicSink</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger6LoggerERKNSt6stringERK9BasicSink" title="永久链接至目标">#</a><br /></dt>
+<dd><p>构造函数，从单个Sink构造 * </p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Logger的名称 </p></li>
+<li><p><strong>sink</strong> – 该Logger要绑定的BasicSink </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger6LoggerERKNSt6stringENSt16initializer_listI9BasicSinkEE">
+<span id="_CPPv3N6icraft6Logger6LoggerERKNSt6stringENSt16initializer_listI9BasicSinkEE"></span><span id="_CPPv2N6icraft6Logger6LoggerERKNSt6stringENSt16initializer_listI9BasicSinkEE"></span><span id="icraft::Logger::Logger__ssCR.std::initializer_list:BasicSink:"></span><span class="target" id="classicraft_1_1_logger_1a0492f374b7efc8fce492a15bcea4045a"></span><span class="sig-name descname"><span class="n"><span class="pre">Logger</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classicraft_1_1_basic_sink.html#_CPPv4N6icraft9BasicSinkE" title="icraft::BasicSink"><span class="n"><span class="pre">BasicSink</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sinks</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger6LoggerERKNSt6stringENSt16initializer_listI9BasicSinkEE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>构造函数，从Sink的initializer_list构造 * </p>
+<p>该构造方法用于将Logger绑定到多个Sink </p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Logger的名称 </p></li>
+<li><p><strong>sink</strong> – 该Logger要绑定的BasicSink的initializer_list </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft6Logger4nameEv">
+<span id="_CPPv3NK6icraft6Logger4nameEv"></span><span id="_CPPv2NK6icraft6Logger4nameEv"></span><span id="icraft::Logger::nameC"></span><span class="target" id="classicraft_1_1_logger_1a24dcbf29c0d6cd766009a182a6484e3b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft6Logger4nameEv" title="永久链接至目标">#</a><br /></dt>
+<dd><p>获取Logger的名称 * </p>
+<dl class="field-list simple">
+<dt class="field-odd">返回<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Logger的名称 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger10setPatternEPKc">
+<span id="_CPPv3N6icraft6Logger10setPatternEPKc"></span><span id="_CPPv2N6icraft6Logger10setPatternEPKc"></span><span id="icraft::Logger::setPattern__cCP"></span><span class="target" id="classicraft_1_1_logger_1a01c22452c9f120af90409da5b3c3d81f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPattern</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pattern</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger10setPatternEPKc" title="永久链接至目标">#</a><br /></dt>
+<dd><p>设置输出格式模板 * </p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – 表示模板的字符串 * 模板格式请参考 <a class="reference external" href="自定义格式">https://github.com/gabime/spdlog/wiki/3.-Custom-formatting/</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger8setLevelE8LogLevel">
+<span id="_CPPv3N6icraft6Logger8setLevelE8LogLevel"></span><span id="_CPPv2N6icraft6Logger8setLevelE8LogLevel"></span><span id="icraft::Logger::setLevel__LogLevel"></span><span class="target" id="classicraft_1_1_logger_1ad0651b5d306a4e0147c501258316053f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setLevel</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevelE" title="icraft::LogLevel"><span class="n"><span class="pre">LogLevel</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">level</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger8setLevelE8LogLevel" title="永久链接至目标">#</a><br /></dt>
+<dd><p>设置日志等级 * </p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>level</strong> – 日志等级 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6icraft6Logger5levelEv">
+<span id="_CPPv3NK6icraft6Logger5levelEv"></span><span id="_CPPv2NK6icraft6Logger5levelEv"></span><span id="icraft::Logger::levelC"></span><span class="target" id="classicraft_1_1_logger_1a01ff177012854b9a35d86825a3a8eabd"></span><a class="reference internal" href="enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevelE" title="icraft::LogLevel"><span class="n"><span class="pre">LogLevel</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">level</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6icraft6Logger5levelEv" title="永久链接至目标">#</a><br /></dt>
+<dd><p>获取日志等级 * </p>
+<dl class="field-list simple">
+<dt class="field-odd">返回<span class="colon">:</span></dt>
+<dd class="field-odd"><p>日志等级 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger3logE8LogLevelNSt11string_viewE">
+<span id="_CPPv3N6icraft6Logger3logE8LogLevelNSt11string_viewE"></span><span id="_CPPv2N6icraft6Logger3logE8LogLevelNSt11string_viewE"></span><span id="icraft::Logger::log__LogLevel.std::string_view"></span><span class="target" id="classicraft_1_1_logger_1a2f74b9ce35632e59b191022a28b1315a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">log</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_logging_8h_1aca1fd1d8935433e6ba2e3918214e07f9.html#_CPPv4N6icraft8LogLevelE" title="icraft::LogLevel"><span class="n"><span class="pre">LogLevel</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">level</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger3logE8LogLevelNSt11string_viewE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志信息 * </p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>level</strong> – 日志等级 &#64;msg msg 日志信息 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN6icraft6Logger5debugEvNSt6stringEDpRR4Args">
+<span id="_CPPv3IDpEN6icraft6Logger5debugENSt6stringEDpRR4Args"></span><span id="_CPPv2IDpEN6icraft6Logger5debugENSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classicraft_1_1_logger_1addab1a2dca49dd907898a2d6b93965dd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">debug</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fmt</span></span>, <a class="reference internal" href="#_CPPv4IDpEN6icraft6Logger5debugEvNSt6stringEDpRR4Args" title="icraft::Logger::debug::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN6icraft6Logger5debugEvNSt6stringEDpRR4Args" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志debug信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN6icraft6Logger4infoEvNSt6stringEDpRR4Args">
+<span id="_CPPv3IDpEN6icraft6Logger4infoENSt6stringEDpRR4Args"></span><span id="_CPPv2IDpEN6icraft6Logger4infoENSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classicraft_1_1_logger_1ad581463390daf804c5a90b4cc3739f01"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">info</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fmt</span></span>, <a class="reference internal" href="#_CPPv4IDpEN6icraft6Logger4infoEvNSt6stringEDpRR4Args" title="icraft::Logger::info::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN6icraft6Logger4infoEvNSt6stringEDpRR4Args" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志info信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN6icraft6Logger4warnEvNSt6stringEDpRR4Args">
+<span id="_CPPv3IDpEN6icraft6Logger4warnENSt6stringEDpRR4Args"></span><span id="_CPPv2IDpEN6icraft6Logger4warnENSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classicraft_1_1_logger_1af6d08b919f03dab781d2294f89026f7c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">warn</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fmt</span></span>, <a class="reference internal" href="#_CPPv4IDpEN6icraft6Logger4warnEvNSt6stringEDpRR4Args" title="icraft::Logger::warn::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN6icraft6Logger4warnEvNSt6stringEDpRR4Args" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志warn信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN6icraft6Logger5errorEvNSt6stringEDpRR4Args">
+<span id="_CPPv3IDpEN6icraft6Logger5errorENSt6stringEDpRR4Args"></span><span id="_CPPv2IDpEN6icraft6Logger5errorENSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classicraft_1_1_logger_1ae9f152bda3aa9a35374fee75b7ce355c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">error</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fmt</span></span>, <a class="reference internal" href="#_CPPv4IDpEN6icraft6Logger5errorEvNSt6stringEDpRR4Args" title="icraft::Logger::error::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN6icraft6Logger5errorEvNSt6stringEDpRR4Args" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志error信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN6icraft6Logger5fatalEvNSt6stringEDpRR4Args">
+<span id="_CPPv3IDpEN6icraft6Logger5fatalENSt6stringEDpRR4Args"></span><span id="_CPPv2IDpEN6icraft6Logger5fatalENSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classicraft_1_1_logger_1a7da66ea3f793c2a1c3055c720dc7994c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fatal</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fmt</span></span>, <a class="reference internal" href="#_CPPv4IDpEN6icraft6Logger5fatalEvNSt6stringEDpRR4Args" title="icraft::Logger::fatal::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN6icraft6Logger5fatalEvNSt6stringEDpRR4Args" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志fatal信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger5debugERKNSt11string_viewE">
+<span id="_CPPv3N6icraft6Logger5debugERKNSt11string_viewE"></span><span id="_CPPv2N6icraft6Logger5debugERKNSt11string_viewE"></span><span id="icraft::Logger::debug__std::string_viewCR"></span><span class="target" id="classicraft_1_1_logger_1a37d208e78f0135479e9e7e2ff25ef152"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">debug</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger5debugERKNSt11string_viewE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志debug信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger4infoERKNSt11string_viewE">
+<span id="_CPPv3N6icraft6Logger4infoERKNSt11string_viewE"></span><span id="_CPPv2N6icraft6Logger4infoERKNSt11string_viewE"></span><span id="icraft::Logger::info__std::string_viewCR"></span><span class="target" id="classicraft_1_1_logger_1ad2c2d86974405e43aa66c8b809422eb3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger4infoERKNSt11string_viewE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志info信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger4warnERKNSt11string_viewE">
+<span id="_CPPv3N6icraft6Logger4warnERKNSt11string_viewE"></span><span id="_CPPv2N6icraft6Logger4warnERKNSt11string_viewE"></span><span id="icraft::Logger::warn__std::string_viewCR"></span><span class="target" id="classicraft_1_1_logger_1a7511e74e5f1ea62df518556143bd90a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">warn</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger4warnERKNSt11string_viewE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志warn信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger5errorERKNSt11string_viewE">
+<span id="_CPPv3N6icraft6Logger5errorERKNSt11string_viewE"></span><span id="_CPPv2N6icraft6Logger5errorERKNSt11string_viewE"></span><span id="icraft::Logger::error__std::string_viewCR"></span><span class="target" id="classicraft_1_1_logger_1a173f7c6471c3204de4e79ce551bbeaaa"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">error</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger5errorERKNSt11string_viewE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志error信息 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger5fatalERKNSt11string_viewE">
+<span id="_CPPv3N6icraft6Logger5fatalERKNSt11string_viewE"></span><span id="_CPPv2N6icraft6Logger5fatalERKNSt11string_viewE"></span><span id="icraft::Logger::fatal__std::string_viewCR"></span><span class="target" id="classicraft_1_1_logger_1a40e43369c9b4244daf2e51eaeed17c0c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fatal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger5fatalERKNSt11string_viewE" title="永久链接至目标">#</a><br /></dt>
+<dd><p>记录日志fatal信息 </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6icraft6Logger6GlobalEv">
+<span id="_CPPv3N6icraft6Logger6GlobalEv"></span><span id="_CPPv2N6icraft6Logger6GlobalEv"></span><span id="icraft::Logger::Global"></span><span class="target" id="classicraft_1_1_logger_1a573fcae84a1663a3562b1e4e8bae930c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6icraft6LoggerE" title="icraft::Logger"><span class="n"><span class="pre">Logger</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Global</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6icraft6Logger6GlobalEv" title="永久链接至目标">#</a><br /></dt>
+<dd><p>获取全局默认Logger单例 * </p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>不建议直接使用，请使用LOG(level)宏 </p>
+</div>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-documentation">Class Documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： chenghongxu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, FMSH.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
