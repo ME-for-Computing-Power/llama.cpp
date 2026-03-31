@@ -257,6 +257,16 @@ option(GGML_OPENCL_USE_ADRENO_KERNELS       "ggml: use optimized kernels for Adr
 set   (GGML_OPENCL_TARGET_VERSION "300" CACHE STRING
                                             "ggml: OpenCL API version to target")
 
+option(GGML_FMSH                            "ggml: use FMSH backend (experimental)"           OFF)
+option(GGML_FMSH_ICRAFT                     "ggml-fmsh: enable direct iCraft Buyi runtime integration" ON)
+set   (GGML_FMSH_ICRAFT_ROOT "" CACHE PATH
+                                            "ggml-fmsh: root path of iCraft runtime SDK")
+
+if (GGML_FMSH AND NOT GGML_FMSH_ICRAFT)
+    message(STATUS "ggml-fmsh: forcing GGML_FMSH_ICRAFT=ON (fallback-only build is disabled)")
+    set(GGML_FMSH_ICRAFT ON CACHE BOOL "ggml-fmsh: enable direct iCraft Buyi runtime integration" FORCE)
+endif()
+
 option(GGML_HEXAGON                         "ggml: enable Hexagon backend"                    OFF)
 set(GGML_HEXAGON_FP32_QUANTIZE_GROUP_SIZE 128 CACHE STRING "ggml: quantize group size (32, 64, or 128)")
 
@@ -330,6 +340,7 @@ set(GGML_PUBLIC_HEADERS
     include/ggml-webgpu.h
     include/ggml-zendnn.h
     include/ggml-openvino.h
+    include/ggml-fmsh.h
     include/gguf.h)
 
 set_target_properties(ggml PROPERTIES PUBLIC_HEADER "${GGML_PUBLIC_HEADERS}")

@@ -24,6 +24,7 @@ The following sections describe how to build with different backends and options
 * [CANN](#cann)
 * [Arm® KleidiAI™](#arm-kleidiai)
 * [OpenCL](#opencl)
+* [FMSH](#fmsh)
 * [Android](#android-1)
 * [OpenVINO](#openvino)
 * [Notes about GPU-accelerated backends](#notes-about-gpu-accelerated-backends)
@@ -636,6 +637,37 @@ Depending on your build target, other higher priority backends may be enabled by
 
 This provides GPU acceleration through OpenCL on recent Adreno GPU.
 More information about OpenCL backend can be found in [OPENCL.md](./backend/OPENCL.md) for more information.
+
+## FMSH
+
+This backend targets FMSH ARM + Buyi NPU SoCs.
+
+Current implementation status:
+
+- Provides a dedicated `ggml-fmsh` backend registration and device surface.
+- Uses host buffers and scheduler partitioning hooks for FMSH-supported op classes.
+- Falls back safely to CPU execution for graph compute (MVP), while keeping a clear integration point for iCraft runtime.
+
+Build with FMSH backend enabled:
+
+```bash
+cmake -B build -DGGML_FMSH=ON
+cmake --build build --config Release
+```
+
+Optional iCraft runtime link (if SDK is installed):
+
+```bash
+cmake -B build \
+  -DGGML_FMSH=ON \
+  -DGGML_FMSH_ICRAFT=ON \
+  -DGGML_FMSH_ICRAFT_ROOT=/path/to/icraft/sdk
+cmake --build build --config Release
+```
+
+`GGML_FMSH` now requires iCraft headers and runtime libraries at configure time (fallback-only build mode is disabled).
+
+More details are available in [FMSH.md](./backend/FMSH.md).
 
 ### Android
 
