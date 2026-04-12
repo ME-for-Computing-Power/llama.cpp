@@ -78,6 +78,10 @@
 #include "ggml-cann.h"
 #endif
 
+#ifdef GGML_USE_FMSH_ZG330
+#include "ggml-fmsh-zg330.h"
+#endif
+
 #ifdef GGML_USE_ZENDNN
 #include "ggml-zendnn.h"
 #endif
@@ -151,6 +155,9 @@ struct ggml_backend_registry {
 #endif
 #ifdef GGML_USE_CANN
         register_backend(ggml_backend_cann_reg());
+#endif
+#ifdef GGML_USE_FMSH_ZG330
+        register_backend(ggml_backend_fmsh_zg330_reg());
 #endif
 #ifdef GGML_USE_BLAS
         register_backend(ggml_backend_blas_reg());
@@ -554,6 +561,7 @@ void ggml_backend_load_all_from_path(const char * dir_path) {
     ggml_backend_load_best("blas", silent, dir_path);
     ggml_backend_load_best("zendnn", silent, dir_path);
     ggml_backend_load_best("cann", silent, dir_path);
+    ggml_backend_load_best("fmsh_zg330", silent, dir_path);
     ggml_backend_load_best("cuda", silent, dir_path);
     ggml_backend_load_best("hip", silent, dir_path);
     ggml_backend_load_best("metal", silent, dir_path);

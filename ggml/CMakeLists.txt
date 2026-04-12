@@ -189,6 +189,7 @@ option(GGML_SCHED_NO_REALLOC                "ggml: disallow reallocations in ggm
 # 3rd party libs / backends
 option(GGML_ACCELERATE                      "ggml: enable Accelerate framework"               ON)
 option(GGML_BLAS                            "ggml: use BLAS"                                  ${GGML_BLAS_DEFAULT})
+option(GGML_FMSH_ZG330                      "ggml: use FMSH ZG330 via Icraft"                 OFF)
 set(GGML_BLAS_VENDOR ${GGML_BLAS_VENDOR_DEFAULT} CACHE STRING
                                             "ggml: BLAS library vendor")
 option(GGML_LLAMAFILE                       "ggml: use LLAMAFILE"                             ${GGML_LLAMAFILE_DEFAULT})
@@ -320,6 +321,7 @@ set(GGML_PUBLIC_HEADERS
     include/ggml-backend.h
     include/ggml-blas.h
     include/ggml-cann.h
+    include/ggml-fmsh-zg330.h
     include/ggml-cpp.h
     include/ggml-cuda.h
     include/ggml-opt.h

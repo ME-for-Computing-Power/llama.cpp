@@ -447,6 +447,7 @@ endif()
 
 ggml_add_backend(BLAS)
 ggml_add_backend(CANN)
+ggml_add_backend(FMSH_ZG330)
 ggml_add_backend(CUDA)
 ggml_add_backend(HIP)
 ggml_add_backend(METAL)
