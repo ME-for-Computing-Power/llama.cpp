@@ -261,6 +261,8 @@ option(GGML_OPENCL_EMBED_KERNELS            "ggml: embed kernels"               
 option(GGML_OPENCL_USE_ADRENO_KERNELS       "ggml: use optimized kernels for Adreno"          ON)
 set   (GGML_OPENCL_TARGET_VERSION "300" CACHE STRING
                                             "ggml: OpenCL API version to target")
+option(GGML_FMSH_ZG330                      "ggml: use FMSH ZG330 backend"                     OFF)
+option(GGML_FMSH_ZG330_DEBUG_COMPARE        "ggml: FMSH ZG330 debug compare with CPU reference in socket mode" OFF)
 
 option(GGML_HEXAGON                         "ggml: enable Hexagon backend"                    OFF)
 set(GGML_HEXAGON_FP32_QUANTIZE_GROUP_SIZE 128 CACHE STRING "ggml: quantize group size (32, 64, or 128)")
@@ -335,6 +337,7 @@ set(GGML_PUBLIC_HEADERS
     include/ggml-webgpu.h
     include/ggml-zendnn.h
     include/ggml-openvino.h
+    include/ggml-fmsh-zg330.h
     include/gguf.h)
 
 set_target_properties(ggml PROPERTIES PUBLIC_HEADER "${GGML_PUBLIC_HEADERS}")

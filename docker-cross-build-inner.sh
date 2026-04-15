@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
 source_dir=${FMSH_ZG330_SOURCE_DIR:?}
 build_dir=${FMSH_ZG330_BUILD_DIR:?}
