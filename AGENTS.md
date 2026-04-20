@@ -38,6 +38,7 @@ make fmsh-zg330-build-x64 FMSH_ZG330_TARGET=all
 FMSH_ZG330_EXTRA_CMAKE_ARGS="-DGGML_FMSH_ZG330_DEBUG_COMPARE=ON"
 
 使能对比，每次都会用 npu与 cpu 计算参考值对比
+
 # 测试
 
 要运行一次socket模式的推理，可以：
@@ -46,6 +47,8 @@ FMSH_ZG330_EXTRA_CMAKE_ARGS="-DGGML_FMSH_ZG330_DEBUG_COMPARE=ON"
 
 docker run --network host  -it --rm -v $(pwd):/workspace fpai-icraft:latest
 
+Icraft 相关的全部环境都在*容器内*，不要尝试在host上运行程序
+
 2. 启动 llama-cli
 
-cd /workspace/build-fmsh-zg330-x64/bin && export LD_LIBRARY_PATH=/workspace/build-fmsh-zg330-x64/bin:/ModelzooDeps/x64/Dynamic/lib:$LD_LIBRARY_PATH && export GGML_FMSH_ZG330_LOG=1 && export GGML_FMSH_ZG330_CACHE_DIR=/workspace/.cache/deploy && ./llama-cli -m /workspace/Qwen3.5-0.8B-Q4_K_M.gguf --device FMSH_ZG330 --reasoning-budget 0 -p 'Introduce yourself in 10 words' -n 20 -c 128 --no-warmup --single-turn --seed 1024
+cd /workspace/build-fmsh-zg330-x64/bin && export LD_LIBRARY_PATH=/workspace/build-fmsh-zg330-x64/bin:/ModelzooDeps/x64/Dynamic/lib:$LD_LIBRARY_PATH && export GGML_FMSH_ZG330_LOG=1 && export GGML_FMSH_ZG330_CACHE_DIR=/workspace/.cache/deploy && ./llama-cli -m /workspace/Qwen3.5-0.8B-Q4_K_M.gguf --device FMSH_ZG330 --reasoning-budget 0 -p 'Introduce yourself in 10 words' -n 20 -c 128 --no-warmup --single-turn --seed 1024 --log-file llama.log
