@@ -29,3 +29,12 @@ target_link_libraries(${TARGET_NAME} PRIVATE Icraft::HostBackend Icraft::BuyiBac
 if (GGML_FMSH_ZG330_DEBUG_COMPARE)
     target_compile_definitions(${TARGET_NAME} PRIVATE GGML_FMSH_ZG330_DEBUG_COMPARE)
 endif()
+
+if (NOT GGML_BACKEND_DL)
+    add_executable(ggml-fmsh-zg330-flash-attn-test
+                   flash-attn-netmake-cpu-test.cpp
+                   ggml-fmsh-zg330-netmake.cpp
+                   ggml-fmsh-zg330-netmake.h)
+    target_include_directories(ggml-fmsh-zg330-flash-attn-test PRIVATE . ../../include)
+    target_link_libraries(ggml-fmsh-zg330-flash-attn-test PRIVATE ggml-base ggml-cpu Icraft::HostBackend Icraft::BuyiBackend Icraft::ZG330Backend)
+endif()

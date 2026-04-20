@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <mutex>
 #include <stdexcept>
 #include <unordered_map>
@@ -110,6 +111,21 @@ static std::string elementwise_op_name(ElementwiseZgOp op) {
 
 static std::string make_elementwise_net_name(ElementwiseZgOp op, int64_t rows, int64_t cols) {
     return elementwise_op_name(op) + "_" + std::to_string(rows) + "x" + std::to_string(cols);
+}
+
+static std::string make_flash_attn_net_name(
+    int64_t head_dim,
+    int64_t value_dim,
+    int64_t q_len,
+    int64_t kv_len,
+    int64_t softmax_cols,
+    bool use_logit_softcap) {
+    return "flashattn_d" + std::to_string(head_dim) +
+           "_dv" + std::to_string(value_dim) +
+           "_q" + std::to_string(q_len) +
+           "_kv" + std::to_string(kv_len) +
+           "_scol" + std::to_string(softmax_cols) +
+           "_sc" + std::to_string(use_logit_softcap ? 1 : 0);
 }
 
 static std::string shape_to_toml_array(const std::vector<int64_t> & shape) {
@@ -284,6 +300,132 @@ onnx.save(model, out_path)
     const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
                             quote_for_sh(elementwise_op_name(op)) + " " +
                             std::to_string(rows) + " " + std::to_string(cols) + " " +
+                            quote_for_sh(onnx_path.string());
+    run_system_checked(cmd);
+}
+
+static void build_flash_attn_onnx(
+    const std::filesystem::path & onnx_path,
+    int64_t head_dim,
+    int64_t value_dim,
+    int64_t q_len,
+    int64_t kv_len,
+    int64_t softmax_cols,
+    bool use_logit_softcap) {
+    if (head_dim <= 0 || value_dim <= 0 || q_len <= 0 || kv_len <= 0 || softmax_cols < q_len) {
+        throw std::runtime_error("build_flash_attn_onnx: invalid shape");
+    }
+
+    ensure_dir(onnx_path.parent_path());
+
+    const std::string py_script = R"PY(
+import sys
+import onnx
+from onnx import helper, TensorProto
+
+head_dim = int(sys.argv[1])
+value_dim = int(sys.argv[2])
+q_len = int(sys.argv[3])
+kv_len = int(sys.argv[4])
+softmax_cols = int(sys.argv[5])
+use_softcap = int(sys.argv[6]) != 0
+out_path = sys.argv[7]
+
+if softmax_cols < q_len:
+    raise RuntimeError("softmax_cols must be >= q_len")
+
+Q = helper.make_tensor_value_info("Q", TensorProto.FLOAT, [q_len, head_dim])
+K = helper.make_tensor_value_info("K", TensorProto.FLOAT, [head_dim, kv_len])
+V = helper.make_tensor_value_info("V", TensorProto.FLOAT, [kv_len, value_dim])
+SCALE = helper.make_tensor_value_info("SCALE", TensorProto.FLOAT, [1, 1])
+MASK = helper.make_tensor_value_info("MASK", TensorProto.FLOAT, [q_len, kv_len])
+Y = helper.make_tensor_value_info("Y", TensorProto.FLOAT, [q_len, value_dim])
+
+inputs = [Q, K, V, SCALE, MASK]
+nodes = []
+
+nodes.append(helper.make_node("MatMul", inputs=["Q", "K"], outputs=["QK"], name="QK_MatMul"))
+nodes.append(helper.make_node("Mul", inputs=["QK", "SCALE"], outputs=["QKS"], name="QK_Scale"))
+
+logits_name = "QKS"
+if use_softcap:
+    SOFTCAP = helper.make_tensor_value_info("SOFTCAP", TensorProto.FLOAT, [1, 1])
+    inputs.append(SOFTCAP)
+    nodes.append(helper.make_node("Tanh", inputs=[logits_name], outputs=["QKTanh"], name="QK_Tanh"))
+    nodes.append(helper.make_node("Mul", inputs=["QKTanh", "SOFTCAP"], outputs=["QKSoftcap"], name="QK_SoftcapMul"))
+    logits_name = "QKSoftcap"
+
+nodes.append(helper.make_node("Add", inputs=[logits_name, "MASK"], outputs=["QKMask"], name="QK_AddMask"))
+nodes.append(helper.make_node("Transpose", inputs=["QKMask"], outputs=["QKT"], perm=[1, 0], name="Softmax_PreTranspose"))
+
+softmax_input = "QKT"
+if softmax_cols > q_len:
+    pad_const = helper.make_tensor(
+        "PadConst", TensorProto.INT64, [4], [0, 0, 0, softmax_cols - q_len]
+    )
+    pad_val = helper.make_tensor("PadVal", TensorProto.FLOAT, [1], [0.0])
+    nodes.append(
+        helper.make_node(
+            "Pad",
+            inputs=["QKT", "PadConst", "PadVal"],
+            outputs=["QKTPad"],
+            name="Softmax_Pad",
+            mode="constant",
+        )
+    )
+    softmax_input = "QKTPad"
+
+nodes.append(helper.make_node("Softmax", inputs=[softmax_input], outputs=["ProbT"], axis=0, name="Softmax_0"))
+
+softmax_output = "ProbT"
+if softmax_cols > q_len:
+    starts = helper.make_tensor("SliceStarts", TensorProto.INT64, [2], [0, 0])
+    ends = helper.make_tensor("SliceEnds", TensorProto.INT64, [2], [kv_len, q_len])
+    axes = helper.make_tensor("SliceAxes", TensorProto.INT64, [2], [0, 1])
+    steps = helper.make_tensor("SliceSteps", TensorProto.INT64, [2], [1, 1])
+    nodes.append(
+        helper.make_node(
+            "Slice",
+            inputs=["ProbT", "SliceStarts", "SliceEnds", "SliceAxes", "SliceSteps"],
+            outputs=["ProbTSlice"],
+            name="Softmax_SliceBack",
+        )
+    )
+    softmax_output = "ProbTSlice"
+
+nodes.append(helper.make_node("Transpose", inputs=[softmax_output], outputs=["Prob"], perm=[1, 0], name="Softmax_PostTranspose"))
+nodes.append(helper.make_node("MatMul", inputs=["Prob", "V"], outputs=["Y"], name="PV_MatMul"))
+
+initializers = []
+if softmax_cols > q_len:
+    initializers.extend([pad_const, pad_val, starts, ends, axes, steps])
+
+graph = helper.make_graph(nodes, "flash_attn_graph", inputs, [Y], initializer=initializers)
+model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
+model.ir_version = 8
+onnx.checker.check_model(model)
+onnx.save(model, out_path)
+)PY";
+
+    if (!run_system_ok("python3 -c " + quote_for_sh("import onnx") + " >/dev/null 2>&1")) {
+        throw std::runtime_error("python package missing: onnx");
+    }
+
+    const std::filesystem::path script_path = onnx_path.parent_path() / "make_flash_attn_onnx.py";
+    std::ofstream py(script_path);
+    if (!py) {
+        throw std::runtime_error("failed to write python script: " + script_path.string());
+    }
+    py << py_script;
+    py.close();
+
+    const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
+                            std::to_string(head_dim) + " " +
+                            std::to_string(value_dim) + " " +
+                            std::to_string(q_len) + " " +
+                            std::to_string(kv_len) + " " +
+                            std::to_string(softmax_cols) + " " +
+                            std::to_string(use_logit_softcap ? 1 : 0) + " " +
                             quote_for_sh(onnx_path.string());
     run_system_checked(cmd);
 }
@@ -702,6 +844,110 @@ ElementwiseZgNetworkBundle get_or_compile_elementwise_zg_network(
     }
 
     ElementwiseZgNetworkBundle out;
+    out.net_name = net_name;
+    out.network = std::move(network);
+    out.ram_cache_hit = false;
+    out.compiled_now = true;
+    return out;
+}
+
+FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
+    const std::filesystem::path & work_root,
+    int64_t head_dim,
+    int64_t value_dim,
+    int64_t q_len,
+    int64_t kv_len,
+    int64_t softmax_cols,
+    bool use_logit_softcap) {
+    if (head_dim <= 0 || value_dim <= 0 || q_len <= 0 || kv_len <= 0 || softmax_cols < q_len) {
+        throw std::runtime_error("get_or_compile_flash_attn_zg_network: invalid dims");
+    }
+
+    preload_matmul_zg_cache(work_root);
+    const auto root_abs = std::filesystem::weakly_canonical(work_root);
+    const auto net_name = make_flash_attn_net_name(head_dim, value_dim, q_len, kv_len, softmax_cols, use_logit_softcap);
+    const auto cache_key = make_root_net_key(root_abs, net_name);
+
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            FlashAttnZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
+
+    const std::filesystem::path work_dir = root_abs / net_name;
+    ensure_dir(work_dir);
+
+    // Disk cache hit path: reuse previously generated json/raw across process runs.
+    try {
+        auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+        auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+        network.loadParamsFromFile(raw_path.string());
+
+        CachedMatmulEntry entry;
+        entry.net_name = net_name;
+        entry.m = q_len;
+        entry.k = head_dim;
+        entry.n = kv_len;
+        entry.network = network;
+        entry.json_path = json_path;
+        entry.raw_path = raw_path;
+        {
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[cache_key] = entry;
+        }
+
+        FlashAttnZgNetworkBundle out;
+        out.net_name = net_name;
+        out.network = std::move(network);
+        out.ram_cache_hit = false;
+        out.compiled_now = false;
+        return out;
+    } catch (...) {
+        // cache miss or broken cache; fall through to compile.
+    }
+
+    const auto onnx_path = work_dir / (net_name + ".onnx");
+    build_flash_attn_onnx(onnx_path, head_dim, value_dim, q_len, kv_len, softmax_cols, use_logit_softcap);
+
+    std::vector<std::vector<int64_t>> input_shapes = {
+        {q_len, head_dim},
+        {head_dim, kv_len},
+        {kv_len, value_dim},
+        {1, 1},          // scale
+        {q_len, kv_len}, // mask
+    };
+    if (use_logit_softcap) {
+        input_shapes.push_back({1, 1});
+    }
+
+    const auto artifacts = write_icraft_compile_toml_for_zg_elementwise(work_dir, net_name, onnx_path, input_shapes);
+    run_icraft_compile(artifacts);
+    auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+
+    auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+    network.loadParamsFromFile(raw_path.string());
+
+    CachedMatmulEntry entry;
+    entry.net_name = net_name;
+    entry.m = q_len;
+    entry.k = head_dim;
+    entry.n = kv_len;
+    entry.network = network;
+    entry.json_path = json_path;
+    entry.raw_path = raw_path;
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        g_cache[cache_key] = entry;
+    }
+
+    FlashAttnZgNetworkBundle out;
     out.net_name = net_name;
     out.network = std::move(network);
     out.ram_cache_hit = false;

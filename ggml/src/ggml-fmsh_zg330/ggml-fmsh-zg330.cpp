@@ -14,12 +14,14 @@
 
 #include <chrono>
 #include <atomic>
+#include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -86,11 +88,44 @@ struct ggml_fmsh_zg330_elementwise_session_entry {
     std::vector<Tensor> input_tensors;
 };
 
+struct ggml_fmsh_flash_attn_validation {
+    int64_t n_head = 0;
+    int64_t n_head_kv = 0;
+    int64_t head_dim = 0;
+    int64_t value_dim = 0;
+    int64_t q_len = 0;
+    int64_t kv_len = 0;
+    int64_t n_batch = 0;
+
+    int64_t q_bucket = 0;
+    int64_t kv_bucket = 0;
+    int64_t softmax_cols = 0;
+
+    bool has_mask = false;
+    bool causal = false;
+    bool use_logit_softcap = false;
+
+    float scale = 1.0f;
+    float max_bias = 0.0f;
+    float logit_softcap = 0.0f;
+};
+
+struct ggml_fmsh_zg330_flash_attn_session_entry {
+    ggml_fmsh_zg330_op_signature signature;
+    ggml_fmsh_flash_attn_validation info;
+    uint64_t hit_count = 0;
+    ggml::fmsh::netmake::FlashAttnZgNetworkBundle bundle;
+    Session session;
+    std::vector<TensorType> input_types;
+    std::vector<Tensor> input_tensors;
+};
+
 struct ggml_backend_fmsh_zg330_context {
     ggml_backend_t cpu_backend = nullptr;
 
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_session_entry>> session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_elementwise_session_entry>, ggml_fmsh_zg330_op_signature_hash> elementwise_session_cache;
+    std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_flash_attn_session_entry>> flash_attn_session_cache;
 
     bool strict_mode = false;
     bool enable_log = true;
@@ -98,6 +133,10 @@ struct ggml_backend_fmsh_zg330_context {
     bool offload_cpy_dup = false;
     bool offload_soft_max = false;
     bool offload_rms_norm = false;
+    bool offload_flash_attn_ext = true;
+    int64_t flash_softmax_cu = 8;
+    int64_t flash_precompile_kv_depth = 1;
+    int64_t flash_kv_bucket_max = 8192;
 
     std::filesystem::path cache_dir;
     std::filesystem::path log_file;
@@ -136,11 +175,14 @@ struct ggml_backend_fmsh_zg330_context {
     uint64_t batched_mul_mat_total = 0;
     uint64_t batched_mul_mat_offloaded = 0;
     uint64_t mul_mat_device_input_chain = 0;
+    uint64_t flash_attn_total = 0;
+    uint64_t flash_attn_offloaded = 0;
+    uint64_t flash_attn_fallback = 0;
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
     bool debug_compare = false;
-    double debug_compare_atol = 1e-1;
-    double debug_compare_rtol = 1e-1;
+    double debug_compare_atol = 0.1;
+    double debug_compare_rtol = 0.05;
     uint64_t debug_compare_total = 0;
     uint64_t debug_compare_mismatch = 0;
     uint64_t debug_compare_log_limit = 200;
@@ -167,6 +209,14 @@ static int64_t ggml_fmsh_next_pow2_i64(int64_t v) {
         p <<= 1;
     }
     return p < v ? v : p;
+}
+
+static int64_t ggml_fmsh_align_up_i64(int64_t v, int64_t a) {
+    if (a <= 1) {
+        return v;
+    }
+    const int64_t r = v % a;
+    return r == 0 ? v : (v + (a - r));
 }
 
 static int64_t ggml_fmsh_elementwise_compile_rows(ggml::fmsh::netmake::ElementwiseZgOp kind, int64_t rows) {
@@ -238,6 +288,13 @@ static uint64_t ggml_fmsh_get_env_u64(const char * key, uint64_t def) {
         return def;
     }
     return static_cast<uint64_t>(parsed);
+}
+
+static int64_t ggml_fmsh_flash_bucket_len(int64_t len) {
+    if (len <= 1) {
+        return 1;
+    }
+    return ggml_fmsh_next_pow2_i64(len);
 }
 
 static int ggml_fmsh_get_log_level(void) {
@@ -334,6 +391,9 @@ static bool ggml_fmsh_map_elementwise_op(
 
 static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     if (ggml_fmsh_is_meta_op(op)) {
+        return true;
+    }
+    if (op->op == GGML_OP_FLASH_ATTN_EXT) {
         return true;
     }
     if (ggml_fmsh_is_elementwise_zg_op(op)) {
@@ -535,6 +595,193 @@ static bool ggml_fmsh_validate_elementwise(
     }
 }
 
+static float ggml_fmsh_read_mask_f32(
+    const ggml_tensor * mask,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3) {
+    const char * p = static_cast<const char *>(mask->data) +
+                     i0 * mask->nb[0] + i1 * mask->nb[1] +
+                     i2 * mask->nb[2] + i3 * mask->nb[3];
+    if (mask->type == GGML_TYPE_F16) {
+        return GGML_FP16_TO_FP32(*reinterpret_cast<const ggml_fp16_t *>(p));
+    }
+    return *reinterpret_cast<const float *>(p);
+}
+
+static bool ggml_fmsh_is_probably_causal_mask(
+    const ggml_tensor * mask,
+    int64_t q_len,
+    int64_t kv_len,
+    int64_t mask_head,
+    int64_t mask_batch) {
+    if (!mask || !mask->data || q_len <= 0 || kv_len <= 0) {
+        return false;
+    }
+    const int64_t rows_to_check = std::min<int64_t>(q_len, 4);
+    const float k_mask_inf = -1e8f;
+    for (int64_t r = 0; r < rows_to_check; ++r) {
+        const int64_t q_row = r == rows_to_check - 1 ? (q_len - 1) : r;
+        const int64_t causal_limit = kv_len - q_len + q_row;
+        bool has_non_inf_before_limit = false;
+        for (int64_t c = 0; c < kv_len; ++c) {
+            const float mv = ggml_fmsh_read_mask_f32(mask, c, q_row, mask_head, mask_batch);
+            if (c > causal_limit) {
+                if (mv > k_mask_inf) {
+                    return false;
+                }
+            } else if (mv > k_mask_inf) {
+                has_non_inf_before_limit = true;
+            }
+        }
+        if (!has_non_inf_before_limit) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static bool ggml_fmsh_validate_flash_attn_ext(
+    const ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * node,
+    ggml_fmsh_flash_attn_validation * out,
+    std::string * err) {
+    if (!ctx || !node || !out || node->op != GGML_OP_FLASH_ATTN_EXT) {
+        if (err) *err = "invalid FLASH_ATTN_EXT op";
+        return false;
+    }
+    const ggml_tensor * q = node->src[0];
+    const ggml_tensor * k = node->src[1];
+    const ggml_tensor * v = node->src[2];
+    const ggml_tensor * mask = node->src[3];
+    const ggml_tensor * sinks = node->src[4];
+    if (!q || !k || !v) {
+        if (err) *err = "FLASH_ATTN_EXT missing q/k/v";
+        return false;
+    }
+    if (sinks != nullptr) {
+        if (err) *err = "FLASH_ATTN_EXT with sinks is not supported";
+        return false;
+    }
+    if (node->type != GGML_TYPE_F32 || q->type != GGML_TYPE_F32) {
+        if (err) *err = "FLASH_ATTN_EXT requires dst/q type F32";
+        return false;
+    }
+    if ((k->type != GGML_TYPE_F16 && k->type != GGML_TYPE_F32) ||
+        (v->type != GGML_TYPE_F16 && v->type != GGML_TYPE_F32)) {
+        if (err) *err = "FLASH_ATTN_EXT requires k/v type F16 or F32";
+        return false;
+    }
+    if (mask != nullptr && (mask->type != GGML_TYPE_F16 && mask->type != GGML_TYPE_F32)) {
+        if (err) *err = "FLASH_ATTN_EXT mask type must be F16/F32";
+        return false;
+    }
+    if (q->nb[0] != sizeof(float) ||
+        k->nb[0] != ggml_type_size(k->type) ||
+        v->nb[0] != ggml_type_size(v->type) ||
+        node->nb[0] != sizeof(float) ||
+        (mask != nullptr && mask->nb[0] != ggml_type_size(mask->type))) {
+        if (err) *err = "FLASH_ATTN_EXT requires row-contiguous inputs";
+        return false;
+    }
+    if (!ggml_is_contiguous(node) || (mask != nullptr && !ggml_is_contiguous(mask))) {
+        if (err) *err = "FLASH_ATTN_EXT requires contiguous dst/mask";
+        return false;
+    }
+    if (q->ne[0] <= 0 || q->ne[1] <= 0 || q->ne[2] <= 0 || q->ne[3] <= 0 ||
+        k->ne[0] <= 0 || k->ne[1] <= 0 || k->ne[2] <= 0 || k->ne[3] <= 0 ||
+        v->ne[0] <= 0 || v->ne[1] <= 0 || v->ne[2] <= 0 || v->ne[3] <= 0) {
+        if (err) *err = "FLASH_ATTN_EXT has non-positive dim";
+        return false;
+    }
+
+    const int64_t head_dim = q->ne[0];
+    const int64_t q_len = q->ne[1];
+    const int64_t n_head = q->ne[2];
+    const int64_t n_batch = q->ne[3];
+    const int64_t kv_len = k->ne[1];
+    const int64_t n_head_kv = k->ne[2];
+    const int64_t n_batch_kv = k->ne[3];
+    const int64_t value_dim = v->ne[0];
+
+    if (k->ne[0] != head_dim || v->ne[1] != kv_len || v->ne[2] != n_head_kv || v->ne[3] != n_batch_kv) {
+        if (err) *err = "FLASH_ATTN_EXT q/k/v shape mismatch";
+        return false;
+    }
+    if (node->ne[0] != value_dim || node->ne[1] != n_head || node->ne[2] != q_len || node->ne[3] != n_batch) {
+        if (err) *err = "FLASH_ATTN_EXT dst shape mismatch";
+        return false;
+    }
+    if (n_head % n_head_kv != 0 || n_batch % n_batch_kv != 0) {
+        if (err) *err = "FLASH_ATTN_EXT q/k broadcast mismatch";
+        return false;
+    }
+
+    float scale = 1.0f;
+    float max_bias = 0.0f;
+    float logit_softcap = 0.0f;
+    std::memcpy(&scale, (const float *) node->op_params + 0, sizeof(float));
+    std::memcpy(&max_bias, (const float *) node->op_params + 1, sizeof(float));
+    std::memcpy(&logit_softcap, (const float *) node->op_params + 2, sizeof(float));
+    if (logit_softcap < 0.0f) {
+        if (err) *err = "FLASH_ATTN_EXT logit_softcap must be >= 0";
+        return false;
+    }
+    if (max_bias > 0.0f && mask == nullptr) {
+        if (err) *err = "FLASH_ATTN_EXT max_bias requires mask";
+        return false;
+    }
+
+    bool causal = false;
+    if (mask != nullptr) {
+        if (mask->ne[0] < kv_len || mask->ne[1] < q_len || mask->ne[2] <= 0 || mask->ne[3] <= 0) {
+            if (err) *err = "FLASH_ATTN_EXT mask shape too small";
+            return false;
+        }
+        if (n_head % mask->ne[2] != 0 || n_batch % mask->ne[3] != 0) {
+            if (err) *err = "FLASH_ATTN_EXT mask broadcast mismatch";
+            return false;
+        }
+        causal = ggml_fmsh_is_probably_causal_mask(mask, q_len, kv_len, 0, 0);
+    }
+
+    out->n_head = n_head;
+    out->n_head_kv = n_head_kv;
+    out->head_dim = head_dim;
+    out->value_dim = value_dim;
+    out->q_len = q_len;
+    out->kv_len = kv_len;
+    out->n_batch = n_batch;
+    out->q_bucket = ggml_fmsh_flash_bucket_len(q_len);
+    out->kv_bucket = ggml_fmsh_flash_bucket_len(kv_len);
+    out->softmax_cols = ggml_fmsh_align_up_i64(out->q_bucket, std::max<int64_t>(1, ctx->flash_softmax_cu));
+    out->has_mask = mask != nullptr;
+    out->causal = causal;
+    out->scale = scale;
+    out->max_bias = max_bias;
+    out->logit_softcap = logit_softcap;
+    out->use_logit_softcap = std::fabs(logit_softcap) > 0.0f;
+    return true;
+}
+
+static std::string ggml_fmsh_make_flash_attn_cache_key(
+    const ggml_tensor * node,
+    const ggml_fmsh_flash_attn_validation & v) {
+    return std::to_string(static_cast<uint32_t>(node->op)) + "|" +
+           std::to_string(static_cast<uint32_t>(node->type)) + "|" +
+           "nh=" + std::to_string(v.n_head) +
+           "|nkvh=" + std::to_string(v.n_head_kv) +
+           "|hd=" + std::to_string(v.head_dim) +
+           "|dv=" + std::to_string(v.value_dim) +
+           "|q=" + std::to_string(v.q_bucket) +
+           "|kv=" + std::to_string(v.kv_bucket) +
+           "|scol=" + std::to_string(v.softmax_cols) +
+           "|mask=" + std::to_string(v.has_mask ? 1 : 0) +
+           "|causal=" + std::to_string(v.causal ? 1 : 0) +
+           "|softcap=" + std::to_string(v.use_logit_softcap ? 1 : 0);
+}
+
 static bool ggml_fmsh_open_device_if_needed(ggml_backend_fmsh_zg330_context * ctx, std::string * err) {
     if (ctx->device_opened) {
         return true;
@@ -667,6 +914,100 @@ static ggml_fmsh_zg330_elementwise_session_entry * ggml_fmsh_get_or_create_eleme
         }
         return nullptr;
     }
+}
+
+static ggml_fmsh_zg330_flash_attn_session_entry * ggml_fmsh_get_or_create_flash_attn_session(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * node,
+    bool * created,
+    std::string * err) {
+    ggml_fmsh_flash_attn_validation v;
+    if (!ggml_fmsh_validate_flash_attn_ext(ctx, node, &v, err)) {
+        return nullptr;
+    }
+
+    std::string cache_key = ggml_fmsh_make_flash_attn_cache_key(node, v);
+    auto it = ctx->flash_attn_session_cache.find(cache_key);
+    if (it != ctx->flash_attn_session_cache.end()) {
+        it->second->hit_count++;
+        if (created) *created = false;
+        return it->second.get();
+    }
+
+    if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+        return nullptr;
+    }
+
+    std::string last_compile_err = "unknown";
+    const int max_softmax_col_retries = 4;
+    for (int attempt = 0; attempt <= max_softmax_col_retries; ++attempt) {
+        cache_key = ggml_fmsh_make_flash_attn_cache_key(node, v);
+        it = ctx->flash_attn_session_cache.find(cache_key);
+        if (it != ctx->flash_attn_session_cache.end()) {
+            it->second->hit_count++;
+            if (created) *created = false;
+            return it->second.get();
+        }
+
+        try {
+            auto bundle = ggml::fmsh::netmake::get_or_compile_flash_attn_zg_network(
+                ctx->cache_dir,
+                v.head_dim,
+                v.value_dim,
+                v.q_bucket,
+                v.kv_bucket,
+                v.softmax_cols,
+                v.use_logit_softcap);
+            Session session = Session::Create<zg330::ZG330Backend, HostBackend>(
+                bundle.network.view(0), {ctx->zg_device, HostDevice::Default()});
+            session.enableTimeProfile(true);
+            session.apply();
+
+            auto entry = std::make_unique<ggml_fmsh_zg330_flash_attn_session_entry>();
+            entry->signature = ggml_fmsh_make_signature(node);
+            entry->info = v;
+            entry->hit_count = 1;
+            entry->bundle = std::move(bundle);
+            entry->session = std::move(session);
+            for (const auto & in : entry->bundle.network.inputs()) {
+                entry->input_types.push_back(in.tensorType().clone());
+            }
+            entry->input_tensors.resize(entry->input_types.size());
+
+            ggml_fmsh_zg330_flash_attn_session_entry * ptr = entry.get();
+            ctx->flash_attn_session_cache.emplace(cache_key, std::move(entry));
+            if (created) *created = true;
+
+            int64_t pre_kv = v.kv_bucket;
+            for (int64_t d = 0; d < ctx->flash_precompile_kv_depth; ++d) {
+                pre_kv *= 2;
+                if (pre_kv <= 0 || pre_kv > ctx->flash_kv_bucket_max) {
+                    break;
+                }
+                try {
+                    (void) ggml::fmsh::netmake::get_or_compile_flash_attn_zg_network(
+                        ctx->cache_dir,
+                        v.head_dim,
+                        v.value_dim,
+                        v.q_bucket,
+                        pre_kv,
+                        v.softmax_cols,
+                        v.use_logit_softcap);
+                } catch (...) {
+                    break;
+                }
+            }
+            return ptr;
+        } catch (const std::exception & e) {
+            last_compile_err = e.what();
+            v.softmax_cols = ggml_fmsh_next_pow2_i64(v.softmax_cols + 1);
+        }
+    }
+
+    if (err) {
+        *err = "FLASH_ATTN_EXT compile failed: " + last_compile_err;
+    }
+    return nullptr;
 }
 
 static inline float ggml_fmsh_read_f32_broadcast(
@@ -962,6 +1303,23 @@ static inline float ggml_fmsh_read_f32_linear(const ggml_tensor * t, size_t idx)
         static_cast<int64_t>(i1),
         static_cast<int64_t>(i2),
         static_cast<int64_t>(i3));
+}
+
+static inline float ggml_fmsh_read_scalar_f32(
+    const ggml_tensor * t,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3) {
+    const char * p = static_cast<const char *>(t->data) +
+                     i0 * t->nb[0] + i1 * t->nb[1] + i2 * t->nb[2] + i3 * t->nb[3];
+    if (t->type == GGML_TYPE_F32) {
+        return *reinterpret_cast<const float *>(p);
+    }
+    if (t->type == GGML_TYPE_F16) {
+        return GGML_FP16_TO_FP32(*reinterpret_cast<const ggml_fp16_t *>(p));
+    }
+    return 0.0f;
 }
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
@@ -1336,6 +1694,252 @@ static bool ggml_fmsh_execute_mul_mat(
     }
 }
 
+static bool ggml_fmsh_execute_flash_attn_ext(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    ggml_fmsh_zg330_flash_attn_session_entry * entry,
+    std::string * err) {
+    GGML_UNUSED(ctx);
+    const ggml_tensor * q = node->src[0];
+    const ggml_tensor * k = node->src[1];
+    const ggml_tensor * v = node->src[2];
+    const ggml_tensor * mask = node->src[3];
+    if (!q || !k || !v || !node->data || !q->data || !k->data || !v->data) {
+        if (err) *err = "FLASH_ATTN_EXT tensor data is null";
+        return false;
+    }
+
+    const auto & cfg = entry->info;
+    const int64_t head_dim = cfg.head_dim;
+    const int64_t value_dim = cfg.value_dim;
+    const int64_t q_len = cfg.q_len;
+    const int64_t kv_len = cfg.kv_len;
+    const int64_t q_bucket = cfg.q_bucket;
+    const int64_t kv_bucket = cfg.kv_bucket;
+    const int64_t n_head = cfg.n_head;
+    const int64_t n_head_kv = cfg.n_head_kv;
+    const int64_t n_batch = cfg.n_batch;
+    const int64_t n_batch_kv = k->ne[3];
+    const int64_t rk2 = n_head / n_head_kv;
+    const int64_t rk3 = n_batch / n_batch_kv;
+
+    const size_t k_bytes = static_cast<size_t>(head_dim * kv_bucket) * sizeof(float);
+    const size_t v_bytes = static_cast<size_t>(kv_bucket * value_dim) * sizeof(float);
+    const size_t m_bytes = static_cast<size_t>(q_bucket * kv_bucket) * sizeof(float);
+    const size_t y_bytes = static_cast<size_t>(q_bucket * value_dim) * sizeof(float);
+    const float k_mask_neg_inf = -1e9f;
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+    static std::atomic<int> s_flash_inf_trace_budget{32};
+
+    struct ggml_fmsh_f32_stats_local {
+        float min_v = std::numeric_limits<float>::infinity();
+        float max_v = -std::numeric_limits<float>::infinity();
+        size_t inf_cnt = 0;
+        size_t nan_cnt = 0;
+    };
+    const auto calc_f32_stats_local = [](const float * data, size_t n) -> ggml_fmsh_f32_stats_local {
+        ggml_fmsh_f32_stats_local s;
+        if (!data || n == 0) {
+            s.min_v = 0.0f;
+            s.max_v = 0.0f;
+            return s;
+        }
+        for (size_t i = 0; i < n; ++i) {
+            const float v = data[i];
+            if (std::isnan(v)) {
+                s.nan_cnt++;
+                continue;
+            }
+            if (std::isinf(v)) {
+                s.inf_cnt++;
+                continue;
+            }
+            s.min_v = std::min(s.min_v, v);
+            s.max_v = std::max(s.max_v, v);
+        }
+        if (!std::isfinite(s.min_v)) s.min_v = 0.0f;
+        if (!std::isfinite(s.max_v)) s.max_v = 0.0f;
+        return s;
+    };
+#endif
+
+    for (size_t i = 0; i < entry->input_types.size(); ++i) {
+        if (!entry->input_tensors[i].defined()) {
+            entry->input_tensors[i] = Tensor(entry->input_types[i].clone());
+            entry->input_tensors[i].mallocOn(HostDevice::MemRegion());
+        }
+    }
+
+    float * in_q = reinterpret_cast<float *>(entry->input_tensors[0].data().cptr());
+    float * in_k = reinterpret_cast<float *>(entry->input_tensors[1].data().cptr());
+    float * in_v = reinterpret_cast<float *>(entry->input_tensors[2].data().cptr());
+    float * in_scale = reinterpret_cast<float *>(entry->input_tensors[3].data().cptr());
+    float * in_mask = reinterpret_cast<float *>(entry->input_tensors[4].data().cptr());
+    float * in_softcap = nullptr;
+    if (cfg.use_logit_softcap && entry->input_tensors.size() > 5) {
+        in_softcap = reinterpret_cast<float *>(entry->input_tensors[5].data().cptr());
+    }
+
+    std::vector<float> out_tmp(static_cast<size_t>(q_bucket * value_dim), 0.0f);
+    const uint32_t n_head_u32 = static_cast<uint32_t>(std::max<int64_t>(1, n_head));
+    const uint32_t n_head_log2 = 1u << static_cast<uint32_t>(std::floor(std::log2(static_cast<double>(n_head_u32))));
+    const float m0 = std::pow(2.0f, -(cfg.max_bias) / n_head_log2);
+    const float m1 = std::pow(2.0f, -(cfg.max_bias / 2.0f) / n_head_log2);
+
+    for (int64_t ib = 0; ib < n_batch; ++ib) {
+        const int64_t k_batch = ib / rk3;
+        const int64_t mask_batch = mask ? (ib % mask->ne[3]) : 0;
+        for (int64_t ih = 0; ih < n_head; ++ih) {
+            const int64_t k_head = ih / rk2;
+            const int64_t mask_head = mask ? (ih % mask->ne[2]) : 0;
+
+            // Q: [q_bucket, head_dim]
+            for (int64_t iq = 0; iq < q_bucket; ++iq) {
+                float * q_row = in_q + static_cast<size_t>(iq * head_dim);
+                if (iq < q_len) {
+                    const char * src_q_row = static_cast<const char *>(q->data) +
+                                             iq * q->nb[1] + ih * q->nb[2] + ib * q->nb[3];
+                    std::memcpy(q_row, src_q_row, static_cast<size_t>(head_dim) * sizeof(float));
+                } else {
+                    std::memset(q_row, 0, static_cast<size_t>(head_dim) * sizeof(float));
+                }
+            }
+
+            // K: [head_dim, kv_bucket]
+            std::memset(in_k, 0, k_bytes);
+            for (int64_t ikv = 0; ikv < kv_len; ++ikv) {
+                const char * src_k_row = static_cast<const char *>(k->data) +
+                                         ikv * k->nb[1] + k_head * k->nb[2] + k_batch * k->nb[3];
+                if (k->type == GGML_TYPE_F32) {
+                    const float * src = reinterpret_cast<const float *>(src_k_row);
+                    for (int64_t d = 0; d < head_dim; ++d) {
+                        in_k[static_cast<size_t>(d * kv_bucket + ikv)] = src[d];
+                    }
+                } else {
+                    const ggml_fp16_t * src = reinterpret_cast<const ggml_fp16_t *>(src_k_row);
+                    for (int64_t d = 0; d < head_dim; ++d) {
+                        in_k[static_cast<size_t>(d * kv_bucket + ikv)] = GGML_FP16_TO_FP32(src[d]);
+                    }
+                }
+            }
+
+            // V: [kv_bucket, value_dim]
+            std::memset(in_v, 0, v_bytes);
+            for (int64_t ikv = 0; ikv < kv_len; ++ikv) {
+                float * v_row = in_v + static_cast<size_t>(ikv * value_dim);
+                const char * src_v_row = static_cast<const char *>(v->data) +
+                                         ikv * v->nb[1] + k_head * v->nb[2] + k_batch * v->nb[3];
+                if (v->type == GGML_TYPE_F32) {
+                    std::memcpy(v_row, src_v_row, static_cast<size_t>(value_dim) * sizeof(float));
+                } else {
+                    const ggml_fp16_t * src = reinterpret_cast<const ggml_fp16_t *>(src_v_row);
+                    for (int64_t d = 0; d < value_dim; ++d) {
+                        v_row[d] = GGML_FP16_TO_FP32(src[d]);
+                    }
+                }
+            }
+
+            // MASK: [q_bucket, kv_bucket]
+            std::memset(in_mask, 0, m_bytes);
+            const float slope = (cfg.max_bias > 0.0f)
+                ? (ih < n_head_log2 ? std::pow(m0, static_cast<float>(ih + 1))
+                                    : std::pow(m1, static_cast<float>(2 * (ih - n_head_log2) + 1)))
+                : 1.0f;
+            for (int64_t iq = 0; iq < q_bucket; ++iq) {
+                float * m_row = in_mask + static_cast<size_t>(iq * kv_bucket);
+                for (int64_t ikv = 0; ikv < kv_bucket; ++ikv) {
+                    if (ikv >= kv_len) {
+                        m_row[ikv] = k_mask_neg_inf;
+                        continue;
+                    }
+                    if (iq >= q_len || !mask) {
+                        m_row[ikv] = 0.0f;
+                        continue;
+                    }
+                    float mv = ggml_fmsh_read_mask_f32(mask, ikv, iq, mask_head, mask_batch);
+                    // ZG330 softmax path is unstable with +/-inf or NaN mask values.
+                    // Normalize mask sent to NPU to finite numbers while preserving intent.
+                    if (!std::isfinite(mv)) {
+                        mv = (std::isnan(mv) || mv > 0.0f) ? 0.0f : k_mask_neg_inf;
+                    }
+                    if (cfg.max_bias > 0.0f) {
+                        mv *= slope;
+                    }
+                    m_row[ikv] = mv;
+                }
+            }
+
+            float scale = cfg.scale;
+            if (cfg.use_logit_softcap) {
+                scale /= cfg.logit_softcap;
+            }
+            in_scale[0] = scale;
+            if (in_softcap != nullptr) {
+                in_softcap[0] = cfg.logit_softcap;
+            }
+
+            std::vector<Tensor> inputs = entry->input_tensors;
+            auto outputs = entry->session.forward(inputs);
+            if (outputs.empty()) {
+                if (err) *err = "FLASH_ATTN_EXT session.forward returned empty output";
+                return false;
+            }
+            outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, y_bytes);
+
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+            const auto out_stats = calc_f32_stats_local(out_tmp.data(), static_cast<size_t>(q_bucket * value_dim));
+            if ((out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) &&
+                s_flash_inf_trace_budget.fetch_sub(1, std::memory_order_relaxed) > 0) {
+                const auto q_stats = calc_f32_stats_local(in_q, static_cast<size_t>(q_bucket * head_dim));
+                const auto k_stats = calc_f32_stats_local(in_k, static_cast<size_t>(head_dim * kv_bucket));
+                const auto v_stats = calc_f32_stats_local(in_v, static_cast<size_t>(kv_bucket * value_dim));
+                const auto m_stats = calc_f32_stats_local(in_mask, static_cast<size_t>(q_bucket * kv_bucket));
+                ggml_fmsh_log_locked(
+                    ctx, 2,
+                    "flash_inf_trace batch=" + std::to_string(ib) +
+                    " head=" + std::to_string(ih) +
+                    " k_head=" + std::to_string(k_head) +
+                    " mask_head=" + std::to_string(mask_head) +
+                    " q_len=" + std::to_string(q_len) +
+                    " kv_len=" + std::to_string(kv_len) +
+                    " q_bucket=" + std::to_string(q_bucket) +
+                    " kv_bucket=" + std::to_string(kv_bucket) +
+                    " scale=" + std::to_string(in_scale[0]) +
+                    " Q[min,max,inf,nan]=[" + std::to_string(q_stats.min_v) + "," +
+                    std::to_string(q_stats.max_v) + "," +
+                    std::to_string(q_stats.inf_cnt) + "," +
+                    std::to_string(q_stats.nan_cnt) + "]" +
+                    " K[min,max,inf,nan]=[" + std::to_string(k_stats.min_v) + "," +
+                    std::to_string(k_stats.max_v) + "," +
+                    std::to_string(k_stats.inf_cnt) + "," +
+                    std::to_string(k_stats.nan_cnt) + "]" +
+                    " V[min,max,inf,nan]=[" + std::to_string(v_stats.min_v) + "," +
+                    std::to_string(v_stats.max_v) + "," +
+                    std::to_string(v_stats.inf_cnt) + "," +
+                    std::to_string(v_stats.nan_cnt) + "]" +
+                    " M[min,max,inf,nan]=[" + std::to_string(m_stats.min_v) + "," +
+                    std::to_string(m_stats.max_v) + "," +
+                    std::to_string(m_stats.inf_cnt) + "," +
+                    std::to_string(m_stats.nan_cnt) + "]" +
+                    " Y[min,max,inf,nan]=[" + std::to_string(out_stats.min_v) + "," +
+                    std::to_string(out_stats.max_v) + "," +
+                    std::to_string(out_stats.inf_cnt) + "," +
+                    std::to_string(out_stats.nan_cnt) + "]");
+            }
+#endif
+
+            for (int64_t iq = 0; iq < q_len; ++iq) {
+                const float * out_row = out_tmp.data() + static_cast<size_t>(iq * value_dim);
+                for (int64_t d = 0; d < value_dim; ++d) {
+                    ggml_fmsh_write_f32_indexed(node, d, ih, iq, ib, out_row[d]);
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 static void ggml_fmsh_accumulate_profile(
     ggml_backend_fmsh_zg330_context * ctx,
     ggml_tensor * node,
@@ -1439,7 +2043,8 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
         ggml_fmsh_log_locked(
             ctx, 1,
             "backend free: cache_size=" + std::to_string(ctx->session_cache.size()) +
-            " elementwise_cache_size=" + std::to_string(ctx->elementwise_session_cache.size()));
+            " elementwise_cache_size=" + std::to_string(ctx->elementwise_session_cache.size()) +
+            " flash_cache_size=" + std::to_string(ctx->flash_attn_session_cache.size()));
         for (const auto & kv : ctx->perf) {
             const auto & p = kv.second;
             ggml_fmsh_log_locked(
@@ -1468,6 +2073,13 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             " batched_hit_rate_pct=" + std::to_string(bmm_hit) +
             " chained_input_hits=" + std::to_string(ctx->mul_mat_device_input_chain) +
             " memcpy_ratio_pct=" + std::to_string(memcpy_ratio));
+        const double flash_hit = ctx->flash_attn_total == 0 ? 0.0 : (100.0 * static_cast<double>(ctx->flash_attn_offloaded) / static_cast<double>(ctx->flash_attn_total));
+        ggml_fmsh_log_locked(
+            ctx, 1,
+            "offload_summary op=FLASH_ATTN_EXT total=" + std::to_string(ctx->flash_attn_total) +
+            " offloaded=" + std::to_string(ctx->flash_attn_offloaded) +
+            " fallback=" + std::to_string(ctx->flash_attn_fallback) +
+            " hit_rate_pct=" + std::to_string(flash_hit));
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
         ggml_fmsh_log_locked(
             ctx, 1,
@@ -1586,6 +2198,162 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             device_tensor_map.erase(node);
             last_dispatched_valid = true;
             last_dispatched_zg = false;
+            continue;
+        }
+
+        if (node->op == GGML_OP_FLASH_ATTN_EXT) {
+            ctx->flash_attn_total++;
+            if (!ctx->offload_flash_attn_ext) {
+                ggml_fmsh_log_locked(ctx, 1, "fallback op=FLASH_ATTN_EXT reason=disabled_by_env");
+                ctx->flash_attn_fallback++;
+                log_dispatch_boundary(false, node, "flash_disabled");
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                if (st != GGML_STATUS_SUCCESS) {
+                    return st;
+                }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = false;
+                continue;
+            }
+
+            log_dispatch_boundary(true, node, "dispatch_switch");
+            bool created = false;
+            std::string err;
+            ggml_fmsh_zg330_flash_attn_session_entry * entry =
+                ggml_fmsh_get_or_create_flash_attn_session(ctx, node, &created, &err);
+            if (!entry) {
+                ggml_fmsh_log_locked(ctx, 2, "fallback op=FLASH_ATTN_EXT reason=" + err);
+                ctx->flash_attn_fallback++;
+                if (ctx->strict_mode) {
+                    return GGML_STATUS_FAILED;
+                }
+                log_dispatch_boundary(false, node, "flash_session_create_failed");
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                if (st != GGML_STATUS_SUCCESS) {
+                    return st;
+                }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = false;
+                continue;
+            }
+
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                std::string(created ? "session_create" : "session_hit") +
+                " op=FLASH_ATTN_EXT" +
+                " q_len=" + std::to_string(entry->info.q_len) +
+                " kv_len=" + std::to_string(entry->info.kv_len) +
+                " q_bucket=" + std::to_string(entry->info.q_bucket) +
+                " kv_bucket=" + std::to_string(entry->info.kv_bucket) +
+                " softmax_cols=" + std::to_string(entry->info.softmax_cols) +
+                " n_head=" + std::to_string(entry->info.n_head) +
+                " n_head_kv=" + std::to_string(entry->info.n_head_kv) +
+                " mask=" + std::to_string(entry->info.has_mask ? 1 : 0) +
+                " causal=" + std::to_string(entry->info.causal ? 1 : 0) +
+                " net=" + entry->bundle.net_name +
+                " net_cache=" + std::string(entry->bundle.ram_cache_hit ? "HIT" : "MISS") +
+                " compile_now=" + std::string((created && entry->bundle.compiled_now) ? "YES" : "NO"));
+
+            const auto t0 = std::chrono::high_resolution_clock::now();
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+            std::vector<float> cpu_ref_out;
+            if (ctx->debug_compare && ctx->device_url.rfind("socket://", 0) == 0) {
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
+                std::vector<ggml_fmsh_debug_saved_tensor> debug_saved;
+                std::unordered_set<ggml_tensor *> debug_seen;
+                std::string dbg_err;
+                const auto backup_if_alias = [&](ggml_tensor * s) -> bool {
+                    if (s == nullptr || s->data == nullptr || node->data == nullptr) {
+                        return true;
+                    }
+                    if (s != node && s->data != node->data) {
+                        return true;
+                    }
+                    return ggml_fmsh_debug_backup_tensor(s, debug_saved, debug_seen, &dbg_err);
+                };
+                if (!ggml_fmsh_debug_backup_tensor(node, debug_saved, debug_seen, &dbg_err) ||
+                    !backup_if_alias(node->src[0]) ||
+                    !backup_if_alias(node->src[1]) ||
+                    !backup_if_alias(node->src[2]) ||
+                    !backup_if_alias(node->src[3]) ||
+                    !backup_if_alias(node->src[4])) {
+                    ggml_fmsh_log_locked(ctx, 2, "debug_compare_backup_failed op=FLASH_ATTN_EXT reason=" + dbg_err);
+                }
+                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                if (cpu_st != GGML_STATUS_SUCCESS) {
+                    return cpu_st;
+                }
+                std::string snap_err;
+                if (!ggml_fmsh_tensor_snapshot_f32(node, cpu_ref_out, &snap_err)) {
+                    ggml_fmsh_log_locked(ctx, 2, "debug_compare_snapshot_failed op=FLASH_ATTN_EXT reason=" + snap_err);
+                }
+                if (!debug_saved.empty()) {
+                    std::string restore_err;
+                    if (!ggml_fmsh_debug_restore_tensors(debug_saved, &restore_err)) {
+                        ggml_fmsh_log_locked(ctx, 2, "debug_compare_restore_failed op=FLASH_ATTN_EXT reason=" + restore_err);
+                        return GGML_STATUS_FAILED;
+                    }
+                }
+            }
+#endif
+            if (!ggml_fmsh_execute_flash_attn_ext(ctx, node, entry, &err)) {
+                ggml_fmsh_log_locked(ctx, 2, "fallback op=FLASH_ATTN_EXT reason=" + err);
+                ctx->flash_attn_fallback++;
+                if (ctx->strict_mode) {
+                    return GGML_STATUS_FAILED;
+                }
+                log_dispatch_boundary(false, node, "flash_exec_failed");
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                if (st != GGML_STATUS_SUCCESS) {
+                    return st;
+                }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = false;
+                continue;
+            }
+
+            const auto t1 = std::chrono::high_resolution_clock::now();
+            const double total_ms = std::chrono::duration<double, std::milli>(t1 - t0).count();
+            ggml_fmsh_accumulate_profile(ctx, node, entry->session, total_ms);
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+            if (!cpu_ref_out.empty()) {
+                ggml_fmsh_debug_compare_and_log(ctx, node, cpu_ref_out, i);
+            }
+#endif
+            ctx->flash_attn_offloaded++;
+            has_prev_device_output = false;
+            prev_device_output_node = nullptr;
+            device_tensor_map.erase(node);
+            last_dispatched_valid = true;
+            last_dispatched_zg = true;
             continue;
         }
 
@@ -1974,6 +2742,10 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
     ctx->offload_cpy_dup = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_CPY_DUP", false);
     ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", false);
     ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", false);
+    ctx->offload_flash_attn_ext = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_FLASH_ATTN_EXT", true);
+    ctx->flash_softmax_cu = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_SOFTMAX_CU", 8)));
+    ctx->flash_precompile_kv_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_PRECOMPILE_KV_DEPTH", 1));
+    ctx->flash_kv_bucket_max = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_KV_BUCKET_MAX", 8192)));
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
     ctx->debug_compare = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DEBUG_COMPARE", true);
     ctx->debug_compare_atol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_ATOL", 1e-4);
@@ -2022,6 +2794,10 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
             " offload_cpy_dup=" + std::to_string(ctx->offload_cpy_dup ? 1 : 0) +
             " offload_soft_max=" + std::to_string(ctx->offload_soft_max ? 1 : 0) +
             " offload_rms_norm=" + std::to_string(ctx->offload_rms_norm ? 1 : 0) +
+            " offload_flash_attn_ext=" + std::to_string(ctx->offload_flash_attn_ext ? 1 : 0) +
+            " flash_softmax_cu=" + std::to_string(ctx->flash_softmax_cu) +
+            " flash_precompile_kv_depth=" + std::to_string(ctx->flash_precompile_kv_depth) +
+            " flash_kv_bucket_max=" + std::to_string(ctx->flash_kv_bucket_max) +
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             " debug_compare=" + std::to_string(ctx->debug_compare ? 1 : 0) +
             " debug_compare_atol=" + std::to_string(ctx->debug_compare_atol) +

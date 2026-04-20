@@ -41,6 +41,14 @@
   - [ ] view/reshape 类元数据算子（不触发搬运）
 - [x] 未支持算子走 Host fallback，保证功能可运行。
 
+- [ ] Flash Attention 适配（新增）
+- [x] 在 `ggml-fmsh-zg330.cpp` 接入 `GGML_OP_FLASH_ATTN_EXT`：`supports_op`/`validate`/`dispatch`/session 缓存全链路。
+- [x] 在 `ggml-fmsh-zg330-netmake.h/.cpp` 增加 fused attention 网络生成器，按 `QK^T -> scale(+mask) -> softmax -> PV` 生成 ONNX 并复用现有 icraft compile 缓存流程。
+- [x] 按 zg330 softmax 约束实现布局重排：softmax 维度放到倒数第二维，按 cu 对齐最后一维并在 softmax 后逆重排恢复。
+- [x] session key 覆盖 `n_head/n_head_kv/head_dim/q_len/kv_len/causal/mask/logit_softcap` 及分桶维度；实现长度分桶与 kv 预编译，避免每次新长度现编译。
+- [x] 新增独立随机激励对比程序：`ggml-fmsh-zg330-flash-attn-test`，同一组输入下对比 netmake(ZG330) 与 `ggml_cpu` 的 `FLASH_ATTN_EXT` 输出，并统计 `inf/nan/max_abs/nmse`。
+- [ ] 运行时闭环验证：开启 `GGML_FMSH_ZG330_DEBUG_COMPARE=ON`，确认 `deploy.log` 不再出现 Flash tensor CPU 告警、`backend.log` 出现 flash 命中统计、`token/s` 持续提升（受当前主机 icraft x64 运行库缺失阻塞）。
+
 - [ ] Fallback 与搬运控制
 - [x] 连续可支持算子按节点 dispatch，并记录 `fallback_boundary`（方向/字节数）以量化 Host↔ZG330 往返。
 - [ ] 权重、KV cache、中间张量优先常驻设备内存。
@@ -65,6 +73,9 @@
 - [ ] 集成验证
 - [x] 通过 `Makefile` 现有 `fmsh-zg330-configure/build-x64` 完成构建
 - [x] `llama-cli --device FMSH_ZG330` 做短 prompt smoke test（docker + socket，`--single-turn` 已验证）
+- [ ] `FLASH_ATTN_EXT` 端到端验证（新增）
+- [x] `make fmsh-zg330-build-x64 FMSH_ZG330_TARGET=all` 可通过
+- [ ] 在可用 x64 icraft runtime 环境复测 `llama-cli --device FMSH_ZG330`，验证 flash offload 命中与日志指标
 
 - [ ] 性能与搬运
 - [x] 验证 session cache 命中率提升（同 shape 二次运行 `net_cache=HIT compile_now=NO`）
