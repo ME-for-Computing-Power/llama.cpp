@@ -591,10 +591,15 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
 }
 
 static void run_icraft_compile(const IcraftArtifacts & artifacts) {
+#if defined(__aarch64__) || defined(_M_ARM64)
+    std::cout<< "No, you cannot compile with icraft on ARM platform" << std::endl;
+    throw std::runtime_error("icraft compile not supported on ARM");
+#else
     const std::string cmd =
         "cd " + quote_for_sh(artifacts.work_dir.string()) +
         " && icraft compile " + quote_for_sh(artifacts.toml_path.filename().string());
     run_system_checked(cmd);
+#endif
 }
 
 static std::pair<std::filesystem::path, std::filesystem::path> find_generated_zg_json_raw(

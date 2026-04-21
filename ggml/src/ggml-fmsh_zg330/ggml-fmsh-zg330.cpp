@@ -118,6 +118,13 @@ struct ggml_fmsh_zg330_flash_attn_session_entry {
     Session session;
     std::vector<TensorType> input_types;
     std::vector<Tensor> input_tensors;
+
+    // AXI 模式同步：Session 内部复用同一个 TensorNode，第一次 waitForReady 成功后
+    // ready_=true 永久置位，后续调用立即返回导致读到上一帧数据（1帧延迟 bug）。
+    // 修复：记录每次 forward 的 layerCount 增量，后续调用重置 ready_ 并安装
+    // 以相对增量为目标的新 check_func_，确保真正等待 NPU 完成后再读取结果。
+    ZG330Device zg_device;        // AXI 模式下有效；socket 模式下为空
+    uint32_t layer_increment = 0; // 每次 forward 的 layerCount 增量，第一次 forward 时学习
 };
 
 struct ggml_backend_fmsh_zg330_context {
@@ -217,6 +224,23 @@ static int64_t ggml_fmsh_align_up_i64(int64_t v, int64_t a) {
     }
     const int64_t r = v % a;
     return r == 0 ? v : (v + (a - r));
+}
+
+static bool ggml_fmsh_wait_tensor_ready(
+    const Tensor & t,
+    std::string * err,
+    const char * where,
+    int64_t timeout_ms = 30000) {
+    if (timeout_ms < 0) {
+        timeout_ms = 0;
+    }
+    if (!t.waitForReady(std::chrono::milliseconds(timeout_ms))) {
+        if (err) {
+            *err = std::string(where) + " output waitForReady timeout";
+        }
+        return false;
+    }
+    return true;
 }
 
 static int64_t ggml_fmsh_elementwise_compile_rows(ggml::fmsh::netmake::ElementwiseZgOp kind, int64_t rows) {
@@ -436,22 +460,28 @@ static bool ggml_fmsh_can_run_mul_mat_zg(const ggml_tensor * node) {
     const ggml_tensor * src0 = node->src[0];
     const ggml_tensor * src1 = node->src[1];
     if (node->type != GGML_TYPE_F32 || src0->type != GGML_TYPE_F32 || src1->type != GGML_TYPE_F32) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-F32 type is not supported for ZG330 offload");
         return false;
     }
     if (src0->ne[0] <= 0 || src0->ne[1] <= 0 || src0->ne[2] <= 0 || src0->ne[3] <= 0 ||
         src1->ne[0] <= 0 || src1->ne[1] <= 0 || src1->ne[2] <= 0 || src1->ne[3] <= 0) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-positive dimension is not supported for ZG330 offload");
         return false;
     }
     if (src0->ne[0] != src1->ne[0]) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with mismatched k dimension is not supported for ZG330 offload");
         return false;
     }
     if (node->ne[0] != src0->ne[1] || node->ne[1] != src1->ne[1] || node->ne[2] != src1->ne[2] || node->ne[3] != src1->ne[3]) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with mismatched output dimensions is not supported for ZG330 offload");
         return false;
     }
     if (src1->ne[2] % src0->ne[2] != 0 || src1->ne[3] % src0->ne[3] != 0) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with incompatible broadcast dimensions is not supported for ZG330 offload");
         return false;
     }
     if (src0->nb[0] != sizeof(float) || src1->nb[0] != sizeof(float) || node->nb[0] != sizeof(float)) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-contiguous tensors is not supported for ZG330 offload");
         return false;
     }
     return ggml_is_contiguous(src0) && ggml_is_contiguous(src1) && ggml_is_contiguous(node);
@@ -560,6 +590,7 @@ static bool ggml_fmsh_validate_elementwise(
         case GGML_OP_ADD:
         case GGML_OP_MUL:
             if (!src0 || !src1 || src0->type != GGML_TYPE_F32 || src1->type != GGML_TYPE_F32) {
+                ggml_fmsh_log_locked(nullptr, 2, "ELEMENTWISE with non-F32 type is not supported for ZG330 offload");
                 return false;
             }
             for (int d = 0; d < GGML_MAX_DIMS; ++d) {
@@ -569,6 +600,7 @@ static bool ggml_fmsh_validate_elementwise(
             return true;
         case GGML_OP_SCALE:
             if (!src0 || src0->type != GGML_TYPE_F32) {
+                ggml_fmsh_log_locked(nullptr, 2, "ELEMENTWISE with non-F32 type is not supported for ZG330 offload");
                 return false;
             }
             if (src1) {
@@ -969,6 +1001,9 @@ static ggml_fmsh_zg330_flash_attn_session_entry * ggml_fmsh_get_or_create_flash_
             entry->hit_count = 1;
             entry->bundle = std::move(bundle);
             entry->session = std::move(session);
+            if (ctx->zg_device.is<ZG330Device>()) {
+                entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+            }
             for (const auto & in : entry->bundle.network.inputs()) {
                 entry->input_types.push_back(in.tensorType().clone());
             }
@@ -1215,6 +1250,9 @@ static bool ggml_fmsh_execute_elementwise(
         auto outputs = entry->session.forward(session_inputs);
         if (outputs.empty()) {
             if (err) *err = "elementwise session.forward returned empty output";
+            return false;
+        }
+        if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "elementwise")) {
             return false;
         }
         if (chained_output != nullptr) {
@@ -1631,6 +1669,9 @@ static bool ggml_fmsh_execute_mul_mat(
                     if (err) *err = "session.forward returned empty output";
                     return false;
                 }
+                if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "mul_mat")) {
+                    return false;
+                }
                 if (chained_output != nullptr && i12 == 0 && i13 == 0 && ne12 == 1 && ne13 == 1) {
                     *chained_output = outputs[0];
                 }
@@ -1879,10 +1920,47 @@ static bool ggml_fmsh_execute_flash_attn_ext(
             }
 
             std::vector<Tensor> inputs = entry->input_tensors;
+
+            // AXI 模式同步修复（同 flash-attn-netmake-cpu-test.cpp 中的修复）：
+            // Session 内部 tmap_ 复用同一个 TensorNode；第一次 waitForReady 成功后
+            // ready_=true 永久置位，后续调用立即返回，读到上一帧 NPU 数据。
+            // 修复：第一次 forward 用原生 waitForReady 学习 layerCount 增量；
+            // 后续 forward 重置 ready_ 并安装以绝对目标为准的新 check_func_。
+            const bool use_axi_sync = entry->zg_device.defined();
+            uint32_t layer_before = 0;
+            if (use_axi_sync) {
+                layer_before = entry->zg_device.layerCount();
+            }
+
             auto outputs = entry->session.forward(inputs);
             if (outputs.empty()) {
                 if (err) *err = "FLASH_ATTN_EXT session.forward returned empty output";
                 return false;
+            }
+
+            if (use_axi_sync) {
+                if (entry->layer_increment == 0) {
+                    // 第一次 forward：ready_=false，check_func_ 有效，直接 waitForReady
+                    if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "flash_attn_ext")) {
+                        return false;
+                    }
+                    entry->layer_increment = entry->zg_device.layerCount() - layer_before;
+                } else {
+                    // 后续 forward：重置 ready_ 并安装正确的 check_func_
+                    const uint32_t layer_target = layer_before + entry->layer_increment;
+                    ZG330Device zg_dev = entry->zg_device;
+                    outputs[0].setReady(false);
+                    outputs[0].setCheckFunc([zg_dev, layer_target](const Device &) -> bool {
+                        return zg_dev.layerCount() >= layer_target;
+                    });
+                    if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "flash_attn_ext")) {
+                        return false;
+                    }
+                }
+            } else {
+                if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "flash_attn_ext")) {
+                    return false;
+                }
             }
             outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, y_bytes);
 
@@ -2273,7 +2351,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             const auto t0 = std::chrono::high_resolution_clock::now();
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
-            if (ctx->debug_compare && ctx->device_url.rfind("socket://", 0) == 0) {
+            if (ctx->debug_compare  == 1) {
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
@@ -2412,7 +2490,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 can_consume_from_device(next_consumer, next_src_idx);
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
-            if (ctx->debug_compare && ctx->device_url.rfind("socket://", 0) == 0) {
+            if (ctx->debug_compare == 1) {
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
@@ -2453,7 +2531,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 chained_input_src = nullptr;
             }
             const bool keep_device_output_effective =
-                (ctx->debug_compare && ctx->device_url.rfind("socket://", 0) == 0) ? false : keep_device_output_only;
+                (ctx->debug_compare == 1) ? false : keep_device_output_only;
 #else
             const bool keep_device_output_effective = keep_device_output_only;
 #endif
@@ -2570,7 +2648,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             const bool keep_device_output_only = false;
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
-            if (ctx->debug_compare && ctx->device_url.rfind("socket://", 0) == 0) {
+            if (ctx->debug_compare == 1) {
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);

@@ -12,6 +12,7 @@
 #include <icraft-xrt/dev/zg330_device.h>
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -406,6 +407,18 @@ public:
         if (input_tensors_.size() < 5 || input_tensors_.size() > 6) {
             throw std::runtime_error("unexpected netmake flash input count");
         }
+
+        // 在 AXI 模式下，session_.forward(inputs) 返回的 Tensor 的 check_func_
+        // 使用绝对 layerCount 目标值做同步。第一次 forward 后 layerCount 达到目标值 N，
+        // 第二次 forward 时 check_func_ 捕获的目标仍是 N，而 layerCount 已经是 N，
+        // 导致 waitForReady 立即返回，读到上一帧的结果（1帧延迟 bug）。
+        //
+        // 修复：使用 ZG330Device::layerCount() 做边沿触发同步：
+        // 在 forward 之前记录 layerCount，forward 之后等待 layerCount 增加，
+        // 确保新的计算真正完成后再读取结果。
+        if (device_.is<ZG330Device>()) {
+            zg_device_ = device_.cast<ZG330Device>();
+        }
     }
 
     ~NetmakeRunner() {
@@ -478,9 +491,65 @@ public:
             in_softcap[0] = cfg_.logit_softcap;
         }
 
+        // AXI 模式同步修复：
+        //
+        // 根本原因：Session 内部的 tmap_ 会复用同一个 Tensor 对象（同一个 TensorNode）。
+        // 第一次 forward 后 waitForReady 成功，将 TensorNode::ready_ 置为 true。
+        // 此后每次 forward 调用 waitForReady 时，因 ready_=true 立即返回，
+        // 不等待 NPU 完成，导致读到上一帧数据（1帧延迟 bug）。
+        //
+        // 修复方案：
+        // 1. forward 前记录 layerCount（layer_before）
+        // 2. 调用 session_.forward() — 内部会触发 NPU 计算，但 waitForReady 立即返回
+        // 3. 对输出 Tensor 调用 setReady(false) 重置 ready_ 标志
+        // 4. 安装新的 check_func_，等待 layerCount >= layer_before + layer_increment_
+        //    （layer_increment_ 在第一次 forward 时学习得到）
+        // 5. 调用 waitForReady() 真正等待 NPU 完成
+        bool use_layer_count_sync = zg_device_.defined();
+        uint32_t layer_before = 0;
+        if (use_layer_count_sync) {
+            layer_before = zg_device_.layerCount();
+        }
+
         auto outputs = session_.forward(input_tensors_);
         if (outputs.empty()) {
-            throw std::runtime_error("netmake forward returned empty output");
+            throw std::runtime_error("session_.forward returned empty outputs");
+        }
+
+        if (use_layer_count_sync) {
+            // 学习每次 forward 的 layerCount 增量（第一次 forward 时）
+            if (layer_increment_ == 0) {
+                // 第一次：等待 layerCount 变化，学习增量
+                const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
+                while (zg_device_.layerCount() == layer_before) {
+                    if (std::chrono::steady_clock::now() > deadline) {
+                        throw std::runtime_error("NPU layerCount sync timeout (learning increment)");
+                    }
+                }
+                // 继续等待直到 layerCount 稳定（NPU 完成所有层）
+                // 用 waitForReady 完成第一次同步（此时 ready_=false，check_func_ 有效）
+                if (!outputs[0].waitForReady(std::chrono::milliseconds(30000))) {
+                    throw std::runtime_error("Waiting for netmake output ready timed out (first forward)");
+                }
+                layer_increment_ = zg_device_.layerCount() - layer_before;
+                std::cout << "[axi-sync] learned layer_increment=" << layer_increment_ << std::endl;
+            } else {
+                // 后续 forward：重置 ready_ 并安装正确的 check_func_
+                const uint32_t layer_target = layer_before + layer_increment_;
+                ZG330Device zg_dev = zg_device_;  // capture by value for lambda
+                outputs[0].setReady(false);
+                outputs[0].setCheckFunc([zg_dev, layer_target](const Device &) -> bool {
+                    return zg_dev.layerCount() >= layer_target;
+                });
+                if (!outputs[0].waitForReady(std::chrono::milliseconds(30000))) {
+                    throw std::runtime_error("Waiting for netmake output ready timed out (AXI sync)");
+                }
+            }
+        } else {
+            // socket 模式：使用原来的 waitForReady
+            if (!outputs[0].waitForReady(std::chrono::milliseconds(30000))) {
+                throw std::runtime_error("Waiting for netmake output ready timed out");
+            }
         }
 
         std::vector<float> out(static_cast<size_t>(shape_.q_bucket * cfg_.value_dim), 0.0f);
@@ -504,6 +573,8 @@ private:
 
     std::vector<TensorType> input_types_;
     std::vector<Tensor> input_tensors_;
+    ZG330Device zg_device_;      // valid only in AXI mode; used for layerCount() edge-triggered sync
+    uint32_t layer_increment_ = 0;  // learned on first forward: how many layers per forward call
 };
 
 static std::vector<float> run_cpu_reference(const Config & cfg, const Inputs & in) {
