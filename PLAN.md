@@ -41,7 +41,7 @@
   - [ ] view/reshape 类元数据算子（不触发搬运）
 - [x] 未支持算子走 Host fallback，保证功能可运行。
 
-- [ ] Flash Attention 适配（新增）
+- [x] Flash Attention 适配（新增）
 - [x] 在 `ggml-fmsh-zg330.cpp` 接入 `GGML_OP_FLASH_ATTN_EXT`：`supports_op`/`validate`/`dispatch`/session 缓存全链路。
 - [x] 在 `ggml-fmsh-zg330-netmake.h/.cpp` 增加 fused attention 网络生成器，按 `QK^T -> scale(+mask) -> softmax -> PV` 生成 ONNX 并复用现有 icraft compile 缓存流程。
 - [x] 按 zg330 softmax 约束实现布局重排：softmax 维度放到倒数第二维，按 cu 对齐最后一维并在 softmax 后逆重排恢复。
