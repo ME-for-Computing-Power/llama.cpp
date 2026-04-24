@@ -41,6 +41,12 @@
   - [ ] view/reshape 类元数据算子（不触发搬运）
 - [x] 未支持算子走 Host fallback，保证功能可运行。
 
+- [x] AXI 模式 MUL_MAT 上板修复（新增）
+- [x] 根因定位：`ggml_backend_fmsh_zg330_device_get_memory` 返回 0/0 → `llama_get_device_memory_data` 回落到 CPU 物理内存（ARM 板 993 MiB） → `llama_params_fit_impl` 发现预算低于 1024 MiB margin → 重建图把 recurrent 层从 FMSH 迁到 CPU → `auto_fgdn` 从"mismatch→disable"翻为"match→enable" → SSM 整块融合进 `GGML_OP_GATED_DELTA_NET` 在 CPU 执行 → 所有 SSM MUL_MAT 不再进入 NPU。
+- [x] 修复：`get_memory` 改为通过 Icraft XRT `MemRegion::memManager()` 查询 `plddr` PL 内存，使用 `getMemRegionInfo()["byte_size"]` 作为总量，并用 `getAllMemChunk()` 汇总已分配 chunk 后计算剩余量；仅在设备查询失败时保留 1 PiB 兜底，避免后端枚举阶段触发 CPU 层重分配。
+- [x] 缓存对齐：ARM 无法 `icraft compile`，所有网络必须在 x86 socket 模式下预编译到 `.cache/deploy/`，`rsync -avh ./.cache root@<board>:/root/llama`，ARM 运行时 `GGML_FMSH_ZG330_CACHE_DIR=/root/llama/.cache/deploy`。不同 prompt/`-n`/`-c` 会触发不同 shape，需用与板端一致的参数在 docker 内预热一次。
+- [x] 192.168.110.114 端到端验证：`Hello! How can I help`，`MUL_MAT 432/432 offloaded (100%)`，`FLASH_ATTN_EXT 54/60 offloaded (90%)`，`Prompt 1.2 t/s | Generation 0.7 t/s`。
+
 - [x] Flash Attention 适配（新增）
 - [x] 在 `ggml-fmsh-zg330.cpp` 接入 `GGML_OP_FLASH_ATTN_EXT`：`supports_op`/`validate`/`dispatch`/session 缓存全链路。
 - [x] 在 `ggml-fmsh-zg330-netmake.h/.cpp` 增加 fused attention 网络生成器，按 `QK^T -> scale(+mask) -> softmax -> PV` 生成 ONNX 并复用现有 icraft compile 缓存流程。
@@ -77,7 +83,7 @@
 - [x] `llama-cli --device FMSH_ZG330` 做短 prompt smoke test（docker + socket，`--single-turn` 已验证）
 - [x] `FLASH_ATTN_EXT` 端到端验证（AXI/ARM）：修复 AXI 同步 bug 后，ARM 设备端 flash attn 输出正常，推理文本可读。
 - [x] `make fmsh-zg330-build-x64 FMSH_ZG330_TARGET=all` 可通过
-- [ ] 在可用 x64 icraft runtime 环境复测 `llama-cli --device FMSH_ZG330`，验证 flash offload 命中与日志指标
+- [x] 在可用 x64 icraft runtime 环境复测 `llama-cli --device FMSH_ZG330`，验证 flash offload 命中与日志指标
 
 - [ ] 性能与搬运
 - [x] 验证 session cache 命中率提升（同 shape 二次运行 `net_cache=HIT compile_now=NO`）

@@ -844,6 +844,59 @@ static bool ggml_fmsh_open_device_if_needed(ggml_backend_fmsh_zg330_context * ct
     }
 }
 
+static bool ggml_fmsh_query_pl_memory(Device & device, size_t * free_bytes, size_t * total_bytes, std::string * err) {
+    try {
+        MemRegion region;
+        try {
+            region = device.getMemRegion("plddr");
+        } catch (...) {
+            region = device.defaultMemRegion();
+        }
+
+        const MemManager manager = region.memManager();
+        const auto & info = manager.getMemRegionInfo();
+        auto total_it = info.find("byte_size");
+        if (total_it == info.end()) {
+            if (err) {
+                *err = "PL memory region does not expose byte_size";
+            }
+            return false;
+        }
+
+        const auto * total_imm = total_it->second.as<icraft::xir::IntImm::NodeType>();
+        if (!total_imm || total_imm->value <= 0) {
+            if (err) {
+                *err = "PL memory region byte_size is invalid";
+            }
+            return false;
+        }
+
+        uint64_t allocated = 0;
+        for (const MemChunk & chunk : manager.getAllMemChunk()) {
+            if (chunk.defined()) {
+                allocated += chunk->byte_size;
+            }
+        }
+
+        const uint64_t total_u64 = static_cast<uint64_t>(total_imm->value);
+        const uint64_t free_u64 = allocated < total_u64 ? total_u64 - allocated : 0;
+        const uint64_t max_size_t = static_cast<uint64_t>(std::numeric_limits<size_t>::max());
+        *total_bytes = static_cast<size_t>(std::min(total_u64, max_size_t));
+        *free_bytes = static_cast<size_t>(std::min(free_u64, max_size_t));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = e.what();
+        }
+        return false;
+    } catch (...) {
+        if (err) {
+            *err = "unknown PL memory query error";
+        }
+        return false;
+    }
+}
+
 static ggml_fmsh_zg330_session_entry * ggml_fmsh_get_or_create_mul_mat_session(
     ggml_backend_fmsh_zg330_context * ctx,
     const ggml_tensor * node,
@@ -2965,8 +3018,31 @@ static const char * ggml_backend_fmsh_zg330_device_get_description(ggml_backend_
 
 static void ggml_backend_fmsh_zg330_device_get_memory(ggml_backend_dev_t dev, size_t * free, size_t * total) {
     GGML_UNUSED(dev);
-    *free = 0;
-    *total = 0;
+    // XRT exposes PL memory through MemRegion::memManager(): getMemRegionInfo()
+    // carries the region "byte_size" and getAllMemChunk() lists current
+    // allocations. Prefer the explicit PLDDR region, with defaultMemRegion as
+    // a fallback for runtimes that name the region differently.
+    try {
+        Device device = Device::Open(ggml_fmsh_get_device_url());
+        std::string err;
+        const bool ok = ggml_fmsh_query_pl_memory(device, free, total, &err);
+        Device::Close(device);
+        if (ok) {
+            return;
+        }
+        GGML_LOG_WARN("%s: failed to query PL memory: %s\n", __func__, err.c_str());
+    } catch (const std::exception & e) {
+        GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query: %s\n", __func__, e.what());
+    } catch (...) {
+        GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query\n", __func__);
+    }
+
+    // Keep the previous behavior as a last-resort fallback so llama_params_fit
+    // does not silently reassign layers to CPU when the device is unavailable
+    // during backend enumeration.
+    const size_t fallback = size_t(1) << 50; // 1 PiB, well under INT64_MAX
+    *free = fallback;
+    *total = fallback;
 }
 
 static enum ggml_backend_dev_type ggml_backend_fmsh_zg330_device_get_type(ggml_backend_dev_t dev) {
