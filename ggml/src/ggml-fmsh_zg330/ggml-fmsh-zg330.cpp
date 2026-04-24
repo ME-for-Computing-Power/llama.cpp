@@ -121,8 +121,8 @@ struct ggml_fmsh_zg330_flash_attn_session_entry {
 
     // AXI 模式同步：Session 内部复用同一个 TensorNode，第一次 waitForReady 成功后
     // ready_=true 永久置位，后续调用立即返回导致读到上一帧数据（1帧延迟 bug）。
-    // 修复：记录每次 forward 的 layerCount 增量，后续调用重置 ready_ 并安装
-    // 以相对增量为目标的新 check_func_，确保真正等待 NPU 完成后再读取结果。
+    // 修复：forward() 后立即 setReady(false) + 安装新 check_func_，再 waitForReady()。
+    // 第一次 forward 用 layerCount 边沿触发学习增量，后续用固定增量同步。
     ZG330Device zg_device;        // AXI 模式下有效；socket 模式下为空
     uint32_t layer_increment = 0; // 每次 forward 的 layerCount 增量，第一次 forward 时学习
 };
@@ -224,6 +224,12 @@ static int64_t ggml_fmsh_align_up_i64(int64_t v, int64_t a) {
     }
     const int64_t r = v % a;
     return r == 0 ? v : (v + (a - r));
+}
+
+static inline uint16_t ggml_fmsh_f32_to_bf16(float f) {
+    uint32_t bits;
+    std::memcpy(&bits, &f, sizeof(bits));
+    return static_cast<uint16_t>(bits >> 16);
 }
 
 static bool ggml_fmsh_wait_tensor_ready(
@@ -787,6 +793,12 @@ static bool ggml_fmsh_validate_flash_attn_ext(
     out->n_batch = n_batch;
     out->q_bucket = ggml_fmsh_flash_bucket_len(q_len);
     out->kv_bucket = ggml_fmsh_flash_bucket_len(kv_len);
+    // icraft AXI bug: q_bucket=2 produces incorrect NPU results regardless
+    // of the compiled network shape. Fall back to CPU for q_len=2.
+    if (out->q_bucket == 2) {
+        if (err) *err = "FLASH_ATTN_EXT q_bucket=2 is unsupported on AXI (icraft bug)";
+        return false;
+    }
     out->softmax_cols = ggml_fmsh_align_up_i64(out->q_bucket, std::max<int64_t>(1, ctx->flash_softmax_cu));
     out->has_mask = mask != nullptr;
     out->causal = causal;
@@ -1089,7 +1101,7 @@ static bool ggml_fmsh_execute_elementwise(
         if (chained_output != nullptr) {
             *chained_output = Tensor();
         }
-        float * in0 = reinterpret_cast<float *>(entry->input_tensors[0].data().cptr());
+        uint16_t * in0 = reinterpret_cast<uint16_t *>(entry->input_tensors[0].data().cptr());
         const ggml_tensor * src0 = node->src[0];
         const bool can_chain_input0 =
             input_override != nullptr &&
@@ -1146,7 +1158,7 @@ static bool ggml_fmsh_execute_elementwise(
                                     : reinterpret_cast<const float *>(mp_base)[i0];
                                 v += slope * mv;
                             }
-                            in0[row_off + static_cast<size_t>(i0)] = v;
+                            in0[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(v);
                         }
                     }
                 }
@@ -1156,7 +1168,7 @@ static bool ggml_fmsh_execute_elementwise(
                 entry->op == ggml::fmsh::netmake::ElementwiseZgOp::DUP) {
                 const size_t n = ggml_nelements(node);
                 for (size_t idx = 0; idx < n; ++idx) {
-                    in0[idx] = ggml_fmsh_read_f32_linear(src0, idx);
+                    in0[idx] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_linear(src0, idx));
                 }
             } else {
                 for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
@@ -1165,7 +1177,7 @@ static bool ggml_fmsh_execute_elementwise(
                             const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
                             const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
                             for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
-                                in0[row_off + static_cast<size_t>(i0)] = ggml_fmsh_read_f32_broadcast(src0, i0, i1, i2, i3);
+                                in0[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src0, i0, i1, i2, i3));
                             }
                         }
                     }
@@ -1173,8 +1185,8 @@ static bool ggml_fmsh_execute_elementwise(
             }
         }
         if (!can_chain_input0 && exec_rows > entry->rows) {
-            float * in0_pad = reinterpret_cast<float *>(entry->input_tensors[0].data().cptr());
-            const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(float);
+            uint16_t * in0_pad = reinterpret_cast<uint16_t *>(entry->input_tensors[0].data().cptr());
+            const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
             for (int64_t r = entry->rows; r < exec_rows; ++r) {
                 std::memcpy(
                     in0_pad + static_cast<size_t>(r * entry->cols),
@@ -1188,7 +1200,7 @@ static bool ggml_fmsh_execute_elementwise(
                 if (err) *err = "elementwise binary src1 is null";
                 return false;
             }
-            float * in1 = reinterpret_cast<float *>(entry->input_tensors[1].data().cptr());
+            uint16_t * in1 = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
             const ggml_tensor * src1 = node->src[1];
             for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
                 for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
@@ -1196,14 +1208,14 @@ static bool ggml_fmsh_execute_elementwise(
                         const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
                         const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
                         for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
-                            in1[row_off + static_cast<size_t>(i0)] = ggml_fmsh_read_f32_broadcast(src1, i0, i1, i2, i3);
+                            in1[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src1, i0, i1, i2, i3));
                         }
                     }
                 }
             }
             if (exec_rows > entry->rows) {
-                float * in1_pad = reinterpret_cast<float *>(entry->input_tensors[1].data().cptr());
-                const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(float);
+                uint16_t * in1_pad = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
+                const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
                 for (int64_t r = entry->rows; r < exec_rows; ++r) {
                     std::memcpy(
                         in1_pad + static_cast<size_t>(r * entry->cols),
@@ -1219,15 +1231,17 @@ static bool ggml_fmsh_execute_elementwise(
             } else {
                 std::memcpy(&scale, node->op_params, sizeof(float));
             }
-            std::memcpy(entry->input_tensors[1].data().cptr(), &scale, sizeof(float));
+            const uint16_t scale_bf16 = ggml_fmsh_f32_to_bf16(scale);
+            std::memcpy(entry->input_tensors[1].data().cptr(), &scale_bf16, sizeof(uint16_t));
         } else if (entry->op == ggml::fmsh::netmake::ElementwiseZgOp::CPY ||
                    entry->op == ggml::fmsh::netmake::ElementwiseZgOp::DUP) {
-            const float one = 1.0f;
-            std::memcpy(entry->input_tensors[1].data().cptr(), &one, sizeof(float));
+            const uint16_t one_bf16 = ggml_fmsh_f32_to_bf16(1.0f);
+            std::memcpy(entry->input_tensors[1].data().cptr(), &one_bf16, sizeof(uint16_t));
         } else if (entry->op == ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM) {
             float eps = 0.0f;
             std::memcpy(&eps, node->op_params, sizeof(float));
-            std::memcpy(entry->input_tensors[1].data().cptr(), &eps, sizeof(float));
+            const uint16_t eps_bf16 = ggml_fmsh_f32_to_bf16(eps);
+            std::memcpy(entry->input_tensors[1].data().cptr(), &eps_bf16, sizeof(uint16_t));
         }
         if (entry->op == ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
             node->src[1] != nullptr &&
@@ -1235,8 +1249,8 @@ static bool ggml_fmsh_execute_elementwise(
             entry->input_tensors.size() > 1 &&
             entry->input_tensors[1].defined() &&
             exec_rows > entry->rows) {
-            float * in1_pad = reinterpret_cast<float *>(entry->input_tensors[1].data().cptr());
-            const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(float);
+            uint16_t * in1_pad = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
+            const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
             for (int64_t r = entry->rows; r < exec_rows; ++r) {
                 std::memcpy(
                     in1_pad + static_cast<size_t>(r * entry->cols),
@@ -1610,7 +1624,10 @@ static bool ggml_fmsh_execute_mul_mat(
                         const char * a_src_row = src1_slice + row * src1->nb[1];
                         float * a_row_dst = a_dst + row * entry->k;
                         if (src1->nb[0] == static_cast<size_t>(sizeof(float))) {
-                            std::memcpy(a_row_dst, a_src_row, static_cast<size_t>(entry->k * sizeof(float)));
+                            const float * src = reinterpret_cast<const float *>(a_src_row);
+                            for (int64_t col = 0; col < entry->k; ++col) {
+                                a_row_dst[col] = src[col];
+                            }
                         } else {
                             for (int64_t col = 0; col < entry->k; ++col) {
                                 float v = 0.0f;
@@ -1753,8 +1770,10 @@ static bool ggml_fmsh_execute_flash_attn_ext(
     const auto & cfg = entry->info;
     const int64_t head_dim = cfg.head_dim;
     const int64_t value_dim = cfg.value_dim;
-    const int64_t q_len = cfg.q_len;
-    const int64_t kv_len = cfg.kv_len;
+    // Use actual tensor dimensions, not stale session-creation values.
+    // Session is keyed by buckets, so actual <= bucket is always guaranteed.
+    const int64_t q_len = q->ne[1];
+    const int64_t kv_len = k->ne[1];
     const int64_t q_bucket = cfg.q_bucket;
     const int64_t kv_bucket = cfg.kv_bucket;
     const int64_t n_head = cfg.n_head;
@@ -1838,9 +1857,11 @@ static bool ggml_fmsh_execute_flash_attn_ext(
             for (int64_t iq = 0; iq < q_bucket; ++iq) {
                 float * q_row = in_q + static_cast<size_t>(iq * head_dim);
                 if (iq < q_len) {
-                    const char * src_q_row = static_cast<const char *>(q->data) +
-                                             iq * q->nb[1] + ih * q->nb[2] + ib * q->nb[3];
-                    std::memcpy(q_row, src_q_row, static_cast<size_t>(head_dim) * sizeof(float));
+                    const float * src_q_row = reinterpret_cast<const float *>(
+                        static_cast<const char *>(q->data) + iq * q->nb[1] + ih * q->nb[2] + ib * q->nb[3]);
+                    for (int64_t d = 0; d < head_dim; ++d) {
+                        q_row[d] = src_q_row[d];
+                    }
                 } else {
                     std::memset(q_row, 0, static_cast<size_t>(head_dim) * sizeof(float));
                 }
@@ -1871,7 +1892,10 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                 const char * src_v_row = static_cast<const char *>(v->data) +
                                          ikv * v->nb[1] + k_head * v->nb[2] + k_batch * v->nb[3];
                 if (v->type == GGML_TYPE_F32) {
-                    std::memcpy(v_row, src_v_row, static_cast<size_t>(value_dim) * sizeof(float));
+                    const float * src = reinterpret_cast<const float *>(src_v_row);
+                    for (int64_t d = 0; d < value_dim; ++d) {
+                        v_row[d] = src[d];
+                    }
                 } else {
                     const ggml_fp16_t * src = reinterpret_cast<const ggml_fp16_t *>(src_v_row);
                     for (int64_t d = 0; d < value_dim; ++d) {
@@ -1889,22 +1913,21 @@ static bool ggml_fmsh_execute_flash_attn_ext(
             for (int64_t iq = 0; iq < q_bucket; ++iq) {
                 float * m_row = in_mask + static_cast<size_t>(iq * kv_bucket);
                 for (int64_t ikv = 0; ikv < kv_bucket; ++ikv) {
+                    float mv;
                     if (ikv >= kv_len) {
-                        m_row[ikv] = k_mask_neg_inf;
-                        continue;
-                    }
-                    if (iq >= q_len || !mask) {
-                        m_row[ikv] = 0.0f;
-                        continue;
-                    }
-                    float mv = ggml_fmsh_read_mask_f32(mask, ikv, iq, mask_head, mask_batch);
-                    // ZG330 softmax path is unstable with +/-inf or NaN mask values.
-                    // Normalize mask sent to NPU to finite numbers while preserving intent.
-                    if (!std::isfinite(mv)) {
-                        mv = (std::isnan(mv) || mv > 0.0f) ? 0.0f : k_mask_neg_inf;
-                    }
-                    if (cfg.max_bias > 0.0f) {
-                        mv *= slope;
+                        mv = k_mask_neg_inf;
+                    } else if (iq >= q_len || !mask) {
+                        mv = 0.0f;
+                    } else {
+                        mv = ggml_fmsh_read_mask_f32(mask, ikv, iq, mask_head, mask_batch);
+                        // ZG330 softmax path is unstable with +/-inf or NaN mask values.
+                        // Normalize mask sent to NPU to finite numbers while preserving intent.
+                        if (!std::isfinite(mv)) {
+                            mv = (std::isnan(mv) || mv > 0.0f) ? 0.0f : k_mask_neg_inf;
+                        }
+                        if (cfg.max_bias > 0.0f) {
+                            mv *= slope;
+                        }
                     }
                     m_row[ikv] = mv;
                 }
@@ -1921,11 +1944,9 @@ static bool ggml_fmsh_execute_flash_attn_ext(
 
             std::vector<Tensor> inputs = entry->input_tensors;
 
-            // AXI 模式同步修复（同 flash-attn-netmake-cpu-test.cpp 中的修复）：
-            // Session 内部 tmap_ 复用同一个 TensorNode；第一次 waitForReady 成功后
-            // ready_=true 永久置位，后续调用立即返回，读到上一帧 NPU 数据。
-            // 修复：第一次 forward 用原生 waitForReady 学习 layerCount 增量；
-            // 后续 forward 重置 ready_ 并安装以绝对目标为准的新 check_func_。
+            // AXI 同步修复（参考 flash-attn-netmake-cpu-test.cpp）：
+            // forward() 后 ready_=true 永久置位，后续 waitForReady() 立即返回读到上帧数据。
+            // 修复：forward() 后立即 setReady(false) + 安装新 check_func_，再 waitForReady()。
             const bool use_axi_sync = entry->zg_device.defined();
             uint32_t layer_before = 0;
             if (use_axi_sync) {
@@ -1940,13 +1961,44 @@ static bool ggml_fmsh_execute_flash_attn_ext(
 
             if (use_axi_sync) {
                 if (entry->layer_increment == 0) {
-                    // 第一次 forward：ready_=false，check_func_ 有效，直接 waitForReady
-                    if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "flash_attn_ext")) {
-                        return false;
+                    // 第一次 forward：forward() 内部的 check_func_ 可能使用 apply() 时的绝对
+                    // layerCount 目标，在完整推理中该目标早已超过，导致 waitForReady 立即返回。
+                    // 修复：直接 spin-poll layerCount，等待其稳定（NPU 完成计算）。
+                    const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(30000);
+                    // 等待 NPU 启动（layerCount 变化）
+                    while (entry->zg_device.layerCount() == layer_before) {
+                        if (std::chrono::steady_clock::now() > deadline) {
+                            if (err) *err = "flash_attn_ext NPU layerCount sync timeout (start)";
+                            return false;
+                        }
                     }
-                    entry->layer_increment = entry->zg_device.layerCount() - layer_before;
+                    // 等待 layerCount 稳定（NPU 完成所有层）：5ms 无变化则认为完成
+                    uint32_t stable_count = entry->zg_device.layerCount();
+                    auto stable_start = std::chrono::steady_clock::now();
+                    while (std::chrono::steady_clock::now() < deadline) {
+                        const uint32_t cur = entry->zg_device.layerCount();
+                        if (cur != stable_count) {
+                            stable_count = cur;
+                            stable_start = std::chrono::steady_clock::now();
+                        } else {
+                            const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                std::chrono::steady_clock::now() - stable_start).count();
+                            if (elapsed_ms >= 5) {
+                                break;
+                            }
+                        }
+                    }
+                    entry->layer_increment = (stable_count > layer_before)
+                        ? (stable_count - layer_before) : 1;
+                    ggml_fmsh_log_locked(ctx, 1,
+                        "axi_sync_first ib=" + std::to_string(ib) +
+                        " ih=" + std::to_string(ih) +
+                        " layer_before=" + std::to_string(layer_before) +
+                        " stable_count=" + std::to_string(stable_count) +
+                        " layer_increment=" + std::to_string(entry->layer_increment));
                 } else {
-                    // 后续 forward：重置 ready_ 并安装正确的 check_func_
+                    // 后续 forward：ready_=true，需重置并安装指向本次目标的 check_func_。
+                    // 旧 check_func_ 的 layer_target 已过时，waitForReady 会立即返回读到上帧数据。
                     const uint32_t layer_target = layer_before + entry->layer_increment;
                     ZG330Device zg_dev = entry->zg_device;
                     outputs[0].setReady(false);
@@ -1956,6 +2008,13 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                     if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "flash_attn_ext")) {
                         return false;
                     }
+                    ggml_fmsh_log_locked(ctx, 0,
+                        "axi_sync_sub ib=" + std::to_string(ib) +
+                        " ih=" + std::to_string(ih) +
+                        " layer_before=" + std::to_string(layer_before) +
+                        " layer_target=" + std::to_string(layer_target) +
+                        " layer_actual=" + std::to_string(entry->zg_device.layerCount()) +
+                        " incr=" + std::to_string(entry->layer_increment));
                 }
             } else {
                 if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "flash_attn_ext")) {
@@ -1963,15 +2022,25 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                 }
             }
             outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, y_bytes);
+            // Debug: log first few output values for first 2 heads of first batch.
+            if (use_axi_sync && ib == 0 && ih < 2) {
+                static std::atomic<int> s_out_log_budget{16};
+                if (s_out_log_budget.fetch_sub(1, std::memory_order_relaxed) > 0) {
+                    std::string vals;
+                    for (int64_t _d = 0; _d < std::min<int64_t>(4, value_dim); ++_d) {
+                        vals += std::to_string(out_tmp[static_cast<size_t>(_d)]) + " ";
+                    }
+                    ggml_fmsh_log_locked(ctx, 1,
+                        "axi_out ib=0 ih=" + std::to_string(ih) +
+                        " iq0_vals=[" + vals + "]");
+                }
+            }
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             const auto out_stats = calc_f32_stats_local(out_tmp.data(), static_cast<size_t>(q_bucket * value_dim));
             if ((out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) &&
                 s_flash_inf_trace_budget.fetch_sub(1, std::memory_order_relaxed) > 0) {
-                const auto q_stats = calc_f32_stats_local(in_q, static_cast<size_t>(q_bucket * head_dim));
-                const auto k_stats = calc_f32_stats_local(in_k, static_cast<size_t>(head_dim * kv_bucket));
-                const auto v_stats = calc_f32_stats_local(in_v, static_cast<size_t>(kv_bucket * value_dim));
-                const auto m_stats = calc_f32_stats_local(in_mask, static_cast<size_t>(q_bucket * kv_bucket));
+                // Input tensors are fp32; Y output is also fp32.
                 ggml_fmsh_log_locked(
                     ctx, 2,
                     "flash_inf_trace batch=" + std::to_string(ib) +
@@ -1982,23 +2051,7 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                     " kv_len=" + std::to_string(kv_len) +
                     " q_bucket=" + std::to_string(q_bucket) +
                     " kv_bucket=" + std::to_string(kv_bucket) +
-                    " scale=" + std::to_string(in_scale[0]) +
-                    " Q[min,max,inf,nan]=[" + std::to_string(q_stats.min_v) + "," +
-                    std::to_string(q_stats.max_v) + "," +
-                    std::to_string(q_stats.inf_cnt) + "," +
-                    std::to_string(q_stats.nan_cnt) + "]" +
-                    " K[min,max,inf,nan]=[" + std::to_string(k_stats.min_v) + "," +
-                    std::to_string(k_stats.max_v) + "," +
-                    std::to_string(k_stats.inf_cnt) + "," +
-                    std::to_string(k_stats.nan_cnt) + "]" +
-                    " V[min,max,inf,nan]=[" + std::to_string(v_stats.min_v) + "," +
-                    std::to_string(v_stats.max_v) + "," +
-                    std::to_string(v_stats.inf_cnt) + "," +
-                    std::to_string(v_stats.nan_cnt) + "]" +
-                    " M[min,max,inf,nan]=[" + std::to_string(m_stats.min_v) + "," +
-                    std::to_string(m_stats.max_v) + "," +
-                    std::to_string(m_stats.inf_cnt) + "," +
-                    std::to_string(m_stats.nan_cnt) + "]" +
+                    " scale=" + std::to_string(scale) +
                     " Y[min,max,inf,nan]=[" + std::to_string(out_stats.min_v) + "," +
                     std::to_string(out_stats.max_v) + "," +
                     std::to_string(out_stats.inf_cnt) + "," +

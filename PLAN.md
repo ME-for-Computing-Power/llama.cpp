@@ -47,7 +47,9 @@
 - [x] 按 zg330 softmax 约束实现布局重排：softmax 维度放到倒数第二维，按 cu 对齐最后一维并在 softmax 后逆重排恢复。
 - [x] session key 覆盖 `n_head/n_head_kv/head_dim/q_len/kv_len/causal/mask/logit_softcap` 及分桶维度；实现长度分桶与 kv 预编译，避免每次新长度现编译。
 - [x] 新增独立随机激励对比程序：`ggml-fmsh-zg330-flash-attn-test`，同一组输入下对比 netmake(ZG330) 与 `ggml_cpu` 的 `FLASH_ATTN_EXT` 输出，并统计 `inf/nan/max_abs/nmse`。
-- [ ] 运行时闭环验证：开启 `GGML_FMSH_ZG330_DEBUG_COMPARE=ON`，确认 `deploy.log` 不再出现 Flash tensor CPU 告警、`backend.log` 出现 flash 命中统计、`token/s` 持续提升（受当前主机 icraft x64 运行库缺失阻塞）。
+- [x] 修复 AXI 同步 bug（两层）：
+  - 第一次调用：`session.forward()` 内置的 `check_func_` 使用 `apply()` 时的绝对 layerCount 目标，在完整推理中该目标早已被超越，`waitForReady` 立即返回。改用稳态轮询（layerCount 稳定 5ms 无变化）正确学习 `layer_increment`（实测 21~30）。
+  - 后续调用：`TensorNode::ready_` 默认 `true`，`waitForReady` 永久置 `true` 后不再等待。改为每次 `setReady(false)` + `setCheckFunc([zg_dev, layer_target]{ return layerCount >= layer_target; })` 强制重新同步。
 
 - [ ] Fallback 与搬运控制
 - [x] 连续可支持算子按节点 dispatch，并记录 `fallback_boundary`（方向/字节数）以量化 Host↔ZG330 往返。
@@ -73,7 +75,7 @@
 - [ ] 集成验证
 - [x] 通过 `Makefile` 现有 `fmsh-zg330-configure/build-x64` 完成构建
 - [x] `llama-cli --device FMSH_ZG330` 做短 prompt smoke test（docker + socket，`--single-turn` 已验证）
-- [ ] `FLASH_ATTN_EXT` 端到端验证（新增）
+- [x] `FLASH_ATTN_EXT` 端到端验证（AXI/ARM）：修复 AXI 同步 bug 后，ARM 设备端 flash attn 输出正常，推理文本可读。
 - [x] `make fmsh-zg330-build-x64 FMSH_ZG330_TARGET=all` 可通过
 - [ ] 在可用 x64 icraft runtime 环境复测 `llama-cli --device FMSH_ZG330`，验证 flash offload 命中与日志指标
 

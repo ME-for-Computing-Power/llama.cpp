@@ -110,7 +110,7 @@ static std::string elementwise_op_name(ElementwiseZgOp op) {
 }
 
 static std::string make_elementwise_net_name(ElementwiseZgOp op, int64_t rows, int64_t cols) {
-    return elementwise_op_name(op) + "_" + std::to_string(rows) + "x" + std::to_string(cols);
+    return elementwise_op_name(op) + "_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
 }
 
 static std::string make_flash_attn_net_name(
@@ -502,7 +502,8 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
     const std::filesystem::path & work_dir,
     const std::string & net_name,
     const std::filesystem::path & onnx_path,
-    const std::vector<std::vector<int64_t>> & input_shapes) {
+    const std::vector<std::vector<int64_t>> & input_shapes,
+    bool bf16 = true) {
     ensure_dir(work_dir);
 
     const std::filesystem::path toml_path = work_dir / (net_name + ".toml");
@@ -536,7 +537,7 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
         }
         inputs_toml += shape_to_toml_array(input_shapes[i]);
         layouts += shape_layout(input_shapes[i]);
-        dtypes += "fp32";
+        dtypes += (bf16 ? "bf16" : "fp32");
         nop_method += "nop";
         nop_mean += "nop";
         nop_scale += "nop";
@@ -571,7 +572,7 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
         << "raw = " << quote_for_toml(opt_raw) << "\n"
         << "jr_path = " << quote_for_toml(jr) << "\n"
         << "target = \"zhuge\"\n"
-        << "qdtype = \"tf32\"\n"
+        << "qdtype = " << (bf16 ? "\"bf16\"" : "\"tf32\"") << "\n"
         << "forward_mode = \"image\"\n\n"
         << "[adapt]\n"
         << "json = " << quote_for_toml(quant_json) << "\n"
@@ -932,7 +933,7 @@ FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
         input_shapes.push_back({1, 1});
     }
 
-    const auto artifacts = write_icraft_compile_toml_for_zg_elementwise(work_dir, net_name, onnx_path, input_shapes);
+    const auto artifacts = write_icraft_compile_toml_for_zg_elementwise(work_dir, net_name, onnx_path, input_shapes, false);
     run_icraft_compile(artifacts);
     auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
 
