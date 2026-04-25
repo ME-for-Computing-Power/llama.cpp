@@ -199,6 +199,16 @@ struct ggml_backend_fmsh_zg330_context {
     std::mutex mu;
 };
 
+struct ggml_fmsh_zg330_device_context {
+    std::mutex mu;
+    Device memory_device;
+    bool memory_device_opened = false;
+    std::string memory_device_url;
+    bool memory_cache_valid = false;
+    size_t memory_free = 0;
+    size_t memory_total = 0;
+};
+
 static ggml_fmsh_zg330_op_signature ggml_fmsh_make_signature(const ggml_tensor * node) {
     ggml_fmsh_zg330_op_signature sig = {};
     sig.op = static_cast<uint32_t>(node->op);
@@ -2912,12 +2922,24 @@ static ggml_guid_t ggml_backend_fmsh_zg330_guid(void) {
     return &guid;
 }
 
-static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
+static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_context * dev_ctx = nullptr) {
     auto * ctx = new ggml_backend_fmsh_zg330_context;
     ctx->cpu_backend = ggml_backend_cpu_init();
     if (!ctx->cpu_backend) {
         delete ctx;
         return nullptr;
+    }
+
+    if (dev_ctx) {
+        std::lock_guard<std::mutex> lock(dev_ctx->mu);
+        if (dev_ctx->memory_device_opened) {
+            ctx->zg_device = dev_ctx->memory_device;
+            ctx->device_opened = true;
+            ctx->device_url = dev_ctx->memory_device_url;
+            dev_ctx->memory_device = Device();
+            dev_ctx->memory_device_opened = false;
+            dev_ctx->memory_device_url.clear();
+        }
     }
 
     ctx->strict_mode = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_STRICT", false);
@@ -3017,29 +3039,40 @@ static const char * ggml_backend_fmsh_zg330_device_get_description(ggml_backend_
 }
 
 static void ggml_backend_fmsh_zg330_device_get_memory(ggml_backend_dev_t dev, size_t * free, size_t * total) {
-    GGML_UNUSED(dev);
-    // XRT exposes PL memory through MemRegion::memManager(): getMemRegionInfo()
-    // carries the region "byte_size" and getAllMemChunk() lists current
-    // allocations. Prefer the explicit PLDDR region, with defaultMemRegion as
-    // a fallback for runtimes that name the region differently.
-    try {
-        Device device = Device::Open(ggml_fmsh_get_device_url());
-        std::string err;
-        const bool ok = ggml_fmsh_query_pl_memory(device, free, total, &err);
-        Device::Close(device);
-        if (ok) {
+    auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(dev ? dev->context : nullptr);
+    if (dev_ctx) {
+        std::lock_guard<std::mutex> lock(dev_ctx->mu);
+        if (dev_ctx->memory_cache_valid) {
+            *free = dev_ctx->memory_free;
+            *total = dev_ctx->memory_total;
             return;
         }
-        GGML_LOG_WARN("%s: failed to query PL memory: %s\n", __func__, err.c_str());
-    } catch (const std::exception & e) {
-        GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query: %s\n", __func__, e.what());
-    } catch (...) {
-        GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query\n", __func__);
+
+        try {
+            if (!dev_ctx->memory_device_opened) {
+                dev_ctx->memory_device_url = ggml_fmsh_get_device_url();
+                dev_ctx->memory_device = Device::Open(dev_ctx->memory_device_url);
+                dev_ctx->memory_device_opened = true;
+            }
+
+            std::string err;
+            const bool ok = ggml_fmsh_query_pl_memory(dev_ctx->memory_device, free, total, &err);
+            if (ok) {
+                dev_ctx->memory_free = *free;
+                dev_ctx->memory_total = *total;
+                dev_ctx->memory_cache_valid = true;
+                return;
+            }
+            GGML_LOG_WARN("%s: failed to query PL memory: %s\n", __func__, err.c_str());
+        } catch (const std::exception & e) {
+            GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query: %s\n", __func__, e.what());
+        } catch (...) {
+            GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query\n", __func__);
+        }
     }
 
-    // Keep the previous behavior as a last-resort fallback so llama_params_fit
-    // does not silently reassign layers to CPU when the device is unavailable
-    // during backend enumeration.
+    // Last-resort fallback so llama_params_fit does not silently reassign
+    // layers to CPU when the device is unavailable during backend enumeration.
     const size_t fallback = size_t(1) << 50; // 1 PiB, well under INT64_MAX
     *free = fallback;
     *total = fallback;
@@ -3064,9 +3097,8 @@ static void ggml_backend_fmsh_zg330_device_get_props(ggml_backend_dev_t dev, ggm
 }
 
 static ggml_backend_t ggml_backend_fmsh_zg330_device_init_backend(ggml_backend_dev_t dev, const char * params) {
-    GGML_UNUSED(dev);
     GGML_UNUSED(params);
-    return ggml_backend_fmsh_zg330_init_impl();
+    return ggml_backend_fmsh_zg330_init_impl(static_cast<ggml_fmsh_zg330_device_context *>(dev ? dev->context : nullptr));
 }
 
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(void) {
@@ -3125,10 +3157,11 @@ static size_t ggml_backend_fmsh_zg330_reg_get_device_count(ggml_backend_reg_t re
 
 static ggml_backend_dev_t ggml_backend_fmsh_zg330_reg_get_device(ggml_backend_reg_t reg, size_t index) {
     GGML_ASSERT(index == 0);
+    static auto * dev_ctx = new ggml_fmsh_zg330_device_context;
     static ggml_backend_device dev = {
         /* .iface   = */ ggml_backend_fmsh_zg330_device_i,
         /* .reg     = */ reg,
-        /* .context = */ nullptr,
+        /* .context = */ dev_ctx,
     };
     return &dev;
 }

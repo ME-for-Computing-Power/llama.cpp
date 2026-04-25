@@ -46,6 +46,7 @@
 - [x] 修复：`get_memory` 改为通过 Icraft XRT `MemRegion::memManager()` 查询 `plddr` PL 内存，使用 `getMemRegionInfo()["byte_size"]` 作为总量，并用 `getAllMemChunk()` 汇总已分配 chunk 后计算剩余量；仅在设备查询失败时保留 1 PiB 兜底，避免后端枚举阶段触发 CPU 层重分配。
 - [x] 缓存对齐：ARM 无法 `icraft compile`，所有网络必须在 x86 socket 模式下预编译到 `.cache/deploy/`，`rsync -avh ./.cache root@<board>:/root/llama`，ARM 运行时 `GGML_FMSH_ZG330_CACHE_DIR=/root/llama/.cache/deploy`。不同 prompt/`-n`/`-c` 会触发不同 shape，需用与板端一致的参数在 docker 内预热一次。
 - [x] 192.168.110.114 端到端验证：`Hello! How can I help`，`MUL_MAT 432/432 offloaded (100%)`，`FLASH_ATTN_EXT 54/60 offloaded (90%)`，`Prompt 1.2 t/s | Generation 0.7 t/s`。
+- [x] 修复 c653c723 后程序无法正常退出：保留 `device_get_memory` 的 PLDDR 真实查询，但把查询用 XRT `Device` 托管到 backend device context 中；getter 首次 `Device::Open` 后查询并缓存结果，不在属性查询阶段 `Device::Close`，后续 backend 初始化时把已打开的 device 转交给 backend context，由正常 backend free 统一关闭。
 
 - [x] Flash Attention 适配（新增）
 - [x] 在 `ggml-fmsh-zg330.cpp` 接入 `GGML_OP_FLASH_ATTN_EXT`：`supports_op`/`validate`/`dispatch`/session 缓存全链路。
