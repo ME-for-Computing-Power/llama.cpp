@@ -105,12 +105,17 @@ static std::string elementwise_op_name(ElementwiseZgOp op) {
         case ElementwiseZgOp::DUP: return "dup";
         case ElementwiseZgOp::SOFT_MAX: return "softmax";
         case ElementwiseZgOp::RMS_NORM: return "rmsnorm";
+        case ElementwiseZgOp::BF16_BRIDGE: return "bf16_bridge";
         default: return "unknown";
     }
 }
 
 static std::string make_elementwise_net_name(ElementwiseZgOp op, int64_t rows, int64_t cols) {
     return elementwise_op_name(op) + "_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
+}
+
+static std::string make_bf16_bridge_net_name(int64_t rows, int64_t cols) {
+    return "bf16_bridge_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
 }
 
 static std::string make_flash_attn_net_name(
@@ -264,6 +269,16 @@ elif op in ("cpy", "dup"):
     S = helper.make_tensor_value_info("S", TensorProto.FLOAT, [1, 1])
     inputs.append(S)
     nodes.append(helper.make_node("Mul", inputs=["X", "S"], outputs=["Y"], name="Mul_0"))
+elif op == "bf16_bridge":
+    import numpy as np
+    one_init = helper.make_tensor("ONE", TensorProto.FLOAT, [1, 1], np.array([1.0], dtype=np.float32).tobytes())
+    nodes.append(helper.make_node("Mul", inputs=["X", "ONE"], outputs=["Y"], name="Mul_Bridge"))
+    graph = helper.make_graph(nodes, f"{op}_graph", inputs, [Y], initializer=[one_init])
+    model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
+    model.ir_version = 8
+    onnx.checker.check_model(model)
+    onnx.save(model, out_path)
+    sys.exit(0)
 elif op == "softmax":
     nodes.append(helper.make_node("Softmax", inputs=["X"], outputs=["Y"], axis=1, name="Softmax_0"))
 elif op == "rmsnorm":
@@ -954,6 +969,97 @@ FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
     }
 
     FlashAttnZgNetworkBundle out;
+    out.net_name = net_name;
+    out.network = std::move(network);
+    out.ram_cache_hit = false;
+    out.compiled_now = true;
+    return out;
+}
+
+ElementwiseZgNetworkBundle get_or_compile_bf16_bridge_zg_network(
+    const std::filesystem::path & work_root,
+    int64_t rows,
+    int64_t cols) {
+    if (rows <= 0 || cols <= 0) {
+        throw std::runtime_error("get_or_compile_bf16_bridge_zg_network: invalid dims");
+    }
+
+    preload_matmul_zg_cache(work_root);
+    const auto root_abs = std::filesystem::weakly_canonical(work_root);
+    const auto net_name = make_bf16_bridge_net_name(rows, cols);
+    const auto cache_key = make_root_net_key(root_abs, net_name);
+
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            ElementwiseZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
+
+    const std::filesystem::path work_dir = root_abs / net_name;
+    ensure_dir(work_dir);
+
+    // Disk cache hit path
+    try {
+        auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+        auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+        network.loadParamsFromFile(raw_path.string());
+
+        CachedMatmulEntry entry;
+        entry.net_name = net_name;
+        entry.m = rows;
+        entry.k = cols;
+        entry.n = 1;
+        entry.network = network;
+        entry.json_path = json_path;
+        entry.raw_path = raw_path;
+        {
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[cache_key] = entry;
+        }
+
+        ElementwiseZgNetworkBundle out;
+        out.net_name = net_name;
+        out.network = std::move(network);
+        out.ram_cache_hit = false;
+        out.compiled_now = false;
+        return out;
+    } catch (...) {
+        // cache miss; fall through to compile
+    }
+
+    const auto onnx_path = work_dir / (net_name + ".onnx");
+    build_elementwise_onnx(onnx_path, ElementwiseZgOp::BF16_BRIDGE, rows, cols);
+
+    // Bridge has single BF16 input (ONE is baked as ONNX initializer)
+    std::vector<std::vector<int64_t>> input_shapes = {{rows, cols}};
+    const auto artifacts = write_icraft_compile_toml_for_zg_elementwise(work_dir, net_name, onnx_path, input_shapes);
+    run_icraft_compile(artifacts);
+    auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+
+    auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+    network.loadParamsFromFile(raw_path.string());
+
+    CachedMatmulEntry entry;
+    entry.net_name = net_name;
+    entry.m = rows;
+    entry.k = cols;
+    entry.n = 1;
+    entry.network = network;
+    entry.json_path = json_path;
+    entry.raw_path = raw_path;
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        g_cache[cache_key] = entry;
+    }
+
+    ElementwiseZgNetworkBundle out;
     out.net_name = net_name;
     out.network = std::move(network);
     out.ram_cache_hit = false;

@@ -88,6 +88,16 @@ struct ggml_fmsh_zg330_elementwise_session_entry {
     std::vector<Tensor> input_tensors;
 };
 
+struct ggml_fmsh_zg330_bf16_bridge_session_entry {
+    int64_t rows = 0;
+    int64_t cols = 0;
+    uint64_t hit_count = 0;
+    ggml::fmsh::netmake::ElementwiseZgNetworkBundle bundle;
+    Session session;
+    TensorType input_type;
+    Tensor input_tensor;
+};
+
 struct ggml_fmsh_flash_attn_validation {
     int64_t n_head = 0;
     int64_t n_head_kv = 0;
@@ -133,6 +143,7 @@ struct ggml_backend_fmsh_zg330_context {
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_session_entry>> session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_elementwise_session_entry>, ggml_fmsh_zg330_op_signature_hash> elementwise_session_cache;
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_flash_attn_session_entry>> flash_attn_session_cache;
+    std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_bf16_bridge_session_entry>> bridge_session_cache;
 
     bool strict_mode = false;
     bool enable_log = true;
@@ -448,7 +459,10 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     if (op->src[0] == nullptr || op->src[1] == nullptr) {
         return false;
     }
-    if (op->type != GGML_TYPE_F32 || op->src[0]->type != GGML_TYPE_F32 || op->src[1]->type != GGML_TYPE_F32) {
+    if (op->type != GGML_TYPE_F32 || op->src[0]->type != GGML_TYPE_F32) {
+        return false;
+    }
+    if (op->src[1]->type != GGML_TYPE_F32 && op->src[1]->type != GGML_TYPE_BF16) {
         return false;
     }
     return ggml_is_contiguous(op->src[0]) && ggml_is_contiguous(op->src[1]) && ggml_is_contiguous(op);
@@ -475,8 +489,13 @@ static bool ggml_fmsh_can_run_mul_mat_zg(const ggml_tensor * node) {
     }
     const ggml_tensor * src0 = node->src[0];
     const ggml_tensor * src1 = node->src[1];
-    if (node->type != GGML_TYPE_F32 || src0->type != GGML_TYPE_F32 || src1->type != GGML_TYPE_F32) {
-        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-F32 type is not supported for ZG330 offload");
+    const bool src1_is_bf16 = (src1->type == GGML_TYPE_BF16);
+    if (node->type != GGML_TYPE_F32 || src0->type != GGML_TYPE_F32) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-F32 dst/src0 type is not supported for ZG330 offload");
+        return false;
+    }
+    if (src1->type != GGML_TYPE_F32 && !src1_is_bf16) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT src1 type must be F32 or BF16 for ZG330 offload");
         return false;
     }
     if (src0->ne[0] <= 0 || src0->ne[1] <= 0 || src0->ne[2] <= 0 || src0->ne[3] <= 0 ||
@@ -496,8 +515,16 @@ static bool ggml_fmsh_can_run_mul_mat_zg(const ggml_tensor * node) {
         ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with incompatible broadcast dimensions is not supported for ZG330 offload");
         return false;
     }
-    if (src0->nb[0] != sizeof(float) || src1->nb[0] != sizeof(float) || node->nb[0] != sizeof(float)) {
+    if (src0->nb[0] != sizeof(float) || node->nb[0] != sizeof(float)) {
         ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-contiguous tensors is not supported for ZG330 offload");
+        return false;
+    }
+    if (!src1_is_bf16 && src1->nb[0] != sizeof(float)) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-contiguous src1 is not supported for ZG330 offload");
+        return false;
+    }
+    if (src1_is_bf16 && src1->nb[0] != sizeof(uint16_t)) {
+        ggml_fmsh_log_locked(nullptr, 2, "MUL_MAT with non-contiguous BF16 src1 is not supported for ZG330 offload");
         return false;
     }
     return ggml_is_contiguous(src0) && ggml_is_contiguous(src1) && ggml_is_contiguous(node);
@@ -1120,6 +1147,55 @@ static ggml_fmsh_zg330_flash_attn_session_entry * ggml_fmsh_get_or_create_flash_
     return nullptr;
 }
 
+static std::string ggml_fmsh_make_bf16_bridge_cache_key(int64_t rows, int64_t cols) {
+    return "bf16_bridge|" + std::to_string(rows) + "x" + std::to_string(cols);
+}
+
+static ggml_fmsh_zg330_bf16_bridge_session_entry * ggml_fmsh_get_or_create_bf16_bridge_session(
+    ggml_backend_fmsh_zg330_context * ctx,
+    int64_t rows,
+    int64_t cols,
+    bool * created,
+    std::string * err) {
+    const std::string cache_key = ggml_fmsh_make_bf16_bridge_cache_key(rows, cols);
+    auto it = ctx->bridge_session_cache.find(cache_key);
+    if (it != ctx->bridge_session_cache.end()) {
+        it->second->hit_count++;
+        if (created) *created = false;
+        return it->second.get();
+    }
+
+    if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+        return nullptr;
+    }
+
+    try {
+        auto bundle = ggml::fmsh::netmake::get_or_compile_bf16_bridge_zg_network(ctx->cache_dir, rows, cols);
+        Session session = Session::Create<zg330::ZG330Backend, HostBackend>(
+            bundle.network.view(0), {ctx->zg_device, HostDevice::Default()});
+        session.enableTimeProfile(true);
+        session.apply();
+
+        auto entry = std::make_unique<ggml_fmsh_zg330_bf16_bridge_session_entry>();
+        entry->rows = rows;
+        entry->cols = cols;
+        entry->hit_count = 1;
+        entry->bundle = std::move(bundle);
+        entry->session = std::move(session);
+        entry->input_type = entry->bundle.network.inputs()[0].tensorType().clone();
+
+        ggml_fmsh_zg330_bf16_bridge_session_entry * ptr = entry.get();
+        ctx->bridge_session_cache.emplace(cache_key, std::move(entry));
+        if (created) *created = true;
+        return ptr;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = e.what();
+        }
+        return nullptr;
+    }
+}
+
 static inline float ggml_fmsh_read_f32_broadcast(
     const ggml_tensor * t,
     int64_t i0,
@@ -1663,9 +1739,48 @@ static bool ggml_fmsh_execute_mul_mat(
             out_tmp.resize(static_cast<size_t>(entry->m * entry->n));
         }
 
+        const bool src1_is_bf16 = (src1->type == GGML_TYPE_BF16);
         const bool allow_input_chain = input_override != nullptr && ne12 == 1 && ne13 == 1;
         if (chained_output != nullptr) {
             *chained_output = Tensor();
+        }
+
+        ggml_fmsh_log_locked(
+            ctx, 1,
+            "mul_mat_exec_enter m=" + std::to_string(entry->m) +
+            " k=" + std::to_string(entry->k) +
+            " n=" + std::to_string(entry->n) +
+            " src1_type=" + std::to_string(static_cast<int>(src1->type)) +
+            " src1_is_bf16=" + std::to_string(src1_is_bf16 ? 1 : 0) +
+            " allow_input_chain=" + std::to_string(allow_input_chain ? 1 : 0) +
+            " ne12=" + std::to_string(ne12) + " ne13=" + std::to_string(ne13));
+
+        ggml_fmsh_zg330_bf16_bridge_session_entry * bridge_entry = nullptr;
+        if (src1_is_bf16 && !allow_input_chain) {
+            ggml_fmsh_log_locked(ctx, 0, "bf16_bridge_enter rows=" + std::to_string(entry->m) + " cols=" + std::to_string(entry->k));
+            std::string bridge_err;
+            bool bridge_created = false;
+            bridge_entry = ggml_fmsh_get_or_create_bf16_bridge_session(ctx, entry->m, entry->k, &bridge_created, &bridge_err);
+            if (!bridge_entry) {
+                ggml_fmsh_log_locked(ctx, 3, "bf16_bridge_session_create_failed: " + bridge_err);
+                if (err) *err = "BF16 bridge session creation failed: " + bridge_err;
+                return false;
+            }
+            if (!bridge_entry->input_tensor.defined()) {
+                bridge_entry->input_tensor = Tensor(bridge_entry->input_type.clone());
+                bridge_entry->input_tensor.mallocOn(HostDevice::MemRegion());
+            }
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                std::string(bridge_created ? "bf16_bridge_session_create" : "bf16_bridge_session_hit") +
+                " rows=" + std::to_string(entry->m) + " cols=" + std::to_string(entry->k) +
+                " net=" + bridge_entry->bundle.net_name +
+                " net_cache=" + std::string(bridge_entry->bundle.ram_cache_hit ? "HIT" : "MISS") +
+                " compiled_now=" + std::string(bridge_entry->bundle.compiled_now ? "YES" : "NO"));
+        } else if (src1_is_bf16 && allow_input_chain) {
+            ggml_fmsh_log_locked(ctx, 1, "bf16_bridge_skip_reason=input_chain_already_provided");
+        } else {
+            ggml_fmsh_log_locked(ctx, 1, "bf16_bridge_skip_reason=src1_not_bf16 src1_type=" + std::to_string(static_cast<int>(src1->type)));
         }
 
         for (int64_t i13 = 0; i13 < ne13; ++i13) {
@@ -1680,6 +1795,36 @@ static bool ggml_fmsh_execute_mul_mat(
                 Tensor input_a = entry->input_tensor_a;
                 if (allow_input_chain && i12 == 0 && i13 == 0) {
                     input_a = *input_override;
+                } else if (src1_is_bf16) {
+                    // BF16 bridge path: copy BF16 data directly (2 bytes per element), no CPU conversion
+                    ggml_fmsh_log_locked(ctx, 0, "bf16_bridge_fwd_enter i12=" + std::to_string(i12) + " i13=" + std::to_string(i13));
+                    uint16_t * bridge_dst = reinterpret_cast<uint16_t *>(bridge_entry->input_tensor.data().cptr());
+                    for (int64_t row = 0; row < entry->m; ++row) {
+                        const char * a_src_row = src1_slice + row * src1->nb[1];
+                        uint16_t * bridge_row_dst = bridge_dst + row * entry->k;
+                        if (src1->nb[0] == static_cast<size_t>(sizeof(uint16_t))) {
+                            std::memcpy(bridge_row_dst, a_src_row, static_cast<size_t>(entry->k) * sizeof(uint16_t));
+                        } else {
+                            for (int64_t col = 0; col < entry->k; ++col) {
+                                uint16_t v = 0;
+                                std::memcpy(&v, a_src_row + col * src1->nb[0], sizeof(uint16_t));
+                                bridge_row_dst[col] = v;
+                            }
+                        }
+                    }
+                    auto bridge_outputs = bridge_entry->session.forward({bridge_entry->input_tensor});
+                    if (bridge_outputs.empty()) {
+                        ggml_fmsh_log_locked(ctx, 3, "bf16_bridge_fwd_empty_output");
+                        if (err) *err = "BF16 bridge forward returned empty output";
+                        return false;
+                    }
+                    if (!ggml_fmsh_wait_tensor_ready(bridge_outputs[0], err, "bf16_bridge")) {
+                        ggml_fmsh_log_locked(ctx, 3, "bf16_bridge_wait_ready_failed");
+                        return false;
+                    }
+                    input_a = bridge_outputs[0];
+                    ctx->mul_mat_device_input_chain++;
+                    ggml_fmsh_log_locked(ctx, 0, "bf16_bridge_fwd_done chaining_to_matmul=1");
                 } else {
                     // A = src1 slice : [m, k]
                     float * a_dst = reinterpret_cast<float *>(entry->input_tensor_a.data().cptr());
@@ -1763,12 +1908,19 @@ static bool ggml_fmsh_execute_mul_mat(
                         calc_f32_stats(out_tmp.data(), static_cast<size_t>(entry->m * entry->n));
                     if ((out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) &&
                         s_inf_trace_budget.fetch_sub(1, std::memory_order_relaxed) > 0) {
-                        const float * a_ptr = reinterpret_cast<const float *>(input_a.data().cptr());
                         const float * w_ptr = reinterpret_cast<const float *>(weight_tensor->data().cptr());
-                        const ggml_fmsh_f32_stats a_stats =
-                            calc_f32_stats(a_ptr, static_cast<size_t>(entry->m * entry->k));
                         const ggml_fmsh_f32_stats w_stats =
                             calc_f32_stats(w_ptr, static_cast<size_t>(entry->k * entry->n));
+                        std::string a_trace = "bridge_bf16";
+                        if (!src1_is_bf16) {
+                            const float * a_ptr = reinterpret_cast<const float *>(input_a.data().cptr());
+                            const ggml_fmsh_f32_stats a_stats =
+                                calc_f32_stats(a_ptr, static_cast<size_t>(entry->m * entry->k));
+                            a_trace = "A[min,max,inf,nan]=[" + std::to_string(a_stats.min_v) + "," +
+                                std::to_string(a_stats.max_v) + "," +
+                                std::to_string(a_stats.inf_cnt) + "," +
+                                std::to_string(a_stats.nan_cnt) + "]";
+                        }
                         ggml_fmsh_log_locked(
                             ctx, 2,
                             "mul_mat_inf_trace shape=[" + std::to_string(node->ne[0]) + "," +
@@ -1780,10 +1932,7 @@ static bool ggml_fmsh_execute_mul_mat(
                             " src0_nb0=" + std::to_string(src0->nb[0]) +
                             " src1_nb0=" + std::to_string(src1->nb[0]) +
                             " dst_nb0=" + std::to_string(node->nb[0]) +
-                            " A[min,max,inf,nan]=[" + std::to_string(a_stats.min_v) + "," +
-                            std::to_string(a_stats.max_v) + "," +
-                            std::to_string(a_stats.inf_cnt) + "," +
-                            std::to_string(a_stats.nan_cnt) + "]" +
+                            " " + a_trace +
                             " W[min,max,inf,nan]=[" + std::to_string(w_stats.min_v) + "," +
                             std::to_string(w_stats.max_v) + "," +
                             std::to_string(w_stats.inf_cnt) + "," +
@@ -2155,6 +2304,13 @@ static void ggml_fmsh_accumulate_profile(
     p.hard_ms += hard_ms;
 }
 
+static std::string ggml_fmsh_op_name_from_id(uint32_t op_id) {
+    if (op_id < static_cast<uint32_t>(GGML_OP_COUNT)) {
+        return std::string(ggml_op_name(static_cast<enum ggml_op>(op_id)));
+    }
+    return "unknown(" + std::to_string(op_id) + ")";
+}
+
 static bool ggml_fmsh_is_batched_mul_mat(const ggml_tensor * node) {
     return node != nullptr && node->op == GGML_OP_MUL_MAT && (node->ne[2] > 1 || node->ne[3] > 1);
 }
@@ -2243,7 +2399,7 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             const auto & p = kv.second;
             ggml_fmsh_log_locked(
                 ctx, 1,
-                "op_summary op=" + std::to_string(kv.first) +
+                "op_summary op=" + ggml_fmsh_op_name_from_id(kv.first) +
                 " calls=" + std::to_string(p.calls) +
                 " total_ms=" + std::to_string(p.total_ms) +
                 " memcpy_ms=" + std::to_string(p.memcpy_ms) +

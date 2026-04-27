@@ -41,6 +41,7 @@ enum class ElementwiseZgOp : uint32_t {
     DUP = 4,
     SOFT_MAX = 5,
     RMS_NORM = 6,
+    BF16_BRIDGE = 7,
 };
 
 struct ElementwiseZgNetworkBundle {
@@ -79,5 +80,10 @@ FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
     int64_t kv_len,
     int64_t softmax_cols,
     bool use_logit_softcap);
+
+ElementwiseZgNetworkBundle get_or_compile_bf16_bridge_zg_network(
+    const std::filesystem::path & work_root,
+    int64_t rows,
+    int64_t cols);
 
 } // namespace ggml::fmsh::netmake
