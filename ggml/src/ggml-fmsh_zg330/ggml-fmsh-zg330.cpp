@@ -150,7 +150,7 @@ struct ggml_backend_fmsh_zg330_context {
     int log_level = 1; // 0 debug, 1 info, 2 warn, 3 error
     bool offload_cpy_dup = false;
     bool offload_soft_max = false;
-    bool offload_rms_norm = false;
+    bool offload_rms_norm = true;
     bool offload_flash_attn_ext = true;
     int64_t flash_softmax_cu = 8;
     int64_t flash_precompile_kv_depth = 1;
@@ -3103,7 +3103,7 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
     ctx->log_level = ggml_fmsh_get_log_level();
     ctx->offload_cpy_dup = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_CPY_DUP", false);
     ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", false);
-    ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", false);
+    ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", true);
     ctx->offload_flash_attn_ext = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_FLASH_ATTN_EXT", true);
     ctx->flash_softmax_cu = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_SOFTMAX_CU", 8)));
     ctx->flash_precompile_kv_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_PRECOMPILE_KV_DEPTH", 1));

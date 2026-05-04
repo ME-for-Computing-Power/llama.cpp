@@ -270,8 +270,7 @@ elif op in ("cpy", "dup"):
     inputs.append(S)
     nodes.append(helper.make_node("Mul", inputs=["X", "S"], outputs=["Y"], name="Mul_0"))
 elif op == "bf16_bridge":
-    import numpy as np
-    one_init = helper.make_tensor("ONE", TensorProto.FLOAT, [1, 1], np.array([1.0], dtype=np.float32).tobytes())
+    one_init = helper.make_tensor("ONE", TensorProto.FLOAT, [1, 1], [1.0])
     nodes.append(helper.make_node("Mul", inputs=["X", "ONE"], outputs=["Y"], name="Mul_Bridge"))
     graph = helper.make_graph(nodes, f"{op}_graph", inputs, [Y], initializer=[one_init])
     model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
@@ -282,14 +281,28 @@ elif op == "bf16_bridge":
 elif op == "softmax":
     nodes.append(helper.make_node("Softmax", inputs=["X"], outputs=["Y"], axis=1, name="Softmax_0"))
 elif op == "rmsnorm":
+    # ZG330 Mean/Sum only support non-channel (non-last) dimensions.
+    # In FD layout [rows, cols], cols is the channel axis — cannot ReduceMean on it directly.
+    # Workaround per icraft docs: Transpose to move cols to axis-0, ReduceSum on axis-0
+    # (non-channel in the transposed view), Transpose back, then scale by 1/cols.
     E = helper.make_tensor_value_info("E", TensorProto.FLOAT, [1, 1])
     inputs.append(E)
-    x2 = helper.make_node("Mul", inputs=["X", "X"], outputs=["X2"], name="Mul_X2")
-    mean = helper.make_node("ReduceMean", inputs=["X2"], outputs=["M"], axes=[1], keepdims=1, name="ReduceMean_0")
-    add_eps = helper.make_node("Add", inputs=["M", "E"], outputs=["ME"], name="Add_EPS")
-    rms = helper.make_node("Sqrt", inputs=["ME"], outputs=["R"], name="Sqrt_0")
-    div = helper.make_node("Div", inputs=["X", "R"], outputs=["Y"], name="Div_0")
-    nodes.extend([x2, mean, add_eps, rms, div])
+    inv_n = helper.make_tensor("INV_N", TensorProto.FLOAT, [1, 1], [1.0 / cols])
+    x2   = helper.make_node("Mul",       ["X",   "X"],    ["X2"],  name="Mul_X2")
+    tp0  = helper.make_node("Transpose", ["X2"],           ["X2T"], name="Tp0", perm=[1, 0])
+    rsum = helper.make_node("ReduceSum", ["X2T"],          ["ST"],  name="RSum", axes=[0], keepdims=1)
+    tp1  = helper.make_node("Transpose", ["ST"],           ["S"],   name="Tp1", perm=[1, 0])
+    scl  = helper.make_node("Mul",       ["S",  "INV_N"], ["M"],   name="ScaleMean")
+    aeps = helper.make_node("Add",       ["M",   "E"],    ["ME"],  name="Add_EPS")
+    sqt  = helper.make_node("Sqrt",      ["ME"],           ["R"],   name="Sqrt_0")
+    div  = helper.make_node("Div",       ["X",   "R"],    ["Y"],   name="Div_0")
+    nodes.extend([x2, tp0, rsum, tp1, scl, aeps, sqt, div])
+    graph = helper.make_graph(nodes, f"{op}_graph", inputs, [Y], initializer=[inv_n])
+    model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
+    model.ir_version = 8
+    onnx.checker.check_model(model)
+    onnx.save(model, out_path)
+    sys.exit(0)
 else:
     raise RuntimeError(f"unsupported op: {op}")
 
