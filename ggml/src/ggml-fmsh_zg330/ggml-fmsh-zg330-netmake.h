@@ -58,7 +58,7 @@ struct FlashAttnZgNetworkBundle {
     bool compiled_now = false;
 };
 
-void preload_matmul_zg_cache(const std::filesystem::path & work_root);
+void preload_zg_cache(const std::filesystem::path & work_root);
 
 MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
     const std::filesystem::path & work_root,

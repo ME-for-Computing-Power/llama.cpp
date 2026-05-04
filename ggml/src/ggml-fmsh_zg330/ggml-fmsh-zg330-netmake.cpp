@@ -652,7 +652,7 @@ static std::pair<std::filesystem::path, std::filesystem::path> find_generated_zg
 
 } // namespace
 
-void preload_matmul_zg_cache(const std::filesystem::path & work_root) {
+void preload_zg_cache(const std::filesystem::path & work_root) {
     ensure_dir(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
     const auto root_key = root_abs.string();
@@ -676,10 +676,10 @@ void preload_matmul_zg_cache(const std::filesystem::path & work_root) {
         }
 
         const auto net_name = fn.substr(0, fn.size() - suffix.size());
+        // Parse matmul dims when available; other net types (elementwise, flash_attn) keep m=k=n=0.
+        // All compiled binaries are preloaded so g_cache is warm before the first session creation.
         int64_t m = 0, k = 0, n = 0;
-        if (!parse_matmul_dims_from_net_name(net_name, &m, &k, &n)) {
-            continue;
-        }
+        parse_matmul_dims_from_net_name(net_name, &m, &k, &n);
 
         const auto raw_path = de.path().parent_path() / (net_name + "_ZG.raw");
         if (!std::filesystem::exists(raw_path)) {
@@ -721,7 +721,7 @@ MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
         throw std::runtime_error("get_or_compile_matmul_zg_network: invalid dims");
     }
 
-    preload_matmul_zg_cache(work_root);
+    preload_zg_cache(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
     const auto net_name = make_matmul_net_name(m, k, n);
     const auto cache_key = make_root_net_key(root_abs, net_name);
@@ -782,7 +782,7 @@ ElementwiseZgNetworkBundle get_or_compile_elementwise_zg_network(
         throw std::runtime_error("get_or_compile_elementwise_zg_network: invalid dims");
     }
 
-    preload_matmul_zg_cache(work_root);
+    preload_zg_cache(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
     const auto net_name = make_elementwise_net_name(op, rows, cols);
     const auto cache_key = make_root_net_key(root_abs, net_name);
@@ -884,7 +884,7 @@ FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
         throw std::runtime_error("get_or_compile_flash_attn_zg_network: invalid dims");
     }
 
-    preload_matmul_zg_cache(work_root);
+    preload_zg_cache(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
     const auto net_name = make_flash_attn_net_name(head_dim, value_dim, q_len, kv_len, softmax_cols, use_logit_softcap);
     const auto cache_key = make_root_net_key(root_abs, net_name);
@@ -984,7 +984,7 @@ ElementwiseZgNetworkBundle get_or_compile_bf16_bridge_zg_network(
         throw std::runtime_error("get_or_compile_bf16_bridge_zg_network: invalid dims");
     }
 
-    preload_matmul_zg_cache(work_root);
+    preload_zg_cache(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
     const auto net_name = make_bf16_bridge_net_name(rows, cols);
     const auto cache_key = make_root_net_key(root_abs, net_name);
