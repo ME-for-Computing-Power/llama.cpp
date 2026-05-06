@@ -1866,18 +1866,27 @@ static bool ggml_fmsh_execute_mul_mat(
                 }
 
                 if (!weight_tensor) {
-                    Tensor new_weight(entry->input_type_b.clone());
-                    new_weight.mallocOn(HostDevice::MemRegion());
-
-                    // B = transpose(src0 slice): src0 [n, k] -> B [k, n]
-                    float * w_dst = reinterpret_cast<float *>(new_weight.data().cptr());
+                    // Build transposed weight in a host buffer: src0 [n, k] -> B [k, n]
+                    const size_t weight_bytes = static_cast<size_t>(entry->k * entry->n) * sizeof(float);
+                    std::vector<float> host_w_buf(static_cast<size_t>(entry->k * entry->n));
                     for (int64_t i = 0; i < entry->n; ++i) {
                         const char * w_src_row = src0_slice + i * src0->nb[1];
                         for (int64_t j = 0; j < entry->k; ++j) {
                             float v = 0.0f;
                             std::memcpy(&v, w_src_row + j * src0->nb[0], sizeof(float));
-                            w_dst[static_cast<size_t>(j * entry->n + i)] = v;
+                            host_w_buf[static_cast<size_t>(j * entry->n + i)] = v;
                         }
+                    }
+
+                    Tensor new_weight(entry->input_type_b.clone());
+                    // Static weights live on NPU PL memory to avoid per-token DMA re-upload.
+                    // Dynamic weights (KV views) stay on host since they change each call.
+                    if (src0_is_static && ctx->device_opened) {
+                        new_weight.mallocOn(ctx->zg_device.defaultMemRegion());
+                        new_weight.write(0, reinterpret_cast<char *>(host_w_buf.data()), weight_bytes);
+                    } else {
+                        new_weight.mallocOn(HostDevice::MemRegion());
+                        std::memcpy(reinterpret_cast<float *>(new_weight.data().cptr()), host_w_buf.data(), weight_bytes);
                     }
 
                     if (src0_is_static) {
@@ -2503,6 +2512,17 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 consumer->ne[2] == 1 && consumer->ne[3] == 1) {
                 return true;
             }
+            // Elementwise ops can consume a device tensor at src[0].
+            // SOFT_MAX and RMS_NORM always re-read from host so they cannot use input_override.
+            if (src_idx == 0 && ggml_fmsh_should_run_elementwise_zg(ctx, consumer)) {
+                ggml::fmsh::netmake::ElementwiseZgOp ek;
+                int64_t er = 0, ec = 0;
+                if (!ggml_fmsh_validate_elementwise(consumer, &ek, &er, &ec)) {
+                    return false;
+                }
+                return ek != ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
+                       ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM;
+            }
             return false;
         };
     auto log_dispatch_boundary = [&](bool current_is_zg, const ggml_tensor * node, const char * reason) {
@@ -2892,12 +2912,16 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (ctx->strict_mode) {
                     return GGML_STATUS_FAILED;
                 }
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
                 const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
                 has_prev_device_output = false;
                 prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
                 continue;
@@ -2916,8 +2940,31 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 " compile_now=" + std::string((created && entry->bundle.compiled_now) ? "YES" : "NO"));
 
             const auto t0 = std::chrono::high_resolution_clock::now();
+
+            // Check if src[0] has a device-resident result we can chain directly.
+            // SOFT_MAX and RMS_NORM always re-read from host so they cannot use input_override.
             const Tensor * chained_input_ptr = nullptr;
-            const bool keep_device_output_only = false;
+            const ggml_tensor * ew_chained_input_src = nullptr;
+            if (ek != ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
+                ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM &&
+                node->src[0] != nullptr) {
+                auto it_dev = device_tensor_map.find(node->src[0]);
+                if (it_dev != device_tensor_map.end()) {
+                    chained_input_ptr = &it_dev->second;
+                    ew_chained_input_src = node->src[0];
+                } else if (has_prev_device_output && prev_device_output_node == node->src[0]) {
+                    chained_input_ptr = &prev_device_output;
+                    ew_chained_input_src = node->src[0];
+                }
+            }
+
+            // Determine whether to keep output on device for the next consumer.
+            ggml_tensor * ew_next_consumer = nullptr;
+            int ew_next_src_idx = -1;
+            const bool keep_device_output_only =
+                find_single_future_consumer(i, node, &ew_next_consumer, &ew_next_src_idx) &&
+                can_consume_from_device(ew_next_consumer, ew_next_src_idx);
+
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
             if (ctx->debug_compare == 1) {
@@ -2957,10 +3004,16 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         return GGML_STATUS_FAILED;
                     }
                 }
+                // Reset chaining for debug compare path so host data is always used.
+                chained_input_ptr = nullptr;
+                ew_chained_input_src = nullptr;
             }
+            const bool keep_device_output_effective = (ctx->debug_compare == 1) ? false : keep_device_output_only;
+#else
+            const bool keep_device_output_effective = keep_device_output_only;
 #endif
             Tensor chained_output;
-            if (!ggml_fmsh_execute_elementwise(ctx, node, entry, chained_input_ptr, keep_device_output_only, &chained_output, &err)) {
+            if (!ggml_fmsh_execute_elementwise(ctx, node, entry, chained_input_ptr, keep_device_output_effective, &chained_output, &err)) {
                 ggml_fmsh_log_locked(ctx, 2, "fallback op=" + std::string(ggml_op_name(node->op)) + " reason=" + err);
                 if (ctx->strict_mode) {
                     return GGML_STATUS_FAILED;
@@ -2988,9 +3041,23 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             }
 #endif
 
+            // Remove consumed input from device_tensor_map.
+            if (ew_chained_input_src != nullptr) {
+                device_tensor_map.erase(ew_chained_input_src);
+                if (has_prev_device_output && prev_device_output_node == ew_chained_input_src) {
+                    has_prev_device_output = false;
+                    prev_device_output_node = nullptr;
+                }
+            }
+
             has_prev_device_output = false;
             prev_device_output_node = nullptr;
-            device_tensor_map.erase(node);
+            if (keep_device_output_effective && chained_output.defined()) {
+                device_tensor_map[node] = chained_output;
+                ggml_fmsh_log_locked(ctx, 0, "dispatch op=" + std::string(ggml_op_name(node->op)) + " keep_device_output=1");
+            } else {
+                device_tensor_map.erase(node);
+            }
             last_dispatched_valid = true;
             last_dispatched_zg = true;
             continue;
