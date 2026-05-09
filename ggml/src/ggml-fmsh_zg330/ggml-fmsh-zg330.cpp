@@ -86,6 +86,10 @@ struct ggml_fmsh_zg330_elementwise_session_entry {
     Session session;
     std::vector<TensorType> input_types;
     std::vector<Tensor> input_tensors;
+    TensorType output_type;
+    MemChunk output_chunk;
+    int64_t output_value_id = -1;
+    size_t output_bytes = 0;
 };
 
 struct ggml_fmsh_zg330_bf16_bridge_session_entry {
@@ -196,6 +200,8 @@ struct ggml_backend_fmsh_zg330_context {
     uint64_t flash_attn_total = 0;
     uint64_t flash_attn_offloaded = 0;
     uint64_t flash_attn_fallback = 0;
+    uint64_t elementwise_output_chunk_hits = 0;
+    uint64_t elementwise_output_chunk_misses = 0;
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
     bool debug_compare = false;
@@ -1017,11 +1023,60 @@ static ggml_fmsh_zg330_elementwise_session_entry * ggml_fmsh_get_or_create_eleme
 
     int64_t compile_rows = ggml_fmsh_elementwise_compile_rows(kind, rows);
 
+    const bool enable_user_connect =
+        kind == ggml::fmsh::netmake::ElementwiseZgOp::MUL ||
+        kind == ggml::fmsh::netmake::ElementwiseZgOp::ADD ||
+        kind == ggml::fmsh::netmake::ElementwiseZgOp::SCALE ||
+        kind == ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM;
+
     try {
         auto bundle = ggml::fmsh::netmake::get_or_compile_elementwise_zg_network(ctx->cache_dir, kind, compile_rows, cols);
         Session session = Session::Create<zg330::ZG330Backend, HostBackend>(
             bundle.network.view(0), {ctx->zg_device, HostDevice::Default()});
         session.enableTimeProfile(true);
+
+        MemChunk output_chunk;
+        TensorType output_type;
+        int64_t output_value_id = -1;
+        size_t output_bytes = 0;
+        if (enable_user_connect) {
+            auto zg_backend = session->backends.at(0).cast<zg330::ZG330Backend>();
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "userConnectNetwork prepare op=" + std::string(ggml_op_name(node->op)));
+            const auto & out_values = bundle.network.outputs();
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "userConnectNetwork outputs op=" + std::string(ggml_op_name(node->op)) +
+                " count=" + std::to_string(out_values.size()));
+            if (out_values.size() != 1) {
+                if (err) *err = "fatal: elementwise outputs size != 1 for userConnectNetwork";
+                return nullptr;
+            }
+            const auto & out_value = out_values[0];
+            output_type = out_value.tensorType().clone();
+            output_value_id = out_value->v_id;
+            output_bytes = out_value.storageBytes();
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "userConnectNetwork alloc op=" + std::string(ggml_op_name(node->op)) +
+                " v_id=" + std::to_string(output_value_id) +
+                " bytes=" + std::to_string(output_bytes));
+            output_chunk = ctx->zg_device.defaultMemRegion().malloc(output_bytes, true, 4096);
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "userConnectNetwork alloc_ok op=" + std::string(ggml_op_name(node->op)));
+
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "userConnectNetwork try_backend op=" + std::string(ggml_op_name(node->op)));
+            zg_backend.userConnectNetwork(output_chunk, output_value_id);
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "userConnectNetwork ok op=" + std::string(ggml_op_name(node->op)) +
+                " v_id=" + std::to_string(output_value_id) +
+                " bytes=" + std::to_string(output_bytes));
+        }
         session.apply();
 
         auto entry = std::make_unique<ggml_fmsh_zg330_elementwise_session_entry>();
@@ -1033,6 +1088,10 @@ static ggml_fmsh_zg330_elementwise_session_entry * ggml_fmsh_get_or_create_eleme
         entry->compiled_rows = compile_rows;
         entry->bundle = std::move(bundle);
         entry->session = std::move(session);
+        entry->output_type = output_type;
+        entry->output_chunk = output_chunk;
+        entry->output_value_id = output_value_id;
+        entry->output_bytes = output_bytes;
         for (const auto & in : entry->bundle.network.inputs()) {
             entry->input_types.push_back(in.tensorType().clone());
         }
@@ -1398,24 +1457,55 @@ static bool ggml_fmsh_execute_elementwise(
             }
         }
 
+        if (can_chain_input0) {
+            // D2H copy: PL DDR output (F32, 4 bytes/elem) → BF16 host buffer for session input.
+            // ZG330 stores its output in F32 format in PL DDR (output_chunk storageBytes =
+            // exec_rows * cols * sizeof(float)). The session input expects BF16, so read F32
+            // then convert, matching what the non-chain path does via ggml_fmsh_f32_to_bf16.
+            const size_t n_elems =
+                static_cast<size_t>(exec_rows) * static_cast<size_t>(entry->cols);
+            std::vector<float> d2h_buf(n_elems);
+            input0.read(reinterpret_cast<char *>(d2h_buf.data()), 0, n_elems * sizeof(float));
+            for (size_t idx = 0; idx < n_elems; ++idx) {
+                in0[idx] = ggml_fmsh_f32_to_bf16(d2h_buf[idx]);
+            }
+        }
         std::vector<Tensor> session_inputs = entry->input_tensors;
-        session_inputs[0] = input0;
-        auto outputs = entry->session.forward(session_inputs);
+        std::vector<Tensor> outputs = entry->session.forward(session_inputs);
         if (outputs.empty()) {
             if (err) *err = "elementwise session.forward returned empty output";
             return false;
         }
+        if (entry->output_chunk.defined()) {
+            if (outputs[0].chunk() == entry->output_chunk) {
+                ctx->elementwise_output_chunk_hits++;
+            } else {
+                ctx->elementwise_output_chunk_misses++;
+                ggml_fmsh_log_locked(
+                    ctx, 2,
+                    "userConnectNetwork chunk mismatch op=" + std::string(ggml_op_name(node->op)) +
+                    " v_id=" + std::to_string(entry->output_value_id) +
+                    " bytes=" + std::to_string(entry->output_bytes));
+            }
+        }
         if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "elementwise")) {
             return false;
         }
+        Tensor effective_output = outputs[0];
         if (chained_output != nullptr) {
             *chained_output = outputs[0];
         }
         ggml_fmsh_log_locked(ctx, 1, "elementwise_forward_done op=" + std::string(ggml_op_name(node->op)));
 
-        if (!keep_device_output_only) {
+        const bool should_write_host_output =
+            !keep_device_output_only
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+            || (ctx->debug_compare == 1)
+#endif
+            ;
+        if (should_write_host_output) {
             std::vector<float> out_tmp(total_elems);
-            outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
+            effective_output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
             ggml_fmsh_log_locked(ctx, 1, "elementwise_read_done op=" + std::string(ggml_op_name(node->op)));
             for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
                 for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
@@ -1494,23 +1584,6 @@ static inline float ggml_fmsh_read_f32_linear(const ggml_tensor * t, size_t idx)
         static_cast<int64_t>(i1),
         static_cast<int64_t>(i2),
         static_cast<int64_t>(i3));
-}
-
-static inline float ggml_fmsh_read_scalar_f32(
-    const ggml_tensor * t,
-    int64_t i0,
-    int64_t i1,
-    int64_t i2,
-    int64_t i3) {
-    const char * p = static_cast<const char *>(t->data) +
-                     i0 * t->nb[0] + i1 * t->nb[1] + i2 * t->nb[2] + i3 * t->nb[3];
-    if (t->type == GGML_TYPE_F32) {
-        return *reinterpret_cast<const float *>(p);
-    }
-    if (t->type == GGML_TYPE_F16) {
-        return GGML_FP16_TO_FP32(*reinterpret_cast<const ggml_fp16_t *>(p));
-    }
-    return 0.0f;
 }
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
@@ -2439,6 +2512,10 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             " offloaded=" + std::to_string(ctx->flash_attn_offloaded) +
             " fallback=" + std::to_string(ctx->flash_attn_fallback) +
             " hit_rate_pct=" + std::to_string(flash_hit));
+        ggml_fmsh_log_locked(
+            ctx, 1,
+            "offload_summary op=ELEMENTWISE output_chunk_hits=" + std::to_string(ctx->elementwise_output_chunk_hits) +
+            " output_chunk_misses=" + std::to_string(ctx->elementwise_output_chunk_misses));
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
         ggml_fmsh_log_locked(
             ctx, 1,
@@ -2480,7 +2557,6 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
     Tensor prev_device_output;
     ggml_tensor * prev_device_output_node = nullptr;
     std::unordered_map<const ggml_tensor *, Tensor> device_tensor_map;
-
     auto find_single_future_consumer =
         [&](int from_idx, const ggml_tensor * producer, ggml_tensor ** out_node, int * out_src_idx) -> bool {
             ggml_tensor * found = nullptr;
@@ -2544,7 +2620,6 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
         if ((node->flags & GGML_TENSOR_FLAG_COMPUTE) == 0) {
             continue;
         }
-
         if (ggml_fmsh_is_meta_op(node)) {
             continue;
         }
@@ -2715,6 +2790,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             ggml_fmsh_accumulate_profile(ctx, node, entry->session, total_ms);
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             if (!cpu_ref_out.empty()) {
+                ggml_fmsh_materialize_if_device(ctx, node, device_tensor_map);
                 ggml_fmsh_debug_compare_and_log(ctx, node, cpu_ref_out, i);
             }
 #endif
@@ -2783,9 +2859,15 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
             if (ctx->debug_compare == 1) {
-                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
-                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
-                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+                const bool has_device_src0 = node->src[0] != nullptr && device_tensor_map.find(node->src[0]) != device_tensor_map.end();
+                const bool has_device_src1 = node->src[1] != nullptr && device_tensor_map.find(node->src[1]) != device_tensor_map.end();
+                const bool has_device_src2 = node->src[2] != nullptr && device_tensor_map.find(node->src[2]) != device_tensor_map.end();
+                if (has_device_src0 || has_device_src1 || has_device_src2) {
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "debug_compare_skip op=" + std::string(ggml_op_name(node->op)) +
+                        " reason=device_input_chain");
+                } else {
                 std::vector<ggml_fmsh_debug_saved_tensor> debug_saved;
                 std::unordered_set<ggml_tensor *> debug_seen;
                 std::string dbg_err;
@@ -2819,11 +2901,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         return GGML_STATUS_FAILED;
                     }
                 }
-                chained_input_ptr = nullptr;
-                chained_input_src = nullptr;
             }
-            const bool keep_device_output_effective =
-                (ctx->debug_compare == 1) ? false : keep_device_output_only;
+            }
+            const bool keep_device_output_effective = keep_device_output_only;
 #else
             const bool keep_device_output_effective = keep_device_output_only;
 #endif
@@ -2862,6 +2942,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             ggml_fmsh_accumulate_profile(ctx, node, entry->session, total_ms);
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             if (!cpu_ref_out.empty()) {
+                ggml_fmsh_materialize_if_device(ctx, node, device_tensor_map);
                 ggml_fmsh_debug_compare_and_log(ctx, node, cpu_ref_out, i);
             }
 #endif
@@ -2909,6 +2990,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_get_or_create_elementwise_session(ctx, node, &created, &err);
             if (!entry) {
                 ggml_fmsh_log_locked(ctx, 2, "fallback op=" + std::string(ggml_op_name(node->op)) + " reason=" + err);
+                if (err.rfind("fatal:", 0) == 0) {
+                    return GGML_STATUS_FAILED;
+                }
                 if (ctx->strict_mode) {
                     return GGML_STATUS_FAILED;
                 }
@@ -2968,9 +3052,15 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
             if (ctx->debug_compare == 1) {
-                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
-                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
-                ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+                const bool has_device_src0 = node->src[0] != nullptr && device_tensor_map.find(node->src[0]) != device_tensor_map.end();
+                const bool has_device_src1 = node->src[1] != nullptr && device_tensor_map.find(node->src[1]) != device_tensor_map.end();
+                const bool has_device_src2 = node->src[2] != nullptr && device_tensor_map.find(node->src[2]) != device_tensor_map.end();
+                if (has_device_src0 || has_device_src1 || has_device_src2) {
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "debug_compare_skip op=" + std::string(ggml_op_name(node->op)) +
+                        " reason=device_input_chain");
+                } else {
                 std::vector<ggml_fmsh_debug_saved_tensor> debug_saved;
                 std::unordered_set<ggml_tensor *> debug_seen;
                 std::string dbg_err;
@@ -3004,17 +3094,41 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         return GGML_STATUS_FAILED;
                     }
                 }
-                // Reset chaining for debug compare path so host data is always used.
-                chained_input_ptr = nullptr;
-                ew_chained_input_src = nullptr;
+                }
             }
-            const bool keep_device_output_effective = (ctx->debug_compare == 1) ? false : keep_device_output_only;
+            const bool keep_device_output_effective = keep_device_output_only;
 #else
             const bool keep_device_output_effective = keep_device_output_only;
 #endif
+            if (entry->output_chunk.defined()) {
+                for (auto it_map = device_tensor_map.begin(); it_map != device_tensor_map.end();) {
+                    if (it_map->second.defined() && it_map->second.chunk() == entry->output_chunk) {
+                        const ggml_tensor * held = it_map->first;
+                        if (held != nullptr && held->data != nullptr) {
+                            const size_t held_bytes = ggml_nbytes(held);
+                            if (held_bytes > 0) {
+                                it_map->second.read(reinterpret_cast<char *>(held->data), 0, held_bytes);
+                            }
+                        }
+                        ggml_fmsh_log_locked(
+                            ctx, 1,
+                            "elementwise_output_chunk_conflict_materialize op=" + std::string(ggml_op_name(node->op)));
+                        if (has_prev_device_output && prev_device_output_node == held) {
+                            has_prev_device_output = false;
+                            prev_device_output_node = nullptr;
+                        }
+                        it_map = device_tensor_map.erase(it_map);
+                    } else {
+                        ++it_map;
+                    }
+                }
+            }
             Tensor chained_output;
             if (!ggml_fmsh_execute_elementwise(ctx, node, entry, chained_input_ptr, keep_device_output_effective, &chained_output, &err)) {
                 ggml_fmsh_log_locked(ctx, 2, "fallback op=" + std::string(ggml_op_name(node->op)) + " reason=" + err);
+                if (err.rfind("fatal:", 0) == 0) {
+                    return GGML_STATUS_FAILED;
+                }
                 if (ctx->strict_mode) {
                     return GGML_STATUS_FAILED;
                 }
@@ -3053,7 +3167,33 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             has_prev_device_output = false;
             prev_device_output_node = nullptr;
             if (keep_device_output_effective && chained_output.defined()) {
-                device_tensor_map[node] = chained_output;
+                Tensor map_output = chained_output;
+                if (ew_next_consumer != nullptr && ew_next_src_idx == 0 &&
+                    ggml_fmsh_should_run_elementwise_zg(ctx, ew_next_consumer) &&
+                    map_output.chunk().defined()) {
+                    ggml::fmsh::netmake::ElementwiseZgOp next_kind;
+                    int64_t next_rows = 0;
+                    int64_t next_cols = 0;
+                    if (ggml_fmsh_validate_elementwise(ew_next_consumer, &next_kind, &next_rows, &next_cols) &&
+                        next_cols == entry->cols) {
+                        const int64_t next_compile_rows = ggml_fmsh_elementwise_compile_rows(next_kind, next_rows);
+                        if (next_compile_rows > 0 && next_compile_rows <= entry->compiled_rows &&
+                            next_compile_rows != entry->compiled_rows) {
+                            TensorType map_type = map_output.dtype().clone();
+                            map_type.setShape(icraft::xir::Array<int64_t>{next_compile_rows, next_cols});
+                            map_output = Tensor(map_type, map_output.chunk(), map_output.offset());
+                            ggml_fmsh_log_locked(
+                                ctx, 1,
+                                "elementwise_output_retype_for_consumer producer=" +
+                                    std::string(ggml_op_name(node->op)) +
+                                    " consumer=" + std::string(ggml_op_name(ew_next_consumer->op)) +
+                                    " rows=" + std::to_string(entry->compiled_rows) +
+                                    "->" + std::to_string(next_compile_rows) +
+                                    " cols=" + std::to_string(next_cols));
+                        }
+                    }
+                }
+                device_tensor_map[node] = map_output;
                 ggml_fmsh_log_locked(ctx, 0, "dispatch op=" + std::string(ggml_op_name(node->op)) + " keep_device_output=1");
             } else {
                 device_tensor_map.erase(node);

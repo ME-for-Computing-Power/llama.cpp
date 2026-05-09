@@ -1,10 +1,12 @@
 #include "ggml-fmsh-zg330-netmake.h"
 
+#include <chrono>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <mutex>
 #include <stdexcept>
+#include <thread>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -23,6 +25,7 @@ struct CachedMatmulEntry {
 };
 
 std::mutex g_cache_mutex;
+std::mutex g_compile_mutex;
 std::unordered_map<std::string, CachedMatmulEntry> g_cache;
 std::unordered_set<std::string> g_preloaded_roots_abs;
 
@@ -635,29 +638,40 @@ static std::pair<std::filesystem::path, std::filesystem::path> find_generated_zg
     const std::filesystem::path & work_dir,
     const std::string & net_name) {
     const std::filesystem::path cache_root = work_dir / ".cache";
-    const std::filesystem::path cand_json = cache_root / (net_name + "_ZG.json");
-    const std::filesystem::path cand_raw  = cache_root / (net_name + "_ZG.raw");
-    if (std::filesystem::exists(cand_json) && std::filesystem::exists(cand_raw)) {
-        return {cand_json, cand_raw};
-    }
+    auto try_find_once = [&]() -> std::pair<std::filesystem::path, std::filesystem::path> {
+        const std::filesystem::path cand_json = cache_root / (net_name + "_ZG.json");
+        const std::filesystem::path cand_raw  = cache_root / (net_name + "_ZG.raw");
+        if (std::filesystem::exists(cand_json) && std::filesystem::exists(cand_raw)) {
+            return {cand_json, cand_raw};
+        }
 
-    if (std::filesystem::exists(cache_root)) {
-        std::filesystem::path found_json;
-        std::filesystem::path found_raw;
-        for (const auto & de : std::filesystem::recursive_directory_iterator(cache_root)) {
-            if (!de.is_regular_file()) {
-                continue;
+        if (std::filesystem::exists(cache_root)) {
+            std::filesystem::path found_json;
+            std::filesystem::path found_raw;
+            for (const auto & de : std::filesystem::recursive_directory_iterator(cache_root)) {
+                if (!de.is_regular_file()) {
+                    continue;
+                }
+                const auto fn = de.path().filename().string();
+                if (fn == net_name + "_ZG.json") {
+                    found_json = de.path();
+                } else if (fn == net_name + "_ZG.raw") {
+                    found_raw = de.path();
+                }
             }
-            const auto fn = de.path().filename().string();
-            if (fn == net_name + "_ZG.json") {
-                found_json = de.path();
-            } else if (fn == net_name + "_ZG.raw") {
-                found_raw = de.path();
+            if (!found_json.empty() && !found_raw.empty()) {
+                return {found_json, found_raw};
             }
         }
-        if (!found_json.empty() && !found_raw.empty()) {
-            return {found_json, found_raw};
+        return {};
+    };
+
+    for (int i = 0; i < 40; ++i) {
+        auto found = try_find_once();
+        if (!found.first.empty() && !found.second.empty()) {
+            return found;
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     throw std::runtime_error("cannot find generated *_ZG.json/raw under: " + cache_root.string());
@@ -757,6 +771,19 @@ MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
 
     const auto onnx_path = work_dir / (net_name + ".onnx");
     (void) build_matmul_onnx(onnx_path, m, k, n);
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            MatmulZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
     const auto artifacts = write_icraft_compile_toml_for_zg_matmul(work_dir, net_name, onnx_path, m, k, n);
     run_icraft_compile(artifacts);
     auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
@@ -815,6 +842,19 @@ ElementwiseZgNetworkBundle get_or_compile_elementwise_zg_network(
 
     const std::filesystem::path work_dir = root_abs / net_name;
     ensure_dir(work_dir);
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            ElementwiseZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
 
     // Disk cache hit path: reuse previously generated json/raw across process runs.
     // This avoids repeating icraft compile every new llama-cli process.
@@ -917,6 +957,19 @@ FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
 
     const std::filesystem::path work_dir = root_abs / net_name;
     ensure_dir(work_dir);
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            FlashAttnZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
 
     // Disk cache hit path: reuse previously generated json/raw across process runs.
     try {
@@ -1017,6 +1070,19 @@ ElementwiseZgNetworkBundle get_or_compile_bf16_bridge_zg_network(
 
     const std::filesystem::path work_dir = root_abs / net_name;
     ensure_dir(work_dir);
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            ElementwiseZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
 
     // Disk cache hit path
     try {

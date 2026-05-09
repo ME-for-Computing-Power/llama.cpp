@@ -61,7 +61,7 @@
 - [ ] Fallback 与搬运控制
 - [x] 连续可支持算子按节点 dispatch，并记录 `fallback_boundary`（方向/字节数）以量化 Host↔ZG330 往返。
 - [ ] 权重、KV cache、中间张量优先常驻设备内存。
-- [ ] 结合 `userReuseSegment/userConnectNetwork` 思路做跨执行段复用。
+- [x] 结合 `userReuseSegment/userConnectNetwork` 思路做跨执行段复用（新增 elementwise `userConnectNetwork` 输出 chunk 绑定，减少 session 内 memcpy）。
 - [x] 提供 `STRICT` 模式（禁 fallback）用于缺算子排查。
 
 ### Logging & Observability
