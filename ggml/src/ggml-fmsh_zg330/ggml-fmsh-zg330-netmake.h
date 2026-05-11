@@ -86,4 +86,10 @@ ElementwiseZgNetworkBundle get_or_compile_bf16_bridge_zg_network(
     int64_t rows,
     int64_t cols);
 
+ElementwiseZgNetworkBundle get_or_compile_fused_ew_zg_network(
+    const std::filesystem::path & work_root,
+    const std::vector<ElementwiseZgOp> & ops,
+    int64_t rows,
+    int64_t cols);
+
 } // namespace ggml::fmsh::netmake

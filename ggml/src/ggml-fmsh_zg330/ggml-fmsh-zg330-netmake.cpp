@@ -117,6 +117,18 @@ static std::string make_elementwise_net_name(ElementwiseZgOp op, int64_t rows, i
     return elementwise_op_name(op) + "_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
 }
 
+static std::string make_fused_ew_net_name(
+    const std::vector<ElementwiseZgOp> & ops,
+    int64_t rows,
+    int64_t cols) {
+    std::string name = "fused";
+    for (auto op : ops) {
+        name += "_" + elementwise_op_name(op);
+    }
+    name += "_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
+    return name;
+}
+
 static std::string make_bf16_bridge_net_name(int64_t rows, int64_t cols) {
     return "bf16_bridge_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
 }
@@ -330,6 +342,115 @@ onnx.save(model, out_path)
 
     const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
                             quote_for_sh(elementwise_op_name(op)) + " " +
+                            std::to_string(rows) + " " + std::to_string(cols) + " " +
+                            quote_for_sh(onnx_path.string());
+    run_system_checked(cmd);
+}
+
+static void build_fused_elementwise_onnx(
+    const std::filesystem::path & onnx_path,
+    const std::vector<ElementwiseZgOp> & ops,
+    int64_t rows,
+    int64_t cols) {
+    if (rows <= 0 || cols <= 0 || ops.empty()) {
+        throw std::runtime_error("build_fused_elementwise_onnx: invalid args");
+    }
+
+    ensure_dir(onnx_path.parent_path());
+
+    std::string ops_csv;
+    for (size_t i = 0; i < ops.size(); ++i) {
+        if (i != 0) ops_csv += ",";
+        ops_csv += elementwise_op_name(ops[i]);
+    }
+
+    const std::string py_script = R"PY(
+import sys
+import onnx
+from onnx import helper, TensorProto
+
+ops = sys.argv[1].split(',')
+rows = int(sys.argv[2])
+cols = int(sys.argv[3])
+out_path = sys.argv[4]
+
+X_val = helper.make_tensor_value_info("X", TensorProto.FLOAT, [rows, cols])
+Y_val = helper.make_tensor_value_info("Y", TensorProto.FLOAT, [rows, cols])
+inputs = [X_val]
+initializers = []
+nodes = []
+current = "X"
+secondary_idx = 0
+
+for k, op in enumerate(ops):
+    out_name = "mid_" + str(k) if k < len(ops) - 1 else "Y"
+    if op in ("add", "mul"):
+        b_name = "B_" + str(secondary_idx)
+        secondary_idx += 1
+        b_val = helper.make_tensor_value_info(b_name, TensorProto.FLOAT, [rows, cols])
+        inputs.append(b_val)
+        node_type = "Add" if op == "add" else "Mul"
+        nodes.append(helper.make_node(node_type, inputs=[current, b_name], outputs=[out_name], name=f"{node_type}_{k}"))
+        current = out_name
+    elif op == "scale":
+        b_name = "B_" + str(secondary_idx)
+        secondary_idx += 1
+        b_val = helper.make_tensor_value_info(b_name, TensorProto.FLOAT, [1, 1])
+        inputs.append(b_val)
+        nodes.append(helper.make_node("Mul", inputs=[current, b_name], outputs=[out_name], name=f"Mul_{k}"))
+        current = out_name
+    elif op == "rmsnorm":
+        eps_name = "B_" + str(secondary_idx)
+        secondary_idx += 1
+        eps_val = helper.make_tensor_value_info(eps_name, TensorProto.FLOAT, [1, 1])
+        inputs.append(eps_val)
+        inv_n_name = "INV_N_" + str(k)
+        inv_n = helper.make_tensor(inv_n_name, TensorProto.FLOAT, [1, 1], [1.0 / cols])
+        initializers.append(inv_n)
+        m_n   = f"m_{k}"
+        me_n  = f"me_{k}"
+        r_n   = f"r_{k}"
+        x2_n  = f"x2_{k}"
+        x2t_n = f"x2t_{k}"
+        st_n  = f"st_{k}"
+        s_n   = f"s_{k}"
+        # Network input X has explicit FD layout; Transpose workaround is safe.
+        # RMS_NORM is only ever at k==0 (enforced by chain builder).
+        nodes.extend([
+            helper.make_node("Mul",       [current, current],    [x2_n],     name=f"Mul_X2_{k}"),
+            helper.make_node("Transpose", [x2_n],                [x2t_n],    name=f"Tp0_{k}", perm=[1, 0]),
+            helper.make_node("ReduceSum", [x2t_n],               [st_n],     name=f"RSum_{k}", axes=[0], keepdims=1),
+            helper.make_node("Transpose", [st_n],                [s_n],      name=f"Tp1_{k}", perm=[1, 0]),
+            helper.make_node("Mul",       [s_n, inv_n_name],     [m_n],      name=f"ScaleMean_{k}"),
+            helper.make_node("Add",       [m_n, eps_name],       [me_n],     name=f"Add_EPS_{k}"),
+            helper.make_node("Sqrt",      [me_n],                [r_n],      name=f"Sqrt_{k}"),
+            helper.make_node("Div",       [current, r_n],        [out_name], name=f"Div_{k}"),
+        ])
+        current = out_name
+    else:
+        raise RuntimeError(f"unsupported op in fused chain: {op}")
+
+graph = helper.make_graph(nodes, "fused_ew_graph", inputs, [Y_val], initializer=initializers)
+model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
+model.ir_version = 8
+onnx.checker.check_model(model)
+onnx.save(model, out_path)
+)PY";
+
+    if (!run_system_ok("python3 -c " + quote_for_sh("import onnx") + " >/dev/null 2>&1")) {
+        throw std::runtime_error("python package missing: onnx");
+    }
+
+    const std::filesystem::path script_path = onnx_path.parent_path() / "make_fused_ew_onnx.py";
+    std::ofstream py(script_path);
+    if (!py) {
+        throw std::runtime_error("failed to write python script: " + script_path.string());
+    }
+    py << py_script;
+    py.close();
+
+    const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
+                            quote_for_sh(ops_csv) + " " +
                             std::to_string(rows) + " " + std::to_string(cols) + " " +
                             quote_for_sh(onnx_path.string());
     run_system_checked(cmd);
@@ -923,6 +1044,118 @@ ElementwiseZgNetworkBundle get_or_compile_elementwise_zg_network(
     out.ram_cache_hit = false;
     out.compiled_now = true;
     return out;
+}
+
+ElementwiseZgNetworkBundle get_or_compile_fused_ew_zg_network(
+    const std::filesystem::path & work_root,
+    const std::vector<ElementwiseZgOp> & ops,
+    int64_t rows,
+    int64_t cols) {
+    if (rows <= 0 || cols <= 0 || ops.empty()) {
+        throw std::runtime_error("get_or_compile_fused_ew_zg_network: invalid args");
+    }
+
+    preload_zg_cache(work_root);
+    const auto root_abs = std::filesystem::weakly_canonical(work_root);
+    const auto net_name = make_fused_ew_net_name(ops, rows, cols);
+    const auto cache_key = make_root_net_key(root_abs, net_name);
+
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            ElementwiseZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
+
+    const std::filesystem::path work_dir = root_abs / net_name;
+    ensure_dir(work_dir);
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            ElementwiseZgNetworkBundle out;
+            out.net_name = it->second.net_name;
+            out.network = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now = false;
+            return out;
+        }
+    }
+
+    // Disk cache hit: reuse previously compiled json/raw.
+    try {
+        auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+        auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+        network.loadParamsFromFile(raw_path.string());
+
+        CachedMatmulEntry entry;
+        entry.net_name = net_name;
+        entry.m = rows;
+        entry.k = cols;
+        entry.n = 1;
+        entry.network = network;
+        entry.json_path = json_path;
+        entry.raw_path = raw_path;
+        {
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[cache_key] = entry;
+        }
+
+        ElementwiseZgNetworkBundle out;
+        out.net_name = net_name;
+        out.network = std::move(network);
+        out.ram_cache_hit = false;
+        out.compiled_now = false;
+        return out;
+    } catch (...) {
+        // cache miss or broken cache; fall through to compile.
+    }
+
+    const auto onnx_path = work_dir / (net_name + ".onnx");
+    build_fused_elementwise_onnx(onnx_path, ops, rows, cols);
+
+    std::vector<std::vector<int64_t>> input_shapes = {{rows, cols}};
+    for (auto op : ops) {
+        if (op == ElementwiseZgOp::ADD || op == ElementwiseZgOp::MUL) {
+            input_shapes.push_back({rows, cols});
+        } else if (op == ElementwiseZgOp::SCALE || op == ElementwiseZgOp::RMS_NORM) {
+            input_shapes.push_back({1, 1});
+        }
+    }
+
+    const auto artifacts = write_icraft_compile_toml_for_zg_elementwise(work_dir, net_name, onnx_path, input_shapes);
+    run_icraft_compile(artifacts);
+    auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+
+    auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+    network.loadParamsFromFile(raw_path.string());
+
+    CachedMatmulEntry entry;
+    entry.net_name = net_name;
+    entry.m = rows;
+    entry.k = cols;
+    entry.n = 1;
+    entry.network = network;
+    entry.json_path = json_path;
+    entry.raw_path = raw_path;
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        g_cache[cache_key] = entry;
+    }
+
+    ElementwiseZgNetworkBundle fused_out;
+    fused_out.net_name = net_name;
+    fused_out.network = std::move(network);
+    fused_out.ram_cache_hit = false;
+    fused_out.compiled_now = true;
+    return fused_out;
 }
 
 FlashAttnZgNetworkBundle get_or_compile_flash_attn_zg_network(
