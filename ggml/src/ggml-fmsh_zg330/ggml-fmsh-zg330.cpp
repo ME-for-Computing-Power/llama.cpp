@@ -92,6 +92,44 @@ struct ggml_fmsh_zg330_elementwise_session_entry {
     size_t output_bytes = 0;
 };
 
+// Two-phase RMS_NORM session: avoids the ZG-unsupported Sqrt op.
+// pre session: X[R,C], eps[1,1] → r_sq[R,1]  (Mul+ReduceSum+Mul+Add)
+// post session: X[R,C], r_inv[R,1] → Y[R,C]   (Mul)
+// Shared X: pre_input_tensors[0] == post_input_tensors[0] (same Tensor object),
+// so X is only written once into the shared host buffer before both forwards.
+struct ggml_fmsh_zg330_rmsnorm_split_session_entry {
+    ggml_fmsh_zg330_op_signature signature;
+    uint64_t hit_count = 0;
+    int64_t rows = 0;
+    int64_t cols = 0;
+    int64_t compiled_rows = 0;
+    ggml::fmsh::netmake::RmsNormSplitNetworkBundle bundle;
+    Session session_pre;
+    Session session_post;
+    // Shared input X tensor (pre[0] and post[0] point to the same allocation).
+    TensorType x_input_type;
+    Tensor     x_input_tensor;
+    // Pre-only: eps[1,1].
+    TensorType eps_input_type;
+    Tensor     eps_input_tensor;
+    // Post-only: r_inv[R,1].
+    TensorType r_inv_input_type;
+    Tensor     r_inv_input_tensor;
+};
+
+// ROPE NeoX session: X[N,d], theta[N,d/2] → Y[N,d]
+// theta is computed on host per call (position × dim-pair angles).
+struct ggml_fmsh_zg330_rope_session_entry {
+    ggml_fmsh_zg330_op_signature signature;
+    uint64_t hit_count = 0;
+    int64_t rows = 0;
+    int64_t cols = 0;
+    ggml::fmsh::netmake::RopeZgNetworkBundle bundle;
+    Session session;
+    std::vector<TensorType> input_types;
+    std::vector<Tensor>     input_tensors; // [0]=X, [1]=theta
+};
+
 // Runtime chain descriptor (not cached; rebuilt each dispatch iteration).
 struct ggml_fmsh_zg330_fused_ew_chain {
     std::vector<ggml_tensor *> nodes;
@@ -171,6 +209,8 @@ struct ggml_backend_fmsh_zg330_context {
 
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_session_entry>> session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_elementwise_session_entry>, ggml_fmsh_zg330_op_signature_hash> elementwise_session_cache;
+    std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_rmsnorm_split_session_entry>, ggml_fmsh_zg330_op_signature_hash> rmsnorm_split_session_cache;
+    std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_rope_session_entry>, ggml_fmsh_zg330_op_signature_hash> rope_session_cache;
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_flash_attn_session_entry>> flash_attn_session_cache;
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_bf16_bridge_session_entry>> bridge_session_cache;
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_fused_ew_entry>> fused_ew_session_cache;
@@ -178,10 +218,12 @@ struct ggml_backend_fmsh_zg330_context {
     bool strict_mode = false;
     bool enable_log = true;
     int log_level = 1; // 0 debug, 1 info, 2 warn, 3 error
-    bool offload_cpy_dup = false;
-    bool offload_soft_max = false;
-    bool offload_rms_norm = true;
+    bool offload_cpy_dup = false;  // bf16 roundtrip destroys KV cache precision; must stay CPU
+    bool offload_soft_max = true;
+    bool offload_rms_norm = false; // socket RTT makes any host-target node (Sqrt) more expensive than CPU
     bool offload_flash_attn_ext = true;
+    bool offload_rope = true;
+    bool rms_norm_native_sqrt = false; // false=split (pre+host_sqrt+post), true=fused+Sqrt@hostt
     int64_t flash_softmax_cu = 8;
     int64_t flash_precompile_kv_depth = 1;
     int64_t flash_kv_bucket_max = 8192;
@@ -433,7 +475,6 @@ static bool ggml_fmsh_is_host_dispatch_op(const ggml_tensor * op) {
         case GGML_OP_CPY:
         case GGML_OP_DUP:
         case GGML_OP_MUL_MAT_ID:
-        case GGML_OP_ROPE:
             return true;
         default:
             return false;
@@ -478,6 +519,15 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     }
     if (op->op == GGML_OP_FLASH_ATTN_EXT) {
         return true;
+    }
+    if (op->op == GGML_OP_ROPE) {
+        if (op->type != GGML_TYPE_F32 || op->src[0] == nullptr || op->src[0]->type != GGML_TYPE_F32) {
+            return false;
+        }
+        const int32_t mode = ((const int32_t *) op->op_params)[2];
+        // Support NeoX (mode 2) and IMROPE (40 = NeoX|MROPE, text Qwen3.5) on PL.
+        // Pure MROPE 8 (vision cross-modal) goes to CPU.
+        return mode != GGML_ROPE_TYPE_MROPE;
     }
     if (ggml_fmsh_is_elementwise_zg_op(op)) {
         return true;
@@ -659,9 +709,13 @@ static bool ggml_fmsh_validate_elementwise(
     switch (node->op) {
         case GGML_OP_CPY:
         case GGML_OP_DUP:
+            // Only handle contiguous src and dst — non-contiguous dst (e.g. KV cache views)
+            // would require element-by-element stride-aware writes which PL cannot do directly.
             return src0 &&
                    src0->type == GGML_TYPE_F32 &&
-                   ggml_nelements(src0) == ggml_nelements(node);
+                   ggml_nelements(src0) == ggml_nelements(node) &&
+                   ggml_is_contiguous(src0) &&
+                   ggml_is_contiguous(node);
         case GGML_OP_ADD:
         case GGML_OP_MUL:
             if (!src0 || !src1 || src0->type != GGML_TYPE_F32 || src1->type != GGML_TYPE_F32) {
@@ -1131,6 +1185,164 @@ static ggml_fmsh_zg330_elementwise_session_entry * ggml_fmsh_get_or_create_eleme
         if (err) {
             *err = e.what();
         }
+        return nullptr;
+    }
+}
+
+static ggml_fmsh_zg330_rmsnorm_split_session_entry * ggml_fmsh_get_or_create_rmsnorm_split_session(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * node,
+    bool * created,
+    std::string * err) {
+    ggml::fmsh::netmake::ElementwiseZgOp kind;
+    int64_t rows = 0, cols = 0;
+    if (!ggml_fmsh_validate_elementwise(node, &kind, &rows, &cols)) {
+        if (err) *err = "invalid rmsnorm shape/layout";
+        return nullptr;
+    }
+    if (kind != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM) {
+        if (err) *err = "not an RMS_NORM op";
+        return nullptr;
+    }
+    const int64_t compile_rows = ggml_fmsh_elementwise_compile_rows(kind, rows);
+    const ggml_fmsh_zg330_op_signature sig = ggml_fmsh_make_elementwise_signature(node, kind, compile_rows, cols);
+    auto it = ctx->rmsnorm_split_session_cache.find(sig);
+    if (it != ctx->rmsnorm_split_session_cache.end()) {
+        it->second->hit_count++;
+        if (created) *created = false;
+        return it->second.get();
+    }
+    if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+        return nullptr;
+    }
+    try {
+        auto bundle = ggml::fmsh::netmake::get_or_compile_rmsnorm_split_zg_networks(
+            ctx->cache_dir, compile_rows, cols);
+
+        Session session_pre = Session::Create<zg330::ZG330Backend, HostBackend>(
+            bundle.network_pre.view(0), {ctx->zg_device, HostDevice::Default()});
+        session_pre.enableTimeProfile(true);
+        session_pre.apply();
+
+        Session session_post = Session::Create<zg330::ZG330Backend, HostBackend>(
+            bundle.network_post.view(0), {ctx->zg_device, HostDevice::Default()});
+        session_post.enableTimeProfile(true);
+        session_post.apply();
+
+        auto entry = std::make_unique<ggml_fmsh_zg330_rmsnorm_split_session_entry>();
+        entry->signature     = sig;
+        entry->hit_count     = 1;
+        entry->rows          = rows;
+        entry->cols          = cols;
+        entry->compiled_rows = compile_rows;
+        entry->bundle        = std::move(bundle);
+        entry->session_pre   = std::move(session_pre);
+        entry->session_post  = std::move(session_post);
+        // Extract input types from both networks; X type from pre[0] (shared with post[0]).
+        const auto & pre_inputs = entry->bundle.network_pre.inputs();
+        const auto & post_inputs = entry->bundle.network_post.inputs();
+        if (pre_inputs.size() < 2 || post_inputs.size() < 2) {
+            if (err) *err = "rmsnorm_split: unexpected network input count";
+            return nullptr;
+        }
+        entry->x_input_type    = pre_inputs[0].tensorType().clone();
+        entry->eps_input_type  = pre_inputs[1].tensorType().clone();
+        entry->r_inv_input_type = post_inputs[1].tensorType().clone();
+
+        ggml_fmsh_zg330_rmsnorm_split_session_entry * ptr = entry.get();
+        ctx->rmsnorm_split_session_cache.emplace(sig, std::move(entry));
+        if (created) *created = true;
+        return ptr;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
+        return nullptr;
+    }
+}
+
+static ggml_fmsh_zg330_rope_session_entry * ggml_fmsh_get_or_create_rope_session(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * node,
+    bool * created,
+    std::string * err) {
+    if (!node || node->op != GGML_OP_ROPE) {
+        if (err) *err = "not a ROPE op";
+        return nullptr;
+    }
+    if (node->type != GGML_TYPE_F32 || !node->src[0] || node->src[0]->type != GGML_TYPE_F32) {
+        if (err) *err = "ROPE: unsupported dtype";
+        return nullptr;
+    }
+    const int32_t rope_mode = ((const int32_t *) node->op_params)[2];
+    // Support NeoX (mode 2), IMROPE (mode 40=NEOX|MROPE|8) used by Qwen3.5 text.
+    // For text-only IMROPE the 4 position groups (t/h/w/extra) are all equal,
+    // so the rotation is identical to plain NeoX — we read pos[i2] (time positions).
+    // Pure MROPE mode 8 (vision cross-modal) is not supported.
+    const bool is_neox  = (rope_mode & GGML_ROPE_TYPE_NEOX) != 0;
+    const bool is_imrope = rope_mode == GGML_ROPE_TYPE_IMROPE; // 40
+    const bool is_mrope_only = (rope_mode == GGML_ROPE_TYPE_MROPE);   // 8, vision/cross-modal
+    if (!is_neox && !is_imrope && rope_mode != 0) {
+        if (err) *err = "ROPE: unsupported mode (not NeoX/IMROPE)";
+        return nullptr;
+    }
+    if (is_mrope_only) {
+        if (err) *err = "ROPE: pure MROPE (vision) not supported on PL";
+        return nullptr;
+    }
+    const int64_t cols = node->ne[0]; // head_dim
+    if (cols <= 0 || cols % 2 != 0) {
+        if (err) *err = "ROPE: head_dim must be even";
+        return nullptr;
+    }
+    const int64_t rows = node->ne[1] * node->ne[2] * node->ne[3]; // n_head * seq * batch
+    if (rows <= 0) {
+        if (err) *err = "ROPE: zero rows";
+        return nullptr;
+    }
+
+    ggml_fmsh_zg330_op_signature sig = {};
+    sig.op = static_cast<uint32_t>(node->op);
+    sig.dtype = static_cast<uint32_t>(node->type);
+    sig.shape[0] = cols;
+    sig.shape[1] = rows;
+    sig.shape[2] = 0;
+    sig.shape[3] = 0;
+
+    auto it = ctx->rope_session_cache.find(sig);
+    if (it != ctx->rope_session_cache.end()) {
+        it->second->hit_count++;
+        if (created) *created = false;
+        return it->second.get();
+    }
+
+    if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+        return nullptr;
+    }
+
+    try {
+        auto bundle = ggml::fmsh::netmake::get_or_compile_rope_zg_network(ctx->cache_dir, rows, cols);
+        Session session = Session::Create<zg330::ZG330Backend, HostBackend>(
+            bundle.network.view(0), {ctx->zg_device, HostDevice::Default()});
+        session.enableTimeProfile(true);
+        session.apply();
+
+        auto entry = std::make_unique<ggml_fmsh_zg330_rope_session_entry>();
+        entry->signature = sig;
+        entry->hit_count = 1;
+        entry->rows = rows;
+        entry->cols = cols;
+        entry->bundle = std::move(bundle);
+        entry->session = std::move(session);
+        for (const auto & in : entry->bundle.network.inputs()) {
+            entry->input_types.push_back(in.tensorType().clone());
+        }
+        entry->input_tensors.resize(entry->input_types.size());
+
+        ggml_fmsh_zg330_rope_session_entry * ptr = entry.get();
+        ctx->rope_session_cache.emplace(sig, std::move(entry));
+        if (created) *created = true;
+        return ptr;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
         return nullptr;
     }
 }
@@ -1651,6 +1863,246 @@ static bool ggml_fmsh_execute_elementwise(
         if (err) {
             *err = e.what();
         }
+        return false;
+    }
+}
+
+// Two-phase RMS_NORM execution: PL computes r² per row, host does scalar sqrt, PL applies X*r_inv.
+// X is written once into a shared buffer used by both pre and post networks.
+static bool ggml_fmsh_execute_rmsnorm_split(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    ggml_fmsh_zg330_rmsnorm_split_session_entry * entry,
+    std::string * err) {
+    if (!node || !entry || node->data == nullptr || node->src[0] == nullptr || node->src[0]->data == nullptr) {
+        if (err) *err = "rmsnorm_split: tensor data is null";
+        return false;
+    }
+    try {
+        const int64_t exec_rows  = entry->compiled_rows;
+        const int64_t actual_rows = entry->rows;
+        const int64_t cols       = entry->cols;
+
+        // Lazily allocate shared X tensor (used by both pre and post).
+        if (!entry->x_input_tensor.defined()) {
+            entry->x_input_tensor = Tensor(entry->x_input_type.clone());
+            entry->x_input_tensor.mallocOn(HostDevice::MemRegion());
+        }
+        if (!entry->eps_input_tensor.defined()) {
+            entry->eps_input_tensor = Tensor(entry->eps_input_type.clone());
+            entry->eps_input_tensor.mallocOn(HostDevice::MemRegion());
+        }
+        if (!entry->r_inv_input_tensor.defined()) {
+            entry->r_inv_input_tensor = Tensor(entry->r_inv_input_type.clone());
+            entry->r_inv_input_tensor.mallocOn(HostDevice::MemRegion());
+        }
+
+        // Fill shared X once.
+        uint16_t * x_buf = reinterpret_cast<uint16_t *>(entry->x_input_tensor.data().cptr());
+        const ggml_tensor * src0 = node->src[0];
+        for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
+            for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
+                for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
+                    const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
+                    const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
+                    for (int64_t i0 = 0; i0 < cols; ++i0) {
+                        x_buf[row_off + static_cast<size_t>(i0)] =
+                            ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src0, i0, i1, i2, i3));
+                    }
+                }
+            }
+        }
+        if (exec_rows > actual_rows) {
+            const size_t row_bytes = static_cast<size_t>(cols) * sizeof(uint16_t);
+            for (int64_t r = actual_rows; r < exec_rows; ++r) {
+                std::memcpy(x_buf + r * cols, x_buf + (actual_rows - 1) * cols, row_bytes);
+            }
+        }
+
+        float eps = 0.0f;
+        std::memcpy(&eps, node->op_params, sizeof(float));
+        const uint16_t eps_bf16 = ggml_fmsh_f32_to_bf16(eps);
+        std::memcpy(entry->eps_input_tensor.data().cptr(), &eps_bf16, sizeof(uint16_t));
+
+        // Run pre: [X, eps] → r_sq[exec_rows, 1].
+        std::vector<Tensor> pre_inputs = {entry->x_input_tensor, entry->eps_input_tensor};
+        auto pre_outputs = entry->session_pre.forward(pre_inputs);
+        if (pre_outputs.empty()) {
+            if (err) *err = "rmsnorm_split pre session.forward returned empty";
+            return false;
+        }
+        if (!ggml_fmsh_wait_tensor_ready(pre_outputs[0], err, "rmsnorm_split_pre")) {
+            return false;
+        }
+
+        // Read r_sq (only exec_rows scalars — very small read).
+        std::vector<float> r_sq(static_cast<size_t>(exec_rows));
+        pre_outputs[0].read(reinterpret_cast<char *>(r_sq.data()), 0,
+                             static_cast<size_t>(exec_rows) * sizeof(float));
+
+        // Compute r_inv on host (exec_rows scalars).
+        uint16_t * r_inv_buf = reinterpret_cast<uint16_t *>(entry->r_inv_input_tensor.data().cptr());
+        for (int64_t r = 0; r < exec_rows; ++r) {
+            const float rsq_val = (r < actual_rows) ? r_sq[static_cast<size_t>(r)]
+                                                    : r_sq[static_cast<size_t>(actual_rows - 1)];
+            const float r_inv = (rsq_val > 0.0f) ? (1.0f / std::sqrt(rsq_val)) : 0.0f;
+            r_inv_buf[static_cast<size_t>(r)] = ggml_fmsh_f32_to_bf16(r_inv);
+        }
+
+        // Run post: [X (shared), r_inv] → Y[exec_rows, cols].
+        // X buffer is unchanged from pre — reuse without memcpy.
+        std::vector<Tensor> post_inputs = {entry->x_input_tensor, entry->r_inv_input_tensor};
+        auto post_outputs = entry->session_post.forward(post_inputs);
+        if (post_outputs.empty()) {
+            if (err) *err = "rmsnorm_split post session.forward returned empty";
+            return false;
+        }
+        if (!ggml_fmsh_wait_tensor_ready(post_outputs[0], err, "rmsnorm_split_post")) {
+            return false;
+        }
+
+        // Read Y and write to dst.
+        const size_t total_elems = static_cast<size_t>(exec_rows) * static_cast<size_t>(cols);
+        std::vector<float> out_tmp(total_elems);
+        post_outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, total_elems * sizeof(float));
+
+        for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
+            for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
+                for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
+                    const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
+                    const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
+                    for (int64_t i0 = 0; i0 < cols; ++i0) {
+                        ggml_fmsh_write_f32_indexed(node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
+                    }
+                }
+            }
+        }
+        ggml_fmsh_log_locked(ctx, 1, "rmsnorm_split_done rows=" + std::to_string(actual_rows) + " cols=" + std::to_string(cols));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
+        return false;
+    }
+}
+
+// ROPE NeoX execution: compute theta table on host, upload, run PL network.
+static bool ggml_fmsh_execute_rope(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    ggml_fmsh_zg330_rope_session_entry * entry,
+    std::string * err) {
+    if (!node || !entry || node->data == nullptr || !node->src[0] || node->src[0]->data == nullptr) {
+        if (err) *err = "rope_exec: null tensor";
+        return false;
+    }
+    try {
+        // Lazily allocate input tensors.
+        for (size_t i = 0; i < entry->input_types.size(); ++i) {
+            if (!entry->input_tensors[i].defined()) {
+                entry->input_tensors[i] = Tensor(entry->input_types[i].clone());
+                entry->input_tensors[i].mallocOn(HostDevice::MemRegion());
+            }
+        }
+
+        const ggml_tensor * src0 = node->src[0]; // X[ne0=d, ne1=n_head, ne2=seq, ne3=batch]
+        const ggml_tensor * src1 = node->src[1]; // positions [ne0=seq]
+
+        const int32_t n_dims     = ((const int32_t *) node->op_params)[1];
+        float freq_base  = 10000.0f;
+        float freq_scale = 1.0f;
+        std::memcpy(&freq_base,  (const float *) node->op_params + 5, sizeof(float));
+        std::memcpy(&freq_scale, (const float *) node->op_params + 6, sizeof(float));
+
+        const int64_t ne0 = node->ne[0]; // head_dim = cols
+        const int64_t ne1 = node->ne[1]; // n_head
+        const int64_t ne2 = node->ne[2]; // seq_len
+        const int64_t ne3 = node->ne[3]; // batch
+        const int64_t half = ne0 / 2;
+
+        // Fill X input (bf16, row-major [rows, cols]).
+        uint16_t * x_in = reinterpret_cast<uint16_t *>(entry->input_tensors[0].data().cptr());
+        for (int64_t i3 = 0; i3 < ne3; ++i3) {
+            for (int64_t i2 = 0; i2 < ne2; ++i2) {
+                for (int64_t i1 = 0; i1 < ne1; ++i1) {
+                    const int64_t row = (i3 * ne2 + i2) * ne1 + i1;
+                    const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(ne0);
+                    const float * src_row = reinterpret_cast<const float *>(
+                        static_cast<const char *>(src0->data) +
+                        i1 * src0->nb[1] + i2 * src0->nb[2] + i3 * src0->nb[3]);
+                    for (int64_t i0 = 0; i0 < ne0; ++i0) {
+                        x_in[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(src_row[i0]);
+                    }
+                }
+            }
+        }
+
+        // Fill theta input (bf16, row-major [rows, half]).
+        // theta[row_of_head, j] = position * freq_base^(-2j / n_dims) * freq_scale
+        // NeoX layout: first half dims [0..half) use theta[j] for j=0..half-1.
+        uint16_t * theta_in = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
+        // Position tensor: src1 is int32 [seq_len] (shared across all batches and heads).
+        const int32_t * pos_data = (src1 && src1->data)
+            ? reinterpret_cast<const int32_t *>(src1->data)
+            : nullptr;
+        for (int64_t i3 = 0; i3 < ne3; ++i3) {
+            for (int64_t i2 = 0; i2 < ne2; ++i2) {
+                // Position for this sequence slot (shared across batches and heads).
+                const int32_t pos = pos_data
+                    ? pos_data[i2 < src1->ne[0] ? i2 : src1->ne[0] - 1]
+                    : static_cast<int32_t>(i2);
+                for (int64_t i1 = 0; i1 < ne1; ++i1) {
+                    const int64_t row = (i3 * ne2 + i2) * ne1 + i1;
+                    const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(half);
+                    for (int64_t j = 0; j < half; ++j) {
+                        float theta;
+                        if (j < n_dims / 2) {
+                            // Active rotation dimension.
+                            theta = static_cast<float>(pos) * freq_scale *
+                                std::pow(freq_base, -2.0f * static_cast<float>(j) / static_cast<float>(n_dims));
+                        } else {
+                            // Passthrough dimension: theta=0 → cos=1, sin=0.
+                            theta = 0.0f;
+                        }
+                        theta_in[row_off + static_cast<size_t>(j)] = ggml_fmsh_f32_to_bf16(theta);
+                    }
+                }
+            }
+        }
+
+        // Run the PL ROPE network.
+        auto outputs = entry->session.forward(entry->input_tensors);
+        if (outputs.empty()) {
+            if (err) *err = "rope_exec: session.forward returned empty";
+            return false;
+        }
+        if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "rope_exec")) {
+            return false;
+        }
+
+        // Read output Y and write to host.
+        const size_t total_elems = static_cast<size_t>(entry->rows) * static_cast<size_t>(ne0);
+        const size_t total_bytes = total_elems * sizeof(float);
+        std::vector<float> out_tmp(total_elems);
+        outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
+
+        for (int64_t i3 = 0; i3 < ne3; ++i3) {
+            for (int64_t i2 = 0; i2 < ne2; ++i2) {
+                for (int64_t i1 = 0; i1 < ne1; ++i1) {
+                    const int64_t row = (i3 * ne2 + i2) * ne1 + i1;
+                    const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(ne0);
+                    float * dst_row = reinterpret_cast<float *>(
+                        static_cast<char *>(node->data) +
+                        i1 * node->nb[1] + i2 * node->nb[2] + i3 * node->nb[3]);
+                    for (int64_t i0 = 0; i0 < ne0; ++i0) {
+                        dst_row[i0] = out_tmp[row_off + static_cast<size_t>(i0)];
+                    }
+                }
+            }
+        }
+        ggml_fmsh_log_locked(ctx, 1, "rope_exec_done rows=" + std::to_string(entry->rows) + " cols=" + std::to_string(ne0));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
         return false;
     }
 }
@@ -2894,16 +3346,21 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 consumer->ne[2] == 1 && consumer->ne[3] == 1) {
                 return true;
             }
+            // ROPE can consume device-resident src[0].
+            if (consumer->op == GGML_OP_ROPE && src_idx == 0 &&
+                consumer->type == GGML_TYPE_F32 && consumer->src[0] != nullptr &&
+                consumer->src[0]->type == GGML_TYPE_F32) {
+                return true;
+            }
             // Elementwise ops can consume a device tensor at src[0].
-            // SOFT_MAX and RMS_NORM always re-read from host so they cannot use input_override.
+            // RMS_NORM uses two-phase PL+scalar-sqrt execution so it also cannot use input_override here.
             if (src_idx == 0 && ggml_fmsh_should_run_elementwise_zg(ctx, consumer)) {
                 ggml::fmsh::netmake::ElementwiseZgOp ek;
                 int64_t er = 0, ec = 0;
                 if (!ggml_fmsh_validate_elementwise(consumer, &ek, &er, &ec)) {
                     return false;
                 }
-                return ek != ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
-                       ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM;
+                return ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM;
             }
             return false;
         };
@@ -3128,6 +3585,13 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 }
             }
 #endif
+            // Materialize any device-resident Q/K/V inputs before executing flash attention.
+            // These reads are no-ops if the tensors are already on host (the common case for batch 1).
+            ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+            ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+            ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
+            ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
+            ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
             if (!ggml_fmsh_execute_flash_attn_ext(ctx, node, entry, &err)) {
                 ggml_fmsh_log_locked(ctx, 2, "fallback op=FLASH_ATTN_EXT reason=" + err);
                 ctx->flash_attn_fallback++;
@@ -3322,6 +3786,65 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             continue;
         }
 
+        if (node->op == GGML_OP_ROPE) {
+            if (!ctx->offload_rope) {
+                // Fall through to CPU.
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                const enum ggml_status st_cpu = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                if (st_cpu != GGML_STATUS_SUCCESS) { return st_cpu; }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = false;
+                continue;
+            }
+            bool rope_created = false;
+            std::string rope_err;
+            ggml_fmsh_zg330_rope_session_entry * rope_entry =
+                ggml_fmsh_get_or_create_rope_session(ctx, node, &rope_created, &rope_err);
+            if (rope_entry) {
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    std::string(rope_created ? "session_create" : "session_hit") +
+                    " op=ROPE hits=" + std::to_string(rope_entry->hit_count) +
+                    " net=" + rope_entry->bundle.net_name +
+                    " net_cache=" + std::string(rope_entry->bundle.ram_cache_hit ? "HIT" : "MISS"));
+                // Materialize any device-resident src[0] before execute.
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                const auto t0_r = std::chrono::high_resolution_clock::now();
+                if (!ggml_fmsh_execute_rope(ctx, node, rope_entry, &rope_err)) {
+                    ggml_fmsh_log_locked(ctx, 2, "fallback op=ROPE reason=" + rope_err);
+                    if (ctx->strict_mode) { return GGML_STATUS_FAILED; }
+                    const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                    if (st != GGML_STATUS_SUCCESS) { return st; }
+                } else {
+                    ggml_fmsh_accumulate_profile(ctx, node, rope_entry->session,
+                        std::chrono::duration<double, std::milli>(
+                            std::chrono::high_resolution_clock::now() - t0_r).count());
+                }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = true;
+                continue;
+            }
+            // Fall back to host CPU for ROPE if ZG session creation failed.
+            ggml_fmsh_log_locked(ctx, 1, "rope_fallback_host reason=" + rope_err);
+            ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+            ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+            const enum ggml_status st_r = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+            if (st_r != GGML_STATUS_SUCCESS) { return st_r; }
+            has_prev_device_output = false;
+            prev_device_output_node = nullptr;
+            device_tensor_map.erase(node);
+            last_dispatched_valid = true;
+            last_dispatched_zg = false;
+            continue;
+        }
+
         if (ggml_fmsh_should_run_elementwise_zg(ctx, node)) {
             ggml_fmsh_log_locked(ctx, 1, "elementwise_dispatch_enter op=" + std::string(ggml_op_name(node->op)));
             ggml::fmsh::netmake::ElementwiseZgOp ek;
@@ -3348,6 +3871,41 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 "elementwise_dispatch_valid op=" + std::string(ggml_op_name(node->op)) +
                 " rows=" + std::to_string(erows) +
                 " cols=" + std::to_string(ecols));
+
+            // ── RMS_NORM two-phase split path (no Sqrt on PL) ─────────────────
+            if (ek == ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM && !ctx->rms_norm_native_sqrt) {
+                bool split_created = false;
+                std::string split_err;
+                ggml_fmsh_zg330_rmsnorm_split_session_entry * split_entry =
+                    ggml_fmsh_get_or_create_rmsnorm_split_session(ctx, node, &split_created, &split_err);
+                if (split_entry) {
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        std::string(split_created ? "session_create" : "session_hit") +
+                        " op=RMS_NORM_SPLIT hits=" + std::to_string(split_entry->hit_count) +
+                        " pre=" + split_entry->bundle.net_name_pre +
+                        " post=" + split_entry->bundle.net_name_post);
+                    const auto t0_s = std::chrono::high_resolution_clock::now();
+                    if (!ggml_fmsh_execute_rmsnorm_split(ctx, node, split_entry, &split_err)) {
+                        ggml_fmsh_log_locked(ctx, 2, "fallback op=RMS_NORM reason=" + split_err);
+                        if (ctx->strict_mode) { return GGML_STATUS_FAILED; }
+                        const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                        if (st != GGML_STATUS_SUCCESS) { return st; }
+                    } else {
+                        ggml_fmsh_accumulate_profile(ctx, node, split_entry->session_post,
+                            std::chrono::duration<double, std::milli>(
+                                std::chrono::high_resolution_clock::now() - t0_s).count());
+                    }
+                    has_prev_device_output = false;
+                    prev_device_output_node = nullptr;
+                    device_tensor_map.erase(node);
+                    last_dispatched_valid = true;
+                    last_dispatched_zg = true;
+                    continue;
+                }
+                // Fall through to single-network path (uses Sqrt, may fail on ZG).
+                ggml_fmsh_log_locked(ctx, 1, "rmsnorm_split_session_create_failed reason=" + split_err + " falling back to single-network");
+            }
 
             // ── Greedy fused chain attempt ────────────────────────────────────
             {
@@ -3496,11 +4054,10 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             const auto t0 = std::chrono::high_resolution_clock::now();
 
             // Check if src[0] has a device-resident result we can chain directly.
-            // SOFT_MAX and RMS_NORM always re-read from host so they cannot use input_override.
+            // RMS_NORM uses two-phase PL+scalar-sqrt execution so it cannot use input_override.
             const Tensor * chained_input_ptr = nullptr;
             const ggml_tensor * ew_chained_input_src = nullptr;
-            if (ek != ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
-                ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM &&
+            if (ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM &&
                 node->src[0] != nullptr) {
                 auto it_dev = device_tensor_map.find(node->src[0]);
                 if (it_dev != device_tensor_map.end()) {
@@ -3779,8 +4336,10 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
     ctx->enable_log = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_LOG", true);
     ctx->log_level = ggml_fmsh_get_log_level();
     ctx->offload_cpy_dup = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_CPY_DUP", false);
-    ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", false);
-    ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", true);
+    ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", true);
+    ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", false);
+    ctx->rms_norm_native_sqrt = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_RMS_NORM_NATIVE_SQRT", false);
+    ctx->offload_rope = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_ROPE", true);
     ctx->offload_flash_attn_ext = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_FLASH_ATTN_EXT", true);
     ctx->flash_softmax_cu = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_SOFTMAX_CU", 8)));
     ctx->flash_precompile_kv_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_PRECOMPILE_KV_DEPTH", 1));
@@ -3833,6 +4392,7 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
             " offload_cpy_dup=" + std::to_string(ctx->offload_cpy_dup ? 1 : 0) +
             " offload_soft_max=" + std::to_string(ctx->offload_soft_max ? 1 : 0) +
             " offload_rms_norm=" + std::to_string(ctx->offload_rms_norm ? 1 : 0) +
+            " rms_norm_native_sqrt=" + std::to_string(ctx->rms_norm_native_sqrt ? 1 : 0) +
             " offload_flash_attn_ext=" + std::to_string(ctx->offload_flash_attn_ext ? 1 : 0) +
             " flash_softmax_cu=" + std::to_string(ctx->flash_softmax_cu) +
             " flash_precompile_kv_depth=" + std::to_string(ctx->flash_precompile_kv_depth) +

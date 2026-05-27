@@ -1379,4 +1379,353 @@ ElementwiseZgNetworkBundle get_or_compile_bf16_bridge_zg_network(
     return out;
 }
 
+// ── RMS_NORM split: pre (reduce to r²) ──────────────────────────────────────
+// ONNX: X[R,C], eps[1,1] → Mul(X,X) → Transpose → ReduceSum → Transpose → Mul(1/C) → Add(eps) → r_sq[R,1]
+static void build_rmsnorm_pre_onnx(
+    const std::filesystem::path & onnx_path,
+    int64_t rows,
+    int64_t cols) {
+    ensure_dir(onnx_path.parent_path());
+
+    const std::string py_script = R"PY(
+import sys, onnx
+from onnx import helper, TensorProto, numpy_helper
+import numpy as np
+rows = int(sys.argv[1]); cols = int(sys.argv[2]); out_path = sys.argv[3]
+inv_n_val = float(1.0 / cols)
+X   = helper.make_tensor_value_info("X",   TensorProto.FLOAT, [rows, cols])
+EPS = helper.make_tensor_value_info("EPS", TensorProto.FLOAT, [1, 1])
+Y   = helper.make_tensor_value_info("Y",   TensorProto.FLOAT, [rows, 1])
+inv_n = numpy_helper.from_array(np.array([[inv_n_val]], dtype=np.float32), name="INV_N")
+nodes = [
+    helper.make_node("Mul",       ["X", "X"],       ["x2"],   name="Mul_X2"),
+    helper.make_node("Transpose", ["x2"],            ["x2t"],  name="Tp0",    perm=[1, 0]),
+    helper.make_node("ReduceSum", ["x2t"],           ["st"],   name="RSum",   axes=[0], keepdims=1),
+    helper.make_node("Transpose", ["st"],            ["s"],    name="Tp1",    perm=[1, 0]),
+    helper.make_node("Mul",       ["s", "INV_N"],   ["m"],    name="Scale"),
+    helper.make_node("Add",       ["m", "EPS"],     ["Y"],    name="AddEPS"),
+]
+graph = helper.make_graph(nodes, "rmsnorm_pre_graph", [X, EPS], [Y], initializer=[inv_n])
+model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
+model.ir_version = 8
+onnx.checker.check_model(model)
+onnx.save(model, out_path)
+)PY";
+
+    if (!run_system_ok("python3 -c " + quote_for_sh("import onnx") + " >/dev/null 2>&1")) {
+        throw std::runtime_error("python package missing: onnx");
+    }
+    const std::filesystem::path script_path = onnx_path.parent_path() / "make_rmsnorm_pre_onnx.py";
+    std::ofstream py(script_path);
+    if (!py) { throw std::runtime_error("failed to write python script: " + script_path.string()); }
+    py << py_script; py.close();
+    const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
+                            std::to_string(rows) + " " + std::to_string(cols) + " " +
+                            quote_for_sh(onnx_path.string());
+    run_system_checked(cmd);
+}
+
+// ── RMS_NORM split: post (multiply X by r_inv per row) ──────────────────────
+// ONNX: X[R,C], r_inv[R,1] → Mul(X, r_inv) → Y[R,C]
+static void build_rmsnorm_post_onnx(
+    const std::filesystem::path & onnx_path,
+    int64_t rows,
+    int64_t cols) {
+    ensure_dir(onnx_path.parent_path());
+
+    const std::string py_script = R"PY(
+import sys, onnx
+from onnx import helper, TensorProto
+rows = int(sys.argv[1]); cols = int(sys.argv[2]); out_path = sys.argv[3]
+X     = helper.make_tensor_value_info("X",     TensorProto.FLOAT, [rows, cols])
+R_INV = helper.make_tensor_value_info("R_INV", TensorProto.FLOAT, [rows, 1])
+Y     = helper.make_tensor_value_info("Y",     TensorProto.FLOAT, [rows, cols])
+nodes = [
+    helper.make_node("Mul", ["X", "R_INV"], ["Y"], name="Mul_RInv"),
+]
+graph = helper.make_graph(nodes, "rmsnorm_post_graph", [X, R_INV], [Y])
+model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 11)])
+model.ir_version = 8
+onnx.checker.check_model(model)
+onnx.save(model, out_path)
+)PY";
+
+    if (!run_system_ok("python3 -c " + quote_for_sh("import onnx") + " >/dev/null 2>&1")) {
+        throw std::runtime_error("python package missing: onnx");
+    }
+    const std::filesystem::path script_path = onnx_path.parent_path() / "make_rmsnorm_post_onnx.py";
+    std::ofstream py(script_path);
+    if (!py) { throw std::runtime_error("failed to write python script: " + script_path.string()); }
+    py << py_script; py.close();
+    const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
+                            std::to_string(rows) + " " + std::to_string(cols) + " " +
+                            quote_for_sh(onnx_path.string());
+    run_system_checked(cmd);
+}
+
+RmsNormSplitNetworkBundle get_or_compile_rmsnorm_split_zg_networks(
+    const std::filesystem::path & work_root,
+    int64_t rows,
+    int64_t cols) {
+    if (rows <= 0 || cols <= 0) {
+        throw std::runtime_error("get_or_compile_rmsnorm_split_zg_networks: invalid dims");
+    }
+
+    preload_zg_cache(work_root);
+    const auto root_abs = std::filesystem::weakly_canonical(work_root);
+    const auto net_name_pre  = "rmsnorm_pre_bf16_"  + std::to_string(rows) + "x" + std::to_string(cols);
+    const auto net_name_post = "rmsnorm_post_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
+    const auto key_pre  = make_root_net_key(root_abs, net_name_pre);
+    const auto key_post = make_root_net_key(root_abs, net_name_post);
+
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it_pre  = g_cache.find(key_pre);
+        const auto it_post = g_cache.find(key_post);
+        if (it_pre != g_cache.end() && it_post != g_cache.end()) {
+            RmsNormSplitNetworkBundle out;
+            out.net_name_pre  = it_pre->second.net_name;
+            out.net_name_post = it_post->second.net_name;
+            out.network_pre   = it_pre->second.network;
+            out.network_post  = it_post->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now  = false;
+            return out;
+        }
+    }
+
+    const auto work_dir_pre  = root_abs / net_name_pre;
+    const auto work_dir_post = root_abs / net_name_post;
+    ensure_dir(work_dir_pre);
+    ensure_dir(work_dir_post);
+
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it_pre  = g_cache.find(key_pre);
+        const auto it_post = g_cache.find(key_post);
+        if (it_pre != g_cache.end() && it_post != g_cache.end()) {
+            RmsNormSplitNetworkBundle out;
+            out.net_name_pre  = it_pre->second.net_name;
+            out.net_name_post = it_post->second.net_name;
+            out.network_pre   = it_pre->second.network;
+            out.network_post  = it_post->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now  = false;
+            return out;
+        }
+    }
+
+    // Compile pre network.
+    icraft::xir::Network network_pre;
+    {
+        try {
+            auto [jp, rp] = find_generated_zg_json_raw(work_dir_pre, net_name_pre);
+            network_pre = icraft::xir::Network::CreateFromJsonFile(jp.string());
+            network_pre.loadParamsFromFile(rp.string());
+            CachedMatmulEntry e; e.net_name = net_name_pre; e.network = network_pre;
+            e.json_path = jp; e.raw_path = rp;
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[key_pre] = e;
+        } catch (...) {
+            const auto onnx_pre = work_dir_pre / (net_name_pre + ".onnx");
+            build_rmsnorm_pre_onnx(onnx_pre, rows, cols);
+            // pre: inputs X[R,C] and EPS[1,1]
+            const auto art = write_icraft_compile_toml_for_zg_elementwise(
+                work_dir_pre, net_name_pre, onnx_pre, {{rows, cols}, {1, 1}});
+            run_icraft_compile(art);
+            auto [jp, rp] = find_generated_zg_json_raw(work_dir_pre, net_name_pre);
+            network_pre = icraft::xir::Network::CreateFromJsonFile(jp.string());
+            network_pre.loadParamsFromFile(rp.string());
+            CachedMatmulEntry e; e.net_name = net_name_pre; e.network = network_pre;
+            e.m = rows; e.k = cols; e.n = 1; e.json_path = jp; e.raw_path = rp;
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[key_pre] = e;
+        }
+    }
+
+    // Compile post network.
+    icraft::xir::Network network_post;
+    {
+        try {
+            auto [jp, rp] = find_generated_zg_json_raw(work_dir_post, net_name_post);
+            network_post = icraft::xir::Network::CreateFromJsonFile(jp.string());
+            network_post.loadParamsFromFile(rp.string());
+            CachedMatmulEntry e; e.net_name = net_name_post; e.network = network_post;
+            e.json_path = jp; e.raw_path = rp;
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[key_post] = e;
+        } catch (...) {
+            const auto onnx_post = work_dir_post / (net_name_post + ".onnx");
+            build_rmsnorm_post_onnx(onnx_post, rows, cols);
+            // post: inputs X[R,C] and R_INV[R,1]
+            const auto art = write_icraft_compile_toml_for_zg_elementwise(
+                work_dir_post, net_name_post, onnx_post, {{rows, cols}, {rows, 1}});
+            run_icraft_compile(art);
+            auto [jp, rp] = find_generated_zg_json_raw(work_dir_post, net_name_post);
+            network_post = icraft::xir::Network::CreateFromJsonFile(jp.string());
+            network_post.loadParamsFromFile(rp.string());
+            CachedMatmulEntry e; e.net_name = net_name_post; e.network = network_post;
+            e.m = rows; e.k = cols; e.n = 1; e.json_path = jp; e.raw_path = rp;
+            std::lock_guard<std::mutex> lock(g_cache_mutex);
+            g_cache[key_post] = e;
+        }
+    }
+
+    RmsNormSplitNetworkBundle out;
+    out.net_name_pre  = net_name_pre;
+    out.net_name_post = net_name_post;
+    out.network_pre   = std::move(network_pre);
+    out.network_post  = std::move(network_post);
+    out.ram_cache_hit = false;
+    out.compiled_now  = true;
+    return out;
+}
+
+// ── ROPE NeoX: X[N,d], theta[N,d/2] → Y[N,d] ──────────────────────────────
+// theta = angles per (position, dim-pair); computed on host before each call.
+// Network:
+//   cos_t = Cos(theta)         # [N, d/2]
+//   sin_t = Sin(theta)         # [N, d/2]
+//   x0    = Slice(X, axis=1, [0, d/2))   # first half  [N, d/2]
+//   x1    = Slice(X, axis=1, [d/2, d))   # second half [N, d/2]
+//   out0  = x0 * cos_t - x1 * sin_t
+//   out1  = x0 * sin_t + x1 * cos_t
+//   Y     = Concat([out0, out1], axis=1)  # [N, d]
+static void build_rope_onnx(
+    const std::filesystem::path & onnx_path,
+    int64_t rows,
+    int64_t cols) {
+    if (cols % 2 != 0) {
+        throw std::runtime_error("build_rope_onnx: cols must be even (got " + std::to_string(cols) + ")");
+    }
+    ensure_dir(onnx_path.parent_path());
+
+    const std::string py_script = R"PY(
+import sys, onnx, numpy as np
+from onnx import helper, TensorProto, numpy_helper
+rows = int(sys.argv[1]); cols = int(sys.argv[2]); out_path = sys.argv[3]
+half = cols // 2
+
+X     = helper.make_tensor_value_info("X",     TensorProto.FLOAT, [rows, cols])
+THETA = helper.make_tensor_value_info("THETA", TensorProto.FLOAT, [rows, half])
+Y     = helper.make_tensor_value_info("Y",     TensorProto.FLOAT, [rows, cols])
+
+starts0 = numpy_helper.from_array(np.array([0, 0],    dtype=np.int64), name="starts0")
+ends0   = numpy_helper.from_array(np.array([rows, half], dtype=np.int64), name="ends0")
+starts1 = numpy_helper.from_array(np.array([0, half], dtype=np.int64), name="starts1")
+ends1   = numpy_helper.from_array(np.array([rows, cols], dtype=np.int64), name="ends1")
+axes_01 = numpy_helper.from_array(np.array([0, 1],    dtype=np.int64), name="axes_01")
+steps_1 = numpy_helper.from_array(np.array([1, 1],    dtype=np.int64), name="steps_1")
+
+nodes = [
+    helper.make_node("Cos",   ["THETA"],                 ["cos_t"],  name="Cos"),
+    helper.make_node("Sin",   ["THETA"],                 ["sin_t"],  name="Sin"),
+    helper.make_node("Slice", ["X",  "starts0", "ends0", "axes_01", "steps_1"], ["x0"], name="Slice0"),
+    helper.make_node("Slice", ["X",  "starts1", "ends1", "axes_01", "steps_1"], ["x1"], name="Slice1"),
+    helper.make_node("Mul",   ["x0", "cos_t"],           ["x0cos"],  name="Mul0"),
+    helper.make_node("Mul",   ["x1", "sin_t"],           ["x1sin"],  name="Mul1"),
+    helper.make_node("Mul",   ["x0", "sin_t"],           ["x0sin"],  name="Mul2"),
+    helper.make_node("Mul",   ["x1", "cos_t"],           ["x1cos"],  name="Mul3"),
+    helper.make_node("Sub",   ["x0cos", "x1sin"],        ["out0"],   name="Sub0"),
+    helper.make_node("Add",   ["x0sin", "x1cos"],        ["out1"],   name="Add0"),
+    helper.make_node("Concat",["out0", "out1"],          ["Y"],      name="Concat", axis=1),
+]
+
+inits = [starts0, ends0, starts1, ends1, axes_01, steps_1]
+graph = helper.make_graph(nodes, "rope_neox_graph", [X, THETA], [Y], initializer=inits)
+model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 13)])
+model.ir_version = 8
+onnx.checker.check_model(model)
+onnx.save(model, out_path)
+)PY";
+
+    if (!run_system_ok("python3 -c " + quote_for_sh("import onnx") + " >/dev/null 2>&1")) {
+        throw std::runtime_error("python package missing: onnx");
+    }
+    const std::filesystem::path script_path = onnx_path.parent_path() / "make_rope_onnx.py";
+    std::ofstream py(script_path);
+    if (!py) { throw std::runtime_error("failed to write python script: " + script_path.string()); }
+    py << py_script; py.close();
+    const std::string cmd = "python3 " + quote_for_sh(script_path.string()) + " " +
+                            std::to_string(rows) + " " + std::to_string(cols) + " " +
+                            quote_for_sh(onnx_path.string());
+    run_system_checked(cmd);
+}
+
+RopeZgNetworkBundle get_or_compile_rope_zg_network(
+    const std::filesystem::path & work_root,
+    int64_t rows,
+    int64_t cols) {
+    if (rows <= 0 || cols <= 0 || cols % 2 != 0) {
+        throw std::runtime_error("get_or_compile_rope_zg_network: invalid dims");
+    }
+
+    preload_zg_cache(work_root);
+    const auto root_abs = std::filesystem::weakly_canonical(work_root);
+    const auto net_name = "rope_neox_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
+    const auto cache_key = make_root_net_key(root_abs, net_name);
+
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            RopeZgNetworkBundle out;
+            out.net_name      = it->second.net_name;
+            out.network       = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now  = false;
+            return out;
+        }
+    }
+
+    const auto work_dir = root_abs / net_name;
+    ensure_dir(work_dir);
+    const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
+    {
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        const auto it = g_cache.find(cache_key);
+        if (it != g_cache.end()) {
+            RopeZgNetworkBundle out;
+            out.net_name      = it->second.net_name;
+            out.network       = it->second.network;
+            out.ram_cache_hit = true;
+            out.compiled_now  = false;
+            return out;
+        }
+    }
+
+    icraft::xir::Network network;
+    try {
+        auto [jp, rp] = find_generated_zg_json_raw(work_dir, net_name);
+        network = icraft::xir::Network::CreateFromJsonFile(jp.string());
+        network.loadParamsFromFile(rp.string());
+        CachedMatmulEntry e; e.net_name = net_name; e.network = network;
+        e.m = rows; e.k = cols; e.n = 1; e.json_path = jp; e.raw_path = rp;
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        g_cache[cache_key] = e;
+    } catch (...) {
+        const auto onnx_path = work_dir / (net_name + ".onnx");
+        build_rope_onnx(onnx_path, rows, cols);
+        // inputs: X[rows, cols] and THETA[rows, cols/2]
+        const auto art = write_icraft_compile_toml_for_zg_elementwise(
+            work_dir, net_name, onnx_path, {{rows, cols}, {rows, cols / 2}});
+        run_icraft_compile(art);
+        auto [jp, rp] = find_generated_zg_json_raw(work_dir, net_name);
+        network = icraft::xir::Network::CreateFromJsonFile(jp.string());
+        network.loadParamsFromFile(rp.string());
+        CachedMatmulEntry e; e.net_name = net_name; e.network = network;
+        e.m = rows; e.k = cols; e.n = 1; e.json_path = jp; e.raw_path = rp;
+        std::lock_guard<std::mutex> lock(g_cache_mutex);
+        g_cache[cache_key] = e;
+    }
+
+    RopeZgNetworkBundle out;
+    out.net_name     = net_name;
+    out.network      = std::move(network);
+    out.ram_cache_hit = false;
+    out.compiled_now  = true;
+    return out;
+}
+
 } // namespace ggml::fmsh::netmake
