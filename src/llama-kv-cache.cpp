@@ -4,6 +4,7 @@
 #include "llama-io.h"
 #include "llama-model.h"
 #include "llama-context.h"
+#include "ggml-fmsh-zg330.h"
 
 #include <algorithm>
 #include <cassert>
@@ -191,7 +192,19 @@ llama_kv_cache::llama_kv_cache(
 
         if (offload) {
             auto * dev = model.dev_layer(il);
-            buft = ggml_backend_dev_buffer_type(dev);
+
+            // Check if this device provides a dedicated ZG DDR buffer type for KV cache.
+            // If so, use it so KV tensors live in PL DDR and FA can consume them via DMA.
+            ggml_backend_buffer_type_t kv_buft_override = nullptr;
+            auto * reg = ggml_backend_dev_backend_reg(dev);
+            if (reg) {
+                auto get_kv_buft_fn = (ggml_backend_fmsh_zg330_get_kv_buft_t)
+                    ggml_backend_reg_get_proc_address(reg, "ggml_backend_fmsh_zg330_get_kv_buft");
+                if (get_kv_buft_fn) {
+                    kv_buft_override = get_kv_buft_fn(dev);
+                }
+            }
+            buft = kv_buft_override ? kv_buft_override : ggml_backend_dev_buffer_type(dev);
 
             dev_name = ggml_backend_dev_name(dev);
         }

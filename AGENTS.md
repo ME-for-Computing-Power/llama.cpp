@@ -18,6 +18,10 @@ FMSH_ZG330_EXTRA_CMAKE_ARGS="-DGGML_FMSH_ZG330_DEBUG_COMPARE=ON"
 
 使能对比，每次都会用 npu 与 cpu 计算参考值对比
 
+## 常见错误
+
+Socket 模式下，Device::Open 在已有连接时被调用（第二个临时 context 尝试连接），ARM 侧 icraft serve 会收到非法请求崩溃，后续会显示无法连接。避免这种写法。
+
 # 测试
 
 要运行一次socket模式的推理，可以：

@@ -209,6 +209,9 @@ struct ggml_fmsh_zg330_flash_attn_session_entry {
     uint32_t layer_increment = 0; // 每次 forward 的 layerCount 增量，第一次 forward 时学习
 };
 
+struct ggml_fmsh_zg330_buft_ctx; // forward declaration
+struct ggml_fmsh_zg330_device_context; // forward declaration
+
 struct ggml_backend_fmsh_zg330_context {
     ggml_backend_t cpu_backend = nullptr;
 
@@ -239,6 +242,11 @@ struct ggml_backend_fmsh_zg330_context {
     Device zg_device;
     bool device_opened = false;
     std::string device_url;
+
+    // Per-graph-compute staging buffers for ZG buffer tensors that need CPU access.
+    // When a ZG buffer tensor (weight/KV) is materialized, D2H data goes here and
+    // tensor->data is redirected to the staging buffer for the duration of graph_compute.
+    std::unordered_map<const ggml_tensor *, std::vector<char>> zg_staging_bufs;
 
     struct op_perf {
         uint64_t calls = 0;
@@ -289,6 +297,27 @@ struct ggml_backend_fmsh_zg330_context {
     std::mutex mu;
 };
 
+// Buffer type context: holds a reference to the ZG device for allocation.
+// Stored on ggml_fmsh_zg330_device_context so it outlives individual backend instances.
+// backend_ctx is updated each time a new backend is initialized (may be null during probe).
+// dev_ctx is always set (points back to the owning device context).
+struct ggml_fmsh_zg330_buft_ctx {
+    ggml_backend_fmsh_zg330_context * backend_ctx = nullptr;
+    void * dev_ctx_ptr = nullptr; // opaque pointer to ggml_fmsh_zg330_device_context
+};
+
+// Per-allocation ZG DDR buffer context.
+struct ggml_fmsh_zg330_buffer_ctx {
+    MemChunk chunk;
+    size_t   size;
+};
+
+// Forward declarations (defined after graph_compute helpers).
+static bool ggml_fmsh_is_zg_buffer_tensor(
+        const ggml_tensor * t, MemChunk * out_chunk, size_t * out_offset);
+static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
+        ggml_backend_buffer_type_t buft, size_t size);
+
 struct ggml_fmsh_zg330_device_context {
     std::mutex mu;
     Device memory_device;
@@ -297,6 +326,9 @@ struct ggml_fmsh_zg330_device_context {
     bool memory_cache_valid = false;
     size_t memory_free = 0;
     size_t memory_total = 0;
+    // Owned ZG buffer type for this device; backend_ctx is updated on init/free.
+    ggml_fmsh_zg330_buft_ctx * buft_ctx = nullptr;
+    ggml_backend_buffer_type * cached_buft = nullptr; // owns the single buft object
 };
 
 static ggml_fmsh_zg330_op_signature ggml_fmsh_make_signature(const ggml_tensor * node) {
@@ -538,6 +570,9 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
         return true;
     }
     if (ggml_fmsh_is_host_dispatch_op(op)) {
+        return true;
+    }
+    if (op->op == GGML_OP_SET_ROWS) {
         return true;
     }
     if (op->op != GGML_OP_MUL_MAT) {
@@ -2876,15 +2911,42 @@ static bool ggml_fmsh_execute_flash_attn_ext(
     ggml_tensor * node,
     ggml_fmsh_zg330_flash_attn_session_entry * entry,
     std::string * err) {
-    GGML_UNUSED(ctx);
     const ggml_tensor * q = node->src[0];
     const ggml_tensor * k = node->src[1];
     const ggml_tensor * v = node->src[2];
     const ggml_tensor * mask = node->src[3];
-    if (!q || !k || !v || !node->data || !q->data || !k->data || !v->data) {
+    if (!q || !k || !v || !node->data || !q->data) {
         if (err) *err = "FLASH_ATTN_EXT tensor data is null";
         return false;
     }
+
+    // K and V may live in ZG DDR (fake pointers, not dereferenceable on host).
+    // If so, D2H the entire root tensor into a staging buffer and temporarily
+    // redirect k->data / v->data so that the existing per-head stride loops work correctly
+    // even for permuted/view tensors whose strides differ from contiguous layout.
+    std::vector<char> k_root_staging, v_root_staging;
+    void * k_orig_data = k->data;
+    void * v_orig_data = v->data;
+    {
+        auto stage_kv = [&](const ggml_tensor * t, std::vector<char> & staging) -> void * {
+            MemChunk chunk; size_t off = 0;
+            const ggml_tensor * root = t;
+            while (root->view_src) root = root->view_src;
+            if (!ggml_fmsh_is_zg_buffer_tensor(root, &chunk, &off)) return t->data;
+            const size_t root_bytes = ggml_nbytes(root);
+            staging.resize(root_bytes);
+            chunk.read(staging.data(), off, root_bytes);
+            // Redirect: t's host address = staging_base + (t_zg_addr - root_zg_addr).
+            const uintptr_t root_zg = reinterpret_cast<uintptr_t>(root->data);
+            const uintptr_t t_zg    = reinterpret_cast<uintptr_t>(t->data);
+            return staging.data() + (t_zg - root_zg);
+        };
+        const_cast<ggml_tensor *>(k)->data = stage_kv(k, k_root_staging);
+        const_cast<ggml_tensor *>(v)->data = stage_kv(v, v_root_staging);
+    }
+    const void * k_data = k->data;
+    const void * v_data = v->data;
+
 
     const auto & cfg = entry->info;
     const int64_t head_dim = cfg.head_dim;
@@ -2949,11 +3011,11 @@ static bool ggml_fmsh_execute_flash_attn_ext(
         }
     }
 
-    float * in_q = reinterpret_cast<float *>(entry->input_tensors[0].data().cptr());
-    float * in_k = reinterpret_cast<float *>(entry->input_tensors[1].data().cptr());
-    float * in_v = reinterpret_cast<float *>(entry->input_tensors[2].data().cptr());
+    float * in_q     = reinterpret_cast<float *>(entry->input_tensors[0].data().cptr());
+    float * in_k     = reinterpret_cast<float *>(entry->input_tensors[1].data().cptr());
+    float * in_v     = reinterpret_cast<float *>(entry->input_tensors[2].data().cptr());
     float * in_scale = reinterpret_cast<float *>(entry->input_tensors[3].data().cptr());
-    float * in_mask = reinterpret_cast<float *>(entry->input_tensors[4].data().cptr());
+    float * in_mask  = reinterpret_cast<float *>(entry->input_tensors[4].data().cptr());
     float * in_softcap = nullptr;
     if (cfg.use_logit_softcap && entry->input_tensors.size() > 5) {
         in_softcap = reinterpret_cast<float *>(entry->input_tensors[5].data().cptr());
@@ -2989,7 +3051,7 @@ static bool ggml_fmsh_execute_flash_attn_ext(
             // K: [head_dim, kv_bucket]
             std::memset(in_k, 0, k_bytes);
             for (int64_t ikv = 0; ikv < kv_len; ++ikv) {
-                const char * src_k_row = static_cast<const char *>(k->data) +
+                const char * src_k_row = static_cast<const char *>(k_data) +
                                          ikv * k->nb[1] + k_head * k->nb[2] + k_batch * k->nb[3];
                 if (k->type == GGML_TYPE_F32) {
                     const float * src = reinterpret_cast<const float *>(src_k_row);
@@ -3008,7 +3070,7 @@ static bool ggml_fmsh_execute_flash_attn_ext(
             std::memset(in_v, 0, v_bytes);
             for (int64_t ikv = 0; ikv < kv_len; ++ikv) {
                 float * v_row = in_v + static_cast<size_t>(ikv * value_dim);
-                const char * src_v_row = static_cast<const char *>(v->data) +
+                const char * src_v_row = static_cast<const char *>(v_data) +
                                          ikv * v->nb[1] + k_head * v->nb[2] + k_batch * v->nb[3];
                 if (v->type == GGML_TYPE_F32) {
                     const float * src = reinterpret_cast<const float *>(src_v_row);
@@ -3187,6 +3249,10 @@ static bool ggml_fmsh_execute_flash_attn_ext(
         }
     }
 
+    // Restore original data pointers if they were redirected.
+    const_cast<ggml_tensor *>(k)->data = k_orig_data;
+    const_cast<ggml_tensor *>(v)->data = v_orig_data;
+
     return true;
 }
 
@@ -3235,25 +3301,71 @@ static std::string ggml_fmsh_tensor_loc_str(ggml_backend_fmsh_zg330_context * ct
     return "Other";
 }
 
+// Write a device-resident tensor to a safe host location, handling ZG buffer tensors
+// (whose t->data is a physical address) by redirecting via a staging buffer.
+// Used in output-chunk-conflict eviction paths where we have the Tensor but not going
+// through materialize_if_device's map lookup.
+static void ggml_fmsh_evict_to_host(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t,
+    const Tensor & device_tensor) {
+    if (!t) return;
+    const size_t bytes = ggml_nbytes(t);
+    if (bytes == 0) return;
+    MemChunk zg_chunk;
+    size_t   zg_off = 0;
+    if (ggml_fmsh_is_zg_buffer_tensor(t, &zg_chunk, &zg_off)) {
+        const ggml_tensor * root = t;
+        while (root->view_src) root = root->view_src;
+        auto & staging = ctx->zg_staging_bufs[root];
+        if (staging.empty()) {
+            staging.resize(bytes);
+            device_tensor.read(staging.data(), 0, bytes);
+        }
+        // Do not redirect t->data here.
+    } else if (t->data != nullptr) {
+        device_tensor.read(reinterpret_cast<char *>(t->data), 0, bytes);
+    }
+}
+
 static void ggml_fmsh_materialize_if_device(
     ggml_backend_fmsh_zg330_context * ctx,
     const ggml_tensor * t,
     std::unordered_map<const ggml_tensor *, Tensor> & device_tensor_map) {
-    if (!t || t->data == nullptr) {
-        return;
-    }
+    if (!t) return;
     auto it = device_tensor_map.find(t);
-    if (it == device_tensor_map.end()) {
-        return;
-    }
+    if (it == device_tensor_map.end()) return;
+
     const size_t bytes = ggml_nbytes(t);
-    if (bytes > 0) {
+    if (bytes == 0) { device_tensor_map.erase(it); return; }
+
+    MemChunk zg_chunk;
+    size_t   zg_off = 0;
+    if (ggml_fmsh_is_zg_buffer_tensor(t, &zg_chunk, &zg_off)) {
+        // t->data is a ZG DDR physical address — D2H into staging buffer keyed by root tensor.
+        // We do NOT modify t->data here; callers that need host access should
+        // check zg_staging_bufs and swap root->data around the CPU call.
+        const ggml_tensor * root = t;
+        while (root->view_src) root = root->view_src;
+        auto & staging = ctx->zg_staging_bufs[root];
+        // Only D2H the full root tensor once per graph_compute; subsequent views share it.
+        if (staging.empty()) {
+            const size_t root_bytes = ggml_nbytes(root);
+            staging.resize(root_bytes);
+            MemChunk rc; size_t ro = 0;
+            ggml_fmsh_is_zg_buffer_tensor(root, &rc, &ro);
+            rc.read(staging.data(), ro, root_bytes);
+            ggml_fmsh_log_locked(ctx, 1,
+                "materialize_zg_to_staging bytes=" + std::to_string(root_bytes) +
+                " op_src=" + std::string(ggml_op_name(t->op)));
+        }
+    } else if (t->data != nullptr) {
+        // t->data is a real host pointer (compute buffer): write directly.
         it->second.read(reinterpret_cast<char *>(t->data), 0, bytes);
+        ggml_fmsh_log_locked(ctx, 1,
+            "materialize_to_host bytes=" + std::to_string(bytes) +
+            " op_src=" + std::string(ggml_op_name(t->op)));
     }
-    ggml_fmsh_log_locked(
-        ctx, 1,
-        "materialize_to_host bytes=" + std::to_string(bytes) +
-        " op_src=" + std::string(ggml_op_name(t->op)));
     device_tensor_map.erase(it);
 }
 
@@ -3353,12 +3465,18 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
     }
 
     if (ctx && ctx->device_opened) {
-        try {
-            Device::Close(ctx->zg_device);
-        } catch (...) {
-            // ignore close errors
-        }
+        // Device is reference-counted; don't force-close here.
+        // The underlying connection closes when the last handle (dev_ctx->memory_device) drops.
+        ctx->zg_device = Device();
         ctx->device_opened = false;
+    }
+    // Disconnect buft_ctx from this backend so future alloc_buffer calls fall back to CPU.
+    if (backend->device) {
+        auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(backend->device->context);
+        if (dev_ctx && dev_ctx->buft_ctx) {
+            std::lock_guard<std::mutex> lock(dev_ctx->mu);
+            dev_ctx->buft_ctx->backend_ctx = nullptr;
+        }
     }
     if (ctx && ctx->cpu_backend) {
         ggml_backend_free(ctx->cpu_backend);
@@ -3366,6 +3484,134 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
     }
     delete ctx;
     delete backend;
+}
+
+// Returns true if t's data lives in a ZG DDR buffer (allocated by our custom buffer type).
+// Fills out_chunk with the buffer's MemChunk and out_offset with the byte offset of t
+// within that chunk. Views are resolved: offset accumulates view_offs up the chain.
+static bool ggml_fmsh_is_zg_buffer_tensor(
+        const ggml_tensor * t, MemChunk * out_chunk, size_t * out_offset) {
+    if (!t) return false;
+    // Walk to root of the view chain, accumulating view_offs.
+    size_t total_off = 0;
+    const ggml_tensor * root = t;
+    while (root->view_src) {
+        total_off += static_cast<size_t>(root->view_offs);
+        root = root->view_src;
+    }
+    if (!root->buffer || !root->buffer->buft ||
+        root->buffer->buft->iface.alloc_buffer != ggml_fmsh_zg330_buffer_type_alloc_buffer) {
+        return false;
+    }
+    auto * buf_ctx = static_cast<ggml_fmsh_zg330_buffer_ctx *>(root->buffer->context);
+    if (!buf_ctx || !buf_ctx->chunk.defined()) return false;
+    // Offset of the root tensor's data within the chunk.
+    const uintptr_t base = reinterpret_cast<uintptr_t>(root->buffer->iface.get_base(root->buffer));
+    const size_t root_off = static_cast<size_t>(reinterpret_cast<uintptr_t>(root->data) - base);
+    *out_chunk  = buf_ctx->chunk;
+    *out_offset = root_off + total_off;
+    return true;
+}
+
+// Build an icraft Tensor pointing to the ZG DDR region for ggml tensor t.
+// The TensorType shape is flat (1-D, total elements) with F32 element type —
+// sufficient for materialize_if_device (D2H read) and for ops that look up
+// device_tensor_map to feed into session.forward.
+static Tensor ggml_fmsh_make_zg_tensor(const ggml_tensor * t) {
+    MemChunk chunk;
+    size_t offset = 0;
+    if (!ggml_fmsh_is_zg_buffer_tensor(t, &chunk, &offset)) {
+        return Tensor();
+    }
+    // Choose element ScalarType based on ggml type.
+    icraft::xir::ScalarType elem;
+    switch (t->type) {
+        case GGML_TYPE_F16:
+            elem = icraft::xir::FloatType::FP16();
+            break;
+        case GGML_TYPE_BF16:
+            elem = icraft::xir::FloatType::BF16();
+            break;
+        default:
+            elem = icraft::xir::FloatType::FP32();
+            break;
+    }
+    const int64_t n_elem = ggml_nelements(t);
+    icraft::xir::TensorType ttype(elem,
+                                   icraft::xir::Array<int64_t>{n_elem},
+                                   icraft::xir::Layout());
+    return Tensor(ttype, chunk, static_cast<uint64_t>(offset));
+}
+
+// Execute a single CPU node with ZG buffer tensors temporarily redirected to their staging buffers.
+// After execution, writes staging data back to ZG DDR for any src that is a ZG buffer
+// and has a staging buffer (meaning it may have been written by the CPU op, e.g. SET_ROWS into KV cache).
+static enum ggml_status ggml_fmsh_compute_cpu_node_with_zg_redirect(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_cgraph * cgraph,
+    int node_index) {
+    ggml_tensor * node = cgraph->nodes[node_index];
+
+    // Save original data pointers for ZG buffer tensors and redirect to staging.
+    struct redirect_entry { ggml_tensor * t; void * orig_data; };
+    std::vector<redirect_entry> redirects;
+    auto redirect_tensor = [&](ggml_tensor * t) {
+        if (!t) return;
+        // Walk to root tensor.
+        ggml_tensor * root = t;
+        while (root->view_src) root = root->view_src;
+        MemChunk zg_chunk; size_t zg_off = 0;
+        if (!ggml_fmsh_is_zg_buffer_tensor(root, &zg_chunk, &zg_off)) return;
+        auto it = ctx->zg_staging_bufs.find(root);
+        if (it == ctx->zg_staging_bufs.end() || it->second.empty()) return;
+        char * staging_base = it->second.data();
+        // root may already be redirected; use saved orig_data as ZG base.
+        uintptr_t root_zg = reinterpret_cast<uintptr_t>(root->data);
+        for (const auto & r : redirects) {
+            if (r.t == root) { root_zg = reinterpret_cast<uintptr_t>(r.orig_data); break; }
+        }
+        // Redirect root first (if not already done).
+        if (![&]{ for (const auto & r : redirects) if (r.t == root) return true; return false; }()) {
+            redirects.push_back({root, root->data});
+            root->data = staging_base + (root_zg - root_zg); // = staging_base
+        }
+        // Redirect t if it differs from root (view: host_ptr = staging + (t_zg - root_zg)).
+        if (t != root && ![&]{ for (const auto & r : redirects) if (r.t == t) return true; return false; }()) {
+            // t->data was set during view init: root_zg_at_init + view_offs_chain.
+            // Use the saved root ZG address to compute offset correctly.
+            const uintptr_t t_zg = reinterpret_cast<uintptr_t>(t->data);
+            redirects.push_back({t, t->data});
+            t->data = staging_base + (t_zg - root_zg);
+        }
+    };
+    for (int s = 0; s < GGML_MAX_SRC; ++s) redirect_tensor(node->src[s]);
+    redirect_tensor(node); // output tensor may also be ZG buffer (unusual but safe)
+
+    const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, node_index);
+
+    // Restore original data pointers.
+    for (const auto & r : redirects) r.t->data = r.orig_data;
+
+    if (st != GGML_STATUS_SUCCESS) return st;
+
+    // Write back: for any src ZG buffer that has a staging buffer, sync staging → ZG DDR.
+    // This handles ops like SET_ROWS that write into a ZG buffer (e.g. KV cache).
+    for (int s = 0; s < GGML_MAX_SRC; ++s) {
+        const ggml_tensor * src = node->src[s];
+        if (!src) break;
+        const ggml_tensor * root = src;
+        while (root->view_src) root = root->view_src;
+        auto sit = ctx->zg_staging_bufs.find(root);
+        if (sit == ctx->zg_staging_bufs.end() || sit->second.empty()) continue;
+        MemChunk zg_chunk; size_t zg_off = 0;
+        if (!ggml_fmsh_is_zg_buffer_tensor(root, &zg_chunk, &zg_off)) continue;
+        zg_chunk.write(zg_off, sit->second.data(), sit->second.size());
+        ggml_fmsh_log_locked(ctx, 1,
+            "staging_writeback bytes=" + std::to_string(sit->second.size()) +
+            " op=" + std::string(ggml_op_name(node->op)) +
+            " src=" + std::to_string(s));
+    }
+    return GGML_STATUS_SUCCESS;
 }
 
 static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t backend, ggml_cgraph * cgraph) {
@@ -3382,6 +3628,26 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
     Tensor prev_device_output;
     ggml_tensor * prev_device_output_node = nullptr;
     std::unordered_map<const ggml_tensor *, Tensor> device_tensor_map;
+    // Staging buffers for ZG buffer tensors that need CPU access this compute pass.
+    // Cleared at the top of each graph_compute so redirected t->data pointers from the
+    // previous pass are invalidated before new ZG allocations are registered.
+    ctx->zg_staging_bufs.clear();
+
+    // Pre-populate device_tensor_map with any tensor that lives in ZG DDR
+    // (model weights, KV cache, etc.) so graph_compute can route ops correctly.
+    for (int i = 0; i < cgraph->n_nodes; ++i) {
+        const ggml_tensor * node = cgraph->nodes[i];
+        auto pre_register = [&](const ggml_tensor * t) {
+            if (!t || device_tensor_map.count(t)) return;
+            Tensor zt = ggml_fmsh_make_zg_tensor(t);
+            if (zt.defined()) {
+                device_tensor_map[t] = std::move(zt);
+            }
+        };
+        pre_register(node);
+        for (int s = 0; s < GGML_MAX_SRC; ++s) pre_register(node->src[s]);
+    }
+
     auto find_single_future_consumer =
         [&](int from_idx, const ggml_tensor * producer, ggml_tensor ** out_node, int * out_src_idx) -> bool {
             ggml_tensor * found = nullptr;
@@ -3548,7 +3814,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
-                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
@@ -3577,7 +3843,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
-                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
@@ -3635,7 +3901,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     !backup_if_alias(node->src[4])) {
                     ggml_fmsh_log_locked(ctx, 2, "debug_compare_backup_failed op=FLASH_ATTN_EXT reason=" + dbg_err);
                 }
-                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (cpu_st != GGML_STATUS_SUCCESS) {
                     return cpu_st;
                 }
@@ -3671,7 +3937,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[3], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[4], device_tensor_map);
-                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
@@ -3784,7 +4050,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     !backup_if_alias(node->src[2])) {
                     ggml_fmsh_log_locked(ctx, 2, "debug_compare_backup_failed op=MUL_MAT reason=" + dbg_err);
                 }
-                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (cpu_st != GGML_STATUS_SUCCESS) {
                     return cpu_st;
                 }
@@ -3858,7 +4124,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 // Fall through to CPU.
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
-                const enum ggml_status st_cpu = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st_cpu = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st_cpu != GGML_STATUS_SUCCESS) { return st_cpu; }
                 has_prev_device_output = false;
                 prev_device_output_node = nullptr;
@@ -3878,13 +4144,14 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     " op=ROPE hits=" + std::to_string(rope_entry->hit_count) +
                     " net=" + rope_entry->bundle.net_name +
                     " net_cache=" + std::string(rope_entry->bundle.ram_cache_hit ? "HIT" : "MISS"));
-                // Materialize any device-resident src[0] before execute.
+                // Materialize any device-resident src before execute.
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 const auto t0_r = std::chrono::high_resolution_clock::now();
                 if (!ggml_fmsh_execute_rope(ctx, node, rope_entry, &rope_err)) {
                     ggml_fmsh_log_locked(ctx, 2, "fallback op=ROPE reason=" + rope_err);
                     if (ctx->strict_mode) { return GGML_STATUS_FAILED; }
-                    const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                    const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                     if (st != GGML_STATUS_SUCCESS) { return st; }
                 } else {
                     ggml_fmsh_accumulate_profile(ctx, node, rope_entry->session,
@@ -3902,7 +4169,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             ggml_fmsh_log_locked(ctx, 1, "rope_fallback_host reason=" + rope_err);
             ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
             ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
-            const enum ggml_status st_r = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+            const enum ggml_status st_r = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
             if (st_r != GGML_STATUS_SUCCESS) { return st_r; }
             has_prev_device_output = false;
             prev_device_output_node = nullptr;
@@ -3922,7 +4189,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     ctx, 1,
                     "fallback op=" + std::string(ggml_op_name(node->op)) +
                     " reason=unsupported_layout_or_dtype");
-                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
@@ -3982,7 +4249,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                                 const ggml_tensor * held = it_map->first;
                                 if (held && held->data) {
                                     const size_t hb = ggml_nbytes(held);
-                                    if (hb > 0) it_map->second.read(reinterpret_cast<char *>(held->data), 0, hb);
+                                    if (hb > 0) ggml_fmsh_evict_to_host(ctx, held, it_map->second);
                                 }
                                 if (has_prev_device_output && prev_device_output_node == held) {
                                     has_prev_device_output = false; prev_device_output_node = nullptr;
@@ -3993,12 +4260,16 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     }
 
                     const auto t0_s = std::chrono::high_resolution_clock::now();
+                    // If no device input override, src[0] must be host-accessible.
+                    if (split_input_override == nullptr) {
+                        ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                    }
                     Tensor split_chained_output;
                     if (!ggml_fmsh_execute_rmsnorm_split(ctx, node, split_entry,
                             split_input_override, split_keep_device, &split_chained_output, &split_err)) {
                         ggml_fmsh_log_locked(ctx, 2, "fallback op=RMS_NORM reason=" + split_err);
                         if (ctx->strict_mode) { return GGML_STATUS_FAILED; }
-                        const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                        const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                         if (st != GGML_STATUS_SUCCESS) { return st; }
                         has_prev_device_output = false;
                         prev_device_output_node = nullptr;
@@ -4093,6 +4364,13 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                             }
                         }
 
+                        // Materialize secondary inputs (src[1] of each chain node, e.g. ADD bias).
+                        if (fchain_input_ptr == nullptr) {
+                            ggml_fmsh_materialize_if_device(ctx, fchain.nodes[0]->src[0], device_tensor_map);
+                        }
+                        for (size_t fk = 0; fk < fchain.nodes.size(); ++fk) {
+                            ggml_fmsh_materialize_if_device(ctx, fchain.nodes[fk]->src[1], device_tensor_map);
+                        }
                         Tensor fchained_output;
                         if (ggml_fmsh_execute_fused_ew(
                                 ctx, fchain, fentry, fchain_input_ptr,
@@ -4150,7 +4428,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
-                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
@@ -4229,7 +4507,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     !backup_if_alias(node->src[2])) {
                     ggml_fmsh_log_locked(ctx, 2, "debug_compare_backup_failed op=" + std::string(ggml_op_name(node->op)) + " reason=" + dbg_err);
                 }
-                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (cpu_st != GGML_STATUS_SUCCESS) {
                     return cpu_st;
                 }
@@ -4257,7 +4535,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         if (held != nullptr && held->data != nullptr) {
                             const size_t held_bytes = ggml_nbytes(held);
                             if (held_bytes > 0) {
-                                it_map->second.read(reinterpret_cast<char *>(held->data), 0, held_bytes);
+                                ggml_fmsh_evict_to_host(ctx, held, it_map->second);
                             }
                         }
                         ggml_fmsh_log_locked(
@@ -4273,6 +4551,12 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     }
                 }
             }
+            // Ensure src tensors are host-accessible before elementwise execute.
+            if (chained_input_ptr == nullptr) {
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+            }
+            ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+            ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
             Tensor chained_output;
             if (!ggml_fmsh_execute_elementwise(ctx, node, entry, chained_input_ptr, keep_device_output_effective, &chained_output, &err)) {
                 ggml_fmsh_log_locked(ctx, 2, "fallback op=" + std::string(ggml_op_name(node->op)) + " reason=" + err);
@@ -4285,7 +4569,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
-                const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
@@ -4372,7 +4656,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
             ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
             ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
-            const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+            const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
             if (st != GGML_STATUS_SUCCESS) {
                 ggml_fmsh_log_locked(ctx, 2, "host dispatch failed op=" + std::string(ggml_op_name(node->op)));
                 return st;
@@ -4397,7 +4681,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
         ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
         ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
         ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
-        const enum ggml_status st = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+        const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
         if (st != GGML_STATUS_SUCCESS) {
             return st;
         }
@@ -4435,6 +4719,10 @@ static ggml_guid_t ggml_backend_fmsh_zg330_guid(void) {
     return &guid;
 }
 
+// Forward declaration (defined after buffer callbacks).
+static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(
+        ggml_fmsh_zg330_device_context * dev_ctx);
+
 static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_context * dev_ctx = nullptr) {
     auto * ctx = new ggml_backend_fmsh_zg330_context;
     ctx->cpu_backend = ggml_backend_cpu_init();
@@ -4443,15 +4731,15 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
         return nullptr;
     }
 
+
     if (dev_ctx) {
         std::lock_guard<std::mutex> lock(dev_ctx->mu);
         if (dev_ctx->memory_device_opened) {
+            // Share the device handle (reference-counted); do not consume/clear it
+            // so subsequent init_backend calls (e.g. probe cycles) can reuse it.
             ctx->zg_device = dev_ctx->memory_device;
             ctx->device_opened = true;
             ctx->device_url = dev_ctx->memory_device_url;
-            dev_ctx->memory_device = Device();
-            dev_ctx->memory_device_opened = false;
-            dev_ctx->memory_device_url.clear();
         }
     }
 
@@ -4525,7 +4813,19 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
             " debug_compare_atol=" + std::to_string(ctx->debug_compare_atol) +
             " debug_compare_rtol=" + std::to_string(ctx->debug_compare_rtol) +
 #endif
-            " cache_dir=" + ctx->cache_dir.string());
+            " cache_dir=" + ctx->cache_dir.string() +
+            " device_opened=" + std::to_string(ctx->device_opened ? 1 : 0));
+    }
+
+    // Bind this backend to the device's buft_ctx so alloc_buffer can use the device.
+    if (dev_ctx) {
+        std::lock_guard<std::mutex> lock(dev_ctx->mu);
+        // Ensure buft_ctx exists (created lazily in buffer_type_impl).
+        if (!dev_ctx->buft_ctx) {
+            dev_ctx->buft_ctx = new ggml_fmsh_zg330_buft_ctx{};
+            dev_ctx->buft_ctx->dev_ctx_ptr = dev_ctx;
+        }
+        dev_ctx->buft_ctx->backend_ctx = ctx;
     }
 
     return backend;
@@ -4617,13 +4917,134 @@ static ggml_backend_t ggml_backend_fmsh_zg330_device_init_backend(ggml_backend_d
     return ggml_backend_fmsh_zg330_init_impl(static_cast<ggml_fmsh_zg330_device_context *>(dev ? dev->context : nullptr));
 }
 
+static void ggml_fmsh_zg330_buffer_free(ggml_backend_buffer_t buffer) {
+    delete static_cast<ggml_fmsh_zg330_buffer_ctx *>(buffer->context);
+}
+
+// get_base returns the ZG DDR physical address as a fake host pointer.
+// This pointer is NEVER dereferenced on the host; it is only used as a unique
+// identifier for tensor->data. The address is 4096-aligned (from ZG malloc),
+// which satisfies the ggml allocator alignment requirement.
+static void * ggml_fmsh_zg330_buffer_get_base(ggml_backend_buffer_t buffer) {
+    auto * ctx = static_cast<ggml_fmsh_zg330_buffer_ctx *>(buffer->context);
+    const uint64_t addr = ctx->chunk->begin.addr();
+    return reinterpret_cast<void *>(static_cast<uintptr_t>(addr));
+}
+
+static enum ggml_status ggml_fmsh_zg330_buffer_init_tensor(
+        ggml_backend_buffer_t /*buffer*/, struct ggml_tensor * /*tensor*/) {
+    return GGML_STATUS_SUCCESS;
+}
+
+static size_t ggml_fmsh_zg330_tensor_offset(ggml_backend_buffer_t buffer, const struct ggml_tensor * tensor) {
+    const uintptr_t base = reinterpret_cast<uintptr_t>(ggml_fmsh_zg330_buffer_get_base(buffer));
+    return static_cast<size_t>(reinterpret_cast<uintptr_t>(tensor->data) - base);
+}
+
+static void ggml_fmsh_zg330_buffer_set_tensor(
+        ggml_backend_buffer_t buffer, struct ggml_tensor * tensor,
+        const void * data, size_t offset, size_t size) {
+    auto * buf_ctx = static_cast<ggml_fmsh_zg330_buffer_ctx *>(buffer->context);
+    const size_t toff = ggml_fmsh_zg330_tensor_offset(buffer, tensor);
+    buf_ctx->chunk.write(toff + offset,
+                         const_cast<char *>(static_cast<const char *>(data)),
+                         size);
+}
+
+static void ggml_fmsh_zg330_buffer_get_tensor(
+        ggml_backend_buffer_t buffer, const struct ggml_tensor * tensor,
+        void * data, size_t offset, size_t size) {
+    auto * buf_ctx = static_cast<ggml_fmsh_zg330_buffer_ctx *>(buffer->context);
+    const size_t toff = ggml_fmsh_zg330_tensor_offset(buffer, tensor);
+    buf_ctx->chunk.read(static_cast<char *>(data), toff + offset, size);
+}
+
+static void ggml_fmsh_zg330_buffer_clear(ggml_backend_buffer_t buffer, uint8_t value) {
+    auto * buf_ctx = static_cast<ggml_fmsh_zg330_buffer_ctx *>(buffer->context);
+    if (!buf_ctx || !buf_ctx->chunk.defined()) return;
+    // Zero-fill the entire ZG DDR buffer so that staged D2H reads get deterministic data.
+    // Done in 4 KB chunks to stay within socket RPC payload limits.
+    constexpr size_t CHUNK = 4096;
+    std::vector<char> zero(CHUNK, static_cast<char>(value));
+    for (size_t done = 0; done < buf_ctx->size; done += CHUNK) {
+        const size_t blk = std::min(CHUNK, buf_ctx->size - done);
+        buf_ctx->chunk.write(done, zero.data(), blk);
+    }
+}
+
+static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
+        ggml_backend_buffer_type_t buft, size_t size) {
+    auto * buft_ctx = static_cast<ggml_fmsh_zg330_buft_ctx *>(buft->context);
+    if (!buft_ctx || !buft_ctx->backend_ctx || !buft_ctx->backend_ctx->device_opened) {
+        return ggml_backend_cpu_buffer_type()->iface.alloc_buffer(
+                   ggml_backend_cpu_buffer_type(), size);
+    }
+    auto * bctx = buft_ctx->backend_ctx;
+    Device zg_dev = bctx->zg_device;
+    MemChunk chunk;
+    try {
+        chunk = zg_dev.defaultMemRegion().malloc(size, /*auto_free=*/true, /*alignment=*/4096);
+    } catch (const std::exception & e) {
+        ggml_fmsh_log_locked(bctx, 2,
+            std::string("zg_alloc_buffer_fail size=") + std::to_string(size) + " " + e.what());
+        return ggml_backend_cpu_buffer_type()->iface.alloc_buffer(
+                   ggml_backend_cpu_buffer_type(), size);
+    }
+    if (!chunk.defined()) {
+        return ggml_backend_cpu_buffer_type()->iface.alloc_buffer(
+                   ggml_backend_cpu_buffer_type(), size);
+    }
+    ggml_fmsh_log_locked(bctx, 1, "zg_alloc_buffer size=" + std::to_string(size));
+    auto * buf_ctx = new ggml_fmsh_zg330_buffer_ctx{std::move(chunk), size};
+    static const struct ggml_backend_buffer_i zg_buffer_iface = {
+        /* .free_buffer     = */ ggml_fmsh_zg330_buffer_free,
+        /* .get_base        = */ ggml_fmsh_zg330_buffer_get_base,
+        /* .init_tensor     = */ ggml_fmsh_zg330_buffer_init_tensor,
+        /* .memset_tensor   = */ nullptr,
+        /* .set_tensor      = */ ggml_fmsh_zg330_buffer_set_tensor,
+        /* .get_tensor      = */ ggml_fmsh_zg330_buffer_get_tensor,
+        /* .set_tensor_2d   = */ nullptr,
+        /* .get_tensor_2d   = */ nullptr,
+        /* .cpy_tensor      = */ nullptr,
+        /* .clear           = */ ggml_fmsh_zg330_buffer_clear,
+        /* .reset           = */ nullptr,
+    };
+    return ggml_backend_buffer_init(buft, zg_buffer_iface, buf_ctx, size);
+}
+
+// Returns the per-device ZG buffer type. Called from device_get_buffer_type;
+// the buft object is cached on dev_ctx (created once, never freed).
+static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(
+        ggml_fmsh_zg330_device_context * dev_ctx) {
+    if (!dev_ctx->cached_buft) {
+        if (!dev_ctx->buft_ctx) {
+            dev_ctx->buft_ctx = new ggml_fmsh_zg330_buft_ctx{};
+            dev_ctx->buft_ctx->dev_ctx_ptr = dev_ctx;
+        }
+        static struct ggml_backend_buffer_type_i iface = {
+            /* .get_name      = */ [](ggml_backend_buffer_type_t) -> const char * { return "FMSH_ZG330"; },
+            /* .alloc_buffer  = */ ggml_fmsh_zg330_buffer_type_alloc_buffer,
+            /* .get_alignment = */ [](ggml_backend_buffer_type_t) -> size_t { return 4096; },
+            /* .get_max_size  = */ nullptr,
+            /* .get_alloc_size= */ nullptr,
+            /* .is_host       = */ [](ggml_backend_buffer_type_t) -> bool { return false; },
+        };
+        dev_ctx->cached_buft = new ggml_backend_buffer_type{iface, /*device=*/nullptr, /*context=*/dev_ctx->buft_ctx};
+    }
+    return dev_ctx->cached_buft;
+}
+
+// Legacy zero-arg overload: fallback to CPU buffer type.
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(void) {
     return ggml_backend_cpu_buffer_type();
 }
 
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_device_get_buffer_type(ggml_backend_dev_t dev) {
     GGML_UNUSED(dev);
-    return ggml_backend_fmsh_zg330_buffer_type_impl();
+    // Compute buffer and weights stay on CPU host.
+    // KV cache uses ZG DDR via the dedicated get_kv_buft proc_address interface.
+    // Model weights are uploaded to ZG DDR manually inside graph_compute via session weight_tensors.
+    return ggml_backend_cpu_buffer_type();
 }
 
 static ggml_backend_buffer_t ggml_backend_fmsh_zg330_device_buffer_from_host_ptr(ggml_backend_dev_t dev, void * ptr, size_t size, size_t max_tensor_size) {
@@ -4639,7 +5060,14 @@ static bool ggml_backend_fmsh_zg330_device_supports_op(ggml_backend_dev_t dev, c
 
 static bool ggml_backend_fmsh_zg330_device_supports_buft(ggml_backend_dev_t dev, ggml_backend_buffer_type_t buft) {
     GGML_UNUSED(dev);
-    return ggml_backend_buft_is_host(buft);
+    if (ggml_backend_buft_is_host(buft)) {
+        return true;
+    }
+    // Accept ZG DDR buffer types created by ggml_fmsh_zg330_buffer_type_impl(bctx).
+    if (buft && buft->iface.alloc_buffer == ggml_fmsh_zg330_buffer_type_alloc_buffer) {
+        return true;
+    }
+    return false;
 }
 
 static const ggml_backend_device_i ggml_backend_fmsh_zg330_device_i = {
@@ -4682,10 +5110,21 @@ static ggml_backend_dev_t ggml_backend_fmsh_zg330_reg_get_device(ggml_backend_re
     return &dev;
 }
 
+// Returns the ZG DDR buffer type for KV cache tensors.
+// Called via proc_address by llama-kv-cache.cpp when offloading KV cache.
+static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_get_kv_buft(ggml_backend_dev_t dev) {
+    auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(dev->context);
+    if (!dev_ctx) return nullptr;
+    return ggml_backend_fmsh_zg330_buffer_type_impl(dev_ctx);
+}
+
 static void * ggml_backend_fmsh_zg330_reg_get_proc_address(ggml_backend_reg_t reg, const char * name) {
     GGML_UNUSED(reg);
     if (std::strcmp(name, "ggml_backend_set_n_threads") == 0) {
         return reinterpret_cast<void *>(ggml_backend_fmsh_zg330_set_n_threads);
+    }
+    if (std::strcmp(name, "ggml_backend_fmsh_zg330_get_kv_buft") == 0) {
+        return reinterpret_cast<void *>(ggml_backend_fmsh_zg330_get_kv_buft);
     }
     return nullptr;
 }
