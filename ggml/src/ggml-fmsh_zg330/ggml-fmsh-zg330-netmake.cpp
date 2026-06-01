@@ -95,8 +95,9 @@ static std::string make_root_net_key(const std::filesystem::path & root_abs, con
     return root_abs.string() + "::" + net_name;
 }
 
-static std::string make_matmul_net_name(int64_t m, int64_t k, int64_t n) {
-    return "matmul_" + std::to_string(m) + "x" + std::to_string(k) + "x" + std::to_string(n);
+static std::string make_matmul_net_name(int64_t m, int64_t k, int64_t n, bool bf16 = false) {
+    return std::string("matmul_") + (bf16 ? "bf16_" : "") +
+           std::to_string(m) + "x" + std::to_string(k) + "x" + std::to_string(n);
 }
 
 static std::string elementwise_op_name(ElementwiseZgOp op) {
@@ -588,7 +589,8 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_matmul(
     const std::filesystem::path & onnx_path,
     int64_t m,
     int64_t k,
-    int64_t n) {
+    int64_t n,
+    bool bf16 = false) {
     (void) n;
     ensure_dir(work_dir);
 
@@ -617,7 +619,7 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_matmul(
         << "target = \"zhuge\"\n"
         << "inputs = [[" << m << "," << k << "],[" << k << "," << n << "]]\n"
         << "inputs_layout = \"FD;FD\"\n"
-        << "inputs_dtype = \"fp32;fp32\"\n"
+        << "inputs_dtype = " << (bf16 ? "\"bf16;bf16\"" : "\"fp32;fp32\"") << "\n"
         << "pre_method = \"nop;nop\"\n"
         << "pre_mean = \"nop;nop\"\n"
         << "pre_scale = \"nop;nop\"\n"
@@ -631,7 +633,7 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_matmul(
         << "raw = " << quote_for_toml(opt_raw) << "\n"
         << "jr_path = " << quote_for_toml(jr) << "\n"
         << "target = \"zhuge\"\n"
-        << "qdtype = \"tf32\"\n"
+        << "qdtype = " << (bf16 ? "\"bf16\"" : "\"tf32\"") << "\n"
         << "forward_mode = \"image\"\n\n"
         << "[adapt]\n"
         << "json = " << quote_for_toml(quant_json) << "\n"
@@ -864,14 +866,15 @@ MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
     const std::filesystem::path & work_root,
     int64_t m,
     int64_t k,
-    int64_t n) {
+    int64_t n,
+    bool bf16) {
     if (m <= 0 || k <= 0 || n <= 0) {
         throw std::runtime_error("get_or_compile_matmul_zg_network: invalid dims");
     }
 
     preload_zg_cache(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
-    const auto net_name = make_matmul_net_name(m, k, n);
+    const auto net_name = make_matmul_net_name(m, k, n, bf16);
     const auto cache_key = make_root_net_key(root_abs, net_name);
 
     {
@@ -891,7 +894,7 @@ MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
     ensure_dir(work_dir);
 
     const auto onnx_path = work_dir / (net_name + ".onnx");
-    (void) build_matmul_onnx(onnx_path, m, k, n);
+    (void) build_matmul_onnx(onnx_path, m, k, n);  // ONNX stays FLOAT; icraft toml drives bf16 quant
     const std::lock_guard<std::mutex> compile_lock(g_compile_mutex);
     {
         std::lock_guard<std::mutex> lock(g_cache_mutex);
@@ -905,7 +908,7 @@ MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
             return out;
         }
     }
-    const auto artifacts = write_icraft_compile_toml_for_zg_matmul(work_dir, net_name, onnx_path, m, k, n);
+    const auto artifacts = write_icraft_compile_toml_for_zg_matmul(work_dir, net_name, onnx_path, m, k, n, bf16);
     run_icraft_compile(artifacts);
     auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
 

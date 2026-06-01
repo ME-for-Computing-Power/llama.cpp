@@ -34,6 +34,6 @@ Icraft 相关的全部环境都在*容器内*，不要尝试在host上运行程�
 
 2. 启动 llama-cli
 
-cd /workspace/build-fmsh-zg330-x64/bin && export LD_LIBRARY_PATH=/workspace/build-fmsh-zg330-x64/bin:/ModelzooDeps/x64/Dynamic/lib:$LD_LIBRARY_PATH && export GGML_FMSH_ZG330_LOG=1 && export GGML_FMSH_ZG330_CACHE_DIR=/workspace/.cache/deploy && ./llama-cli -m /workspace/Qwen3.5-0.8B-Q4_K_M.gguf --device FMSH_ZG330 --reasoning-budget 0 -p 'Introduce yourself in 10 words' -n 40 -c 1024 --no-warmup --single-turn --seed 1024 --verbose --log-file /workspace/llama.log
+cd /workspace/build-fmsh-zg330-x64/bin && export LD_LIBRARY_PATH=/workspace/build-fmsh-zg330-x64/bin:/ModelzooDeps/x64/Dynamic/lib:$LD_LIBRARY_PATH && export GGML_FMSH_ZG330_LOG=1 && export GGML_FMSH_ZG330_CACHE_DIR=/workspace/.cache/deploy && ./llama-cli -m /workspace/Qwen3.5-0.8B-Q4_K_M.gguf --device FMSH_ZG330 --reasoning-budget 0 -p 'Hello there' -n 10 -c 1024 --no-warmup --single-turn --seed 1024 --verbose --log-file /workspace/llama.log
 
 socket模式中一轮推理非常慢，因此运行时应当设置 timeout 时间，并打印完整日志；推理一次后，应在日志文件（cache 中的 backend.log 和 运行目录中的 llama.log ）中运行 grep 等工具，若无必要则不要反复执行推理浪费时间。

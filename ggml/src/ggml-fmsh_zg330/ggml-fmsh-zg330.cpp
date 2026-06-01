@@ -75,6 +75,40 @@ struct ggml_fmsh_zg330_session_entry {
     std::vector<cached_weight_tensor> weight_tensors;
 };
 
+// Quantized weight matmul (Q4_K/Q6_K projections, FFN, lm_head) offloaded to NPU.
+// The quantized src0 is dequantized once to F32 (tf32 NPU path) and kept resident on
+// device; the activation A and the per-(k,n) network run in F32, output Y stays F32.
+// M is bucketed (next pow2, capped) so the compiled matmul_MxKxN shape set is bounded.
+// Large N (e.g. lm_head vocab) is split into column chunks, each its own compiled
+// network — handled internally so the dispatch sees one node.
+struct ggml_fmsh_zg330_qweight_session_entry {
+    struct weight_slice {
+        uintptr_t key = 0;   // src0 host pointer (identifies the static weight)
+        Tensor    tensor;    // F32 [k, n_this], resident on device
+    };
+    struct sub_net {
+        int64_t col_off = 0; // output-feature offset this chunk covers
+        int64_t n_this  = 0; // number of output features in this chunk
+        ggml::fmsh::netmake::MatmulZgNetworkBundle bundle;
+        Session    session;
+        TensorType input_type_a; // F32 [m_bucket, k]
+        TensorType input_type_b; // F32 [k, n_this]
+        Tensor     input_tensor_a;
+        bool       input_tensor_a_ready = false;
+        std::vector<weight_slice> weights;
+        // AXI 1-frame-delay sync (see flash-attn): reused session keeps ready_=true,
+        // so on ARM/AXI we must re-arm a layerCount check_func_ after each forward,
+        // otherwise waitForReady() returns the PREVIOUS token's stale output.
+        uint32_t layer_increment = 0;
+    };
+    uint64_t hit_count = 0;
+    int64_t  m_bucket = 0;
+    int64_t  k = 0;
+    int64_t  n_full = 0;
+    ZG330Device zg_device;   // valid in ARM/AXI mode; empty in socket mode
+    std::vector<sub_net> subnets;
+};
+
 struct ggml_fmsh_zg330_elementwise_session_entry {
     ggml_fmsh_zg330_op_signature signature;
     uint64_t hit_count = 0;
@@ -216,6 +250,7 @@ struct ggml_backend_fmsh_zg330_context {
     ggml_backend_t cpu_backend = nullptr;
 
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_session_entry>> session_cache;
+    std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_qweight_session_entry>> qweight_session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_elementwise_session_entry>, ggml_fmsh_zg330_op_signature_hash> elementwise_session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_rmsnorm_split_session_entry>, ggml_fmsh_zg330_op_signature_hash> rmsnorm_split_session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_rope_session_entry>, ggml_fmsh_zg330_op_signature_hash> rope_session_cache;
@@ -235,6 +270,20 @@ struct ggml_backend_fmsh_zg330_context {
     int64_t flash_softmax_cu = 8;
     int64_t flash_precompile_kv_depth = 1;
     int64_t flash_kv_bucket_max = 8192;
+
+    // Quantized weight-matmul offload (Q4_K/Q6_K projections, FFN, lm_head) onto NPU.
+    // Weights are dequantized once to F32 (tf32 NPU path) and kept resident on device;
+    // M is bucketed (next pow2, capped) so the set of compiled matmul_MxKxN shapes is bounded.
+    bool    offload_quant_weights = true;
+    int64_t mul_mat_m_bucket_max = 512;          // cap for M bucketing (1 = decode-only)
+    int64_t mul_mat_n_chunk = 16384;           // split N into chunks (0 = no split)
+    int64_t mul_mat_precompile_m_depth = 0;    // speculatively precompile next pow2 M buckets
+    uint64_t mul_mat_qweight_offloaded = 0;
+    uint64_t mul_mat_qweight_bytes_resident = 0;
+    // Persistent F32 dequant buffers for qweight chunks, keyed by (quant_data_ptr + col_byte_offset).
+    // Stable address → fake_src0.view_src=nullptr → src0_is_static=true in execute_mul_mat
+    // → weight uploaded to ZG DDR once on first forward, cached in entry->weight_tensors thereafter.
+    std::unordered_map<uintptr_t, std::vector<float>> qweight_f32_bufs;
 
     std::filesystem::path cache_dir;
     std::filesystem::path log_file;
@@ -485,6 +534,11 @@ static const char * ggml_fmsh_log_tag(int level) {
 }
 
 static void ggml_fmsh_log_locked(ggml_backend_fmsh_zg330_context * ctx, int level, const std::string & msg) {
+    if (ctx == nullptr) {
+        // Some validation helpers (e.g. can_run_mul_mat_zg, invoked from can_consume_from_device
+        // during planning) log without a context. Drop those messages rather than crash.
+        return;
+    }
     if (!ctx->enable_log || level < ctx->log_level) {
         return;
     }
@@ -550,6 +604,76 @@ static bool ggml_fmsh_map_elementwise_op(
     }
 }
 
+// A quantized src0 (model weight) is offloadable iff ggml provides a dequant kernel.
+static bool ggml_fmsh_src0_quant_ok(const ggml_tensor * src0) {
+    if (src0 == nullptr || !ggml_is_quantized(src0->type)) {
+        return false;
+    }
+    const struct ggml_type_traits * tt = ggml_get_type_traits(src0->type);
+    return tt != nullptr && tt->to_float != nullptr;
+}
+
+// Env gate cached once; mirrors ctx->offload_quant_weights for the context-less
+// supports_op path used by the scheduler during graph planning.
+static bool ggml_fmsh_quant_weights_enabled() {
+    static const bool en = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_QUANT_WEIGHTS", true);
+    return en;
+}
+
+// M bucket cap, cached once for the context-less planning path.
+static int64_t ggml_fmsh_mul_mat_m_bucket_max_env() {
+    static const int64_t cap = std::max<int64_t>(1,
+        static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_M_BUCKET_MAX", 512)));
+    return cap;
+}
+
+// Optional N (output-feature) cap: matmuls with n beyond this stay on CPU.
+// HOST dynamic weight DMA is unreliable for large n on ZG330 (produces wrong results).
+// Static weight (ZG DDR resident) would require too much DDR for all layers simultaneously.
+// Default 512: known-good threshold from empirical testing.
+// Set to 0 to disable (for debugging only — will produce incorrect output for large n).
+static int64_t ggml_fmsh_mul_mat_n_max_env() {
+    static const int64_t cap =
+        static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_N_MAX", 512));
+    return cap;
+}
+
+// Quantized weight matmul: 2D only (no batched ne12/ne13), src1 plain F32, and M
+// representable within the bucket cap. We deliberately only claim ops we will actually
+// run on the NPU — ops whose M exceeds the cap stay on the CPU backend (the well-tested
+// native path), so they never enter the FMSH graph and need a fragile in-graph fallback.
+static bool ggml_fmsh_is_quant_weight_mul_mat(const ggml_tensor * op) {
+    if (op->op != GGML_OP_MUL_MAT || op->src[0] == nullptr || op->src[1] == nullptr) {
+        return false;
+    }
+    if (!ggml_fmsh_quant_weights_enabled() || !ggml_fmsh_src0_quant_ok(op->src[0])) {
+        return false;
+    }
+    if (op->type != GGML_TYPE_F32 || op->src[1]->type != GGML_TYPE_F32) {
+        return false;
+    }
+    if (op->src[1]->ne[2] != 1 || op->src[1]->ne[3] != 1) {
+        return false;
+    }
+    // Optional N cap: keep very-large-N matmuls (e.g. lm_head) on CPU.
+    const int64_t n_max = ggml_fmsh_mul_mat_n_max_env();
+    if (n_max > 0 && op->src[0]->ne[1] > n_max) {
+        return false;
+    }
+    // M-bucket feasibility (next pow2 within cap); keep in sync with ggml_fmsh_mul_mat_m_bucket.
+    const int64_t m = op->src[1]->ne[1];
+    if (m > 1) {
+        int64_t b = 1;
+        while (b < m) {
+            b <<= 1;
+        }
+        if (b > ggml_fmsh_mul_mat_m_bucket_max_env()) {
+            return false;
+        }
+    }
+    return ggml_is_contiguous(op->src[0]) && ggml_is_contiguous(op->src[1]) && ggml_is_contiguous(op);
+}
+
 static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     if (ggml_fmsh_is_meta_op(op)) {
         return true;
@@ -580,6 +704,11 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     }
     if (op->src[0] == nullptr || op->src[1] == nullptr) {
         return false;
+    }
+    // Quantized weight matmul (Q4_K/Q6_K projections, FFN, lm_head): handled by the
+    // dedicated dequant→BF16 NPU path. src0 stays quantized; dst F32, src1 F32, 2D.
+    if (ggml_fmsh_is_quant_weight_mul_mat(op)) {
+        return true;
     }
     if (op->type != GGML_TYPE_F32 || op->src[0]->type != GGML_TYPE_F32) {
         return false;
@@ -707,6 +836,22 @@ static bool ggml_fmsh_validate_mul_mat(const ggml_tensor * node, int64_t * m, in
     *k = k0;
     *n = n0;
     return true;
+}
+
+// Bucket M to the next power of two (capped). Returns <=0 when m exceeds the cap,
+// signalling the caller to fall back to CPU (we won't compile unbounded shapes).
+static int64_t ggml_fmsh_mul_mat_m_bucket(int64_t m, int64_t bucket_max) {
+    if (m <= 1) {
+        return 1;
+    }
+    int64_t b = 1;
+    while (b < m) {
+        b <<= 1;
+    }
+    if (b > std::max<int64_t>(1, bucket_max)) {
+        return -1;
+    }
+    return b;
 }
 
 static std::string ggml_fmsh_make_mul_mat_cache_key(const ggml_tensor * node, int64_t m, int64_t k, int64_t n) {
@@ -1114,6 +1259,378 @@ static ggml_fmsh_zg330_session_entry * ggml_fmsh_get_or_create_mul_mat_session(
             *err = e.what();
         }
         return nullptr;
+    }
+}
+
+// Build (or fetch) the session(s) for a quantized weight matmul. M is bucketed and
+// N is split into column chunks; each chunk gets its own BF16 matmul network.
+static ggml_fmsh_zg330_qweight_session_entry * ggml_fmsh_get_or_create_qweight_session(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * node,
+    bool * created,
+    std::string * err) {
+    int64_t m = 0, k = 0, n = 0;
+    if (!ggml_fmsh_validate_mul_mat(node, &m, &k, &n)) {
+        if (err) *err = "invalid MUL_MAT shape";
+        return nullptr;
+    }
+
+    const int64_t m_bucket = ggml_fmsh_mul_mat_m_bucket(m, ctx->mul_mat_m_bucket_max);
+    if (m_bucket <= 0) {
+        if (err) *err = "M exceeds mul_mat_m_bucket_max; CPU fallback";
+        return nullptr;
+    }
+
+    const int64_t n_chunk = (ctx->mul_mat_n_chunk > 0 && ctx->mul_mat_n_chunk < n)
+        ? ctx->mul_mat_n_chunk : n;
+
+    // Key by (dtype, k, n_full, m_bucket): networks depend only on these, and per-weight
+    // Share sessions by shape (11 sessions for this model). The weight is passed as a
+    // HOST-side tensor on every call so icraft DMAs it fresh each time — device-resident
+    // inputs are not rebound by forward(), but host inputs are always re-read.
+    // The layerCount edge-triggered sync in forward_synced ensures the NPU finishes
+    // before we read the output, avoiding the stale-output bug.
+    const std::string cache_key =
+        "qw|" + std::to_string(static_cast<int>(node->src[0]->type)) +
+        "|" + std::to_string(k) + "x" + std::to_string(n) + "x" + std::to_string(m_bucket);
+    auto it = ctx->qweight_session_cache.find(cache_key);
+    if (it != ctx->qweight_session_cache.end()) {
+        it->second->hit_count++;
+        if (created) *created = false;
+        return it->second.get();
+    }
+
+    if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+        return nullptr;
+    }
+
+    try {
+        auto entry = std::make_unique<ggml_fmsh_zg330_qweight_session_entry>();
+        entry->hit_count = 1;
+        entry->m_bucket = m_bucket;
+        entry->k = k;
+        entry->n_full = n;
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
+
+        for (int64_t col = 0; col < n; col += n_chunk) {
+            const int64_t n_this = std::min(n_chunk, n - col);
+            ggml_fmsh_zg330_qweight_session_entry::sub_net sn;
+            sn.col_off = col;
+            sn.n_this = n_this;
+            // NOTE: icraft-adapt segfaults on BF16 MatMul networks (toolchain bug; BF16
+            // elementwise is fine, BF16 MatMul is not). Use the working tf32 path — same
+            // as the attention matmuls. Weights are therefore resident as F32 on device.
+            sn.bundle = ggml::fmsh::netmake::get_or_compile_matmul_zg_network(
+                ctx->cache_dir, m_bucket, k, n_this, /*bf16=*/false);
+            sn.session = Session::Create<zg330::ZG330Backend, HostBackend>(
+                sn.bundle.network.view(0), {ctx->zg_device, HostDevice::Default()});
+            sn.session.enableTimeProfile(true);
+            sn.session.apply();
+            sn.input_type_a = sn.bundle.network.inputs()[0].tensorType().clone();
+            sn.input_type_b = sn.bundle.network.inputs()[1].tensorType().clone();
+            entry->subnets.push_back(std::move(sn));
+        }
+
+        // Speculatively precompile the next power-of-two M buckets so the ARM cache is
+        // warm for prefill (compilation only succeeds on x86; best-effort).
+        if (ctx->mul_mat_precompile_m_depth > 0) {
+            int64_t pre_m = m_bucket;
+            for (int64_t d = 0; d < ctx->mul_mat_precompile_m_depth; ++d) {
+                pre_m <<= 1;
+                if (pre_m > ctx->mul_mat_m_bucket_max) {
+                    break;
+                }
+                bool stop = false;
+                for (int64_t col = 0; col < n && !stop; col += n_chunk) {
+                    const int64_t n_this = std::min(n_chunk, n - col);
+                    try {
+                        (void) ggml::fmsh::netmake::get_or_compile_matmul_zg_network(
+                            ctx->cache_dir, pre_m, k, n_this, /*bf16=*/false);
+                    } catch (...) {
+                        stop = true;
+                    }
+                }
+                if (stop) {
+                    break;
+                }
+            }
+        }
+
+        ggml_fmsh_zg330_qweight_session_entry * ptr = entry.get();
+        ctx->qweight_session_cache.emplace(cache_key, std::move(entry));
+        if (created) *created = true;
+        return ptr;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
+        return nullptr;
+    }
+}
+
+// Run one session.forward and wait for the result with correct AXI synchronization.
+// On ARM/AXI a reused session keeps ready_=true after the first forward, so waitForReady()
+// would return the PREVIOUS frame's output. We re-arm a layerCount-based check_func_ each
+// call (learning the per-forward increment on the first call). On socket/x86 layerCount is
+// not a reliable completion signal, so we fall back to plain waitForReady.
+static bool ggml_fmsh_forward_synced(
+    ggml_backend_fmsh_zg330_context * ctx,
+    Session & session,
+    const std::vector<Tensor> & inputs,
+    ZG330Device & zg_device,
+    uint32_t & layer_increment,
+    Tensor * out,
+    const char * where,
+    std::string * err) {
+    // A reused icraft session returns the SAME output Tensor; its network check_func_ uses an
+    // ABSOLUTE layerCount target fixed at apply() time, which is long exceeded mid-inference,
+    // so waitForReady() returns immediately reading the PREVIOUS forward's stale output.
+    // For large matmul networks (async on AXI), we must wait for the NPU to finish.
+    // Use edge-triggered layerCount: record layer_before, call forward(), then spin until
+    // layerCount advances past layer_before. This works for every call regardless of increment.
+    const bool use_layer_sync = zg_device.defined();
+    uint32_t layer_before = 0;
+    if (use_layer_sync) {
+        layer_before = zg_device.layerCount();
+    }
+
+    auto outputs = session.forward(inputs);
+    if (outputs.empty()) {
+        if (err) *err = std::string(where) + " session.forward returned empty output";
+        return false;
+    }
+
+    if (use_layer_sync) {
+        // Spin until layerCount advances past layer_before (edge-triggered, no fixed sleep).
+        const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(30000);
+        while (zg_device.layerCount() == layer_before) {
+            if (std::chrono::steady_clock::now() > deadline) {
+                if (err) *err = std::string(where) + " NPU layerCount sync timeout";
+                return false;
+            }
+        }
+        // layerCount advanced → NPU started. Now wait for it to finish.
+        // Use waitForReady with setReady(false) to re-arm the check.
+        // But the check_func_ is stale (absolute target). Instead, spin a bit more
+        // to ensure the NPU has written the output. The layerCount advancing means
+        // the NPU has started; we need it to FINISH. Use a brief additional spin.
+        // For small increments (2-5 layers), the NPU finishes very quickly after starting.
+        // A tight spin for a few microseconds should suffice.
+        const uint32_t layer_after_start = zg_device.layerCount();
+        // Wait for layerCount to stop changing (NPU finished all layers of this network).
+        uint32_t prev = layer_after_start;
+        auto stable_start = std::chrono::steady_clock::now();
+        while (std::chrono::steady_clock::now() < deadline) {
+            const uint32_t cur = zg_device.layerCount();
+            if (cur != prev) {
+                prev = cur;
+                stable_start = std::chrono::steady_clock::now();
+            } else {
+                const auto elapsed_us = std::chrono::duration_cast<std::chrono::microseconds>(
+                    std::chrono::steady_clock::now() - stable_start).count();
+                if (elapsed_us >= 500) { // 0.5ms stable = NPU finished
+                    break;
+                }
+            }
+        }
+        if (layer_increment == 0) {
+            layer_increment = (prev > layer_before) ? (prev - layer_before) : 1;
+            ggml_fmsh_log_locked(ctx, 1, std::string(where) + " layer_sync_first before=" +
+                std::to_string(layer_before) + " after=" + std::to_string(prev) +
+                " increment=" + std::to_string(layer_increment));
+        }
+    } else {
+        if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, where)) {
+            return false;
+        }
+    }
+    *out = outputs[0];
+    return true;
+}
+
+// Execute a quantized weight matmul on the NPU: dequant src0 → F32 (once, cached on
+// device), upload the activation with M padding, run each N-chunk network with AXI sync,
+// and scatter the F32 output back into dst.
+static bool ggml_fmsh_execute_qweight_mul_mat(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    ggml_fmsh_zg330_qweight_session_entry * entry,
+    std::string * err) {
+    const ggml_tensor * src0 = node->src[0];
+    const ggml_tensor * src1 = node->src[1];
+    if (!src0 || !src1 || src0->data == nullptr || src1->data == nullptr || node->data == nullptr) {
+        if (err) *err = "qweight MUL_MAT tensor data is null";
+        return false;
+    }
+
+    const int64_t actual_m = src1->ne[1];
+    const int64_t m_bucket = entry->m_bucket;
+    const int64_t k = entry->k;
+    if (actual_m > m_bucket) {
+        if (err) *err = "actual M exceeds bucket";
+        return false;
+    }
+    if (src1->nb[0] != sizeof(float)) {
+        if (err) *err = "qweight src1 not contiguous F32";
+        return false;
+    }
+
+    const struct ggml_type_traits * tt = ggml_get_type_traits(src0->type);
+    if (tt == nullptr || tt->to_float == nullptr) {
+        if (err) *err = "no dequant kernel for src0 type";
+        return false;
+    }
+    // Model weights are static (no view, op==NONE, not an INPUT) — dequant+upload once.
+    const bool src0_is_static =
+        (src0->view_src == nullptr) &&
+        (src0->op == GGML_OP_NONE) &&
+        ((src0->flags & GGML_TENSOR_FLAG_INPUT) == 0);
+    const uintptr_t weight_key = reinterpret_cast<uintptr_t>(src0->data);
+
+    // src1 (activation) may be ZG DDR-resident (fake pointer, not dereferenceable on host).
+    // D2H it into a staging buffer and redirect src1->data for the duration of this call.
+    std::vector<char> src1_staging;
+    void * src1_orig_data = src1->data;
+    {
+        MemChunk zg_chunk; size_t zg_off = 0;
+        const ggml_tensor * root = src1;
+        while (root->view_src) root = root->view_src;
+        if (ggml_fmsh_is_zg_buffer_tensor(root, &zg_chunk, &zg_off)) {
+            const size_t root_bytes = ggml_nbytes(root);
+            src1_staging.resize(root_bytes);
+            zg_chunk.read(src1_staging.data(), zg_off, root_bytes);
+            // Redirect src1->data: host_ptr = staging_base + (src1_zg - root_zg)
+            const uintptr_t root_zg = reinterpret_cast<uintptr_t>(root->data);
+            const uintptr_t src1_zg = reinterpret_cast<uintptr_t>(src1->data);
+            const_cast<ggml_tensor *>(src1)->data = src1_staging.data() + (src1_zg - root_zg);
+            ggml_fmsh_log_locked(ctx, 1, "qweight_src1_d2h bytes=" + std::to_string(root_bytes));
+        }
+    }
+    struct Src1Restore {
+        const ggml_tensor * t; void * orig;
+        ~Src1Restore() { const_cast<ggml_tensor *>(t)->data = orig; }
+    } src1_restore{src1, src1_orig_data};
+
+    try {
+        std::vector<float>      row_buf(static_cast<size_t>(k));
+        std::vector<float>      a_host(static_cast<size_t>(m_bucket) * static_cast<size_t>(k));
+        std::vector<float>      out_tmp;
+
+        for (auto & sn : entry->subnets) {
+            // --- activation A: F32 [m_bucket, k], rows>=actual_m zero-padded ---
+            // Allocate a FRESH input tensor per forward. A shared session runs back-to-back
+            // for many same-shape nodes within one graph_compute; reusing one host buffer let
+            // the next node clobber the previous node's still-in-flight input (async forward),
+            // producing a pipeline-lagged / corrupted result.
+            Tensor input_a(sn.input_type_a.clone());
+            input_a.mallocOn(HostDevice::MemRegion());
+            std::fill(a_host.begin(), a_host.end(), 0.0f);
+            for (int64_t r = 0; r < actual_m; ++r) {
+                const float * a_src_row = reinterpret_cast<const float *>(
+                    static_cast<const char *>(src1->data) + r * src1->nb[1]);
+                std::memcpy(a_host.data() + r * k, a_src_row, static_cast<size_t>(k) * sizeof(float));
+            }
+            std::memcpy(input_a.data().cptr(), a_host.data(),
+                        a_host.size() * sizeof(float));
+
+            // --- weight B: F32 [k, n_this], dequant+transpose, updated on device each call ---
+            // The session is shared by shape (11 sessions). The device weight tensor is
+            // allocated once per session (first call) and OVERWRITTEN with the current
+            // layer's weight before each forward(). This avoids per-src0 session OOM
+            // (64MB per session × 196 = 12GB) while keeping forward() synchronous
+            // (device-resident weight → no host DMA → NPU starts immediately → sync).
+            Tensor dynamic_weight;
+            Tensor * weight_tensor = nullptr;
+            // Find or allocate the shared device weight tensor for this subnet.
+            // sn.weights[0] is the shared device tensor (key=0 means "shared").
+            if (!sn.weights.empty()) {
+                weight_tensor = &sn.weights[0].tensor;
+            }
+            {
+                const size_t wbytes =
+                    static_cast<size_t>(k) * static_cast<size_t>(sn.n_this) * sizeof(float);
+                std::vector<float> host_w(static_cast<size_t>(k) * static_cast<size_t>(sn.n_this));
+                for (int64_t i = 0; i < sn.n_this; ++i) {
+                    const char * w_src_row =
+                        static_cast<const char *>(src0->data) + (sn.col_off + i) * src0->nb[1];
+                    tt->to_float(w_src_row, row_buf.data(), k);
+                    for (int64_t j = 0; j < k; ++j) {
+                        host_w[static_cast<size_t>(j) * sn.n_this + i] = row_buf[j];
+                    }
+                }
+                if (!weight_tensor) {
+                    // First call: allocate device tensor and upload weight.
+                    Tensor new_weight(sn.input_type_b.clone());
+                    if (ctx->device_opened) {
+                        new_weight.mallocOn(ctx->zg_device.defaultMemRegion());
+                        new_weight.write(0, reinterpret_cast<char *>(host_w.data()), wbytes);
+                    } else {
+                        new_weight.mallocOn(HostDevice::MemRegion());
+                        std::memcpy(new_weight.data().cptr(), host_w.data(), wbytes);
+                    }
+                    sn.weights.push_back({0, std::move(new_weight)}); // key=0: shared
+                    weight_tensor = &sn.weights.back().tensor;
+                    ctx->mul_mat_qweight_bytes_resident += wbytes;
+                } else {
+                    // Subsequent calls: overwrite device tensor with current layer's weight.
+                    weight_tensor->write(0, reinterpret_cast<char *>(host_w.data()), wbytes);
+                }
+                // Debug: log src0 pointer and first weight value to verify correct weight.
+                {
+                    static std::atomic<int> s_w_log{8};
+                    if (s_w_log.fetch_sub(1, std::memory_order_relaxed) > 0) {
+                        ggml_fmsh_log_locked(ctx, 1, "qweight_w_sample src0=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(src0->data)) +
+                            " k=" + std::to_string(k) + " n=" + std::to_string(sn.n_this) +
+                            " w[0]=" + std::to_string(host_w[0]) +
+                            " w[1]=" + std::to_string(host_w[1]));
+                    }
+                }
+            } // host_w freed here
+
+            // --- forward + scatter F32 output back into dst ---
+            // With device-resident weight (bound at session creation), forward() is
+            // synchronous — the NPU completes before forward() returns. waitForReady()
+            // returns immediately (ready_=true) but the output IS valid.
+            Tensor out_dev;
+            if (!ggml_fmsh_forward_synced(ctx, sn.session, {input_a, *weight_tensor},
+                                          entry->zg_device, sn.layer_increment, &out_dev,
+                                          "qweight_mul_mat", err)) {
+                return false;
+            }
+            out_tmp.resize(static_cast<size_t>(m_bucket) * static_cast<size_t>(sn.n_this));
+            out_dev.read(reinterpret_cast<char *>(out_tmp.data()), 0,
+                         out_tmp.size() * sizeof(float));
+            // Debug: log first few output values to verify NPU result.
+            {
+                static std::atomic<int> s_qw_out_log{8};
+                if (s_qw_out_log.fetch_sub(1, std::memory_order_relaxed) > 0) {
+                    std::string vals;
+                    for (int64_t _d = 0; _d < std::min<int64_t>(4, sn.n_this); ++_d) {
+                        vals += std::to_string(out_tmp[static_cast<size_t>(_d)]) + " ";
+                    }
+                    ggml_fmsh_log_locked(ctx, 1, "qweight_out_sample k=" + std::to_string(k) +
+                        " n=" + std::to_string(sn.n_this) + " vals=[" + vals + "]");
+                }
+            }
+            for (int64_t r = 0; r < actual_m; ++r) {
+                char * dst_row = static_cast<char *>(node->data) + r * node->nb[1];
+                const float * src_row = out_tmp.data() + r * sn.n_this;
+                if (node->nb[0] == static_cast<size_t>(sizeof(float))) {
+                    std::memcpy(dst_row + sn.col_off * node->nb[0], src_row,
+                                static_cast<size_t>(sn.n_this) * sizeof(float));
+                } else {
+                    for (int64_t c = 0; c < sn.n_this; ++c) {
+                        std::memcpy(dst_row + (sn.col_off + c) * node->nb[0], &src_row[c], sizeof(float));
+                    }
+                }
+            }
+        }
+        ctx->mul_mat_qweight_offloaded++;
+        return true;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
+        return false;
     }
 }
 
@@ -2602,6 +3119,139 @@ static void ggml_fmsh_debug_compare_and_log(
 }
 #endif
 
+// Forward declaration — defined after execute_qweight_via_f32.
+static bool ggml_fmsh_execute_mul_mat(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    ggml_fmsh_zg330_session_entry * entry,
+    const Tensor * input_override,
+    bool keep_device_output_only,
+    Tensor * chained_output,
+    std::string * err);
+
+// Execute a quantized weight matmul by dequantizing src0 to F32 and routing through
+// the existing execute_mul_mat path. This reuses the proven attention matmul mechanism
+// (shared session, HOST weight, synchronous forward) without any custom qweight code.
+static bool ggml_fmsh_execute_qweight_via_f32(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    std::string * err) {
+    const ggml_tensor * src0 = node->src[0];
+    const int64_t k = src0->ne[0];
+    const int64_t n = src0->ne[1];
+    const int64_t m = node->src[1]->ne[1];
+    const struct ggml_type_traits * tt = ggml_get_type_traits(src0->type);
+    if (!tt || !tt->to_float) {
+        if (err) *err = "no dequant kernel";
+        return false;
+    }
+
+    // N-chunk size: icraft adapt crashes when the weight input is too large
+    // (internal representation exceeds 2GB). Chunk N to stay within limits.
+    const int64_t n_chunk = (ctx->mul_mat_n_chunk > 0 && ctx->mul_mat_n_chunk < n)
+                            ? ctx->mul_mat_n_chunk : n;
+
+    ggml_tensor * orig_src0 = node->src[0];
+    bool all_ok = true;
+
+    for (int64_t col = 0; col < n && all_ok; col += n_chunk) {
+        const int64_t n_this = std::min(n_chunk, n - col);
+
+        // Dequantize the [n_this, k] slice of src0 for this chunk.
+        std::vector<float> f32_buf(static_cast<size_t>(n_this) * static_cast<size_t>(k));
+        std::vector<float> row_buf(static_cast<size_t>(k));
+        for (int64_t i = 0; i < n_this; ++i) {
+            const char * src_row = static_cast<const char *>(src0->data) + (col + i) * src0->nb[1];
+            tt->to_float(src_row, row_buf.data(), k);
+            std::memcpy(f32_buf.data() + i * k, row_buf.data(), static_cast<size_t>(k) * sizeof(float));
+        }
+
+        // Fake F32 src0 for this chunk: ne[1] = n_this.
+        // view_src non-null → src0_is_static=false → HOST weight (dynamic DMA per forward).
+        // For small n (controlled by MUL_MAT_N_MAX), the HOST→ZG DMA is reliable.
+        const size_t chunk_f32_bytes = static_cast<size_t>(n_this) * static_cast<size_t>(k) * sizeof(float);
+        ggml_tensor fake_src0{};
+        fake_src0.type   = GGML_TYPE_F32;
+        fake_src0.ne[0]  = k;
+        fake_src0.ne[1]  = n_this;
+        fake_src0.ne[2]  = 1;
+        fake_src0.ne[3]  = 1;
+        fake_src0.nb[0]  = sizeof(float);
+        fake_src0.nb[1]  = static_cast<size_t>(k) * sizeof(float);
+        fake_src0.nb[2]  = chunk_f32_bytes;
+        fake_src0.nb[3]  = chunk_f32_bytes;
+        fake_src0.data   = f32_buf.data();
+        fake_src0.view_src = reinterpret_cast<ggml_tensor *>(1); // non-null → dynamic
+        fake_src0.op     = GGML_OP_NONE;
+        fake_src0.flags  = 0;
+
+        // Redirect dst to a temporary buffer for this chunk [m, n_this], then
+        // scatter into the real dst at the correct column offset afterwards.
+        std::vector<float> chunk_dst(static_cast<size_t>(m) * static_cast<size_t>(n_this));
+        ggml_tensor fake_dst{};
+        fake_dst.type   = GGML_TYPE_F32;
+        fake_dst.ne[0]  = n_this;
+        fake_dst.ne[1]  = m;
+        fake_dst.ne[2]  = 1;
+        fake_dst.ne[3]  = 1;
+        fake_dst.nb[0]  = sizeof(float);
+        fake_dst.nb[1]  = static_cast<size_t>(n_this) * sizeof(float);
+        fake_dst.nb[2]  = static_cast<size_t>(m) * static_cast<size_t>(n_this) * sizeof(float);
+        fake_dst.nb[3]  = fake_dst.nb[2];
+        fake_dst.data   = chunk_dst.data();
+        fake_dst.op     = GGML_OP_MUL_MAT;
+
+        void  * orig_dst_data = node->data;
+        size_t  orig_nb0      = node->nb[0];
+        size_t  orig_nb1      = node->nb[1];
+        int64_t orig_ne0      = node->ne[0];
+        node->src[0] = &fake_src0;
+        node->data   = fake_dst.data;
+        node->nb[0]  = fake_dst.nb[0];
+        node->nb[1]  = fake_dst.nb[1];
+        node->ne[0]  = n_this;
+
+        bool ok = false;
+        bool created = false;
+        ggml_fmsh_zg330_session_entry * entry =
+            ggml_fmsh_get_or_create_mul_mat_session(ctx, node, &created, err);
+        if (entry) {
+            ok = ggml_fmsh_execute_mul_mat(ctx, node, entry, nullptr, false, nullptr, err);
+        }
+
+        // Restore node fields before scatter.
+        node->src[0] = orig_src0;
+        node->data   = orig_dst_data;
+        node->nb[0]  = orig_nb0;
+        node->nb[1]  = orig_nb1;
+        node->ne[0]  = orig_ne0;
+
+        if (!ok) {
+            all_ok = false;
+            break;
+        }
+
+        // Scatter chunk result into the real dst: dst[row, col+c] = chunk_dst[row, c].
+        for (int64_t row = 0; row < m; ++row) {
+            char * dst_row = static_cast<char *>(orig_dst_data) + row * orig_nb1;
+            const float * src_row = chunk_dst.data() + row * n_this;
+            if (orig_nb0 == sizeof(float)) {
+                std::memcpy(dst_row + col * sizeof(float), src_row,
+                            static_cast<size_t>(n_this) * sizeof(float));
+            } else {
+                for (int64_t c = 0; c < n_this; ++c) {
+                    std::memcpy(dst_row + (col + c) * orig_nb0, &src_row[c], sizeof(float));
+                }
+            }
+        }
+    }
+
+    if (all_ok) {
+        ctx->mul_mat_qweight_offloaded++;
+    }
+    return all_ok;
+}
+
 static bool ggml_fmsh_execute_mul_mat(
     ggml_backend_fmsh_zg330_context * ctx,
     ggml_tensor * node,
@@ -2924,9 +3574,19 @@ static bool ggml_fmsh_execute_flash_attn_ext(
     // If so, D2H the entire root tensor into a staging buffer and temporarily
     // redirect k->data / v->data so that the existing per-head stride loops work correctly
     // even for permuted/view tensors whose strides differ from contiguous layout.
+    // IMPORTANT: use RAII to restore the original pointers on ANY return path — including
+    // early error returns — so that callers (e.g. CPU fallback) always see valid pointers.
     std::vector<char> k_root_staging, v_root_staging;
     void * k_orig_data = k->data;
     void * v_orig_data = v->data;
+    struct KVRestore {
+        const ggml_tensor * k; void * k_orig;
+        const ggml_tensor * v; void * v_orig;
+        ~KVRestore() {
+            const_cast<ggml_tensor *>(k)->data = k_orig;
+            const_cast<ggml_tensor *>(v)->data = v_orig;
+        }
+    } kv_restore{k, k_orig_data, v, v_orig_data};
     {
         auto stage_kv = [&](const ggml_tensor * t, std::vector<char> & staging) -> void * {
             MemChunk chunk; size_t off = 0;
@@ -3127,8 +3787,13 @@ static bool ggml_fmsh_execute_flash_attn_ext(
 
             // AXI 同步修复（参考 flash-attn-netmake-cpu-test.cpp）：
             // forward() 后 ready_=true 永久置位，后续 waitForReady() 立即返回读到上帧数据。
-            // 修复：forward() 后立即 setReady(false) + 安装新 check_func_，再 waitForReady()。
+            // 修复仅适用于 ARM/AXI 直连模式 —— socket 模式下 layerCount() 不是可靠的完成信号，
+            // 直接用 waitForReady() 即可（icraft-xrt 在 socket 模式下自己管同步）。
+#if defined(__aarch64__) || defined(_M_ARM64)
             const bool use_axi_sync = entry->zg_device.defined();
+#else
+            const bool use_axi_sync = false;
+#endif
             uint32_t layer_before = 0;
             if (use_axi_sync) {
                 layer_before = entry->zg_device.layerCount();
@@ -3248,10 +3913,6 @@ static bool ggml_fmsh_execute_flash_attn_ext(
             }
         }
     }
-
-    // Restore original data pointers if they were redirected.
-    const_cast<ggml_tensor *>(k)->data = k_orig_data;
-    const_cast<ggml_tensor *>(v)->data = v_orig_data;
 
     return true;
 }
@@ -3441,6 +4102,8 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             " batched_offloaded=" + std::to_string(ctx->batched_mul_mat_offloaded) +
             " batched_hit_rate_pct=" + std::to_string(bmm_hit) +
             " chained_input_hits=" + std::to_string(ctx->mul_mat_device_input_chain) +
+            " qweight_offloaded=" + std::to_string(ctx->mul_mat_qweight_offloaded) +
+            " qweight_resident_mib=" + std::to_string(ctx->mul_mat_qweight_bytes_resident / (1024 * 1024)) +
             " memcpy_ratio_pct=" + std::to_string(memcpy_ratio));
         const double flash_hit = ctx->flash_attn_total == 0 ? 0.0 : (100.0 * static_cast<double>(ctx->flash_attn_offloaded) / static_cast<double>(ctx->flash_attn_total));
         ggml_fmsh_log_locked(
@@ -3972,14 +4635,99 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             if (ggml_fmsh_is_batched_mul_mat(node)) {
                 ctx->batched_mul_mat_total++;
             }
+
+            // Quantized weight matmul (Q4_K/Q6_K projections, FFN, lm_head): dequant→BF16
+            // NPU path. Best-effort — any failure falls back to CPU, never fatal.
+            if (ctx->offload_quant_weights && ggml_fmsh_is_quant_weight_mul_mat(node)) {
+                bool qw_created = false;
+                std::string qw_err;
+                ggml_fmsh_zg330_qweight_session_entry * qw_entry =
+                    ggml_fmsh_get_or_create_qweight_session(ctx, node, &qw_created, &qw_err);
+                bool qw_ok = (qw_entry != nullptr);
+                if (qw_ok) {
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        std::string(qw_created ? "session_create" : "session_hit") +
+                        " op=MUL_MAT kind=qweight shape=[" + std::to_string(node->ne[0]) + "," +
+                        std::to_string(node->ne[1]) + "," + std::to_string(node->ne[2]) + "," +
+                        std::to_string(node->ne[3]) + "]" +
+                        " src0_type=" + std::to_string(static_cast<int>(node->src[0]->type)) +
+                        " m_bucket=" + std::to_string(qw_entry->m_bucket) +
+                        " k=" + std::to_string(qw_entry->k) +
+                        " n=" + std::to_string(qw_entry->n_full) +
+                        " chunks=" + std::to_string(qw_entry->subnets.size()) +
+                        " net=" + (qw_entry->subnets.empty() ? std::string("none") : qw_entry->subnets[0].bundle.net_name) +
+                        " net_cache=" + std::string((!qw_entry->subnets.empty() && qw_entry->subnets[0].bundle.ram_cache_hit) ? "HIT" : "MISS") +
+                        " compile_now=" + std::string((qw_created && !qw_entry->subnets.empty() && qw_entry->subnets[0].bundle.compiled_now) ? "YES" : "NO"));
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+                    std::vector<float> qw_cpu_ref;
+                    if (ctx->debug_compare == 1) {
+                        std::vector<ggml_fmsh_debug_saved_tensor> dbg_saved;
+                        std::unordered_set<ggml_tensor *> dbg_seen;
+                        std::string dbg_err;
+                        if (ggml_fmsh_debug_backup_tensor(node, dbg_saved, dbg_seen, &dbg_err)) {
+                            const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
+                            if (cpu_st == GGML_STATUS_SUCCESS) {
+                                std::string snap_err;
+                                ggml_fmsh_tensor_snapshot_f32(node, qw_cpu_ref, &snap_err);
+                            }
+                            std::string restore_err;
+                            ggml_fmsh_debug_restore_tensors(dbg_saved, &restore_err);
+                        }
+                    }
+#endif
+                    // Materialize src1 (activation) from device to host if it's ZG DDR-resident.
+                    ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                    // Use the F32 dequant path: dequantize src0 and route through execute_mul_mat.
+                    qw_ok = ggml_fmsh_execute_qweight_via_f32(ctx, node, &qw_err);
+                    if (qw_ok) {
+                        ctx->mul_mat_offloaded++;
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+                        if (!qw_cpu_ref.empty()) {
+                            ggml_fmsh_debug_compare_and_log(ctx, node, qw_cpu_ref, i);
+                        }
+#endif
+                    }
+                }
+                if (!qw_ok) {
+                    ggml_fmsh_log_locked(ctx, 2, "fallback op=MUL_MAT kind=qweight reason=" + qw_err);
+                    ctx->mul_mat_fallback++;
+                    ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                    ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                    const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
+                    if (st != GGML_STATUS_SUCCESS) {
+                        return st;
+                    }
+                }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = qw_ok;
+                continue;
+            }
+
             if (!ggml_fmsh_can_run_mul_mat_zg(node)) {
+                // F32 matmul we can't handle (layout/dtype) — graceful CPU fallback.
                 ggml_fmsh_log_locked(
-                    ctx, 3,
-                    "fatal op=MUL_MAT reason=unsupported_layout_or_dtype dst_type=" +
+                    ctx, 2,
+                    "fallback op=MUL_MAT reason=unsupported_layout_or_dtype dst_type=" +
                     std::to_string(static_cast<int>(node->type)) +
                     " src0_type=" + std::to_string(static_cast<int>(node->src[0]->type)) +
                     " src1_type=" + std::to_string(static_cast<int>(node->src[1]->type)));
-                return GGML_STATUS_FAILED;
+                ctx->mul_mat_fallback++;
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
+                if (st != GGML_STATUS_SUCCESS) {
+                    return st;
+                }
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = false;
+                continue;
             }
 
             // Temporarily skip boundary accounting for elementwise path to avoid
@@ -4755,6 +5503,10 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
     ctx->flash_softmax_cu = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_SOFTMAX_CU", 8)));
     ctx->flash_precompile_kv_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_PRECOMPILE_KV_DEPTH", 1));
     ctx->flash_kv_bucket_max = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_KV_BUCKET_MAX", 8192)));
+    ctx->offload_quant_weights = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_QUANT_WEIGHTS", true);
+    ctx->mul_mat_m_bucket_max = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_M_BUCKET_MAX", 1)));
+    ctx->mul_mat_n_chunk = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_N_CHUNK", 16384));
+    ctx->mul_mat_precompile_m_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_PRECOMPILE_M_DEPTH", 0));
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
     ctx->debug_compare = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DEBUG_COMPARE", true);
     ctx->debug_compare_atol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_ATOL", 1e-4);
@@ -4808,6 +5560,10 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
             " flash_softmax_cu=" + std::to_string(ctx->flash_softmax_cu) +
             " flash_precompile_kv_depth=" + std::to_string(ctx->flash_precompile_kv_depth) +
             " flash_kv_bucket_max=" + std::to_string(ctx->flash_kv_bucket_max) +
+            " offload_quant_weights=" + std::to_string(ctx->offload_quant_weights ? 1 : 0) +
+            " mul_mat_m_bucket_max=" + std::to_string(ctx->mul_mat_m_bucket_max) +
+            " mul_mat_n_chunk=" + std::to_string(ctx->mul_mat_n_chunk) +
+            " mul_mat_precompile_m_depth=" + std::to_string(ctx->mul_mat_precompile_m_depth) +
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             " debug_compare=" + std::to_string(ctx->debug_compare ? 1 : 0) +
             " debug_compare_atol=" + std::to_string(ctx->debug_compare_atol) +

@@ -83,7 +83,8 @@ MatmulZgNetworkBundle get_or_compile_matmul_zg_network(
     const std::filesystem::path & work_root,
     int64_t m,
     int64_t k,
-    int64_t n);
+    int64_t n,
+    bool bf16 = false);
 
 ElementwiseZgNetworkBundle get_or_compile_elementwise_zg_network(
     const std::filesystem::path & work_root,
