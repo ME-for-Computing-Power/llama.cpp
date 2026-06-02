@@ -68,8 +68,8 @@ struct RmsNormSplitNetworkBundle {
     bool compiled_now = false;
 };
 
-// ROPE NeoX bundle: inputs=[X[N,d], theta[N,d/2]], output=[Y[N,d]]
-// theta contains the rotation angles (computed on host per position×dim-pair).
+// ROPE NeoX: X[N,d] + THETA[N,d/2] (range-reduced to [-π,π]) → Y[N,d]
+// cos/sin evaluated on ZG330 via degree-12 Horner polynomial — no HostBackend needed.
 struct RopeZgNetworkBundle {
     std::string net_name;
     icraft::xir::Network network;

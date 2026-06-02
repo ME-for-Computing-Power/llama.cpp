@@ -261,7 +261,7 @@ struct ggml_backend_fmsh_zg330_context {
     bool strict_mode = false;
     bool enable_log = true;
     int log_level = 1; // 0 debug, 1 info, 2 warn, 3 error
-    bool offload_cpy_dup = false;  // bf16 roundtrip destroys KV cache precision; must stay CPU
+    bool offload_cpy_dup = false;  // BF16 roundtrip corrupts F32 SSM recurrent state; must stay CPU
     bool offload_soft_max = true;
     bool offload_rms_norm = true;
     bool offload_flash_attn_ext = true;
@@ -275,7 +275,7 @@ struct ggml_backend_fmsh_zg330_context {
     // Weights are dequantized once to F32 (tf32 NPU path) and kept resident on device;
     // M is bucketed (next pow2, capped) so the set of compiled matmul_MxKxN shapes is bounded.
     bool    offload_quant_weights = true;
-    int64_t mul_mat_m_bucket_max = 512;          // cap for M bucketing (1 = decode-only)
+    int64_t mul_mat_m_bucket_max = 1;          // cap for M bucketing (1 = decode-only)
     int64_t mul_mat_n_chunk = 16384;           // split N into chunks (0 = no split)
     int64_t mul_mat_precompile_m_depth = 0;    // speculatively precompile next pow2 M buckets
     uint64_t mul_mat_qweight_offloaded = 0;
@@ -1480,13 +1480,6 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
         if (err) *err = "no dequant kernel for src0 type";
         return false;
     }
-    // Model weights are static (no view, op==NONE, not an INPUT) — dequant+upload once.
-    const bool src0_is_static =
-        (src0->view_src == nullptr) &&
-        (src0->op == GGML_OP_NONE) &&
-        ((src0->flags & GGML_TENSOR_FLAG_INPUT) == 0);
-    const uintptr_t weight_key = reinterpret_cast<uintptr_t>(src0->data);
-
     // src1 (activation) may be ZG DDR-resident (fake pointer, not dereferenceable on host).
     // D2H it into a staging buffer and redirect src1->data for the duration of this call.
     std::vector<char> src1_staging;
@@ -2655,17 +2648,17 @@ static bool ggml_fmsh_execute_rope(
             }
         }
 
-        // Fill theta input (bf16, row-major [rows, half]).
-        // theta[row_of_head, j] = position * freq_base^(-2j / n_dims) * freq_scale
-        // NeoX layout: first half dims [0..half) use theta[j] for j=0..half-1.
+        // Fill THETA input (bf16, row-major [rows, half]).
+        // Range-reduce to [-π, π] on host so the ZG330 Horner polynomial stays accurate.
+        // cos/sin are evaluated entirely on ZG330 via the compiled Horner network.
         uint16_t * theta_in = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
-        // Position tensor: src1 is int32 [seq_len] (shared across all batches and heads).
         const int32_t * pos_data = (src1 && src1->data)
             ? reinterpret_cast<const int32_t *>(src1->data)
             : nullptr;
+        constexpr float kTwoPi = 6.28318530717958647692f;
+        constexpr float kPi    = 3.14159265358979323846f;
         for (int64_t i3 = 0; i3 < ne3; ++i3) {
             for (int64_t i2 = 0; i2 < ne2; ++i2) {
-                // Position for this sequence slot (shared across batches and heads).
                 const int32_t pos = pos_data
                     ? pos_data[i2 < src1->ne[0] ? i2 : src1->ne[0] - 1]
                     : static_cast<int32_t>(i2);
@@ -2675,13 +2668,15 @@ static bool ggml_fmsh_execute_rope(
                     for (int64_t j = 0; j < half; ++j) {
                         float theta;
                         if (j < n_dims / 2) {
-                            // Active rotation dimension.
                             theta = static_cast<float>(pos) * freq_scale *
                                 std::pow(freq_base, -2.0f * static_cast<float>(j) / static_cast<float>(n_dims));
                         } else {
-                            // Passthrough dimension: theta=0 → cos=1, sin=0.
-                            theta = 0.0f;
+                            theta = 0.0f;  // passthrough: cos=1, sin=0
                         }
+                        // Reduce to [-π, π] so the degree-12 Horner stays within its accurate range.
+                        theta = std::fmod(theta, kTwoPi);
+                        if (theta >  kPi) theta -= kTwoPi;
+                        if (theta < -kPi) theta += kTwoPi;
                         theta_in[row_off + static_cast<size_t>(j)] = ggml_fmsh_f32_to_bf16(theta);
                     }
                 }
@@ -4277,6 +4272,127 @@ static enum ggml_status ggml_fmsh_compute_cpu_node_with_zg_redirect(
     return GGML_STATUS_SUCCESS;
 }
 
+// Execute SET_ROWS entirely on-device: scatter-write new rows directly into ZG DDR
+// without pulling the whole KV cache tensor to host.
+// SET_ROWS semantics (see ggml.c ggml_set_rows):
+//   src[0] = new row data (F32, shape [nc, nr, ne02, ne03])
+//   src[1] = row indices  (I64/I32, shape [nr, ne11, ne12, 1])
+//   src[2] = KV cache base (view source, ZG buffer)
+//   dst    = view of src[2]  (the node itself)
+static enum ggml_status ggml_fmsh_execute_set_rows_on_device(
+        ggml_backend_fmsh_zg330_context * ctx,
+        ggml_cgraph * cgraph,
+        int node_idx,
+        std::unordered_map<const ggml_tensor *, Tensor> & device_tensor_map) {
+
+    ggml_tensor * node = cgraph->nodes[node_idx];
+    const ggml_tensor * src0 = node->src[0]; // new row data, F32
+    const ggml_tensor * src1 = node->src[1]; // row indices, I64 or I32
+
+    // --- Resolve dst ZG chunk (node is a view of KV cache in ZG DDR) ---
+    MemChunk dst_chunk;
+    size_t   dst_off = 0;
+    if (!ggml_fmsh_is_zg_buffer_tensor(node, &dst_chunk, &dst_off)) {
+        // dst not ZG buffer — safe fallback to CPU path
+        ggml_fmsh_materialize_if_device(ctx, src0, device_tensor_map);
+        ggml_fmsh_materialize_if_device(ctx, src1, device_tensor_map);
+        return ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, node_idx);
+    }
+
+    // Only F16 and F32 dst types handled on-device; others fall back.
+    if (node->type != GGML_TYPE_F16 && node->type != GGML_TYPE_F32) {
+        ggml_fmsh_materialize_if_device(ctx, src0, device_tensor_map);
+        ggml_fmsh_materialize_if_device(ctx, src1, device_tensor_map);
+        return ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, node_idx);
+    }
+
+    // --- Resolve src0 (new row data, F32) to a host-accessible pointer ---
+    std::vector<char> src0_staging;
+    const float * src0_data = nullptr;
+    {
+        auto it = device_tensor_map.find(src0);
+        if (it != device_tensor_map.end()) {
+            // src0 is device-resident (e.g. ROPE output kept on device); D2H only these rows.
+            const size_t bytes = ggml_nbytes(src0);
+            src0_staging.resize(bytes);
+            it->second.read(src0_staging.data(), 0, bytes);
+            device_tensor_map.erase(it);
+            src0_data = reinterpret_cast<const float *>(src0_staging.data());
+            ggml_fmsh_log_locked(ctx, 1,
+                "set_rows_src0_d2h bytes=" + std::to_string(bytes));
+        } else {
+            src0_data = reinterpret_cast<const float *>(src0->data);
+        }
+    }
+    if (!src0_data || !src1->data) {
+        return GGML_STATUS_FAILED;
+    }
+
+    // --- Scatter write each new row into ZG DDR ---
+    const int64_t nc   = src0->ne[0]; // elements per row
+    const int64_t nr   = src0->ne[1]; // number of new rows
+    const int64_t ne02 = src0->ne[2];
+    const int64_t ne03 = src0->ne[3];
+
+    const size_t dst_elem_bytes  = ggml_type_size(node->type);
+    const size_t dst_row_bytes   = static_cast<size_t>(nc) * dst_elem_bytes;
+
+    // Reusable conversion buffer for F32 → F16.
+    std::vector<char> row_buf;
+    if (node->type == GGML_TYPE_F16) {
+        row_buf.resize(dst_row_bytes);
+    }
+
+    int64_t rows_written = 0;
+    for (int64_t i03 = 0; i03 < ne03; ++i03) {
+        for (int64_t i02 = 0; i02 < ne02; ++i02) {
+            const int64_t i12 = i03 % src1->ne[2];
+            const int64_t i11 = i02 % src1->ne[1];
+            for (int64_t i = 0; i < nr; ++i) {
+                // Row index into KV cache (matches CPU: i10=i, i11, i12).
+                int64_t dst_row_idx;
+                if (src1->type == GGML_TYPE_I64) {
+                    dst_row_idx = *reinterpret_cast<const int64_t *>(
+                        static_cast<const char *>(src1->data) +
+                        i * src1->nb[0] + i11 * src1->nb[1] + i12 * src1->nb[2]);
+                } else {
+                    dst_row_idx = static_cast<int64_t>(*reinterpret_cast<const int32_t *>(
+                        static_cast<const char *>(src1->data) +
+                        i * src1->nb[0] + i11 * src1->nb[1] + i12 * src1->nb[2]));
+                }
+
+                const float * src_row = reinterpret_cast<const float *>(
+                    reinterpret_cast<const char *>(src0_data) +
+                    i * src0->nb[1] + i02 * src0->nb[2] + i03 * src0->nb[3]);
+
+                const size_t write_off = dst_off
+                    + static_cast<size_t>(dst_row_idx) * static_cast<size_t>(node->nb[1])
+                    + static_cast<size_t>(i02) * static_cast<size_t>(node->nb[2])
+                    + static_cast<size_t>(i03) * static_cast<size_t>(node->nb[3]);
+
+                if (node->type == GGML_TYPE_F16) {
+                    ggml_fp32_to_fp16_row(src_row,
+                        reinterpret_cast<ggml_fp16_t *>(row_buf.data()), nc);
+                    dst_chunk.write(write_off, row_buf.data(), dst_row_bytes);
+                } else {
+                    // F32 dst: write src row directly
+                    dst_chunk.write(write_off,
+                        const_cast<char *>(reinterpret_cast<const char *>(src_row)), dst_row_bytes);
+                }
+                ++rows_written;
+            }
+        }
+    }
+
+    ggml_fmsh_log_locked(ctx, 1,
+        "set_rows_on_device rows=" + std::to_string(rows_written) +
+        " nc=" + std::to_string(nc) +
+        " write_bytes=" + std::to_string(
+            static_cast<size_t>(rows_written) * dst_row_bytes));
+
+    return GGML_STATUS_SUCCESS;
+}
+
 static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t backend, ggml_cgraph * cgraph) {
     auto * ctx = static_cast<ggml_backend_fmsh_zg330_context *>(backend->context);
     if (!ctx) {
@@ -5385,6 +5501,24 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             continue;
         }
 
+        if (node->op == GGML_OP_SET_ROWS) {
+            ggml_fmsh_log_locked(ctx, 1,
+                "set_rows_on_device shape=[" +
+                std::to_string(node->ne[0]) + "," +
+                std::to_string(node->ne[1]) + "," +
+                std::to_string(node->ne[2]) + "," +
+                std::to_string(node->ne[3]) + "]");
+            const enum ggml_status st = ggml_fmsh_execute_set_rows_on_device(
+                ctx, cgraph, i, device_tensor_map);
+            if (st != GGML_STATUS_SUCCESS) return st;
+            device_tensor_map.erase(node);
+            has_prev_device_output = false;
+            prev_device_output_node = nullptr;
+            last_dispatched_valid = true;
+            last_dispatched_zg = true;
+            continue;
+        }
+
         if (ggml_fmsh_is_host_dispatch_op(node)) {
             log_dispatch_boundary(false, node, "host_dispatch_op");
             std::string reason = "host_dispatch_op";
@@ -5469,7 +5603,7 @@ static ggml_guid_t ggml_backend_fmsh_zg330_guid(void) {
 
 // Forward declaration (defined after buffer callbacks).
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(
-        ggml_fmsh_zg330_device_context * dev_ctx);
+        ggml_fmsh_zg330_device_context * dev_ctx, ggml_backend_dev_t dev);
 
 static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_context * dev_ctx = nullptr) {
     auto * ctx = new ggml_backend_fmsh_zg330_context;
@@ -5771,7 +5905,7 @@ static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
 // Returns the per-device ZG buffer type. Called from device_get_buffer_type;
 // the buft object is cached on dev_ctx (created once, never freed).
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(
-        ggml_fmsh_zg330_device_context * dev_ctx) {
+        ggml_fmsh_zg330_device_context * dev_ctx, ggml_backend_dev_t dev) {
     if (!dev_ctx->cached_buft) {
         if (!dev_ctx->buft_ctx) {
             dev_ctx->buft_ctx = new ggml_fmsh_zg330_buft_ctx{};
@@ -5785,7 +5919,7 @@ static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(
             /* .get_alloc_size= */ nullptr,
             /* .is_host       = */ [](ggml_backend_buffer_type_t) -> bool { return false; },
         };
-        dev_ctx->cached_buft = new ggml_backend_buffer_type{iface, /*device=*/nullptr, /*context=*/dev_ctx->buft_ctx};
+        dev_ctx->cached_buft = new ggml_backend_buffer_type{iface, /*device=*/dev, /*context=*/dev_ctx->buft_ctx};
     }
     return dev_ctx->cached_buft;
 }
@@ -5871,7 +6005,7 @@ static ggml_backend_dev_t ggml_backend_fmsh_zg330_reg_get_device(ggml_backend_re
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_get_kv_buft(ggml_backend_dev_t dev) {
     auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(dev->context);
     if (!dev_ctx) return nullptr;
-    return ggml_backend_fmsh_zg330_buffer_type_impl(dev_ctx);
+    return ggml_backend_fmsh_zg330_buffer_type_impl(dev_ctx, dev);
 }
 
 static void * ggml_backend_fmsh_zg330_reg_get_proc_address(ggml_backend_reg_t reg, const char * name) {

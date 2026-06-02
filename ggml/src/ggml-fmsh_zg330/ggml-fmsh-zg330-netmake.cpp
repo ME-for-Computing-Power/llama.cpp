@@ -1585,16 +1585,12 @@ RmsNormSplitNetworkBundle get_or_compile_rmsnorm_split_zg_networks(
     return out;
 }
 
-// ── ROPE NeoX: X[N,d], theta[N,d/2] → Y[N,d] ──────────────────────────────
-// theta = angles per (position, dim-pair); computed on host before each call.
-// Network:
-//   cos_t = Cos(theta)         # [N, d/2]
-//   sin_t = Sin(theta)         # [N, d/2]
-//   x0    = Slice(X, axis=1, [0, d/2))   # first half  [N, d/2]
-//   x1    = Slice(X, axis=1, [d/2, d))   # second half [N, d/2]
-//   out0  = x0 * cos_t - x1 * sin_t
-//   out1  = x0 * sin_t + x1 * cos_t
-//   Y     = Concat([out0, out1], axis=1)  # [N, d]
+// ── ROPE NeoX: X[N,d], THETA[N,d/2] → Y[N,d] ─────────────────────────────
+// THETA contains rotation angles (pre-reduced to [-π,π] by host fmod).
+// cos and sin are computed on ZG330 via degree-12 Horner polynomials:
+//   cos(θ) = Horner(θ², [1/479001600, -1/3628800, 1/40320, -1/720, 1/24, -1/2, 1])
+//   sin(θ) = θ · Horner(θ², [1/6227020800, -1/39916800, 1/362880, -1/5040, 1/120, -1/6, 1])
+// All ops (Mul/Add/Sub/Slice/Concat) lower to ZG330 HardOps — no HostBackend needed.
 static void build_rope_onnx(
     const std::filesystem::path & onnx_path,
     int64_t rows,
@@ -1614,28 +1610,72 @@ X     = helper.make_tensor_value_info("X",     TensorProto.FLOAT, [rows, cols])
 THETA = helper.make_tensor_value_info("THETA", TensorProto.FLOAT, [rows, half])
 Y     = helper.make_tensor_value_info("Y",     TensorProto.FLOAT, [rows, cols])
 
-starts0 = numpy_helper.from_array(np.array([0, 0],    dtype=np.int64), name="starts0")
+def scalar(name, val):
+    return numpy_helper.from_array(np.array([val], dtype=np.float32), name=name)
+
+# Horner coefficients: cos(x) = Horner(x², cc), degree-12 polynomial
+# cc[0]*x^12 + cc[1]*x^10 + ... + cc[6]*x^0
+cc = [1.0/479001600.0, -1.0/3628800.0, 1.0/40320.0, -1.0/720.0, 1.0/24.0, -0.5, 1.0]
+# sin(x) = x * Horner(x², sc), inner polynomial
+sc = [1.0/6227020800.0, -1.0/39916800.0, 1.0/362880.0, -1.0/5040.0, 1.0/120.0, -1.0/6.0, 1.0]
+
+inits = [scalar(f"cc{i}", v) for i, v in enumerate(cc)]
+inits += [scalar(f"sc{i}", v) for i, v in enumerate(sc)]
+
+starts0 = numpy_helper.from_array(np.array([0, 0],       dtype=np.int64), name="starts0")
 ends0   = numpy_helper.from_array(np.array([rows, half], dtype=np.int64), name="ends0")
-starts1 = numpy_helper.from_array(np.array([0, half], dtype=np.int64), name="starts1")
+starts1 = numpy_helper.from_array(np.array([0, half],    dtype=np.int64), name="starts1")
 ends1   = numpy_helper.from_array(np.array([rows, cols], dtype=np.int64), name="ends1")
-axes_01 = numpy_helper.from_array(np.array([0, 1],    dtype=np.int64), name="axes_01")
-steps_1 = numpy_helper.from_array(np.array([1, 1],    dtype=np.int64), name="steps_1")
+axes_01 = numpy_helper.from_array(np.array([0, 1],       dtype=np.int64), name="axes_01")
+steps_1 = numpy_helper.from_array(np.array([1, 1],       dtype=np.int64), name="steps_1")
+inits += [starts0, ends0, starts1, ends1, axes_01, steps_1]
 
-nodes = [
-    helper.make_node("Cos",   ["THETA"],                 ["cos_t"],  name="Cos"),
-    helper.make_node("Sin",   ["THETA"],                 ["sin_t"],  name="Sin"),
-    helper.make_node("Slice", ["X",  "starts0", "ends0", "axes_01", "steps_1"], ["x0"], name="Slice0"),
-    helper.make_node("Slice", ["X",  "starts1", "ends1", "axes_01", "steps_1"], ["x1"], name="Slice1"),
-    helper.make_node("Mul",   ["x0", "cos_t"],           ["x0cos"],  name="Mul0"),
-    helper.make_node("Mul",   ["x1", "sin_t"],           ["x1sin"],  name="Mul1"),
-    helper.make_node("Mul",   ["x0", "sin_t"],           ["x0sin"],  name="Mul2"),
-    helper.make_node("Mul",   ["x1", "cos_t"],           ["x1cos"],  name="Mul3"),
-    helper.make_node("Sub",   ["x0cos", "x1sin"],        ["out0"],   name="Sub0"),
-    helper.make_node("Add",   ["x0sin", "x1cos"],        ["out1"],   name="Add0"),
-    helper.make_node("Concat",["out0", "out1"],          ["Y"],      name="Concat", axis=1),
-]
+nodes = []
 
-inits = [starts0, ends0, starts1, ends1, axes_01, steps_1]
+# th2 = THETA * THETA  (shared by cos and sin Horner)
+nodes.append(helper.make_node("Mul", ["THETA", "THETA"], ["th2"]))
+
+# cos Horner: ct = (((((cc0*th2 + cc1)*th2 + cc2)*th2 + cc3)*th2 + cc4)*th2 + cc5)*th2 + cc6
+nodes.append(helper.make_node("Mul", ["cc0",  "th2"], ["ct0"]))
+nodes.append(helper.make_node("Add", ["ct0",  "cc1"], ["ct1"]))
+nodes.append(helper.make_node("Mul", ["ct1",  "th2"], ["ct2"]))
+nodes.append(helper.make_node("Add", ["ct2",  "cc2"], ["ct3"]))
+nodes.append(helper.make_node("Mul", ["ct3",  "th2"], ["ct4"]))
+nodes.append(helper.make_node("Add", ["ct4",  "cc3"], ["ct5"]))
+nodes.append(helper.make_node("Mul", ["ct5",  "th2"], ["ct6"]))
+nodes.append(helper.make_node("Add", ["ct6",  "cc4"], ["ct7"]))
+nodes.append(helper.make_node("Mul", ["ct7",  "th2"], ["ct8"]))
+nodes.append(helper.make_node("Add", ["ct8",  "cc5"], ["ct9"]))
+nodes.append(helper.make_node("Mul", ["ct9",  "th2"], ["ct10"]))
+nodes.append(helper.make_node("Add", ["ct10", "cc6"], ["cos_t"]))
+
+# sin Horner: st_inner = (((((sc0*th2+sc1)*th2+sc2)*th2+sc3)*th2+sc4)*th2+sc5)*th2+sc6
+#             sin_t = THETA * st_inner
+nodes.append(helper.make_node("Mul", ["sc0",    "th2"], ["st0"]))
+nodes.append(helper.make_node("Add", ["st0",    "sc1"], ["st1"]))
+nodes.append(helper.make_node("Mul", ["st1",    "th2"], ["st2"]))
+nodes.append(helper.make_node("Add", ["st2",    "sc2"], ["st3"]))
+nodes.append(helper.make_node("Mul", ["st3",    "th2"], ["st4"]))
+nodes.append(helper.make_node("Add", ["st4",    "sc3"], ["st5"]))
+nodes.append(helper.make_node("Mul", ["st5",    "th2"], ["st6"]))
+nodes.append(helper.make_node("Add", ["st6",    "sc4"], ["st7"]))
+nodes.append(helper.make_node("Mul", ["st7",    "th2"], ["st8"]))
+nodes.append(helper.make_node("Add", ["st8",    "sc5"], ["st9"]))
+nodes.append(helper.make_node("Mul", ["st9",    "th2"], ["st10"]))
+nodes.append(helper.make_node("Add", ["st10",   "sc6"], ["st_inner"]))
+nodes.append(helper.make_node("Mul", ["THETA",  "st_inner"], ["sin_t"]))
+
+# NeoX rotation: x0*cos - x1*sin, x0*sin + x1*cos
+nodes.append(helper.make_node("Slice", ["X", "starts0", "ends0", "axes_01", "steps_1"], ["x0"]))
+nodes.append(helper.make_node("Slice", ["X", "starts1", "ends1", "axes_01", "steps_1"], ["x1"]))
+nodes.append(helper.make_node("Mul",   ["x0", "cos_t"], ["x0cos"]))
+nodes.append(helper.make_node("Mul",   ["x1", "sin_t"], ["x1sin"]))
+nodes.append(helper.make_node("Mul",   ["x0", "sin_t"], ["x0sin"]))
+nodes.append(helper.make_node("Mul",   ["x1", "cos_t"], ["x1cos"]))
+nodes.append(helper.make_node("Sub",   ["x0cos", "x1sin"], ["out0"]))
+nodes.append(helper.make_node("Add",   ["x0sin", "x1cos"], ["out1"]))
+nodes.append(helper.make_node("Concat", ["out0", "out1"], ["Y"], axis=1))
+
 graph = helper.make_graph(nodes, "rope_neox_graph", [X, THETA], [Y], initializer=inits)
 model = helper.make_model(graph, producer_name="ggml_fmsh_netmake", opset_imports=[helper.make_opsetid("", 13)])
 model.ir_version = 8
@@ -1666,7 +1706,8 @@ RopeZgNetworkBundle get_or_compile_rope_zg_network(
 
     preload_zg_cache(work_root);
     const auto root_abs = std::filesystem::weakly_canonical(work_root);
-    const auto net_name = "rope_neox_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
+    // v3: inputs X[rows,cols] + THETA[rows,cols/2]; cos/sin computed on ZG330 via Horner polynomial
+    const auto net_name = "rope_neox_v3_bf16_" + std::to_string(rows) + "x" + std::to_string(cols);
     const auto cache_key = make_root_net_key(root_abs, net_name);
 
     {
@@ -1710,7 +1751,7 @@ RopeZgNetworkBundle get_or_compile_rope_zg_network(
     } catch (...) {
         const auto onnx_path = work_dir / (net_name + ".onnx");
         build_rope_onnx(onnx_path, rows, cols);
-        // inputs: X[rows, cols] and THETA[rows, cols/2]
+        // inputs: X[rows, cols], THETA[rows, cols/2]
         const auto art = write_icraft_compile_toml_for_zg_elementwise(
             work_dir, net_name, onnx_path, {{rows, cols}, {rows, cols / 2}});
         run_icraft_compile(art);
