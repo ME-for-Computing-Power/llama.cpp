@@ -9,7 +9,8 @@
 
 要编译带有 fmsh_zg330 的后端，直接在宿主机上运行 
 
-make fmsh-zg330-build-x64 
+make fmsh-zg330-build-x64 # 生成 x64 socket 模式的后端
+make fmsh-zg330-build-arm64 # 生成 arm socket 模式的后端
 
 
 ## Debug 可用功能
@@ -24,16 +25,42 @@ Socket 模式下，Device::Open 在已有连接时被调用（第二个临时 co
 
 # 测试
 
-要运行一次socket模式的推理，可以：
+优先直接使用仓库中的测试脚本，不要手敲长命令。
 
-1. 进入docker  
+## x64 socket 测试
 
-docker run --network host  -it --rm -v $(pwd):/workspace fpai-icraft:latest
+在宿主机运行：
 
-Icraft 相关的全部环境都在*容器内*，不要尝试在host上运行程序
+```bash
+./socket_test.sh
+```
 
-2. 启动 llama-cli
+该脚本会：
 
-cd /workspace/build-fmsh-zg330-x64/bin && export LD_LIBRARY_PATH=/workspace/build-fmsh-zg330-x64/bin:/ModelzooDeps/x64/Dynamic/lib:$LD_LIBRARY_PATH && export GGML_FMSH_ZG330_LOG=1 && export GGML_FMSH_ZG330_CACHE_DIR=/workspace/.cache/deploy && ./llama-cli -m /workspace/Qwen3.5-0.8B-Q4_K_M.gguf --device FMSH_ZG330 --reasoning-budget 0 -p 'Hello there' -n 10 -c 1024 --no-warmup --single-turn --seed 1024 --verbose --log-file /workspace/llama.log
+- 在 docker 容器内运行一次 socket 模式推理
+- 默认使用 `timeout --signal=INT 900`
+- 将实时输出写入 `socket_test.live.log`
+- 生成 `/workspace/llama.log`
+- 检查 `.cache/deploy/backend.log`
+- 在推理结束后执行 `grep -Ein 'error|warn|fail' llama.log .cache/deploy/backend.log`
 
-socket模式中一轮推理非常慢，因此运行时应当设置 timeout 时间，并打印完整日志；推理一次后，应在日志文件（cache 中的 backend.log 和 运行目录中的 llama.log ）中运行 grep 等工具，若无必要则不要反复执行推理浪费时间。
+Icraft 相关环境都在容器内；不要尝试在 host 上直接运行 `llama-cli`。
+
+## ARM socket 测试
+
+在宿主机运行：
+
+./arm_test.sh
+
+该脚本会：
+
+- 将本地 `./.cache` 上传到 `root@192.168.110.114:/root/llama`
+- 将本地 `./build-fmsh-zg330-arm64/bin` 上传到 `root@192.168.110.114:/root/llama`
+- 在远端 `192.168.110.114` 上运行同样的 `llama-cli` 测试，并额外加上 `-fa on`
+- 将远端 `/root/llama/llama.log` 下载到本地 `./llama_arm.log`
+- 将远端 `/root/llama/.cache/deploy/backend.log` 下载到本地 `./backend_arm.log`
+- 在下载后执行 `grep -Ein 'error|warn|fail' llama_arm.log backend_arm.log`
+
+## 注意事项
+
+一轮推理很慢，推理一次后优先检查日志而不是重复跑
