@@ -246,6 +246,11 @@ struct ggml_fmsh_zg330_flash_attn_session_entry {
 struct ggml_fmsh_zg330_buft_ctx; // forward declaration
 struct ggml_fmsh_zg330_device_context; // forward declaration
 
+struct ggml_fmsh_zg330_shared_device_entry {
+    Device device;
+    size_t ref_count = 0;
+};
+
 struct ggml_backend_fmsh_zg330_context {
     ggml_backend_t cpu_backend = nullptr;
 
@@ -369,9 +374,6 @@ static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
 
 struct ggml_fmsh_zg330_device_context {
     std::mutex mu;
-    Device memory_device;
-    bool memory_device_opened = false;
-    std::string memory_device_url;
     bool memory_cache_valid = false;
     size_t memory_free = 0;
     size_t memory_total = 0;
@@ -522,6 +524,86 @@ static int ggml_fmsh_get_log_level(void) {
     if (std::strcmp(v, "WARN") == 0 || std::strcmp(v, "warn") == 0) return 2;
     if (std::strcmp(v, "ERROR") == 0 || std::strcmp(v, "error") == 0) return 3;
     return 1;
+}
+
+static std::mutex & ggml_fmsh_shared_device_registry_mu() {
+    static std::mutex mu;
+    return mu;
+}
+
+static std::unordered_map<std::string, ggml_fmsh_zg330_shared_device_entry> & ggml_fmsh_shared_device_registry() {
+    static std::unordered_map<std::string, ggml_fmsh_zg330_shared_device_entry> registry;
+    return registry;
+}
+
+static bool ggml_fmsh_acquire_shared_device(
+    const std::string & device_url,
+    Device * out_device,
+    std::string * err) {
+    if (out_device == nullptr) {
+        if (err) {
+            *err = "shared device acquire called with null out_device";
+        }
+        return false;
+    }
+
+    try {
+        std::lock_guard<std::mutex> lock(ggml_fmsh_shared_device_registry_mu());
+        auto & registry = ggml_fmsh_shared_device_registry();
+        auto it = registry.find(device_url);
+        if (it != registry.end()) {
+            it->second.ref_count++;
+            *out_device = it->second.device;
+            return true;
+        }
+
+        ggml_fmsh_zg330_shared_device_entry entry;
+        entry.device = Device::Open(device_url);
+        entry.ref_count = 1;
+        *out_device = entry.device;
+        registry.emplace(device_url, std::move(entry));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = e.what();
+        }
+        return false;
+    } catch (...) {
+        if (err) {
+            *err = "unknown error";
+        }
+        return false;
+    }
+}
+
+static void ggml_fmsh_release_shared_device(
+    const std::string & device_url,
+    Device * device,
+    bool * device_opened) {
+    if (device == nullptr || device_opened == nullptr || !*device_opened) {
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(ggml_fmsh_shared_device_registry_mu());
+        auto & registry = ggml_fmsh_shared_device_registry();
+        auto it = registry.find(device_url);
+        if (it != registry.end()) {
+            if (it->second.ref_count > 0) {
+                it->second.ref_count--;
+            }
+            if (it->second.ref_count == 0) {
+                try {
+                    Device::Close(it->second.device);
+                } catch (...) {
+                }
+                registry.erase(it);
+            }
+        }
+    }
+
+    *device = Device();
+    *device_opened = false;
 }
 
 static const char * ggml_fmsh_log_tag(int level) {
@@ -1140,7 +1222,10 @@ static bool ggml_fmsh_open_device_if_needed(ggml_backend_fmsh_zg330_context * ct
     }
     try {
         ctx->device_url = ggml_fmsh_get_device_url();
-        ctx->zg_device = Device::Open(ctx->device_url);
+        if (!ggml_fmsh_acquire_shared_device(ctx->device_url, &ctx->zg_device, err)) {
+            GGML_LOG_ERROR("%s: failed to open zg330 device: %s\n", __func__, err ? err->c_str() : "unknown error");
+            std::exit(EXIT_FAILURE);
+        }
         ctx->device_opened = true;
         return true;
     } catch (const std::exception & e) {
@@ -4063,6 +4148,8 @@ static const char * ggml_backend_fmsh_zg330_get_name(ggml_backend_t backend) {
 
 static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
     auto * ctx = static_cast<ggml_backend_fmsh_zg330_context *>(backend->context);
+    bool release_device = false;
+    std::string device_url;
     if (ctx) {
         std::lock_guard<std::mutex> lock(ctx->mu);
         ggml_fmsh_log_locked(
@@ -4120,13 +4207,24 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             " atol=" + std::to_string(ctx->debug_compare_atol) +
             " rtol=" + std::to_string(ctx->debug_compare_rtol));
 #endif
+        ctx->zg_staging_bufs.clear();
+        ctx->session_cache.clear();
+        ctx->qweight_session_cache.clear();
+        ctx->elementwise_session_cache.clear();
+        ctx->rmsnorm_split_session_cache.clear();
+        ctx->rope_session_cache.clear();
+        ctx->flash_attn_session_cache.clear();
+        ctx->bridge_session_cache.clear();
+        ctx->fused_ew_session_cache.clear();
+        ctx->reuse_pools.clear();
+        ctx->qweight_f32_bufs.clear();
+
+        release_device = ctx->device_opened;
+        device_url = ctx->device_url;
     }
 
-    if (ctx && ctx->device_opened) {
-        // Device is reference-counted; don't force-close here.
-        // The underlying connection closes when the last handle (dev_ctx->memory_device) drops.
-        ctx->zg_device = Device();
-        ctx->device_opened = false;
+    if (ctx && release_device) {
+        ggml_fmsh_release_shared_device(device_url, &ctx->zg_device, &ctx->device_opened);
     }
     // Disconnect buft_ctx from this backend so future alloc_buffer calls fall back to CPU.
     if (backend->device) {
@@ -5613,18 +5711,6 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
         return nullptr;
     }
 
-
-    if (dev_ctx) {
-        std::lock_guard<std::mutex> lock(dev_ctx->mu);
-        if (dev_ctx->memory_device_opened) {
-            // Share the device handle (reference-counted); do not consume/clear it
-            // so subsequent init_backend calls (e.g. probe cycles) can reuse it.
-            ctx->zg_device = dev_ctx->memory_device;
-            ctx->device_opened = true;
-            ctx->device_url = dev_ctx->memory_device_url;
-        }
-    }
-
     ctx->strict_mode = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_STRICT", false);
     ctx->enable_log = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_LOG", true);
     ctx->log_level = ggml_fmsh_get_log_level();
@@ -5755,21 +5841,24 @@ static void ggml_backend_fmsh_zg330_device_get_memory(ggml_backend_dev_t dev, si
         }
 
         try {
-            if (!dev_ctx->memory_device_opened) {
-                dev_ctx->memory_device_url = ggml_fmsh_get_device_url();
-                dev_ctx->memory_device = Device::Open(dev_ctx->memory_device_url);
-                dev_ctx->memory_device_opened = true;
-            }
-
+            const std::string device_url = ggml_fmsh_get_device_url();
+            Device memory_device;
+            bool memory_device_opened = false;
             std::string err;
-            const bool ok = ggml_fmsh_query_pl_memory(dev_ctx->memory_device, free, total, &err);
-            if (ok) {
-                dev_ctx->memory_free = *free;
-                dev_ctx->memory_total = *total;
-                dev_ctx->memory_cache_valid = true;
-                return;
+            if (!ggml_fmsh_acquire_shared_device(device_url, &memory_device, &err)) {
+                GGML_LOG_WARN("%s: failed to acquire zg330 device for PL memory query: %s\n", __func__, err.c_str());
+            } else {
+                memory_device_opened = true;
+                const bool ok = ggml_fmsh_query_pl_memory(memory_device, free, total, &err);
+                ggml_fmsh_release_shared_device(device_url, &memory_device, &memory_device_opened);
+                if (ok) {
+                    dev_ctx->memory_free = *free;
+                    dev_ctx->memory_total = *total;
+                    dev_ctx->memory_cache_valid = true;
+                    return;
+                }
+                GGML_LOG_WARN("%s: failed to query PL memory: %s\n", __func__, err.c_str());
             }
-            GGML_LOG_WARN("%s: failed to query PL memory: %s\n", __func__, err.c_str());
         } catch (const std::exception & e) {
             GGML_LOG_WARN("%s: failed to open zg330 device for PL memory query: %s\n", __func__, e.what());
         } catch (...) {
