@@ -24,6 +24,7 @@
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <sstream>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -305,8 +306,10 @@ struct ggml_backend_fmsh_zg330_context {
     struct op_perf {
         uint64_t calls = 0;
         double total_ms = 0.0;
+        double profile_total_ms = 0.0;
         double memcpy_ms = 0.0;
         double hard_ms = 0.0;
+        double other_ms = 0.0;
     };
     std::unordered_map<uint32_t, op_perf> perf;
 
@@ -4007,15 +4010,21 @@ static void ggml_fmsh_accumulate_profile(
     p.total_ms += total_ms;
 
     const auto profile = session.timeProfileResults();
+    double profile_total_ms = 0.0;
     double memcpy_ms = 0.0;
     double hard_ms = 0.0;
+    double other_ms = 0.0;
     for (const auto & kv : profile) {
         const auto & t = kv.second;
+        profile_total_ms += std::get<0>(t);
         memcpy_ms += std::get<1>(t);
         hard_ms += std::get<2>(t);
+        other_ms += std::get<3>(t);
     }
+    p.profile_total_ms += profile_total_ms;
     p.memcpy_ms += memcpy_ms;
     p.hard_ms += hard_ms;
+    p.other_ms += other_ms;
 }
 
 static std::string ggml_fmsh_op_name_from_id(uint32_t op_id) {
@@ -4023,6 +4032,23 @@ static std::string ggml_fmsh_op_name_from_id(uint32_t op_id) {
         return std::string(ggml_op_name(static_cast<enum ggml_op>(op_id)));
     }
     return "unknown(" + std::to_string(op_id) + ")";
+}
+
+static std::string ggml_fmsh_fmt_ms(double ms) {
+    std::ostringstream oss;
+    oss.setf(std::ios::fixed);
+    oss.precision(3);
+    oss << ms;
+    return oss.str();
+}
+
+static std::string ggml_fmsh_fmt_pct(double part, double total) {
+    const double pct = total > 0.0 ? (100.0 * part / total) : 0.0;
+    std::ostringstream oss;
+    oss.setf(std::ios::fixed);
+    oss.precision(2);
+    oss << pct;
+    return oss.str();
 }
 
 static bool ggml_fmsh_is_batched_mul_mat(const ggml_tensor * node) {
@@ -4157,15 +4183,38 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             "backend free: cache_size=" + std::to_string(ctx->session_cache.size()) +
             " elementwise_cache_size=" + std::to_string(ctx->elementwise_session_cache.size()) +
             " flash_cache_size=" + std::to_string(ctx->flash_attn_session_cache.size()));
+        double perf_total_ms = 0.0;
+        for (const auto & kv : ctx->perf) {
+            perf_total_ms += kv.second.total_ms;
+        }
         for (const auto & kv : ctx->perf) {
             const auto & p = kv.second;
+            const double avg_ms = p.calls > 0 ? (p.total_ms / static_cast<double>(p.calls)) : 0.0;
+            const double not_in_profile_ms = std::max(0.0, p.total_ms - p.profile_total_ms);
             ggml_fmsh_log_locked(
                 ctx, 1,
                 "op_summary op=" + ggml_fmsh_op_name_from_id(kv.first) +
                 " calls=" + std::to_string(p.calls) +
-                " total_ms=" + std::to_string(p.total_ms) +
-                " memcpy_ms=" + std::to_string(p.memcpy_ms) +
-                " hard_ms=" + std::to_string(p.hard_ms));
+                " total_ms=" + ggml_fmsh_fmt_ms(p.total_ms) +
+                " avg_ms=" + ggml_fmsh_fmt_ms(avg_ms) +
+                " profile_total_ms=" + ggml_fmsh_fmt_ms(p.profile_total_ms) +
+                " memcpy_ms=" + ggml_fmsh_fmt_ms(p.memcpy_ms) +
+                " hard_ms=" + ggml_fmsh_fmt_ms(p.hard_ms) +
+                " other_ms=" + ggml_fmsh_fmt_ms(p.other_ms) +
+                " not_in_profile_ms=" + ggml_fmsh_fmt_ms(not_in_profile_ms) +
+                "\n  pct:"
+                " profile_total=" + ggml_fmsh_fmt_pct(p.profile_total_ms, p.total_ms) +
+                " memcpy=" + ggml_fmsh_fmt_pct(p.memcpy_ms, p.total_ms) +
+                " hard=" + ggml_fmsh_fmt_pct(p.hard_ms, p.total_ms) +
+                " other=" + ggml_fmsh_fmt_pct(p.other_ms, p.total_ms) +
+                " not_in_profile=" + ggml_fmsh_fmt_pct(not_in_profile_ms, p.total_ms) +
+                "\n  global_pct:"
+                " total=" + ggml_fmsh_fmt_pct(p.total_ms, perf_total_ms) +
+                " profile_total=" + ggml_fmsh_fmt_pct(p.profile_total_ms, perf_total_ms) +
+                " memcpy=" + ggml_fmsh_fmt_pct(p.memcpy_ms, perf_total_ms) +
+                " hard=" + ggml_fmsh_fmt_pct(p.hard_ms, perf_total_ms) +
+                " other=" + ggml_fmsh_fmt_pct(p.other_ms, perf_total_ms) +
+                " not_in_profile=" + ggml_fmsh_fmt_pct(not_in_profile_ms, perf_total_ms));
         }
         const double mm_hit = ctx->mul_mat_total == 0 ? 0.0 : (100.0 * static_cast<double>(ctx->mul_mat_offloaded) / static_cast<double>(ctx->mul_mat_total));
         const double bmm_hit = ctx->batched_mul_mat_total == 0 ? 0.0 : (100.0 * static_cast<double>(ctx->batched_mul_mat_offloaded) / static_cast<double>(ctx->batched_mul_mat_total));
