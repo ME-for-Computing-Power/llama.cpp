@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+LOCK_DIR="$(pwd)/.socket_test.lock"
+
+if ! mkdir "${LOCK_DIR}" 2>/dev/null; then
+    echo "ERROR: socket_test.sh is already running (lock ${LOCK_DIR} exists)." >&2
+    echo "If you are sure no instance is running, remove it with: rm -rf ${LOCK_DIR}" >&2
+    exit 1
+fi
+trap 'rm -rf "${LOCK_DIR}"' EXIT
+
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-900}"
 WORKSPACE_DIR="$(pwd)"
 LLAMA_LOG="${WORKSPACE_DIR}/llama.log"
