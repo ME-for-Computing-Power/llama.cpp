@@ -46,6 +46,7 @@ timeout --signal=INT "${TIMEOUT_SECONDS}" \
             --seed 1024 \
             --verbose \
             -fa on \
+            --simple-io \
             --log-file '${REMOTE_DIR}/llama.log'
     " 2>&1 | tee "${LIVE_LOG}"
 status=$?

@@ -44,6 +44,7 @@ timeout --signal=INT "${TIMEOUT_SECONDS}" \
                 --seed 1024 \
                 --verbose \
                 --log-file /workspace/llama.log \
+                --simple-io \
                 2>&1 | tee /workspace/socket_test.live.log
         '
 status=$?
