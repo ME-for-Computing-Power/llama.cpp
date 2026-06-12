@@ -74,6 +74,8 @@ struct ggml_fmsh_zg330_session_entry {
     Tensor input_tensor_a;
     bool input_tensor_a_ready = false;
     std::vector<cached_weight_tensor> weight_tensors;
+    ZG330Device zg_device;
+    uint32_t layer_increment = 0;
 };
 
 // Quantized weight matmul (Q4_K/Q6_K projections, FFN, lm_head) offloaded to NPU.
@@ -125,6 +127,8 @@ struct ggml_fmsh_zg330_elementwise_session_entry {
     MemChunk output_chunk;
     int64_t output_value_id = -1;
     size_t output_bytes = 0;
+    ZG330Device zg_device;
+    uint32_t layer_increment = 0;
 };
 
 // Two-phase RMS_NORM session: avoids the ZG-unsupported Sqrt op.
@@ -155,6 +159,9 @@ struct ggml_fmsh_zg330_rmsnorm_split_session_entry {
     MemChunk   post_output_chunk;
     int64_t    post_output_value_id = -1;
     size_t     post_output_bytes    = 0;
+    ZG330Device zg_device;
+    uint32_t layer_increment_pre  = 0;
+    uint32_t layer_increment_post = 0;
 };
 
 // ROPE NeoX session: X[N,d], theta[N,d/2] → Y[N,d]
@@ -168,6 +175,8 @@ struct ggml_fmsh_zg330_rope_session_entry {
     Session session;
     std::vector<TensorType> input_types;
     std::vector<Tensor>     input_tensors; // [0]=X, [1]=theta
+    ZG330Device zg_device;
+    uint32_t layer_increment = 0;
 };
 
 // Runtime chain descriptor (not cached; rebuilt each dispatch iteration).
@@ -193,6 +202,8 @@ struct ggml_fmsh_zg330_fused_ew_entry {
     MemChunk output_chunk;
     int64_t output_value_id = -1;
     size_t output_bytes = 0;
+    ZG330Device zg_device;
+    uint32_t layer_increment = 0;
 };
 
 struct ggml_fmsh_zg330_bf16_bridge_session_entry {
@@ -203,6 +214,8 @@ struct ggml_fmsh_zg330_bf16_bridge_session_entry {
     Session session;
     TensorType input_type;
     Tensor input_tensor;
+    ZG330Device zg_device;
+    uint32_t layer_increment = 0;
 };
 
 struct ggml_fmsh_flash_attn_validation {
@@ -225,6 +238,32 @@ struct ggml_fmsh_flash_attn_validation {
     float scale = 1.0f;
     float max_bias = 0.0f;
     float logit_softcap = 0.0f;
+};
+
+struct ggml_fmsh_chain_tensor_id {
+    ggml_op op = GGML_OP_NONE;
+    uintptr_t data = 0;
+    int64_t ne[GGML_MAX_DIMS] = {0, 0, 0, 0};
+    ggml_op src_op[GGML_MAX_SRC] = {};
+    uintptr_t src_data[GGML_MAX_SRC] = {};
+    int64_t src_ne[GGML_MAX_SRC][GGML_MAX_DIMS] = {};
+    bool valid = false;
+
+    bool operator==(const ggml_fmsh_chain_tensor_id & other) const {
+        return valid == other.valid &&
+               op == other.op &&
+               data == other.data &&
+               std::memcmp(ne, other.ne, sizeof(ne)) == 0 &&
+               std::memcmp(src_op, other.src_op, sizeof(src_op)) == 0 &&
+               std::memcmp(src_data, other.src_data, sizeof(src_data)) == 0 &&
+               std::memcmp(src_ne, other.src_ne, sizeof(src_ne)) == 0;
+    }
+};
+
+struct ggml_fmsh_pending_chain_tensor_entry {
+    ggml_fmsh_chain_tensor_id id;
+    Tensor tensor;
+    int remaining_uses = 0;
 };
 
 struct ggml_fmsh_zg330_flash_attn_session_entry {
@@ -267,11 +306,12 @@ struct ggml_backend_fmsh_zg330_context {
     bool strict_mode = false;
     bool enable_log = true;
     int log_level = 1; // 0 debug, 1 info, 2 warn, 3 error
-    bool offload_cpy_dup = false;  // BF16 roundtrip corrupts F32 SSM recurrent state; must stay CPU
+    bool offload_cpy_dup = true;
     bool offload_soft_max = true;
     bool offload_rms_norm = true;
     bool offload_flash_attn_ext = true;
     bool offload_rope = true;
+    bool disable_device_input_chain = false;
     bool rms_norm_native_sqrt = false; // false=split (pre+host_sqrt+post), true=fused+Sqrt@hostt
     int64_t flash_softmax_cu = 8;
     int64_t flash_precompile_kv_depth = 1;
@@ -302,6 +342,13 @@ struct ggml_backend_fmsh_zg330_context {
     // When a ZG buffer tensor (weight/KV) is materialized, D2H data goes here and
     // tensor->data is redirected to the staging buffer for the duration of graph_compute.
     std::unordered_map<const ggml_tensor *, std::vector<char>> zg_staging_bufs;
+
+    // Carry one chainable device output across graph_compute calls. Decode often splits
+    // a logical producer -> qweight consumer pair across adjacent graph invocations.
+    bool pending_prev_device_output_valid = false;
+    Tensor pending_prev_device_output;
+    ggml_fmsh_chain_tensor_id pending_prev_device_output_id;
+    std::vector<ggml_fmsh_pending_chain_tensor_entry> pending_chainable_device_tensors;
 
     struct op_perf {
         uint64_t calls = 0;
@@ -347,7 +394,6 @@ struct ggml_backend_fmsh_zg330_context {
     double debug_compare_rtol = 0.05;
     uint64_t debug_compare_total = 0;
     uint64_t debug_compare_mismatch = 0;
-    uint64_t debug_compare_log_limit = 200;
     uint64_t debug_compare_logged = 0;
 #endif
 
@@ -374,12 +420,36 @@ static bool ggml_fmsh_is_zg_buffer_tensor(
         const ggml_tensor * t, MemChunk * out_chunk, size_t * out_offset);
 static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
         ggml_backend_buffer_type_t buft, size_t size);
+static bool ggml_fmsh_ensure_zg_staging(
+        ggml_backend_fmsh_zg330_context * ctx,
+        const ggml_tensor * t,
+        bool read_existing,
+        std::string * err);
+static bool ggml_fmsh_sync_zg_staging_to_device(
+        ggml_backend_fmsh_zg330_context * ctx,
+        const ggml_tensor * t,
+        const char * reason,
+        std::string * err);
+static const char * ggml_fmsh_host_data_for_tensor(
+        ggml_backend_fmsh_zg330_context * ctx,
+        const ggml_tensor * t);
+static inline void ggml_fmsh_write_f32_indexed(
+        ggml_backend_fmsh_zg330_context * ctx,
+        ggml_tensor * t,
+        int64_t i0,
+        int64_t i1,
+        int64_t i2,
+        int64_t i3,
+        float v);
 
 struct ggml_fmsh_zg330_device_context {
     std::mutex mu;
     bool memory_cache_valid = false;
     size_t memory_free = 0;
     size_t memory_total = 0;
+    Device zg_device;
+    bool device_opened = false;
+    std::string device_url;
     // Owned ZG buffer type for this device; backend_ctx is updated on init/free.
     ggml_fmsh_zg330_buft_ctx * buft_ctx = nullptr;
     ggml_backend_buffer_type * cached_buft = nullptr; // owns the single buft object
@@ -416,6 +486,38 @@ static inline uint16_t ggml_fmsh_f32_to_bf16(float f) {
     uint32_t bits;
     std::memcpy(&bits, &f, sizeof(bits));
     return static_cast<uint16_t>(bits >> 16);
+}
+
+static int64_t ggml_fmsh_node_rows(const ggml_tensor * t) {
+    if (t == nullptr) {
+        return 0;
+    }
+    return t->ne[1] * t->ne[2] * t->ne[3];
+}
+
+static ggml_fmsh_chain_tensor_id ggml_fmsh_make_chain_tensor_id(const ggml_tensor * t) {
+    ggml_fmsh_chain_tensor_id id;
+    if (t == nullptr) {
+        return id;
+    }
+    id.op = t->op;
+    id.data = reinterpret_cast<uintptr_t>(t->data);
+    for (int i = 0; i < GGML_MAX_DIMS; ++i) {
+        id.ne[i] = t->ne[i];
+    }
+    for (int s = 0; s < GGML_MAX_SRC; ++s) {
+        const ggml_tensor * src = t->src[s];
+        if (src == nullptr) {
+            continue;
+        }
+        id.src_op[s] = src->op;
+        id.src_data[s] = reinterpret_cast<uintptr_t>(src->data);
+        for (int d = 0; d < GGML_MAX_DIMS; ++d) {
+            id.src_ne[s][d] = src->ne[d];
+        }
+    }
+    id.valid = true;
+    return id;
 }
 
 static bool ggml_fmsh_wait_tensor_ready(
@@ -646,10 +748,22 @@ static bool ggml_fmsh_is_meta_op(const ggml_tensor * op) {
     }
 }
 
+static bool ggml_fmsh_is_chain_alias_op(const ggml_tensor * op) {
+    if (!op) {
+        return false;
+    }
+    switch (op->op) {
+        case GGML_OP_RESHAPE:
+        case GGML_OP_VIEW:
+            return true;
+        default:
+            return false;
+    }
+}
+
 static bool ggml_fmsh_is_host_dispatch_op(const ggml_tensor * op) {
     switch (op->op) {
-        case GGML_OP_CPY:
-        case GGML_OP_DUP:
+        case GGML_OP_SET:
         case GGML_OP_MUL_MAT_ID:
             return true;
         default:
@@ -776,6 +890,9 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
         return mode != GGML_ROPE_TYPE_MROPE;
     }
     if (ggml_fmsh_is_elementwise_zg_op(op)) {
+        return true;
+    }
+    if (ggml_fmsh_is_cpy_dup_op(op)) {
         return true;
     }
     if (ggml_fmsh_is_host_dispatch_op(op)) {
@@ -1041,7 +1158,16 @@ static float ggml_fmsh_read_mask_f32(
     return *reinterpret_cast<const float *>(p);
 }
 
+static float ggml_fmsh_read_mask_f32(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * mask,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3);
+
 static bool ggml_fmsh_is_probably_causal_mask(
+    ggml_backend_fmsh_zg330_context * ctx,
     const ggml_tensor * mask,
     int64_t q_len,
     int64_t kv_len,
@@ -1057,7 +1183,7 @@ static bool ggml_fmsh_is_probably_causal_mask(
         const int64_t causal_limit = kv_len - q_len + q_row;
         bool has_non_inf_before_limit = false;
         for (int64_t c = 0; c < kv_len; ++c) {
-            const float mv = ggml_fmsh_read_mask_f32(mask, c, q_row, mask_head, mask_batch);
+            const float mv = ggml_fmsh_read_mask_f32(ctx, mask, c, q_row, mask_head, mask_batch);
             if (c > causal_limit) {
                 if (mv > k_mask_inf) {
                     return false;
@@ -1074,7 +1200,7 @@ static bool ggml_fmsh_is_probably_causal_mask(
 }
 
 static bool ggml_fmsh_validate_flash_attn_ext(
-    const ggml_backend_fmsh_zg330_context * ctx,
+    ggml_backend_fmsh_zg330_context * ctx,
     const ggml_tensor * node,
     ggml_fmsh_flash_attn_validation * out,
     std::string * err) {
@@ -1174,7 +1300,12 @@ static bool ggml_fmsh_validate_flash_attn_ext(
             if (err) *err = "FLASH_ATTN_EXT mask broadcast mismatch";
             return false;
         }
-        causal = ggml_fmsh_is_probably_causal_mask(mask, q_len, kv_len, 0, 0);
+        std::string staging_err;
+        if (!ggml_fmsh_ensure_zg_staging(ctx, mask, true, &staging_err)) {
+            if (err) *err = "FLASH_ATTN_EXT mask staging failed: " + staging_err;
+            return false;
+        }
+        causal = ggml_fmsh_is_probably_causal_mask(ctx, mask, q_len, kv_len, 0, 0);
     }
 
     out->n_head = n_head;
@@ -1238,6 +1369,30 @@ static bool ggml_fmsh_open_device_if_needed(ggml_backend_fmsh_zg330_context * ct
         GGML_LOG_ERROR("%s: failed to open zg330 device: %s\n", __func__, e.what());
         std::exit(EXIT_FAILURE);
     }
+}
+
+static bool ggml_fmsh_open_device_context_if_needed(
+    ggml_fmsh_zg330_device_context * dev_ctx,
+    Device * out_device,
+    std::string * err) {
+    if (!dev_ctx || !out_device) {
+        if (err) {
+            *err = "device context is null";
+        }
+        return false;
+    }
+    if (dev_ctx->device_opened) {
+        *out_device = dev_ctx->zg_device;
+        return true;
+    }
+
+    dev_ctx->device_url = ggml_fmsh_get_device_url();
+    if (!ggml_fmsh_acquire_shared_device(dev_ctx->device_url, &dev_ctx->zg_device, err)) {
+        return false;
+    }
+    dev_ctx->device_opened = true;
+    *out_device = dev_ctx->zg_device;
+    return true;
 }
 
 static bool ggml_fmsh_query_pl_memory(Device & device, size_t * free_bytes, size_t * total_bytes, std::string * err) {
@@ -1337,6 +1492,9 @@ static ggml_fmsh_zg330_session_entry * ggml_fmsh_get_or_create_mul_mat_session(
         entry->session = std::move(session);
         entry->input_type_a = entry->bundle.network.inputs()[0].tensorType().clone();
         entry->input_type_b = entry->bundle.network.inputs()[1].tensorType().clone();
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
 
         ggml_fmsh_zg330_session_entry * ptr = entry.get();
         ctx->session_cache.emplace(cache_key, std::move(entry));
@@ -1489,45 +1647,52 @@ static bool ggml_fmsh_forward_synced(
     }
 
     if (use_layer_sync) {
-        // Spin until layerCount advances past layer_before (edge-triggered, no fixed sleep).
-        const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(30000);
-        while (zg_device.layerCount() == layer_before) {
-            if (std::chrono::steady_clock::now() > deadline) {
-                if (err) *err = std::string(where) + " NPU layerCount sync timeout";
-                return false;
-            }
-        }
-        // layerCount advanced → NPU started. Now wait for it to finish.
-        // Use waitForReady with setReady(false) to re-arm the check.
-        // But the check_func_ is stale (absolute target). Instead, spin a bit more
-        // to ensure the NPU has written the output. The layerCount advancing means
-        // the NPU has started; we need it to FINISH. Use a brief additional spin.
-        // For small increments (2-5 layers), the NPU finishes very quickly after starting.
-        // A tight spin for a few microseconds should suffice.
-        const uint32_t layer_after_start = zg_device.layerCount();
-        // Wait for layerCount to stop changing (NPU finished all layers of this network).
-        uint32_t prev = layer_after_start;
-        auto stable_start = std::chrono::steady_clock::now();
-        while (std::chrono::steady_clock::now() < deadline) {
-            const uint32_t cur = zg_device.layerCount();
-            if (cur != prev) {
-                prev = cur;
-                stable_start = std::chrono::steady_clock::now();
-            } else {
-                const auto elapsed_us = std::chrono::duration_cast<std::chrono::microseconds>(
-                    std::chrono::steady_clock::now() - stable_start).count();
-                if (elapsed_us >= 500) { // 0.5ms stable = NPU finished
-                    break;
+        if (layer_increment == 0) {
+            const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(30000);
+            while (zg_device.layerCount() == layer_before) {
+                if (std::chrono::steady_clock::now() > deadline) {
+                    if (err) *err = std::string(where) + " NPU layerCount sync timeout (start)";
+                    return false;
                 }
             }
-        }
-        if (layer_increment == 0) {
-            layer_increment = (prev > layer_before) ? (prev - layer_before) : 1;
+
+            uint32_t stable_count = zg_device.layerCount();
+            auto stable_start = std::chrono::steady_clock::now();
+            while (std::chrono::steady_clock::now() < deadline) {
+                const uint32_t cur = zg_device.layerCount();
+                if (cur != stable_count) {
+                    stable_count = cur;
+                    stable_start = std::chrono::steady_clock::now();
+                } else {
+                    const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                        std::chrono::steady_clock::now() - stable_start).count();
+                    if (elapsed_ms >= 5) {
+                        break;
+                    }
+                }
+            }
+
+            layer_increment = (stable_count > layer_before) ? (stable_count - layer_before) : 1;
             ggml_fmsh_log_locked(ctx, 1, std::string(where) + " layer_sync_first before=" +
-                std::to_string(layer_before) + " after=" + std::to_string(prev) +
+                std::to_string(layer_before) + " after=" + std::to_string(stable_count) +
+                " increment=" + std::to_string(layer_increment));
+        } else {
+            const uint32_t layer_target = layer_before + layer_increment;
+            ZG330Device zg_dev = zg_device;
+            outputs[0].setReady(false);
+            outputs[0].setCheckFunc([zg_dev, layer_target](const Device &) -> bool {
+                return zg_dev.layerCount() >= layer_target;
+            });
+            if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, where)) {
+                return false;
+            }
+            ggml_fmsh_log_locked(ctx, 0, std::string(where) + " layer_sync_sub before=" +
+                std::to_string(layer_before) + " target=" + std::to_string(layer_target) +
+                " actual=" + std::to_string(zg_device.layerCount()) +
                 " increment=" + std::to_string(layer_increment));
         }
     } else {
+        outputs[0].setReady(false);
         if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, where)) {
             return false;
         }
@@ -1543,6 +1708,7 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
     ggml_backend_fmsh_zg330_context * ctx,
     ggml_tensor * node,
     ggml_fmsh_zg330_qweight_session_entry * entry,
+    const Tensor * input_override,
     std::string * err) {
     const ggml_tensor * src0 = node->src[0];
     const ggml_tensor * src1 = node->src[1];
@@ -1568,11 +1734,20 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
         if (err) *err = "no dequant kernel for src0 type";
         return false;
     }
+    std::string staging_err;
+    if (!ggml_fmsh_ensure_zg_staging(ctx, src0, true, &staging_err)) {
+        if (err) *err = "qweight src0 staging failed: " + staging_err;
+        return false;
+    }
+    const char * src0_data = ggml_fmsh_host_data_for_tensor(ctx, src0);
+
     // src1 (activation) may be ZG DDR-resident (fake pointer, not dereferenceable on host).
-    // D2H it into a staging buffer and redirect src1->data for the duration of this call.
+    // When an upstream op retained its output on device, consume that tensor directly here.
+    // Otherwise D2H src1 into a staging buffer and redirect src1->data for the duration
+    // of this call.
     std::vector<char> src1_staging;
     void * src1_orig_data = src1->data;
-    {
+    if (input_override == nullptr) {
         MemChunk zg_chunk; size_t zg_off = 0;
         const ggml_tensor * root = src1;
         while (root->view_src) root = root->view_src;
@@ -1596,6 +1771,20 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
         std::vector<float>      row_buf(static_cast<size_t>(k));
         std::vector<float>      a_host(static_cast<size_t>(m_bucket) * static_cast<size_t>(k));
         std::vector<float>      out_tmp;
+        std::vector<float>      chained_src1_host;
+
+        if (input_override != nullptr) {
+            const size_t chained_elems = static_cast<size_t>(actual_m) * static_cast<size_t>(k);
+            chained_src1_host.resize(chained_elems);
+            input_override->read(
+                reinterpret_cast<char *>(chained_src1_host.data()),
+                0,
+                chained_elems * sizeof(float));
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "qweight_src1_chain_read bytes=" +
+                    std::to_string(chained_elems * sizeof(float)));
+        }
 
         for (auto & sn : entry->subnets) {
             // --- activation A: F32 [m_bucket, k], rows>=actual_m zero-padded ---
@@ -1606,10 +1795,21 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
             Tensor input_a(sn.input_type_a.clone());
             input_a.mallocOn(HostDevice::MemRegion());
             std::fill(a_host.begin(), a_host.end(), 0.0f);
-            for (int64_t r = 0; r < actual_m; ++r) {
-                const float * a_src_row = reinterpret_cast<const float *>(
-                    static_cast<const char *>(src1->data) + r * src1->nb[1]);
-                std::memcpy(a_host.data() + r * k, a_src_row, static_cast<size_t>(k) * sizeof(float));
+            if (input_override != nullptr) {
+                for (int64_t r = 0; r < actual_m; ++r) {
+                    const float * a_src_row =
+                        chained_src1_host.data() + static_cast<size_t>(r) * static_cast<size_t>(k);
+                    std::memcpy(
+                        a_host.data() + r * k,
+                        a_src_row,
+                        static_cast<size_t>(k) * sizeof(float));
+                }
+            } else {
+                for (int64_t r = 0; r < actual_m; ++r) {
+                    const float * a_src_row = reinterpret_cast<const float *>(
+                        static_cast<const char *>(src1->data) + r * src1->nb[1]);
+                    std::memcpy(a_host.data() + r * k, a_src_row, static_cast<size_t>(k) * sizeof(float));
+                }
             }
             std::memcpy(input_a.data().cptr(), a_host.data(),
                         a_host.size() * sizeof(float));
@@ -1633,7 +1833,7 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
                 std::vector<float> host_w(static_cast<size_t>(k) * static_cast<size_t>(sn.n_this));
                 for (int64_t i = 0; i < sn.n_this; ++i) {
                     const char * w_src_row =
-                        static_cast<const char *>(src0->data) + (sn.col_off + i) * src0->nb[1];
+                        src0_data + (sn.col_off + i) * src0->nb[1];
                     tt->to_float(w_src_row, row_buf.data(), k);
                     for (int64_t j = 0; j < k; ++j) {
                         host_w[static_cast<size_t>(j) * sn.n_this + i] = row_buf[j];
@@ -1695,17 +1895,15 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
                 }
             }
             for (int64_t r = 0; r < actual_m; ++r) {
-                char * dst_row = static_cast<char *>(node->data) + r * node->nb[1];
                 const float * src_row = out_tmp.data() + r * sn.n_this;
-                if (node->nb[0] == static_cast<size_t>(sizeof(float))) {
-                    std::memcpy(dst_row + sn.col_off * node->nb[0], src_row,
-                                static_cast<size_t>(sn.n_this) * sizeof(float));
-                } else {
-                    for (int64_t c = 0; c < sn.n_this; ++c) {
-                        std::memcpy(dst_row + (sn.col_off + c) * node->nb[0], &src_row[c], sizeof(float));
-                    }
+                for (int64_t c = 0; c < sn.n_this; ++c) {
+                    ggml_fmsh_write_f32_indexed(ctx, node, sn.col_off + c, r, 0, 0, src_row[c]);
                 }
             }
+        }
+        if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "qweight_readback", &staging_err)) {
+            if (err) *err = staging_err;
+            return false;
         }
         ctx->mul_mat_qweight_offloaded++;
         return true;
@@ -1810,6 +2008,9 @@ static ggml_fmsh_zg330_elementwise_session_entry * ggml_fmsh_get_or_create_eleme
         entry->output_chunk = output_chunk;
         entry->output_value_id = output_value_id;
         entry->output_bytes = output_bytes;
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
         for (const auto & in : entry->bundle.network.inputs()) {
             entry->input_types.push_back(in.tensorType().clone());
         }
@@ -1901,6 +2102,9 @@ static ggml_fmsh_zg330_rmsnorm_split_session_entry * ggml_fmsh_get_or_create_rms
         entry->post_output_chunk    = post_output_chunk;
         entry->post_output_value_id = post_output_value_id;
         entry->post_output_bytes    = post_output_bytes;
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
         // Extract input types from both networks; X type from pre[0] (shared with post[0]).
         const auto & pre_inputs = entry->bundle.network_pre.inputs();
         const auto & post_inputs = entry->bundle.network_post.inputs();
@@ -1995,6 +2199,9 @@ static ggml_fmsh_zg330_rope_session_entry * ggml_fmsh_get_or_create_rope_session
         entry->cols = cols;
         entry->bundle = std::move(bundle);
         entry->session = std::move(session);
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
         for (const auto & in : entry->bundle.network.inputs()) {
             entry->input_types.push_back(in.tensorType().clone());
         }
@@ -2085,6 +2292,9 @@ static ggml_fmsh_zg330_fused_ew_entry * ggml_fmsh_get_or_create_fused_ew_session
         entry->output_chunk  = output_chunk;
         entry->output_value_id = output_value_id;
         entry->output_bytes  = output_bytes;
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
         for (const auto & in : entry->bundle.network.inputs()) {
             entry->input_types.push_back(in.tensorType().clone());
         }
@@ -2234,6 +2444,9 @@ static ggml_fmsh_zg330_bf16_bridge_session_entry * ggml_fmsh_get_or_create_bf16_
         entry->bundle = std::move(bundle);
         entry->session = std::move(session);
         entry->input_type = entry->bundle.network.inputs()[0].tensorType().clone();
+        if (ctx->zg_device.is<ZG330Device>()) {
+            entry->zg_device = ctx->zg_device.cast<ZG330Device>();
+        }
 
         ggml_fmsh_zg330_bf16_bridge_session_entry * ptr = entry.get();
         ctx->bridge_session_cache.emplace(cache_key, std::move(entry));
@@ -2248,6 +2461,7 @@ static ggml_fmsh_zg330_bf16_bridge_session_entry * ggml_fmsh_get_or_create_bf16_
 }
 
 static inline float ggml_fmsh_read_f32_broadcast(
+    ggml_backend_fmsh_zg330_context * ctx,
     const ggml_tensor * t,
     int64_t i0,
     int64_t i1,
@@ -2255,6 +2469,7 @@ static inline float ggml_fmsh_read_f32_broadcast(
     int64_t i3);
 
 static inline void ggml_fmsh_write_f32_indexed(
+    ggml_backend_fmsh_zg330_context * ctx,
     ggml_tensor * t,
     int64_t i0,
     int64_t i1,
@@ -2263,13 +2478,26 @@ static inline void ggml_fmsh_write_f32_indexed(
     float v);
 
 static inline float ggml_fmsh_read_f32_linear(const ggml_tensor * t, size_t idx);
+static inline float ggml_fmsh_read_f32_linear(ggml_backend_fmsh_zg330_context * ctx, const ggml_tensor * t, size_t idx);
+static const char * ggml_fmsh_host_data_for_tensor(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t);
+static float ggml_fmsh_read_mask_f32(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * mask,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3);
 
 static bool ggml_fmsh_execute_elementwise(
     ggml_backend_fmsh_zg330_context * ctx,
     ggml_tensor * node,
     ggml_fmsh_zg330_elementwise_session_entry * entry,
     const Tensor * input_override,
+    int input_override_src_idx,
     bool keep_device_output_only,
+    bool write_host_output,
     Tensor * chained_output,
     std::string * err) {
     if (!node || !entry || node->data == nullptr || node->src[0] == nullptr || node->src[0]->data == nullptr) {
@@ -2279,6 +2507,7 @@ static bool ggml_fmsh_execute_elementwise(
     try {
         ggml_fmsh_log_locked(ctx, 1, "elementwise_begin op=" + std::string(ggml_op_name(node->op)));
         const int64_t exec_rows = entry->compiled_rows > 0 ? entry->compiled_rows : entry->rows;
+        const int64_t actual_rows = ggml_fmsh_node_rows(node);
         const size_t total_elems = static_cast<size_t>(exec_rows * entry->cols);
         const size_t total_bytes = total_elems * sizeof(float);
         for (size_t i = 0; i < entry->input_types.size(); ++i) {
@@ -2295,8 +2524,14 @@ static bool ggml_fmsh_execute_elementwise(
         const ggml_tensor * src0 = node->src[0];
         const bool can_chain_input0 =
             input_override != nullptr &&
+            input_override_src_idx == 0 &&
             entry->op != ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
             entry->op != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM;
+        const bool can_chain_input1 =
+            input_override != nullptr &&
+            input_override_src_idx == 1 &&
+            (entry->op == ggml::fmsh::netmake::ElementwiseZgOp::ADD ||
+             entry->op == ggml::fmsh::netmake::ElementwiseZgOp::MUL);
         Tensor input0 = can_chain_input0 ? *input_override : entry->input_tensors[0];
 
         if (entry->op == ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX) {
@@ -2358,7 +2593,7 @@ static bool ggml_fmsh_execute_elementwise(
                 entry->op == ggml::fmsh::netmake::ElementwiseZgOp::DUP) {
                 const size_t n = ggml_nelements(node);
                 for (size_t idx = 0; idx < n; ++idx) {
-                    in0[idx] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_linear(src0, idx));
+                    in0[idx] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_linear(ctx, src0, idx));
                 }
             } else {
                 for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
@@ -2367,20 +2602,20 @@ static bool ggml_fmsh_execute_elementwise(
                             const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
                             const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
                             for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
-                                in0[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src0, i0, i1, i2, i3));
+                                in0[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src0, i0, i1, i2, i3));
                             }
                         }
                     }
                 }
             }
         }
-        if (!can_chain_input0 && exec_rows > entry->rows) {
+        if (!can_chain_input0 && exec_rows > actual_rows) {
             uint16_t * in0_pad = reinterpret_cast<uint16_t *>(entry->input_tensors[0].data().cptr());
             const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
-            for (int64_t r = entry->rows; r < exec_rows; ++r) {
+            for (int64_t r = actual_rows; r < exec_rows; ++r) {
                 std::memcpy(
                     in0_pad + static_cast<size_t>(r * entry->cols),
-                    in0_pad + static_cast<size_t>((entry->rows - 1) * entry->cols),
+                    in0_pad + static_cast<size_t>((actual_rows - 1) * entry->cols),
                     row_bytes);
             }
         }
@@ -2392,24 +2627,27 @@ static bool ggml_fmsh_execute_elementwise(
             }
             uint16_t * in1 = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
             const ggml_tensor * src1 = node->src[1];
-            for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
-                for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
-                    for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
-                        const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
-                        const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
-                        for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
-                            in1[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src1, i0, i1, i2, i3));
+            if (!can_chain_input1) {
+                for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
+                    for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
+                        for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
+                            const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
+                            const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
+                            for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
+                                in1[row_off + static_cast<size_t>(i0)] =
+                                    ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src1, i0, i1, i2, i3));
+                            }
                         }
                     }
                 }
             }
-            if (exec_rows > entry->rows) {
+            if (exec_rows > actual_rows) {
                 uint16_t * in1_pad = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
                 const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
-                for (int64_t r = entry->rows; r < exec_rows; ++r) {
+                for (int64_t r = actual_rows; r < exec_rows; ++r) {
                     std::memcpy(
                         in1_pad + static_cast<size_t>(r * entry->cols),
-                        in1_pad + static_cast<size_t>((entry->rows - 1) * entry->cols),
+                        in1_pad + static_cast<size_t>((actual_rows - 1) * entry->cols),
                         row_bytes);
                 }
             }
@@ -2417,7 +2655,7 @@ static bool ggml_fmsh_execute_elementwise(
             float scale = 1.0f;
             if (node->src[1] && node->src[1]->data && ggml_nelements(node->src[1]) >= 1) {
                 // SCALE's factor tensor can be a view/strided scalar; always read via ggml strides.
-                scale = ggml_fmsh_read_f32_broadcast(node->src[1], 0, 0, 0, 0);
+                scale = ggml_fmsh_read_f32_broadcast(ctx, node->src[1], 0, 0, 0, 0);
             } else {
                 std::memcpy(&scale, node->op_params, sizeof(float));
             }
@@ -2438,13 +2676,13 @@ static bool ggml_fmsh_execute_elementwise(
             node->src[1]->data != nullptr &&
             entry->input_tensors.size() > 1 &&
             entry->input_tensors[1].defined() &&
-            exec_rows > entry->rows) {
+            exec_rows > actual_rows) {
             uint16_t * in1_pad = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
             const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
-            for (int64_t r = entry->rows; r < exec_rows; ++r) {
+            for (int64_t r = actual_rows; r < exec_rows; ++r) {
                 std::memcpy(
                     in1_pad + static_cast<size_t>(r * entry->cols),
-                    in1_pad + static_cast<size_t>((entry->rows - 1) * entry->cols),
+                    in1_pad + static_cast<size_t>((actual_rows - 1) * entry->cols),
                     row_bytes);
             }
         }
@@ -2453,7 +2691,6 @@ static bool ggml_fmsh_execute_elementwise(
             // D2H copy: PLDDR F32 → BF16 host buffer. Read actual_rows only; the PLDDR
             // tensor from the previous op may have fewer rows than exec_rows (e.g. ADD
             // compiled_rows=1 but RMS_NORM compiled_rows=2 for 1-row decode tensors).
-            const int64_t actual_rows = entry->rows;
             const size_t act_elems =
                 static_cast<size_t>(actual_rows) * static_cast<size_t>(entry->cols);
             std::vector<float> d2h_buf(act_elems);
@@ -2468,14 +2705,31 @@ static bool ggml_fmsh_execute_elementwise(
                 }
             }
         }
+        if (can_chain_input1) {
+            const size_t act_elems =
+                static_cast<size_t>(actual_rows) * static_cast<size_t>(entry->cols);
+            std::vector<float> d2h_buf(act_elems);
+            input_override->read(reinterpret_cast<char *>(d2h_buf.data()), 0, act_elems * sizeof(float));
+            uint16_t * in1 = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
+            for (size_t idx = 0; idx < act_elems; ++idx) {
+                in1[idx] = ggml_fmsh_f32_to_bf16(d2h_buf[idx]);
+            }
+            if (exec_rows > actual_rows) {
+                const size_t row_bytes = static_cast<size_t>(entry->cols) * sizeof(uint16_t);
+                for (int64_t r = actual_rows; r < exec_rows; ++r) {
+                    std::memcpy(in1 + r * entry->cols, in1 + (actual_rows - 1) * entry->cols, row_bytes);
+                }
+            }
+        }
         std::vector<Tensor> session_inputs = entry->input_tensors;
-        std::vector<Tensor> outputs = entry->session.forward(session_inputs);
-        if (outputs.empty()) {
-            if (err) *err = "elementwise session.forward returned empty output";
+        Tensor effective_output;
+        if (!ggml_fmsh_forward_synced(
+                ctx, entry->session, session_inputs, entry->zg_device,
+                entry->layer_increment, &effective_output, "elementwise", err)) {
             return false;
         }
         if (entry->output_chunk.defined()) {
-            if (outputs[0].chunk() == entry->output_chunk) {
+            if (effective_output.chunk() == entry->output_chunk) {
                 ctx->elementwise_output_chunk_hits++;
             } else {
                 ctx->elementwise_output_chunk_misses++;
@@ -2486,22 +2740,16 @@ static bool ggml_fmsh_execute_elementwise(
                     " bytes=" + std::to_string(entry->output_bytes));
             }
         }
-        if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "elementwise")) {
-            return false;
-        }
-        Tensor effective_output = outputs[0];
         if (chained_output != nullptr) {
-            *chained_output = outputs[0];
+            *chained_output = effective_output;
         }
         ggml_fmsh_log_locked(ctx, 1, "elementwise_forward_done op=" + std::string(ggml_op_name(node->op)));
 
-        const bool should_write_host_output =
-            !keep_device_output_only
-#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
-            || (ctx->debug_compare == 1)
-#endif
-            ;
-        if (should_write_host_output) {
+        // When the dispatcher retains this output for device-input chaining, avoid
+        // forcing a readback here. The debug-compare path already skips chained
+        // ops, so an unconditional readback only breaks the chain and rewrites the
+        // staging buffer without providing any validation value.
+        if (write_host_output) {
             std::vector<float> out_tmp(total_elems);
             effective_output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
             ggml_fmsh_log_locked(ctx, 1, "elementwise_read_done op=" + std::string(ggml_op_name(node->op)));
@@ -2512,10 +2760,15 @@ static bool ggml_fmsh_execute_elementwise(
                         const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
                         for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
                             ggml_fmsh_write_f32_indexed(
-                                node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
+                                ctx, node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
                         }
                     }
                 }
+            }
+            std::string sync_err;
+            if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "elementwise_readback", &sync_err)) {
+                if (err) *err = sync_err;
+                return false;
             }
         } else {
             ggml_fmsh_log_locked(ctx, 0, "elementwise_read_skip op=" + std::string(ggml_op_name(node->op)));
@@ -2538,6 +2791,7 @@ static bool ggml_fmsh_execute_rmsnorm_split(
     ggml_fmsh_zg330_rmsnorm_split_session_entry * entry,
     const Tensor * input_override,    // device-resident X from upstream (or nullptr)
     bool keep_device_output,          // if true, leave post output in ZG DDR
+    bool write_host_output,
     Tensor * chained_output,          // out: device tensor if keep_device_output
     std::string * err) {
     if (!node || !entry || node->data == nullptr || node->src[0] == nullptr || node->src[0]->data == nullptr) {
@@ -2547,7 +2801,7 @@ static bool ggml_fmsh_execute_rmsnorm_split(
     if (chained_output) *chained_output = Tensor();
     try {
         const int64_t exec_rows   = entry->compiled_rows;
-        const int64_t actual_rows = entry->rows;
+        const int64_t actual_rows = ggml_fmsh_node_rows(node);
         const int64_t cols        = entry->cols;
 
         // Lazily allocate shared X tensor (used by both pre and post).
@@ -2584,7 +2838,7 @@ static bool ggml_fmsh_execute_rmsnorm_split(
                         const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
                         for (int64_t i0 = 0; i0 < cols; ++i0) {
                             x_buf[row_off + static_cast<size_t>(i0)] =
-                                ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src0, i0, i1, i2, i3));
+                                ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src0, i0, i1, i2, i3));
                         }
                     }
                 }
@@ -2604,25 +2858,26 @@ static bool ggml_fmsh_execute_rmsnorm_split(
 
         // Run pre: [X, eps] → r_sq[exec_rows, 1].
         std::vector<Tensor> pre_inputs = {entry->x_input_tensor, entry->eps_input_tensor};
-        auto pre_outputs = entry->session_pre.forward(pre_inputs);
-        if (pre_outputs.empty()) {
-            if (err) *err = "rmsnorm_split pre session.forward returned empty";
-            return false;
-        }
-        if (!ggml_fmsh_wait_tensor_ready(pre_outputs[0], err, "rmsnorm_split_pre")) {
+        Tensor pre_output;
+        if (!ggml_fmsh_forward_synced(
+                ctx, entry->session_pre, pre_inputs, entry->zg_device,
+                entry->layer_increment_pre, &pre_output, "rmsnorm_split_pre", err)) {
             return false;
         }
 
-        // Read r_sq (exec_rows scalars — tiny transfer regardless of cols).
-        std::vector<float> r_sq(static_cast<size_t>(exec_rows));
-        pre_outputs[0].read(reinterpret_cast<char *>(r_sq.data()), 0,
-                             static_cast<size_t>(exec_rows) * sizeof(float));
+        // Read r_sq. Session cache is bucketed by compiled_rows, but the runtime output
+        // tensor may be retyped to actual_rows on reuse; clamp to the tensor's live size.
+        const int64_t pre_tensor_rows = std::max<int64_t>(1, pre_output.dtype().numElements());
+        const int64_t pre_read_rows = std::min<int64_t>(exec_rows, pre_tensor_rows);
+        std::vector<float> r_sq(static_cast<size_t>(pre_read_rows));
+        pre_output.read(reinterpret_cast<char *>(r_sq.data()), 0,
+                        static_cast<size_t>(pre_read_rows) * sizeof(float));
 
         // Compute r_inv on host.
         uint16_t * r_inv_buf = reinterpret_cast<uint16_t *>(entry->r_inv_input_tensor.data().cptr());
         for (int64_t r = 0; r < exec_rows; ++r) {
-            const float rsq_val = (r < actual_rows) ? r_sq[static_cast<size_t>(r)]
-                                                    : r_sq[static_cast<size_t>(actual_rows - 1)];
+            const int64_t src_r = std::min<int64_t>(r, pre_read_rows - 1);
+            const float rsq_val = r_sq[static_cast<size_t>(src_r)];
             const float r_inv = (rsq_val > 0.0f) ? (1.0f / std::sqrt(rsq_val)) : 0.0f;
             r_inv_buf[static_cast<size_t>(r)] = ggml_fmsh_f32_to_bf16(r_inv);
         }
@@ -2631,41 +2886,47 @@ static bool ggml_fmsh_execute_rmsnorm_split(
         // (mirrors the elementwise output_chunk eviction pattern)
         // Run post: [X (shared, no re-upload needed), r_inv] → Y.
         std::vector<Tensor> post_inputs = {entry->x_input_tensor, entry->r_inv_input_tensor};
-        auto post_outputs = entry->session_post.forward(post_inputs);
-        if (post_outputs.empty()) {
-            if (err) *err = "rmsnorm_split post session.forward returned empty";
-            return false;
-        }
-        if (!ggml_fmsh_wait_tensor_ready(post_outputs[0], err, "rmsnorm_split_post")) {
+        Tensor post_output;
+        if (!ggml_fmsh_forward_synced(
+                ctx, entry->session_post, post_inputs, entry->zg_device,
+                entry->layer_increment_post, &post_output, "rmsnorm_split_post", err)) {
             return false;
         }
 
         // Check output chunk consistency.
         if (entry->post_output_chunk.defined()) {
-            if (post_outputs[0].chunk() != entry->post_output_chunk) {
+            if (post_output.chunk() != entry->post_output_chunk) {
                 ggml_fmsh_log_locked(ctx, 2, "rmsnorm_split post output chunk mismatch");
             }
         }
 
-        const bool should_readback = !keep_device_output;
+        const bool should_readback = write_host_output;
         if (should_readback) {
-            const size_t total_elems = static_cast<size_t>(exec_rows) * static_cast<size_t>(cols);
+            const int64_t post_tensor_elems = std::max<int64_t>(1, post_output.dtype().numElements());
+            const int64_t post_tensor_rows = std::max<int64_t>(1, post_tensor_elems / std::max<int64_t>(1, cols));
+            const int64_t post_read_rows = std::min<int64_t>(actual_rows, post_tensor_rows);
+            const size_t total_elems = static_cast<size_t>(post_read_rows) * static_cast<size_t>(cols);
             std::vector<float> out_tmp(total_elems);
-            post_outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, total_elems * sizeof(float));
+            post_output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_elems * sizeof(float));
             for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
                 for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
                     for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
                         const int64_t row    = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
                         const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
                         for (int64_t i0 = 0; i0 < cols; ++i0) {
-                            ggml_fmsh_write_f32_indexed(node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
+                            ggml_fmsh_write_f32_indexed(ctx, node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
                         }
                     }
                 }
             }
+            std::string sync_err;
+            if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "rmsnorm_readback", &sync_err)) {
+                if (err) *err = sync_err;
+                return false;
+            }
         } else if (chained_output != nullptr) {
             // Return device tensor for the next consumer to use directly.
-            Tensor dev_out = post_outputs[0];
+            Tensor dev_out = post_output;
             if (entry->post_output_chunk.defined() && dev_out.chunk() == entry->post_output_chunk) {
                 // Retype to actual rows if compiled_rows > actual_rows.
                 if (exec_rows != actual_rows && entry->post_output_type.defined()) {
@@ -2726,11 +2987,9 @@ static bool ggml_fmsh_execute_rope(
                 for (int64_t i1 = 0; i1 < ne1; ++i1) {
                     const int64_t row = (i3 * ne2 + i2) * ne1 + i1;
                     const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(ne0);
-                    const float * src_row = reinterpret_cast<const float *>(
-                        static_cast<const char *>(src0->data) +
-                        i1 * src0->nb[1] + i2 * src0->nb[2] + i3 * src0->nb[3]);
                     for (int64_t i0 = 0; i0 < ne0; ++i0) {
-                        x_in[row_off + static_cast<size_t>(i0)] = ggml_fmsh_f32_to_bf16(src_row[i0]);
+                        x_in[row_off + static_cast<size_t>(i0)] =
+                            ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src0, i0, i1, i2, i3));
                     }
                 }
             }
@@ -2741,7 +3000,7 @@ static bool ggml_fmsh_execute_rope(
         // cos/sin are evaluated entirely on ZG330 via the compiled Horner network.
         uint16_t * theta_in = reinterpret_cast<uint16_t *>(entry->input_tensors[1].data().cptr());
         const int32_t * pos_data = (src1 && src1->data)
-            ? reinterpret_cast<const int32_t *>(src1->data)
+            ? reinterpret_cast<const int32_t *>(ggml_fmsh_host_data_for_tensor(ctx, src1))
             : nullptr;
         constexpr float kTwoPi = 6.28318530717958647692f;
         constexpr float kPi    = 3.14159265358979323846f;
@@ -2772,12 +3031,10 @@ static bool ggml_fmsh_execute_rope(
         }
 
         // Run the PL ROPE network.
-        auto outputs = entry->session.forward(entry->input_tensors);
-        if (outputs.empty()) {
-            if (err) *err = "rope_exec: session.forward returned empty";
-            return false;
-        }
-        if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "rope_exec")) {
+        Tensor output;
+        if (!ggml_fmsh_forward_synced(
+                ctx, entry->session, entry->input_tensors, entry->zg_device,
+                entry->layer_increment, &output, "rope_exec", err)) {
             return false;
         }
 
@@ -2785,21 +3042,24 @@ static bool ggml_fmsh_execute_rope(
         const size_t total_elems = static_cast<size_t>(entry->rows) * static_cast<size_t>(ne0);
         const size_t total_bytes = total_elems * sizeof(float);
         std::vector<float> out_tmp(total_elems);
-        outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
+        output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
 
         for (int64_t i3 = 0; i3 < ne3; ++i3) {
             for (int64_t i2 = 0; i2 < ne2; ++i2) {
                 for (int64_t i1 = 0; i1 < ne1; ++i1) {
                     const int64_t row = (i3 * ne2 + i2) * ne1 + i1;
                     const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(ne0);
-                    float * dst_row = reinterpret_cast<float *>(
-                        static_cast<char *>(node->data) +
-                        i1 * node->nb[1] + i2 * node->nb[2] + i3 * node->nb[3]);
                     for (int64_t i0 = 0; i0 < ne0; ++i0) {
-                        dst_row[i0] = out_tmp[row_off + static_cast<size_t>(i0)];
+                        ggml_fmsh_write_f32_indexed(
+                            ctx, node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
                     }
                 }
             }
+        }
+        std::string sync_err;
+        if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "rope_readback", &sync_err)) {
+            if (err) *err = sync_err;
+            return false;
         }
         ggml_fmsh_log_locked(ctx, 1, "rope_exec_done rows=" + std::to_string(entry->rows) + " cols=" + std::to_string(ne0));
         return true;
@@ -2815,6 +3075,7 @@ static bool ggml_fmsh_execute_fused_ew(
     ggml_fmsh_zg330_fused_ew_entry * entry,
     const Tensor * input_override,
     bool keep_device_output_only,
+    bool write_host_output,
     Tensor * chained_output,
     std::string * err) {
     ggml_tensor * out_node = chain.nodes.back();
@@ -2874,7 +3135,7 @@ static bool ggml_fmsh_execute_fused_ew(
                         const size_t  row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
                         for (int64_t i0 = 0; i0 < in_node->ne[0]; ++i0) {
                             in0[row_off + static_cast<size_t>(i0)] =
-                                ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src0, i0, i1, i2, i3));
+                                ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src0, i0, i1, i2, i3));
                         }
                     }
                 }
@@ -2912,7 +3173,7 @@ static bool ggml_fmsh_execute_fused_ew(
                             const size_t  row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
                             for (int64_t i0 = 0; i0 < knode->ne[0]; ++i0) {
                                 sec[row_off + static_cast<size_t>(i0)] =
-                                    ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(src1, i0, i1, i2, i3));
+                                    ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src1, i0, i1, i2, i3));
                             }
                         }
                     }
@@ -2930,7 +3191,7 @@ static bool ggml_fmsh_execute_fused_ew(
             } else if (op == ggml::fmsh::netmake::ElementwiseZgOp::SCALE) {
                 float scale = 1.0f;
                 if (knode->src[1] && knode->src[1]->data && ggml_nelements(knode->src[1]) >= 1) {
-                    scale = ggml_fmsh_read_f32_broadcast(knode->src[1], 0, 0, 0, 0);
+                    scale = ggml_fmsh_read_f32_broadcast(ctx, knode->src[1], 0, 0, 0, 0);
                 } else {
                     std::memcpy(&scale, knode->op_params, sizeof(float));
                 }
@@ -2948,27 +3209,22 @@ static bool ggml_fmsh_execute_fused_ew(
 
         // ── Forward ───────────────────────────────────────────────────────────
         std::vector<Tensor> session_inputs = entry->input_tensors;
-        std::vector<Tensor> outputs = entry->session.forward(session_inputs);
-        if (outputs.empty()) {
-            if (err) *err = "fused_ew: session.forward returned empty output";
-            return false;
-        }
-        if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "fused_ew")) {
+        Tensor output;
+        if (!ggml_fmsh_forward_synced(
+                ctx, entry->session, session_inputs, entry->zg_device,
+                entry->layer_increment, &output, "fused_ew", err)) {
             return false;
         }
 
-        if (chained_output) *chained_output = outputs[0];
+        if (chained_output) *chained_output = output;
         ggml_fmsh_log_locked(ctx, 1, "fused_ew_forward_done net=" + entry->net_name);
 
-        const bool should_write_host =
-            !keep_device_output_only
-#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
-            || (ctx->debug_compare == 1)
-#endif
-            ;
-        if (should_write_host) {
+        // Same rationale as execute_elementwise(): chained outputs must stay on
+        // device even when debug-compare is enabled, because chained ops are
+        // already excluded from comparison.
+        if (write_host_output) {
             std::vector<float> out_tmp(total_elems);
-            outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
+            output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
             for (int64_t i3 = 0; i3 < out_node->ne[3]; ++i3) {
                 for (int64_t i2 = 0; i2 < out_node->ne[2]; ++i2) {
                     for (int64_t i1 = 0; i1 < out_node->ne[1]; ++i1) {
@@ -2976,10 +3232,15 @@ static bool ggml_fmsh_execute_fused_ew(
                         const size_t  row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
                         for (int64_t i0 = 0; i0 < out_node->ne[0]; ++i0) {
                             ggml_fmsh_write_f32_indexed(
-                                out_node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
+                                ctx, out_node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
                         }
                     }
                 }
+            }
+            std::string sync_err;
+            if (!ggml_fmsh_sync_zg_staging_to_device(ctx, out_node, "fused_ew_readback", &sync_err)) {
+                if (err) *err = sync_err;
+                return false;
             }
         } else {
             ggml_fmsh_log_locked(ctx, 0, "fused_ew_read_skip net=" + entry->net_name);
@@ -3006,6 +3267,58 @@ static inline float ggml_fmsh_read_f32_broadcast(
     return *reinterpret_cast<const float *>(p);
 }
 
+static const char * ggml_fmsh_host_data_for_tensor(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t) {
+    if (!ctx || !t) {
+        return t ? static_cast<const char *>(t->data) : nullptr;
+    }
+    const ggml_tensor * root = t;
+    while (root->view_src) {
+        root = root->view_src;
+    }
+    auto it = ctx->zg_staging_bufs.find(root);
+    if (it == ctx->zg_staging_bufs.end() || it->second.empty()) {
+        return static_cast<const char *>(t->data);
+    }
+    const uintptr_t root_zg = reinterpret_cast<uintptr_t>(root->data);
+    const uintptr_t t_zg = reinterpret_cast<uintptr_t>(t->data);
+    return it->second.data() + (t_zg - root_zg);
+}
+
+static float ggml_fmsh_read_mask_f32(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * mask,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3) {
+    const char * base = ggml_fmsh_host_data_for_tensor(ctx, mask);
+    const char * p = base +
+                     i0 * mask->nb[0] + i1 * mask->nb[1] +
+                     i2 * mask->nb[2] + i3 * mask->nb[3];
+    if (mask->type == GGML_TYPE_F16) {
+        return GGML_FP16_TO_FP32(*reinterpret_cast<const ggml_fp16_t *>(p));
+    }
+    return *reinterpret_cast<const float *>(p);
+}
+
+static inline float ggml_fmsh_read_f32_broadcast(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3) {
+    const int64_t x0 = t->ne[0] == 1 ? 0 : i0;
+    const int64_t x1 = t->ne[1] == 1 ? 0 : i1;
+    const int64_t x2 = t->ne[2] == 1 ? 0 : i2;
+    const int64_t x3 = t->ne[3] == 1 ? 0 : i3;
+    const char * base = ggml_fmsh_host_data_for_tensor(ctx, t);
+    const char * p = base + x0 * t->nb[0] + x1 * t->nb[1] + x2 * t->nb[2] + x3 * t->nb[3];
+    return *reinterpret_cast<const float *>(p);
+}
+
 static inline void ggml_fmsh_write_f32_indexed(
     ggml_tensor * t,
     int64_t i0,
@@ -3017,6 +3330,34 @@ static inline void ggml_fmsh_write_f32_indexed(
     *reinterpret_cast<float *>(p) = v;
 }
 
+static inline void ggml_fmsh_write_f32_indexed(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * t,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3,
+    float v) {
+    if (!ctx || !t) {
+        ggml_fmsh_write_f32_indexed(t, i0, i1, i2, i3, v);
+        return;
+    }
+    MemChunk chunk;
+    size_t off = 0;
+    if (!ggml_fmsh_is_zg_buffer_tensor(t, &chunk, &off)) {
+        ggml_fmsh_write_f32_indexed(t, i0, i1, i2, i3, v);
+        return;
+    }
+    std::string err;
+    if (!ggml_fmsh_ensure_zg_staging(ctx, t, true, &err)) {
+        ggml_fmsh_log_locked(ctx, 3, "write_staging_prepare_failed op=" + std::string(ggml_op_name(t->op)) + " reason=" + err);
+        std::exit(EXIT_FAILURE);
+    }
+    char * base = const_cast<char *>(ggml_fmsh_host_data_for_tensor(ctx, t));
+    char * p = base + i0 * t->nb[0] + i1 * t->nb[1] + i2 * t->nb[2] + i3 * t->nb[3];
+    *reinterpret_cast<float *>(p) = v;
+}
+
 static inline float ggml_fmsh_read_f32_indexed(
     const ggml_tensor * t,
     int64_t i0,
@@ -3024,6 +3365,18 @@ static inline float ggml_fmsh_read_f32_indexed(
     int64_t i2,
     int64_t i3) {
     const char * p = static_cast<const char *>(t->data) + i0 * t->nb[0] + i1 * t->nb[1] + i2 * t->nb[2] + i3 * t->nb[3];
+    return *reinterpret_cast<const float *>(p);
+}
+
+static inline float ggml_fmsh_read_f32_indexed(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t,
+    int64_t i0,
+    int64_t i1,
+    int64_t i2,
+    int64_t i3) {
+    const char * base = ggml_fmsh_host_data_for_tensor(ctx, t);
+    const char * p = base + i0 * t->nb[0] + i1 * t->nb[1] + i2 * t->nb[2] + i3 * t->nb[3];
     return *reinterpret_cast<const float *>(p);
 }
 
@@ -3039,6 +3392,26 @@ static inline float ggml_fmsh_read_f32_linear(const ggml_tensor * t, size_t idx)
     idx /= ne2;
     const size_t i3 = idx;
     return ggml_fmsh_read_f32_indexed(
+        t,
+        static_cast<int64_t>(i0),
+        static_cast<int64_t>(i1),
+        static_cast<int64_t>(i2),
+        static_cast<int64_t>(i3));
+}
+
+static inline float ggml_fmsh_read_f32_linear(ggml_backend_fmsh_zg330_context * ctx, const ggml_tensor * t, size_t idx) {
+    const size_t ne0 = static_cast<size_t>(t->ne[0]);
+    const size_t ne1 = static_cast<size_t>(t->ne[1]);
+    const size_t ne2 = static_cast<size_t>(t->ne[2]);
+    const size_t i0 = idx % ne0;
+    idx /= ne0;
+    const size_t i1 = idx % ne1;
+    idx /= ne1;
+    const size_t i2 = idx % ne2;
+    idx /= ne2;
+    const size_t i3 = idx;
+    return ggml_fmsh_read_f32_broadcast(
+        ctx,
         t,
         static_cast<int64_t>(i0),
         static_cast<int64_t>(i1),
@@ -3071,7 +3444,42 @@ static bool ggml_fmsh_tensor_snapshot_f32(const ggml_tensor * t, std::vector<flo
     return true;
 }
 
-static bool ggml_fmsh_tensor_restore_f32(ggml_tensor * t, const std::vector<float> & in, std::string * err) {
+static bool ggml_fmsh_tensor_snapshot_f32(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t,
+    std::vector<float> & out,
+    std::string * err) {
+    if (!t || !t->data) {
+        if (err) *err = "tensor data null";
+        return false;
+    }
+    if (t->type != GGML_TYPE_F32) {
+        if (err) *err = "tensor type is not F32";
+        return false;
+    }
+    if (!ggml_fmsh_ensure_zg_staging(ctx, t, true, err)) {
+        return false;
+    }
+    const size_t n = ggml_nelements(t);
+    out.resize(n);
+    size_t idx = 0;
+    for (int64_t i3 = 0; i3 < t->ne[3]; ++i3) {
+        for (int64_t i2 = 0; i2 < t->ne[2]; ++i2) {
+            for (int64_t i1 = 0; i1 < t->ne[1]; ++i1) {
+                for (int64_t i0 = 0; i0 < t->ne[0]; ++i0) {
+                    out[idx++] = ggml_fmsh_read_f32_indexed(ctx, t, i0, i1, i2, i3);
+                }
+            }
+        }
+    }
+    return true;
+}
+
+static bool ggml_fmsh_tensor_restore_f32(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * t,
+    const std::vector<float> & in,
+    std::string * err) {
     if (!t || !t->data) {
         if (err) *err = "tensor data null";
         return false;
@@ -3090,10 +3498,13 @@ static bool ggml_fmsh_tensor_restore_f32(ggml_tensor * t, const std::vector<floa
         for (int64_t i2 = 0; i2 < t->ne[2]; ++i2) {
             for (int64_t i1 = 0; i1 < t->ne[1]; ++i1) {
                 for (int64_t i0 = 0; i0 < t->ne[0]; ++i0) {
-                    ggml_fmsh_write_f32_indexed(t, i0, i1, i2, i3, in[idx++]);
+                    ggml_fmsh_write_f32_indexed(ctx, t, i0, i1, i2, i3, in[idx++]);
                 }
             }
         }
+    }
+    if (!ggml_fmsh_sync_zg_staging_to_device(ctx, t, "debug_restore", err)) {
+        return false;
     }
     return true;
 }
@@ -3104,6 +3515,7 @@ struct ggml_fmsh_debug_saved_tensor {
 };
 
 static bool ggml_fmsh_debug_backup_tensor(
+    ggml_backend_fmsh_zg330_context * ctx,
     ggml_tensor * t,
     std::vector<ggml_fmsh_debug_saved_tensor> & saved,
     std::unordered_set<ggml_tensor *> & seen,
@@ -3116,7 +3528,7 @@ static bool ggml_fmsh_debug_backup_tensor(
     }
     ggml_fmsh_debug_saved_tensor s;
     s.t = t;
-    if (!ggml_fmsh_tensor_snapshot_f32(t, s.data, err)) {
+    if (!ggml_fmsh_tensor_snapshot_f32(ctx, t, s.data, err)) {
         return false;
     }
     saved.push_back(std::move(s));
@@ -3124,10 +3536,11 @@ static bool ggml_fmsh_debug_backup_tensor(
 }
 
 static bool ggml_fmsh_debug_restore_tensors(
+    ggml_backend_fmsh_zg330_context * ctx,
     std::vector<ggml_fmsh_debug_saved_tensor> & saved,
     std::string * err) {
     for (auto & s : saved) {
-        if (!ggml_fmsh_tensor_restore_f32(s.t, s.data, err)) {
+        if (!ggml_fmsh_tensor_restore_f32(ctx, s.t, s.data, err)) {
             return false;
         }
     }
@@ -3159,7 +3572,7 @@ static void ggml_fmsh_debug_compare_and_log(
         for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
             for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
                 for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
-                    const float got = ggml_fmsh_read_f32_indexed(node, i0, i1, i2, i3);
+                    const float got = ggml_fmsh_read_f32_indexed(ctx, node, i0, i1, i2, i3);
                     const float exp = ref[idx];
                     const double abs_err = std::fabs(static_cast<double>(got) - static_cast<double>(exp));
                     const double rel_err = abs_err / (std::fabs(static_cast<double>(exp)) + 1e-12);
@@ -3182,22 +3595,20 @@ static void ggml_fmsh_debug_compare_and_log(
     ctx->debug_compare_total++;
     if (mismatches > 0) {
         ctx->debug_compare_mismatch++;
-        if (ctx->debug_compare_logged < ctx->debug_compare_log_limit) {
-            ctx->debug_compare_logged++;
-            ggml_fmsh_log_locked(
-                ctx, 2,
-                "debug_compare_mismatch op=" + std::string(ggml_op_name(node->op)) +
-                " node_idx=" + std::to_string(node_index) +
-                " shape=[" + std::to_string(node->ne[0]) + "," + std::to_string(node->ne[1]) + "," +
-                std::to_string(node->ne[2]) + "," + std::to_string(node->ne[3]) + "]" +
-                " n=" + std::to_string(n) +
-                " mismatches=" + std::to_string(mismatches) +
-                " max_abs=" + std::to_string(max_abs) +
-                " max_rel=" + std::to_string(max_rel) +
-                " first_bad_idx=" + std::to_string(first_bad) +
-                " first_ref=" + std::to_string(first_ref) +
-                " first_npu=" + std::to_string(first_npu));
-        }
+        ctx->debug_compare_logged++;
+        ggml_fmsh_log_locked(
+            ctx, 2,
+            "debug_compare_mismatch op=" + std::string(ggml_op_name(node->op)) +
+            " node_idx=" + std::to_string(node_index) +
+            " shape=[" + std::to_string(node->ne[0]) + "," + std::to_string(node->ne[1]) + "," +
+            std::to_string(node->ne[2]) + "," + std::to_string(node->ne[3]) + "]" +
+            " n=" + std::to_string(n) +
+            " mismatches=" + std::to_string(mismatches) +
+            " max_abs=" + std::to_string(max_abs) +
+            " max_rel=" + std::to_string(max_rel) +
+            " first_bad_idx=" + std::to_string(first_bad) +
+            " first_ref=" + std::to_string(first_ref) +
+            " first_npu=" + std::to_string(first_npu));
     }
 }
 #endif
@@ -3209,6 +3620,7 @@ static bool ggml_fmsh_execute_mul_mat(
     ggml_fmsh_zg330_session_entry * entry,
     const Tensor * input_override,
     bool keep_device_output_only,
+    bool write_host_output,
     Tensor * chained_output,
     std::string * err);
 
@@ -3228,6 +3640,12 @@ static bool ggml_fmsh_execute_qweight_via_f32(
         if (err) *err = "no dequant kernel";
         return false;
     }
+    std::string staging_err;
+    if (!ggml_fmsh_ensure_zg_staging(ctx, src0, true, &staging_err)) {
+        if (err) *err = "qweight src0 staging failed: " + staging_err;
+        return false;
+    }
+    const char * src0_data = ggml_fmsh_host_data_for_tensor(ctx, src0);
 
     // N-chunk size: icraft adapt crashes when the weight input is too large
     // (internal representation exceeds 2GB). Chunk N to stay within limits.
@@ -3244,13 +3662,14 @@ static bool ggml_fmsh_execute_qweight_via_f32(
         std::vector<float> f32_buf(static_cast<size_t>(n_this) * static_cast<size_t>(k));
         std::vector<float> row_buf(static_cast<size_t>(k));
         for (int64_t i = 0; i < n_this; ++i) {
-            const char * src_row = static_cast<const char *>(src0->data) + (col + i) * src0->nb[1];
+            const char * src_row = src0_data + (col + i) * src0->nb[1];
             tt->to_float(src_row, row_buf.data(), k);
             std::memcpy(f32_buf.data() + i * k, row_buf.data(), static_cast<size_t>(k) * sizeof(float));
         }
 
         // Fake F32 src0 for this chunk: ne[1] = n_this.
-        // view_src non-null → src0_is_static=false → HOST weight (dynamic DMA per forward).
+        // Mark it as an input tensor so execute_mul_mat treats it as dynamic HOST weight.
+        // Do not fake view_src: helper code walks view chains and expects valid tensors.
         // For small n (controlled by MUL_MAT_N_MAX), the HOST→ZG DMA is reliable.
         const size_t chunk_f32_bytes = static_cast<size_t>(n_this) * static_cast<size_t>(k) * sizeof(float);
         ggml_tensor fake_src0{};
@@ -3264,9 +3683,9 @@ static bool ggml_fmsh_execute_qweight_via_f32(
         fake_src0.nb[2]  = chunk_f32_bytes;
         fake_src0.nb[3]  = chunk_f32_bytes;
         fake_src0.data   = f32_buf.data();
-        fake_src0.view_src = reinterpret_cast<ggml_tensor *>(1); // non-null → dynamic
+        fake_src0.view_src = nullptr;
         fake_src0.op     = GGML_OP_NONE;
-        fake_src0.flags  = 0;
+        fake_src0.flags  = GGML_TENSOR_FLAG_INPUT;
 
         // Redirect dst to a temporary buffer for this chunk [m, n_this], then
         // scatter into the real dst at the correct column offset afterwards.
@@ -3299,7 +3718,7 @@ static bool ggml_fmsh_execute_qweight_via_f32(
         ggml_fmsh_zg330_session_entry * entry =
             ggml_fmsh_get_or_create_mul_mat_session(ctx, node, &created, err);
         if (entry) {
-            ok = ggml_fmsh_execute_mul_mat(ctx, node, entry, nullptr, false, nullptr, err);
+            ok = ggml_fmsh_execute_mul_mat(ctx, node, entry, nullptr, false, true, nullptr, err);
         }
 
         // Restore node fields before scatter.
@@ -3316,20 +3735,18 @@ static bool ggml_fmsh_execute_qweight_via_f32(
 
         // Scatter chunk result into the real dst: dst[row, col+c] = chunk_dst[row, c].
         for (int64_t row = 0; row < m; ++row) {
-            char * dst_row = static_cast<char *>(orig_dst_data) + row * orig_nb1;
             const float * src_row = chunk_dst.data() + row * n_this;
-            if (orig_nb0 == sizeof(float)) {
-                std::memcpy(dst_row + col * sizeof(float), src_row,
-                            static_cast<size_t>(n_this) * sizeof(float));
-            } else {
-                for (int64_t c = 0; c < n_this; ++c) {
-                    std::memcpy(dst_row + (col + c) * orig_nb0, &src_row[c], sizeof(float));
-                }
+            for (int64_t c = 0; c < n_this; ++c) {
+                ggml_fmsh_write_f32_indexed(ctx, node, col + c, row, 0, 0, src_row[c]);
             }
         }
     }
 
     if (all_ok) {
+        if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "qweight_readback", &staging_err)) {
+            if (err) *err = staging_err;
+            return false;
+        }
         ctx->mul_mat_qweight_offloaded++;
     }
     return all_ok;
@@ -3341,6 +3758,7 @@ static bool ggml_fmsh_execute_mul_mat(
     ggml_fmsh_zg330_session_entry * entry,
     const Tensor * input_override,
     bool keep_device_output_only,
+    bool write_host_output,
     Tensor * chained_output,
     std::string * err) {
     const ggml_tensor * src0 = node->src[0];
@@ -3379,8 +3797,6 @@ static bool ggml_fmsh_execute_mul_mat(
             }
             return s;
         };
-        static std::atomic<int> s_inf_trace_budget{20};
-
         if (entry->bundle.network.inputs().size() < 2) {
             if (err) *err = "compiled network input count < 2";
             return false;
@@ -3401,7 +3817,7 @@ static bool ggml_fmsh_execute_mul_mat(
 
         const size_t out_bytes = static_cast<size_t>(entry->m * entry->n * static_cast<int64_t>(sizeof(float)));
         std::vector<float> out_tmp;
-        if (!keep_device_output_only) {
+        if (write_host_output) {
             out_tmp.resize(static_cast<size_t>(entry->m * entry->n));
         }
 
@@ -3454,9 +3870,25 @@ static bool ggml_fmsh_execute_mul_mat(
             for (int64_t i12 = 0; i12 < ne12; ++i12) {
                 const int64_t i02 = i12 / r2;
 
-                const char * src1_slice = static_cast<const char *>(src1->data) + i12 * src1->nb[2] + i13 * src1->nb[3];
-                const char * src0_slice = static_cast<const char *>(src0->data) + i02 * src0->nb[2] + i03 * src0->nb[3];
-                char * dst_slice = static_cast<char *>(node->data) + i12 * node->nb[2] + i13 * node->nb[3];
+                if (ggml_fmsh_is_zg_buffer_tensor(src0, nullptr, nullptr) ||
+                    ggml_fmsh_is_zg_buffer_tensor(src1, nullptr, nullptr)) {
+                    std::string staging_err;
+                    if (!ggml_fmsh_ensure_zg_staging(ctx, src0, true, &staging_err) ||
+                        !ggml_fmsh_ensure_zg_staging(ctx, src1, true, &staging_err)) {
+                        if (err) *err = staging_err;
+                        return false;
+                    }
+                }
+                const char * src1_slice = ggml_fmsh_host_data_for_tensor(ctx, src1) + i12 * src1->nb[2] + i13 * src1->nb[3];
+                const char * src0_slice = ggml_fmsh_host_data_for_tensor(ctx, src0) + i02 * src0->nb[2] + i03 * src0->nb[3];
+                if (ggml_fmsh_is_zg_buffer_tensor(node, nullptr, nullptr)) {
+                    std::string staging_err;
+                    if (!ggml_fmsh_ensure_zg_staging(ctx, node, true, &staging_err)) {
+                        if (err) *err = staging_err;
+                        return false;
+                    }
+                }
+                char * dst_slice = const_cast<char *>(ggml_fmsh_host_data_for_tensor(ctx, node)) + i12 * node->nb[2] + i13 * node->nb[3];
 
                 Tensor input_a = entry->input_tensor_a;
                 if (allow_input_chain && i12 == 0 && i13 == 0) {
@@ -3478,17 +3910,15 @@ static bool ggml_fmsh_execute_mul_mat(
                             }
                         }
                     }
-                    auto bridge_outputs = bridge_entry->session.forward({bridge_entry->input_tensor});
-                    if (bridge_outputs.empty()) {
-                        ggml_fmsh_log_locked(ctx, 3, "bf16_bridge_fwd_empty_output");
-                        if (err) *err = "BF16 bridge forward returned empty output";
-                        return false;
-                    }
-                    if (!ggml_fmsh_wait_tensor_ready(bridge_outputs[0], err, "bf16_bridge")) {
+                    Tensor bridge_output;
+                    if (!ggml_fmsh_forward_synced(
+                            ctx, bridge_entry->session, {bridge_entry->input_tensor},
+                            bridge_entry->zg_device, bridge_entry->layer_increment,
+                            &bridge_output, "bf16_bridge", err)) {
                         ggml_fmsh_log_locked(ctx, 3, "bf16_bridge_wait_ready_failed");
                         return false;
                     }
-                    input_a = bridge_outputs[0];
+                    input_a = bridge_output;
                     ctx->mul_mat_device_input_chain++;
                     ggml_fmsh_log_locked(ctx, 0, "bf16_bridge_fwd_done chaining_to_matmul=1");
                 } else {
@@ -3564,25 +3994,22 @@ static bool ggml_fmsh_execute_mul_mat(
                     }
                 }
 
-                auto outputs = entry->session.forward({input_a, *weight_tensor});
-                if (outputs.empty()) {
-                    if (err) *err = "session.forward returned empty output";
-                    return false;
-                }
-                if (!ggml_fmsh_wait_tensor_ready(outputs[0], err, "mul_mat")) {
+                Tensor output;
+                if (!ggml_fmsh_forward_synced(ctx, entry->session, {input_a, *weight_tensor},
+                                              entry->zg_device, entry->layer_increment,
+                                              &output, "mul_mat", err)) {
                     return false;
                 }
                 if (chained_output != nullptr && i12 == 0 && i13 == 0 && ne12 == 1 && ne13 == 1) {
-                    *chained_output = outputs[0];
+                    *chained_output = output;
                 }
 
-                if (!keep_device_output_only) {
-                    outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, out_bytes);
+                if (write_host_output) {
+                    output.read(reinterpret_cast<char *>(out_tmp.data()), 0, out_bytes);
 
                     const ggml_fmsh_f32_stats out_stats =
                         calc_f32_stats(out_tmp.data(), static_cast<size_t>(entry->m * entry->n));
-                    if ((out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) &&
-                        s_inf_trace_budget.fetch_sub(1, std::memory_order_relaxed) > 0) {
+                    if (out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) {
                         const float * w_ptr = reinterpret_cast<const float *>(weight_tensor->data().cptr());
                         const ggml_fmsh_f32_stats w_stats =
                             calc_f32_stats(w_ptr, static_cast<size_t>(entry->k * entry->n));
@@ -3597,7 +4024,7 @@ static bool ggml_fmsh_execute_mul_mat(
                                 std::to_string(a_stats.nan_cnt) + "]";
                         }
                         ggml_fmsh_log_locked(
-                            ctx, 2,
+                            ctx, 3,
                             "mul_mat_inf_trace shape=[" + std::to_string(node->ne[0]) + "," +
                             std::to_string(node->ne[1]) + "," +
                             std::to_string(node->ne[2]) + "," +
@@ -3616,6 +4043,7 @@ static bool ggml_fmsh_execute_mul_mat(
                             std::to_string(out_stats.max_v) + "," +
                             std::to_string(out_stats.inf_cnt) + "," +
                             std::to_string(out_stats.nan_cnt) + "]");
+                        std::exit(EXIT_FAILURE);
                     }
 
                     for (int64_t row = 0; row < entry->m; ++row) {
@@ -3628,6 +4056,11 @@ static bool ggml_fmsh_execute_mul_mat(
                                 std::memcpy(dst_row + col * node->nb[0], &src_row[col], sizeof(float));
                             }
                         }
+                    }
+                    std::string sync_err;
+                    if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "mul_mat_readback", &sync_err)) {
+                        if (err) *err = sync_err;
+                        return false;
                     }
                 }
             }
@@ -3689,6 +4122,12 @@ static bool ggml_fmsh_execute_flash_attn_ext(
     }
     const void * k_data = k->data;
     const void * v_data = v->data;
+    std::string staging_err;
+    if (!ggml_fmsh_ensure_zg_staging(ctx, q, true, &staging_err)) {
+        if (err) *err = "FLASH_ATTN_EXT q staging failed: " + staging_err;
+        return false;
+    }
+    const char * q_data = ggml_fmsh_host_data_for_tensor(ctx, q);
 
 
     const auto & cfg = entry->info;
@@ -3713,8 +4152,6 @@ static bool ggml_fmsh_execute_flash_attn_ext(
     const size_t y_bytes = static_cast<size_t>(q_bucket * value_dim) * sizeof(float);
     const float k_mask_neg_inf = -1e9f;
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
-    static std::atomic<int> s_flash_inf_trace_budget{32};
-
     struct ggml_fmsh_f32_stats_local {
         float min_v = std::numeric_limits<float>::infinity();
         float max_v = -std::numeric_limits<float>::infinity();
@@ -3782,7 +4219,7 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                 float * q_row = in_q + static_cast<size_t>(iq * head_dim);
                 if (iq < q_len) {
                     const float * src_q_row = reinterpret_cast<const float *>(
-                        static_cast<const char *>(q->data) + iq * q->nb[1] + ih * q->nb[2] + ib * q->nb[3]);
+                        q_data + iq * q->nb[1] + ih * q->nb[2] + ib * q->nb[3]);
                     for (int64_t d = 0; d < head_dim; ++d) {
                         q_row[d] = src_q_row[d];
                     }
@@ -3843,7 +4280,7 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                     } else if (iq >= q_len || !mask) {
                         mv = 0.0f;
                     } else {
-                        mv = ggml_fmsh_read_mask_f32(mask, ikv, iq, mask_head, mask_batch);
+                        mv = ggml_fmsh_read_mask_f32(ctx, mask, ikv, iq, mask_head, mask_batch);
                         // ZG330 softmax path is unstable with +/-inf or NaN mask values.
                         // Normalize mask sent to NPU to finite numbers while preserving intent.
                         if (!std::isfinite(mv)) {
@@ -3967,11 +4404,10 @@ static bool ggml_fmsh_execute_flash_attn_ext(
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             const auto out_stats = calc_f32_stats_local(out_tmp.data(), static_cast<size_t>(q_bucket * value_dim));
-            if ((out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) &&
-                s_flash_inf_trace_budget.fetch_sub(1, std::memory_order_relaxed) > 0) {
+            if (out_stats.inf_cnt > 0 || out_stats.nan_cnt > 0) {
                 // Input tensors are fp32; Y output is also fp32.
                 ggml_fmsh_log_locked(
-                    ctx, 2,
+                    ctx, 3,
                     "flash_inf_trace batch=" + std::to_string(ib) +
                     " head=" + std::to_string(ih) +
                     " k_head=" + std::to_string(k_head) +
@@ -3985,14 +4421,20 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                     std::to_string(out_stats.max_v) + "," +
                     std::to_string(out_stats.inf_cnt) + "," +
                     std::to_string(out_stats.nan_cnt) + "]");
+                std::exit(EXIT_FAILURE);
             }
 #endif
 
             for (int64_t iq = 0; iq < q_len; ++iq) {
                 const float * out_row = out_tmp.data() + static_cast<size_t>(iq * value_dim);
                 for (int64_t d = 0; d < value_dim; ++d) {
-                    ggml_fmsh_write_f32_indexed(node, d, ih, iq, ib, out_row[d]);
+                    ggml_fmsh_write_f32_indexed(ctx, node, d, ih, iq, ib, out_row[d]);
                 }
+            }
+            std::string sync_err;
+            if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "flash_readback", &sync_err)) {
+                if (err) *err = sync_err;
+                return false;
             }
         }
     }
@@ -4055,6 +4497,14 @@ static bool ggml_fmsh_is_batched_mul_mat(const ggml_tensor * node) {
     return node != nullptr && node->op == GGML_OP_MUL_MAT && (node->ne[2] > 1 || node->ne[3] > 1);
 }
 
+static size_t ggml_fmsh_tensor_live_bytes_f32(const Tensor & t) {
+    if (!t.defined()) {
+        return 0;
+    }
+    const int64_t elems = std::max<int64_t>(0, t.dtype().numElements());
+    return static_cast<size_t>(elems) * sizeof(float);
+}
+
 static std::string ggml_fmsh_tensor_loc_str(ggml_backend_fmsh_zg330_context * ctx, const Tensor & t) {
     if (!t.defined() || !t.hasData()) {
         return "none";
@@ -4078,6 +4528,8 @@ static void ggml_fmsh_evict_to_host(
     const Tensor & device_tensor) {
     if (!t) return;
     const size_t bytes = ggml_nbytes(t);
+    const size_t live_bytes = ggml_fmsh_tensor_live_bytes_f32(device_tensor);
+    const size_t read_bytes = std::min(bytes, live_bytes);
     if (bytes == 0) return;
     MemChunk zg_chunk;
     size_t   zg_off = 0;
@@ -4086,12 +4538,32 @@ static void ggml_fmsh_evict_to_host(
         while (root->view_src) root = root->view_src;
         auto & staging = ctx->zg_staging_bufs[root];
         if (staging.empty()) {
-            staging.resize(bytes);
-            device_tensor.read(staging.data(), 0, bytes);
+            staging.resize(read_bytes);
+            if (read_bytes > 0) {
+                device_tensor.read(staging.data(), 0, read_bytes);
+            }
+            if (read_bytes != bytes) {
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "evict_to_host_clamp op=" +
+                        std::string(ggml_op_name(t->op)) +
+                        " logical_bytes=" + std::to_string(bytes) +
+                        " live_bytes=" + std::to_string(live_bytes));
+            }
         }
         // Do not redirect t->data here.
     } else if (t->data != nullptr) {
-        device_tensor.read(reinterpret_cast<char *>(t->data), 0, bytes);
+        if (read_bytes > 0) {
+            device_tensor.read(reinterpret_cast<char *>(t->data), 0, read_bytes);
+        }
+        if (read_bytes != bytes) {
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "evict_to_host_clamp op=" +
+                    std::string(ggml_op_name(t->op)) +
+                    " logical_bytes=" + std::to_string(bytes) +
+                    " live_bytes=" + std::to_string(live_bytes));
+        }
     }
 }
 
@@ -4128,12 +4600,104 @@ static void ggml_fmsh_materialize_if_device(
         }
     } else if (t->data != nullptr) {
         // t->data is a real host pointer (compute buffer): write directly.
-        it->second.read(reinterpret_cast<char *>(t->data), 0, bytes);
+        const size_t live_bytes = ggml_fmsh_tensor_live_bytes_f32(it->second);
+        const size_t read_bytes = std::min(bytes, live_bytes);
+        if (read_bytes > 0) {
+            it->second.read(reinterpret_cast<char *>(t->data), 0, read_bytes);
+        }
+        if (read_bytes != bytes) {
+            ggml_fmsh_log_locked(ctx, 1,
+                "materialize_to_host_clamp bytes=" + std::to_string(bytes) +
+                " live_bytes=" + std::to_string(live_bytes) +
+                " op_src=" + std::string(ggml_op_name(t->op)));
+        }
         ggml_fmsh_log_locked(ctx, 1,
             "materialize_to_host bytes=" + std::to_string(bytes) +
             " op_src=" + std::string(ggml_op_name(t->op)));
     }
     device_tensor_map.erase(it);
+}
+
+static bool ggml_fmsh_ensure_zg_staging(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t,
+    bool read_existing,
+    std::string * err) {
+    if (!t) {
+        return true;
+    }
+    const ggml_tensor * root = t;
+    while (root->view_src) {
+        root = root->view_src;
+    }
+
+    MemChunk zg_chunk;
+    size_t zg_off = 0;
+    if (!ggml_fmsh_is_zg_buffer_tensor(root, &zg_chunk, &zg_off)) {
+        return true;
+    }
+
+    try {
+        auto & staging = ctx->zg_staging_bufs[root];
+        const size_t root_bytes = ggml_nbytes(root);
+        if (staging.empty()) {
+            staging.resize(root_bytes);
+            if (read_existing && root_bytes > 0) {
+                zg_chunk.read(staging.data(), zg_off, root_bytes);
+                ggml_fmsh_log_locked(ctx, 1,
+                    "staging_d2h bytes=" + std::to_string(root_bytes) +
+                    " op_src=" + std::string(ggml_op_name(t->op)));
+            } else {
+                ggml_fmsh_log_locked(ctx, 1,
+                    "staging_alloc bytes=" + std::to_string(root_bytes) +
+                    " op_src=" + std::string(ggml_op_name(t->op)));
+            }
+        }
+        return true;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = e.what();
+        }
+        return false;
+    }
+}
+
+static bool ggml_fmsh_sync_zg_staging_to_device(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const ggml_tensor * t,
+    const char * reason,
+    std::string * err) {
+    if (!t) {
+        return true;
+    }
+    const ggml_tensor * root = t;
+    while (root->view_src) {
+        root = root->view_src;
+    }
+    auto sit = ctx->zg_staging_bufs.find(root);
+    if (sit == ctx->zg_staging_bufs.end() || sit->second.empty()) {
+        return true;
+    }
+
+    MemChunk zg_chunk;
+    size_t zg_off = 0;
+    if (!ggml_fmsh_is_zg_buffer_tensor(root, &zg_chunk, &zg_off)) {
+        return true;
+    }
+
+    try {
+        zg_chunk.write(zg_off, sit->second.data(), sit->second.size());
+        ggml_fmsh_log_locked(ctx, 1,
+            "staging_h2d bytes=" + std::to_string(sit->second.size()) +
+            " op=" + std::string(ggml_op_name(t->op)) +
+            " reason=" + (reason ? reason : "sync"));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = e.what();
+        }
+        return false;
+    }
 }
 
 static int ggml_fmsh_count_future_consumers(ggml_cgraph * cgraph, int from_idx, const ggml_tensor * producer) {
@@ -4313,8 +4877,12 @@ static bool ggml_fmsh_is_zg_buffer_tensor(
     // Offset of the root tensor's data within the chunk.
     const uintptr_t base = reinterpret_cast<uintptr_t>(root->buffer->iface.get_base(root->buffer));
     const size_t root_off = static_cast<size_t>(reinterpret_cast<uintptr_t>(root->data) - base);
-    *out_chunk  = buf_ctx->chunk;
-    *out_offset = root_off + total_off;
+    if (out_chunk) {
+        *out_chunk = buf_ctx->chunk;
+    }
+    if (out_offset) {
+        *out_offset = root_off + total_off;
+    }
     return true;
 }
 
@@ -4348,6 +4916,40 @@ static Tensor ggml_fmsh_make_zg_tensor(const ggml_tensor * t) {
     return Tensor(ttype, chunk, static_cast<uint64_t>(offset));
 }
 
+static Tensor ggml_fmsh_clone_chain_tensor(
+    ggml_backend_fmsh_zg330_context * ctx,
+    const Tensor & src,
+    std::string * err) {
+    if (!src.defined()) {
+        return Tensor();
+    }
+    const size_t bytes = ggml_fmsh_tensor_live_bytes_f32(src);
+    if (bytes == 0) {
+        return Tensor();
+    }
+    try {
+        if (ctx != nullptr && ctx->device_opened) {
+            MemChunk chunk = ctx->zg_device.defaultMemRegion().malloc(bytes, true, 4096);
+            Tensor cloned(src.dtype(), chunk, 0);
+            std::vector<char> tmp(bytes);
+            src.read(tmp.data(), 0, bytes);
+            cloned.write(0, tmp.data(), bytes);
+            return cloned;
+        }
+        Tensor cloned(src.dtype().clone());
+        cloned.mallocOn(HostDevice::MemRegion());
+        std::vector<char> tmp(bytes);
+        src.read(tmp.data(), 0, bytes);
+        std::memcpy(cloned.data().cptr(), tmp.data(), bytes);
+        return cloned;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = std::string("clone chain tensor failed: ") + e.what();
+        }
+        return Tensor();
+    }
+}
+
 // Execute a single CPU node with ZG buffer tensors temporarily redirected to their staging buffers.
 // After execution, writes staging data back to ZG DDR for any src that is a ZG buffer
 // and has a staging buffer (meaning it may have been written by the CPU op, e.g. SET_ROWS into KV cache).
@@ -4356,6 +4958,26 @@ static enum ggml_status ggml_fmsh_compute_cpu_node_with_zg_redirect(
     ggml_cgraph * cgraph,
     int node_index) {
     ggml_tensor * node = cgraph->nodes[node_index];
+    std::string staging_err;
+
+    for (int s = 0; s < GGML_MAX_SRC; ++s) {
+        if (!node->src[s]) {
+            continue;
+        }
+        if (!ggml_fmsh_ensure_zg_staging(ctx, node->src[s], true, &staging_err)) {
+            ggml_fmsh_log_locked(ctx, 3,
+                "staging_prepare_failed op=" + std::string(ggml_op_name(node->op)) +
+                " src=" + std::to_string(s) +
+                " reason=" + staging_err);
+            return GGML_STATUS_FAILED;
+        }
+    }
+    if (!ggml_fmsh_ensure_zg_staging(ctx, node, true, &staging_err)) {
+        ggml_fmsh_log_locked(ctx, 3,
+            "staging_prepare_failed op=" + std::string(ggml_op_name(node->op)) +
+            " dst reason=" + staging_err);
+        return GGML_STATUS_FAILED;
+    }
 
     // Save original data pointers for ZG buffer tensors and redirect to staging.
     struct redirect_entry { ggml_tensor * t; void * orig_data; };
@@ -4399,22 +5021,24 @@ static enum ggml_status ggml_fmsh_compute_cpu_node_with_zg_redirect(
 
     if (st != GGML_STATUS_SUCCESS) return st;
 
-    // Write back: for any src ZG buffer that has a staging buffer, sync staging → ZG DDR.
-    // This handles ops like SET_ROWS that write into a ZG buffer (e.g. KV cache).
+    // Write back: dst first, then any source roots that have staging. This preserves
+    // unsupported CPU op results in PLDDR and covers in-place src mutation.
+    if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "fallback_dst", &staging_err)) {
+        ggml_fmsh_log_locked(ctx, 3,
+            "staging_writeback_failed op=" + std::string(ggml_op_name(node->op)) +
+            " dst reason=" + staging_err);
+        return GGML_STATUS_FAILED;
+    }
     for (int s = 0; s < GGML_MAX_SRC; ++s) {
         const ggml_tensor * src = node->src[s];
         if (!src) break;
-        const ggml_tensor * root = src;
-        while (root->view_src) root = root->view_src;
-        auto sit = ctx->zg_staging_bufs.find(root);
-        if (sit == ctx->zg_staging_bufs.end() || sit->second.empty()) continue;
-        MemChunk zg_chunk; size_t zg_off = 0;
-        if (!ggml_fmsh_is_zg_buffer_tensor(root, &zg_chunk, &zg_off)) continue;
-        zg_chunk.write(zg_off, sit->second.data(), sit->second.size());
-        ggml_fmsh_log_locked(ctx, 1,
-            "staging_writeback bytes=" + std::to_string(sit->second.size()) +
-            " op=" + std::string(ggml_op_name(node->op)) +
-            " src=" + std::to_string(s));
+        if (!ggml_fmsh_sync_zg_staging_to_device(ctx, src, "fallback_src", &staging_err)) {
+            ggml_fmsh_log_locked(ctx, 3,
+                "staging_writeback_failed op=" + std::string(ggml_op_name(node->op)) +
+                " src=" + std::to_string(s) +
+                " reason=" + staging_err);
+            return GGML_STATUS_FAILED;
+        }
     }
     return GGML_STATUS_SUCCESS;
 }
@@ -4553,11 +5177,21 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
     bool has_prev_device_output = false;
     Tensor prev_device_output;
     ggml_tensor * prev_device_output_node = nullptr;
+    ggml_fmsh_chain_tensor_id prev_device_output_id;
     std::unordered_map<const ggml_tensor *, Tensor> device_tensor_map;
+    std::unordered_set<const ggml_tensor *> chainable_device_tensors;
+    std::unordered_map<const ggml_tensor *, int> chainable_device_remaining_uses;
+    std::vector<ggml_fmsh_pending_chain_tensor_entry> unresolved_chainable_device_tensors;
     // Staging buffers for ZG buffer tensors that need CPU access this compute pass.
     // Cleared at the top of each graph_compute so redirected t->data pointers from the
     // previous pass are invalidated before new ZG allocations are registered.
     ctx->zg_staging_bufs.clear();
+    const bool pending_prev_device_output_valid = ctx->pending_prev_device_output_valid;
+    const Tensor pending_prev_device_output = ctx->pending_prev_device_output;
+    const ggml_fmsh_chain_tensor_id pending_prev_device_output_id = ctx->pending_prev_device_output_id;
+    ctx->pending_prev_device_output_valid = false;
+    ctx->pending_prev_device_output = Tensor();
+    ctx->pending_prev_device_output_id = ggml_fmsh_chain_tensor_id();
 
     // Pre-populate device_tensor_map with any tensor that lives in ZG DDR
     // (model weights, KV cache, etc.) so graph_compute can route ops correctly.
@@ -4600,8 +5234,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
         };
 
     auto can_consume_from_device =
-        [&](ggml_tensor * consumer, int src_idx) -> bool {
-            if (consumer->op == GGML_OP_MUL_MAT && src_idx == 1 && ggml_fmsh_can_run_mul_mat_zg(consumer) &&
+        [&](ggml_tensor * consumer, int src_idx, const ggml_tensor * producer) -> bool {
+            if (consumer->op == GGML_OP_MUL_MAT && src_idx == 1 &&
+                (ggml_fmsh_can_run_mul_mat_zg(consumer) || ggml_fmsh_is_quant_weight_mul_mat(consumer)) &&
                 consumer->ne[2] == 1 && consumer->ne[3] == 1) {
                 return true;
             }
@@ -4611,18 +5246,634 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 consumer->src[0]->type == GGML_TYPE_F32) {
                 return true;
             }
-            // Elementwise ops can consume a device tensor at src[0].
-            // RMS_NORM uses two-phase PL+scalar-sqrt execution so it also cannot use input_override here.
-            if (src_idx == 0 && ggml_fmsh_should_run_elementwise_zg(ctx, consumer)) {
+            // Elementwise ops can consume a device tensor at src[0]. Binary ADD/MUL can also
+            // consume a device tensor at src[1]. RMS_NORM uses two-phase PL+scalar-sqrt execution
+            // so it cannot use input_override here.
+            if (ggml_fmsh_should_run_elementwise_zg(ctx, consumer)) {
                 ggml::fmsh::netmake::ElementwiseZgOp ek;
                 int64_t er = 0, ec = 0;
                 if (!ggml_fmsh_validate_elementwise(consumer, &ek, &er, &ec)) {
                     return false;
                 }
-                return ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM;
+                if (ek == ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM) {
+                    return false;
+                }
+                if (src_idx == 0) {
+                    return true;
+                }
+                if (src_idx == 1 &&
+                    (ek == ggml::fmsh::netmake::ElementwiseZgOp::ADD ||
+                     ek == ggml::fmsh::netmake::ElementwiseZgOp::MUL) &&
+                    producer != nullptr &&
+                    producer->ne[0] == consumer->ne[0] &&
+                    ggml_fmsh_node_rows(producer) == ggml_fmsh_node_rows(consumer)) {
+                    return true;
+                }
             }
             return false;
         };
+
+    auto next_chain_alias =
+        [&](const ggml_tensor * t) -> const ggml_tensor * {
+            if (t == nullptr) {
+                return nullptr;
+            }
+            if (t->view_src != nullptr) {
+                return t->view_src;
+            }
+            if (ggml_fmsh_is_chain_alias_op(t) && t->src[0] != nullptr) {
+                return t->src[0];
+            }
+            return nullptr;
+        };
+
+    auto resolve_chain_source =
+        [&](const ggml_tensor * t) -> const ggml_tensor * {
+            const ggml_tensor * cur = t;
+            while (cur != nullptr) {
+                if (cur->op != GGML_OP_NONE &&
+                    !ggml_fmsh_is_chain_alias_op(cur)) {
+                    return cur;
+                }
+                const ggml_tensor * next = next_chain_alias(cur);
+                if (next == nullptr || next == cur) {
+                    break;
+                }
+                cur = next;
+            }
+            return cur;
+        };
+
+    auto tensor_matches_chain_id =
+        [&](const ggml_tensor * cand, const ggml_fmsh_chain_tensor_id & id) -> bool {
+            if (cand == nullptr || !id.valid) {
+                return false;
+            }
+            if (cand->op != id.op || reinterpret_cast<uintptr_t>(cand->data) != id.data) {
+                return false;
+            }
+            for (int d = 0; d < GGML_MAX_DIMS; ++d) {
+                if (cand->ne[d] != id.ne[d]) {
+                    return false;
+                }
+            }
+            for (int s = 0; s < GGML_MAX_SRC; ++s) {
+                const ggml_tensor * src = cand->src[s];
+                const ggml_op src_op = src != nullptr ? src->op : GGML_OP_NONE;
+                const uintptr_t src_data = reinterpret_cast<uintptr_t>(src != nullptr ? src->data : nullptr);
+                if (src_op != id.src_op[s] || src_data != id.src_data[s]) {
+                    return false;
+                }
+                for (int d = 0; d < GGML_MAX_DIMS; ++d) {
+                    const int64_t src_ne = src != nullptr ? src->ne[d] : 0;
+                    if (src_ne != id.src_ne[s][d]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        };
+
+    auto find_cgraph_tensor_by_id =
+        [&](const ggml_fmsh_chain_tensor_id & id) -> ggml_tensor * {
+            if (!id.valid) {
+                return nullptr;
+            }
+
+            auto try_match = [&](ggml_tensor * cand) -> ggml_tensor * {
+                if (cand == nullptr) {
+                    return nullptr;
+                }
+                if (tensor_matches_chain_id(cand, id)) {
+                    return cand;
+                }
+                ggml_tensor * resolved = const_cast<ggml_tensor *>(resolve_chain_source(cand));
+                if (resolved != nullptr && tensor_matches_chain_id(resolved, id)) {
+                    return resolved;
+                }
+                return nullptr;
+            };
+
+            for (int j = 0; j < cgraph->n_nodes; ++j) {
+                ggml_tensor * node = cgraph->nodes[j];
+                if (ggml_tensor * match = try_match(node)) {
+                    return match;
+                }
+                if (node == nullptr) {
+                    continue;
+                }
+                for (int s = 0; s < GGML_MAX_SRC; ++s) {
+                    if (ggml_tensor * match = try_match(node->src[s])) {
+                        return match;
+                    }
+                }
+            }
+            return nullptr;
+        };
+
+    auto clear_prev_device_output = [&]() {
+        has_prev_device_output = false;
+        prev_device_output = Tensor();
+        prev_device_output_node = nullptr;
+        prev_device_output_id = ggml_fmsh_chain_tensor_id();
+    };
+
+    auto set_prev_device_output = [&](ggml_tensor * owner, const Tensor & tensor) {
+        std::string clone_err;
+        Tensor stable_tensor = ggml_fmsh_clone_chain_tensor(ctx, tensor, &clone_err);
+        if (tensor.defined() && !stable_tensor.defined()) {
+            ggml_fmsh_log_locked(ctx, 2, clone_err);
+        }
+        has_prev_device_output = stable_tensor.defined();
+        prev_device_output = has_prev_device_output ? stable_tensor : Tensor();
+        prev_device_output_node = owner;
+        prev_device_output_id = owner != nullptr ? ggml_fmsh_make_chain_tensor_id(owner)
+                                                 : ggml_fmsh_chain_tensor_id();
+    };
+
+    if (pending_prev_device_output_valid) {
+        ggml_tensor * carried_owner = find_cgraph_tensor_by_id(pending_prev_device_output_id);
+        if (pending_prev_device_output.defined()) {
+            has_prev_device_output = true;
+            prev_device_output = pending_prev_device_output;
+            prev_device_output_node = carried_owner;
+            prev_device_output_id = pending_prev_device_output_id;
+        }
+        if (carried_owner != nullptr) {
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "graph_compute_prev_carry owner_op=" +
+                    std::string(ggml_op_name(carried_owner->op)) +
+                    " owner_ptr=" +
+                    std::to_string(reinterpret_cast<uintptr_t>(carried_owner)) +
+                    " owner_data=" +
+                    std::to_string(reinterpret_cast<uintptr_t>(carried_owner->data)));
+        } else if (pending_prev_device_output.defined()) {
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "graph_compute_prev_carry_unresolved owner_op=" +
+                    std::string(ggml_op_name(pending_prev_device_output_id.op)) +
+                    " owner_data=" + std::to_string(pending_prev_device_output_id.data) +
+                    " shape=[" + std::to_string(pending_prev_device_output_id.ne[0]) + "," +
+                    std::to_string(pending_prev_device_output_id.ne[1]) + "," +
+                    std::to_string(pending_prev_device_output_id.ne[2]) + "," +
+                    std::to_string(pending_prev_device_output_id.ne[3]) + "]");
+        }
+    }
+
+    for (const auto & pending : ctx->pending_chainable_device_tensors) {
+        if (!pending.id.valid || !pending.tensor.defined()) {
+            continue;
+        }
+        ggml_tensor * carried_owner = find_cgraph_tensor_by_id(pending.id);
+        if (carried_owner == nullptr) {
+            unresolved_chainable_device_tensors.push_back(pending);
+            continue;
+        }
+        device_tensor_map[carried_owner] = pending.tensor;
+        chainable_device_tensors.insert(carried_owner);
+        chainable_device_remaining_uses[carried_owner] = pending.remaining_uses;
+    }
+    ctx->pending_chainable_device_tensors.clear();
+
+    auto same_chain_tensor =
+        [&](const ggml_tensor * a, const ggml_tensor * b) -> bool {
+            a = resolve_chain_source(a);
+            b = resolve_chain_source(b);
+            if (a == b) {
+                return true;
+            }
+            if (a == nullptr || b == nullptr) {
+                return false;
+            }
+            if (a->op != b->op ||
+                a->data != b->data ||
+                !ggml_are_same_shape(a, b) ||
+                !ggml_are_same_stride(a, b)) {
+                return false;
+            }
+            for (int s = 0; s < GGML_MAX_SRC; ++s) {
+                const ggml_tensor * as = resolve_chain_source(a->src[s]);
+                const ggml_tensor * bs = resolve_chain_source(b->src[s]);
+                if (as != bs) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+    auto find_device_chain_tensor =
+        [&](const ggml_tensor * t, const Tensor ** out_tensor, const ggml_tensor ** out_owner) -> bool {
+            const ggml_tensor * cur = t;
+            while (cur != nullptr) {
+                auto it_dev = device_tensor_map.find(cur);
+                if (it_dev != device_tensor_map.end() &&
+                    chainable_device_tensors.count(cur) != 0) {
+                    if (out_tensor) {
+                        *out_tensor = &it_dev->second;
+                    }
+                    if (out_owner) {
+                        *out_owner = cur;
+                    }
+                    return true;
+                }
+                const ggml_tensor * next = next_chain_alias(cur);
+                if (next == nullptr || next == cur) {
+                    break;
+                }
+                cur = next;
+            }
+            const ggml_tensor * resolved = resolve_chain_source(t);
+            if (resolved != nullptr) {
+                for (const ggml_tensor * held : chainable_device_tensors) {
+                    auto it_dev = device_tensor_map.find(held);
+                    if (it_dev == device_tensor_map.end()) {
+                        continue;
+                    }
+                    if (!same_chain_tensor(resolved, held)) {
+                        continue;
+                    }
+                    if (out_tensor) {
+                        *out_tensor = &it_dev->second;
+                    }
+                    if (out_owner) {
+                        *out_owner = held;
+                    }
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "chain_lookup_equiv_match want_op=" +
+                            std::string(ggml_op_name(resolved->op)) +
+                            " held_op=" + std::string(ggml_op_name(held->op)) +
+                            " want_ptr=" + std::to_string(reinterpret_cast<uintptr_t>(resolved)) +
+                            " held_ptr=" + std::to_string(reinterpret_cast<uintptr_t>(held)));
+                    return true;
+                }
+                for (const auto & pending : unresolved_chainable_device_tensors) {
+                    if (!pending.tensor.defined() || !pending.id.valid) {
+                        continue;
+                    }
+                    if (!tensor_matches_chain_id(resolved, pending.id)) {
+                        continue;
+                    }
+                    if (out_tensor) {
+                        *out_tensor = &pending.tensor;
+                    }
+                    if (out_owner) {
+                        *out_owner = resolved;
+                    }
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "chain_lookup_pending_id_match want_op=" +
+                            std::string(ggml_op_name(resolved->op)) +
+                            " want_ptr=" + std::to_string(reinterpret_cast<uintptr_t>(resolved)) +
+                            " want_data=" + std::to_string(reinterpret_cast<uintptr_t>(resolved->data)));
+                    return true;
+                }
+            }
+            return false;
+        };
+
+    auto find_prev_device_chain_tensor =
+        [&](const ggml_tensor * t, const Tensor ** out_tensor, const ggml_tensor ** out_owner) -> bool {
+            if (!has_prev_device_output) {
+                return false;
+            }
+            const ggml_tensor * resolved = resolve_chain_source(t);
+            if (resolved == nullptr) {
+                return false;
+            }
+            const bool match =
+                (prev_device_output_node != nullptr && same_chain_tensor(resolved, prev_device_output_node)) ||
+                (prev_device_output_id.valid && tensor_matches_chain_id(resolved, prev_device_output_id));
+            if (!match) {
+                return false;
+            }
+            if (out_tensor) {
+                *out_tensor = &prev_device_output;
+            }
+            if (out_owner) {
+                *out_owner = prev_device_output_node != nullptr ? prev_device_output_node : resolved;
+            }
+            return true;
+        };
+
+    auto count_future_device_consumers =
+        [&](int from_idx, const ggml_tensor * producer) -> int {
+            producer = resolve_chain_source(producer);
+            if (producer == nullptr) {
+                return 0;
+            }
+            int count = 0;
+            for (int j = from_idx + 1; j < cgraph->n_nodes; ++j) {
+                ggml_tensor * cand = cgraph->nodes[j];
+                for (int s = 0; s < GGML_MAX_SRC; ++s) {
+                    const ggml_tensor * cand_src = resolve_chain_source(cand->src[s]);
+                    const bool same = same_chain_tensor(cand_src, producer);
+                    const bool can_consume = same && can_consume_from_device(cand, s, cand_src);
+                    if (producer->op == GGML_OP_MUL &&
+                        producer->ne[0] == 1024 &&
+                        ggml_fmsh_node_rows(producer) == 1 &&
+                        cand->op == GGML_OP_MUL_MAT &&
+                        ggml_fmsh_is_quant_weight_mul_mat(cand)) {
+                        ggml_fmsh_log_locked(
+                            ctx, 1,
+                            "future_device_probe from_idx=" + std::to_string(from_idx) +
+                                " cand_idx=" + std::to_string(j) +
+                                " src_idx=" + std::to_string(s) +
+                                " producer_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                                " cand_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(cand)) +
+                                " cand_src_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(cand_src)) +
+                                " same=" + std::to_string(same ? 1 : 0) +
+                                " can_consume=" + std::to_string(can_consume ? 1 : 0));
+                    }
+                    if (can_consume) {
+                        if (producer->op == GGML_OP_MUL &&
+                            cand->op == GGML_OP_MUL_MAT &&
+                            ggml_fmsh_is_quant_weight_mul_mat(cand)) {
+                            ggml_fmsh_log_locked(
+                                ctx, 1,
+                                "future_consumer_equiv_match producer_ptr=" +
+                                    std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                                    " cand_src_ptr=" +
+                                    std::to_string(reinterpret_cast<uintptr_t>(cand_src)) +
+                                    " consumer_ptr=" +
+                                    std::to_string(reinterpret_cast<uintptr_t>(cand)));
+                        }
+                        ++count;
+                    }
+                }
+            }
+            return count;
+        };
+
+    auto find_future_qweight_consumer_src1 =
+        [&](int from_idx, const ggml_tensor * producer, ggml_tensor ** out_node) -> bool {
+            producer = resolve_chain_source(producer);
+            if (producer == nullptr) {
+                return false;
+            }
+            for (int j = from_idx + 1; j < cgraph->n_nodes; ++j) {
+                ggml_tensor * cand = cgraph->nodes[j];
+                if (cand->op != GGML_OP_MUL_MAT || !ggml_fmsh_is_quant_weight_mul_mat(cand)) {
+                    continue;
+                }
+                if (cand->ne[2] != 1 || cand->ne[3] != 1) {
+                    continue;
+                }
+                const bool same = same_chain_tensor(cand->src[1], producer);
+                if (producer->op == GGML_OP_MUL &&
+                    producer->ne[0] == 1024 &&
+                    ggml_fmsh_node_rows(producer) == 1) {
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "future_qweight_probe from_idx=" + std::to_string(from_idx) +
+                            " cand_idx=" + std::to_string(j) +
+                            " producer_ptr=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                            " cand_ptr=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(cand)) +
+                            " cand_src1_ptr=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(cand->src[1])) +
+                            " cand_src1_resolved=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(resolve_chain_source(cand->src[1]))) +
+                            " same=" + std::to_string(same ? 1 : 0));
+                }
+                if (!same) {
+                    continue;
+                }
+                if (out_node != nullptr) {
+                    *out_node = cand;
+                }
+                return true;
+            }
+            return false;
+        };
+
+    auto count_future_consumers_any =
+        [&](int from_idx, const ggml_tensor * producer) -> int {
+            producer = resolve_chain_source(producer);
+            if (producer == nullptr) {
+                return 0;
+            }
+            int count = 0;
+            for (int j = from_idx + 1; j < cgraph->n_nodes; ++j) {
+                ggml_tensor * cand = cgraph->nodes[j];
+                for (int s = 0; s < GGML_MAX_SRC; ++s) {
+                    const ggml_tensor * cand_src = resolve_chain_source(cand->src[s]);
+                    const bool same = same_chain_tensor(cand_src, producer);
+                    if (producer->op == GGML_OP_MUL &&
+                        producer->ne[0] == 1024 &&
+                        ggml_fmsh_node_rows(producer) == 1 &&
+                        cand->op == GGML_OP_MUL_MAT &&
+                        ggml_fmsh_is_quant_weight_mul_mat(cand)) {
+                        ggml_fmsh_log_locked(
+                            ctx, 1,
+                            "future_any_probe from_idx=" + std::to_string(from_idx) +
+                                " cand_idx=" + std::to_string(j) +
+                                " src_idx=" + std::to_string(s) +
+                                " producer_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                                " cand_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(cand)) +
+                                " cand_src_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(cand_src)) +
+                                " same=" + std::to_string(same ? 1 : 0));
+                    }
+                    if (same) {
+                        ++count;
+                    }
+                }
+            }
+            return count;
+        };
+
+    auto log_future_device_consumers =
+        [&](int from_idx, const ggml_tensor * producer, const char * tag) {
+            producer = resolve_chain_source(producer);
+            if (!producer) return;
+            int count = 0;
+            for (int j = from_idx + 1; j < cgraph->n_nodes; ++j) {
+                ggml_tensor * cand = cgraph->nodes[j];
+                for (int s = 0; s < GGML_MAX_SRC; ++s) {
+                    const ggml_tensor * cand_src = resolve_chain_source(cand->src[s]);
+                    if (same_chain_tensor(cand_src, producer)) {
+                        const bool can_consume = can_consume_from_device(cand, s, cand_src);
+                        ggml_fmsh_log_locked(
+                            ctx, 1,
+                            std::string("future_consumer tag=") + tag +
+                                " producer=" + ggml_op_name(producer->op) +
+                                " consumer=" + ggml_op_name(cand->op) +
+                                " src_idx=" + std::to_string(s) +
+                                " can_consume=" + std::to_string(can_consume ? 1 : 0) +
+                                " node_idx=" + std::to_string(j));
+                        if (can_consume) {
+                            ++count;
+                        }
+                    }
+                }
+            }
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                std::string("future_consumer_summary tag=") + tag +
+                    " producer=" + ggml_op_name(producer->op) +
+                    " count=" + std::to_string(count));
+        };
+
+    auto drop_chainable_tensor = [&](const ggml_tensor * t) {
+        t = resolve_chain_source(t);
+        if (!t) return;
+        device_tensor_map.erase(t);
+        chainable_device_tensors.erase(t);
+        chainable_device_remaining_uses.erase(t);
+        const ggml_fmsh_chain_tensor_id id = ggml_fmsh_make_chain_tensor_id(t);
+        unresolved_chainable_device_tensors.erase(
+            std::remove_if(
+                unresolved_chainable_device_tensors.begin(),
+                unresolved_chainable_device_tensors.end(),
+                [&](const ggml_fmsh_pending_chain_tensor_entry & entry) {
+                    return entry.id == id;
+                }),
+            unresolved_chainable_device_tensors.end());
+    };
+
+    auto should_retain_cross_graph_chain =
+        [&](const ggml_tensor * producer) -> bool {
+            producer = resolve_chain_source(producer);
+            if (producer == nullptr) {
+                return false;
+            }
+            // Decode often splits the final per-token MUL activation and its qweight
+            // projections across adjacent graph_compute calls. Keep only that narrow
+            // producer class resident on device; broader retention breaks session-shared
+            // compiled row shapes such as RMS_NORM_SPLIT post outputs.
+            return producer->op == GGML_OP_MUL &&
+                   producer->type == GGML_TYPE_F32 &&
+                   producer->ne[2] == 1 &&
+                   producer->ne[3] == 1 &&
+                   ggml_fmsh_node_rows(producer) == 1;
+        };
+
+    auto retain_chainable_tensor = [&](int from_idx, const ggml_tensor * producer, const Tensor & device_tensor) -> int {
+        producer = resolve_chain_source(producer);
+        if (!producer || !device_tensor.defined()) {
+            return 0;
+        }
+        std::string clone_err;
+        Tensor stable_tensor = ggml_fmsh_clone_chain_tensor(ctx, device_tensor, &clone_err);
+        if (!stable_tensor.defined()) {
+            ggml_fmsh_log_locked(ctx, 2, clone_err);
+            drop_chainable_tensor(producer);
+            return 0;
+        }
+        const int future_uses = count_future_device_consumers(from_idx, producer);
+        if (future_uses > 0) {
+            device_tensor_map[producer] = stable_tensor;
+            chainable_device_tensors.insert(producer);
+            chainable_device_remaining_uses[producer] = future_uses;
+            if (producer->op == GGML_OP_CPY) {
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "chain_retain producer=CPY future_uses=" + std::to_string(future_uses) +
+                        " shape=[" + std::to_string(producer->ne[0]) + "," +
+                        std::to_string(producer->ne[1]) + "," +
+                        std::to_string(producer->ne[2]) + "," +
+                        std::to_string(producer->ne[3]) + "]");
+            }
+        } else if (should_retain_cross_graph_chain(producer)) {
+            device_tensor_map[producer] = stable_tensor;
+            chainable_device_tensors.insert(producer);
+            chainable_device_remaining_uses[producer] = -1;
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "chain_retain_cross_graph producer=" +
+                    std::string(ggml_op_name(producer->op)) +
+                    " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                    " data=" + std::to_string(reinterpret_cast<uintptr_t>(producer->data)) +
+                    " shape=[" + std::to_string(producer->ne[0]) + "," +
+                    std::to_string(producer->ne[1]) + "," +
+                    std::to_string(producer->ne[2]) + "," +
+                    std::to_string(producer->ne[3]) + "]");
+        } else {
+            drop_chainable_tensor(producer);
+        }
+        return future_uses;
+    };
+
+    auto release_chainable_consumer = [&](int from_idx, const ggml_tensor * producer) {
+        producer = resolve_chain_source(producer);
+        if (!producer) return;
+        auto it = chainable_device_remaining_uses.find(producer);
+        const int remaining_local_uses = count_future_device_consumers(from_idx, producer);
+        if (it == chainable_device_remaining_uses.end()) {
+            const ggml_fmsh_chain_tensor_id id = ggml_fmsh_make_chain_tensor_id(producer);
+            auto it_unresolved = std::find_if(
+                unresolved_chainable_device_tensors.begin(),
+                unresolved_chainable_device_tensors.end(),
+                [&](const ggml_fmsh_pending_chain_tensor_entry & entry) {
+                    return entry.id == id;
+                });
+            if (it_unresolved == unresolved_chainable_device_tensors.end()) {
+                drop_chainable_tensor(producer);
+                return;
+            }
+            if (remaining_local_uses > 0) {
+                it_unresolved->remaining_uses = remaining_local_uses;
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "chain_release_keep_unresolved producer=" +
+                        std::string(ggml_op_name(producer->op)) +
+                        " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                        " remaining_local_uses=" + std::to_string(remaining_local_uses));
+                return;
+            }
+            if (should_retain_cross_graph_chain(producer)) {
+                it_unresolved->remaining_uses = -1;
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "chain_release_hold_cross_graph_unresolved producer=" +
+                        std::string(ggml_op_name(producer->op)) +
+                        " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)));
+                return;
+            }
+            unresolved_chainable_device_tensors.erase(it_unresolved);
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "chain_release_drop_unresolved producer=" +
+                    std::string(ggml_op_name(producer->op)) +
+                    " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)));
+            return;
+        }
+        if (remaining_local_uses > 0) {
+            it->second = remaining_local_uses;
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "chain_release_keep producer=" +
+                    std::string(ggml_op_name(producer->op)) +
+                    " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)) +
+                    " remaining_local_uses=" + std::to_string(remaining_local_uses));
+            return;
+        }
+        if (should_retain_cross_graph_chain(producer)) {
+            it->second = -1;
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "chain_release_hold_cross_graph producer=" +
+                    std::string(ggml_op_name(producer->op)) +
+                    " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)));
+            return;
+        }
+        ggml_fmsh_log_locked(
+            ctx, 1,
+            "chain_release_drop producer=" +
+                std::string(ggml_op_name(producer->op)) +
+                " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(producer)));
+        if (it->second <= 0) {
+            drop_chainable_tensor(producer);
+        }
+    };
 
     // Greedy chain extension: starting at from_idx, extend as far as possible into a linear
     // same-cols elementwise chain. Returns true only if chain has >=2 ops.
@@ -4721,8 +5972,6 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 std::to_string(node->ne[1]) + "," +
                 std::to_string(node->ne[2]) + "," +
                 std::to_string(node->ne[3]) + "]");
-            has_prev_device_output = false;
-            prev_device_output_node = nullptr;
             device_tensor_map.erase(node);
             last_dispatched_valid = true;
             last_dispatched_zg = false;
@@ -4744,8 +5993,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                if (has_prev_device_output && same_chain_tensor(prev_device_output_node, node)) {
+                    clear_prev_device_output();
+                }
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -4773,8 +6023,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                if (has_prev_device_output && same_chain_tensor(prev_device_output_node, node)) {
+                    clear_prev_device_output();
+                }
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -4817,9 +6068,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     if (s != node && s->data != node->data) {
                         return true;
                     }
-                    return ggml_fmsh_debug_backup_tensor(s, debug_saved, debug_seen, &dbg_err);
+                    return ggml_fmsh_debug_backup_tensor(ctx, s, debug_saved, debug_seen, &dbg_err);
                 };
-                if (!ggml_fmsh_debug_backup_tensor(node, debug_saved, debug_seen, &dbg_err) ||
+                if (!ggml_fmsh_debug_backup_tensor(ctx, node, debug_saved, debug_seen, &dbg_err) ||
                     !backup_if_alias(node->src[0]) ||
                     !backup_if_alias(node->src[1]) ||
                     !backup_if_alias(node->src[2]) ||
@@ -4832,12 +6083,12 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     return cpu_st;
                 }
                 std::string snap_err;
-                if (!ggml_fmsh_tensor_snapshot_f32(node, cpu_ref_out, &snap_err)) {
+                if (!ggml_fmsh_tensor_snapshot_f32(ctx, node, cpu_ref_out, &snap_err)) {
                     ggml_fmsh_log_locked(ctx, 2, "debug_compare_snapshot_failed op=FLASH_ATTN_EXT reason=" + snap_err);
                 }
                 if (!debug_saved.empty()) {
                     std::string restore_err;
-                    if (!ggml_fmsh_debug_restore_tensors(debug_saved, &restore_err)) {
+                    if (!ggml_fmsh_debug_restore_tensors(ctx, debug_saved, &restore_err)) {
                         ggml_fmsh_log_locked(ctx, 2, "debug_compare_restore_failed op=FLASH_ATTN_EXT reason=" + restore_err);
                         return GGML_STATUS_FAILED;
                     }
@@ -4867,8 +6118,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                if (has_prev_device_output && same_chain_tensor(prev_device_output_node, node)) {
+                    clear_prev_device_output();
+                }
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -4885,8 +6137,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             }
 #endif
             ctx->flash_attn_offloaded++;
-            has_prev_device_output = false;
-            prev_device_output_node = nullptr;
+            clear_prev_device_output();
             device_tensor_map.erase(node);
             last_dispatched_valid = true;
             last_dispatched_zg = true;
@@ -4908,6 +6159,45 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     ggml_fmsh_get_or_create_qweight_session(ctx, node, &qw_created, &qw_err);
                 bool qw_ok = (qw_entry != nullptr);
                 if (qw_ok) {
+                    const Tensor * qw_chained_input_ptr = nullptr;
+                    const ggml_tensor * qw_chained_input_src = nullptr;
+                    const ggml_tensor * qw_src1_resolved = resolve_chain_source(node->src[1]);
+                    if (!ctx->disable_device_input_chain &&
+                        find_device_chain_tensor(node->src[1], &qw_chained_input_ptr, &qw_chained_input_src) &&
+                        node->ne[2] == 1 && node->ne[3] == 1) {
+                    } else if (!ctx->disable_device_input_chain &&
+                               find_prev_device_chain_tensor(node->src[1], &qw_chained_input_ptr, &qw_chained_input_src) &&
+                               node->ne[2] == 1 && node->ne[3] == 1) {
+                    }
+                    if (node->ne[2] == 1 && node->ne[3] == 1) {
+                        ggml_fmsh_log_locked(
+                            ctx, 1,
+                            "qweight_chain_probe src1_op=" +
+                                std::string(node->src[1] ? ggml_op_name(node->src[1]->op) : "null") +
+                                " resolved_op=" +
+                                std::string(qw_src1_resolved ? ggml_op_name(qw_src1_resolved->op) : "null") +
+                                " view_src_op=" +
+                                std::string((node->src[1] && node->src[1]->view_src) ? ggml_op_name(node->src[1]->view_src->op) : "null") +
+                                " src1_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(node->src[1])) +
+                                " resolved_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(qw_src1_resolved)) +
+                                " src1_data=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(node->src[1] ? node->src[1]->data : nullptr)) +
+                                " prev_op=" +
+                                std::string(
+                                    prev_device_output_node ? ggml_op_name(prev_device_output_node->op)
+                                                            : ggml_op_name(prev_device_output_id.op)) +
+                                " prev_ptr=" +
+                                std::to_string(reinterpret_cast<uintptr_t>(prev_device_output_node)) +
+                                " prev_data=" +
+                                std::to_string(
+                                    prev_device_output_node != nullptr
+                                        ? reinterpret_cast<uintptr_t>(prev_device_output_node->data)
+                                        : prev_device_output_id.data) +
+                                " has_prev=" + std::to_string(has_prev_device_output ? 1 : 0) +
+                                " chain_hit=" + std::to_string(qw_chained_input_ptr != nullptr ? 1 : 0));
+                    }
                     ggml_fmsh_log_locked(
                         ctx, 1,
                         std::string(qw_created ? "session_create" : "session_hit") +
@@ -4925,26 +6215,50 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
                     std::vector<float> qw_cpu_ref;
                     if (ctx->debug_compare == 1) {
-                        std::vector<ggml_fmsh_debug_saved_tensor> dbg_saved;
-                        std::unordered_set<ggml_tensor *> dbg_seen;
-                        std::string dbg_err;
-                        if (ggml_fmsh_debug_backup_tensor(node, dbg_saved, dbg_seen, &dbg_err)) {
-                            const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
-                            if (cpu_st == GGML_STATUS_SUCCESS) {
-                                std::string snap_err;
-                                ggml_fmsh_tensor_snapshot_f32(node, qw_cpu_ref, &snap_err);
+                        const bool has_device_src0 =
+                            node->src[0] != nullptr && device_tensor_map.find(node->src[0]) != device_tensor_map.end();
+                        const bool has_device_src1 =
+                            node->src[1] != nullptr && device_tensor_map.find(node->src[1]) != device_tensor_map.end();
+                        const bool has_device_src2 =
+                            node->src[2] != nullptr && device_tensor_map.find(node->src[2]) != device_tensor_map.end();
+                        if (!ctx->disable_device_input_chain &&
+                            (qw_chained_input_ptr != nullptr || has_device_src0 || has_device_src1 || has_device_src2)) {
+                            ggml_fmsh_log_locked(
+                                ctx, 1,
+                                "debug_compare_skip op=" + std::string(ggml_op_name(node->op)) +
+                                " reason=device_input_chain");
+                        } else {
+                            std::vector<ggml_fmsh_debug_saved_tensor> dbg_saved;
+                            std::unordered_set<ggml_tensor *> dbg_seen;
+                            std::string dbg_err;
+                            if (ggml_fmsh_debug_backup_tensor(ctx, node, dbg_saved, dbg_seen, &dbg_err)) {
+                                const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
+                                if (cpu_st == GGML_STATUS_SUCCESS) {
+                                    std::string snap_err;
+                                    ggml_fmsh_tensor_snapshot_f32(ctx, node, qw_cpu_ref, &snap_err);
+                                }
+                                std::string restore_err;
+                                ggml_fmsh_debug_restore_tensors(ctx, dbg_saved, &restore_err);
                             }
-                            std::string restore_err;
-                            ggml_fmsh_debug_restore_tensors(dbg_saved, &restore_err);
                         }
                     }
 #endif
-                    // Materialize src1 (activation) from device to host if it's ZG DDR-resident.
-                    ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
-                    // Use the F32 dequant path: dequantize src0 and route through execute_mul_mat.
-                    qw_ok = ggml_fmsh_execute_qweight_via_f32(ctx, node, &qw_err);
+                    qw_ok = ggml_fmsh_execute_qweight_mul_mat(
+                        ctx, node, qw_entry, qw_chained_input_ptr, &qw_err);
                     if (qw_ok) {
                         ctx->mul_mat_offloaded++;
+                        if (qw_chained_input_ptr != nullptr) {
+                            ctx->mul_mat_device_input_chain++;
+                            ggml_fmsh_log_locked(
+                                ctx, 0,
+                                "dispatch op=MUL_MAT kind=qweight chained_input=1");
+                        }
+                        if (qw_chained_input_src != nullptr) {
+                            release_chainable_consumer(i, qw_chained_input_src);
+                            if (has_prev_device_output && prev_device_output_node == qw_chained_input_src) {
+                                clear_prev_device_output();
+                            }
+                        }
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
                         if (!qw_cpu_ref.empty()) {
                             ggml_fmsh_debug_compare_and_log(ctx, node, qw_cpu_ref, i);
@@ -4962,8 +6276,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         return st;
                     }
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                clear_prev_device_output();
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = qw_ok;
@@ -4985,8 +6298,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                clear_prev_device_output();
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -5016,28 +6328,29 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             const auto t0 = std::chrono::high_resolution_clock::now();
             const Tensor * chained_input_ptr = nullptr;
             const ggml_tensor * chained_input_src = nullptr;
-            auto it_dev_in = device_tensor_map.find(node->src[1]);
-            if (it_dev_in != device_tensor_map.end() && node->ne[2] == 1 && node->ne[3] == 1) {
-                chained_input_ptr = &it_dev_in->second;
-                chained_input_src = node->src[1];
-            } else if (has_prev_device_output && prev_device_output_node == node->src[1] &&
+            if (!ctx->disable_device_input_chain &&
+                find_device_chain_tensor(node->src[1], &chained_input_ptr, &chained_input_src) &&
+                node->ne[2] == 1 && node->ne[3] == 1) {
+            } else if (!ctx->disable_device_input_chain &&
+                       find_prev_device_chain_tensor(node->src[1], &chained_input_ptr, &chained_input_src) &&
                        node->ne[2] == 1 && node->ne[3] == 1) {
-                chained_input_ptr = &prev_device_output;
-                chained_input_src = node->src[1];
             }
-            ggml_tensor * next_consumer = nullptr;
-            int next_src_idx = -1;
-            const bool keep_device_output_only =
-                node->ne[2] == 1 && node->ne[3] == 1 &&
-                find_single_future_consumer(i, node, &next_consumer, &next_src_idx) &&
-                can_consume_from_device(next_consumer, next_src_idx);
+            const int future_device_consumers =
+                (!ctx->disable_device_input_chain && node->ne[2] == 1 && node->ne[3] == 1)
+                    ? count_future_device_consumers(i, node)
+                    : 0;
+            const int future_consumers_any =
+                (!ctx->disable_device_input_chain && node->ne[2] == 1 && node->ne[3] == 1)
+                    ? count_future_consumers_any(i, node)
+                    : 0;
+            const bool keep_device_output_only = future_device_consumers > 0;
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
             if (ctx->debug_compare == 1) {
                 const bool has_device_src0 = node->src[0] != nullptr && device_tensor_map.find(node->src[0]) != device_tensor_map.end();
                 const bool has_device_src1 = node->src[1] != nullptr && device_tensor_map.find(node->src[1]) != device_tensor_map.end();
                 const bool has_device_src2 = node->src[2] != nullptr && device_tensor_map.find(node->src[2]) != device_tensor_map.end();
-                if (has_device_src0 || has_device_src1 || has_device_src2) {
+                if (!ctx->disable_device_input_chain && (has_device_src0 || has_device_src1 || has_device_src2)) {
                     ggml_fmsh_log_locked(
                         ctx, 1,
                         "debug_compare_skip op=" + std::string(ggml_op_name(node->op)) +
@@ -5053,9 +6366,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     if (s != node && s->data != node->data) {
                         return true;
                     }
-                    return ggml_fmsh_debug_backup_tensor(s, debug_saved, debug_seen, &dbg_err);
+                    return ggml_fmsh_debug_backup_tensor(ctx, s, debug_saved, debug_seen, &dbg_err);
                 };
-                if (!ggml_fmsh_debug_backup_tensor(node, debug_saved, debug_seen, &dbg_err) ||
+                if (!ggml_fmsh_debug_backup_tensor(ctx, node, debug_saved, debug_seen, &dbg_err) ||
                     !backup_if_alias(node->src[0]) ||
                     !backup_if_alias(node->src[1]) ||
                     !backup_if_alias(node->src[2])) {
@@ -5066,12 +6379,12 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     return cpu_st;
                 }
                 std::string snap_err;
-                if (!ggml_fmsh_tensor_snapshot_f32(node, cpu_ref_out, &snap_err)) {
+                if (!ggml_fmsh_tensor_snapshot_f32(ctx, node, cpu_ref_out, &snap_err)) {
                     ggml_fmsh_log_locked(ctx, 2, "debug_compare_snapshot_failed op=MUL_MAT reason=" + snap_err);
                 }
                 if (!debug_saved.empty()) {
                     std::string restore_err;
-                    if (!ggml_fmsh_debug_restore_tensors(debug_saved, &restore_err)) {
+                    if (!ggml_fmsh_debug_restore_tensors(ctx, debug_saved, &restore_err)) {
                         ggml_fmsh_log_locked(ctx, 2, "debug_compare_restore_failed op=MUL_MAT reason=" + restore_err);
                         return GGML_STATUS_FAILED;
                     }
@@ -5079,11 +6392,21 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             }
             }
             const bool keep_device_output_effective = keep_device_output_only;
+            const bool write_host_output_effective =
+                !keep_device_output_only ||
+                !cpu_ref_out.empty() ||
+                future_consumers_any > future_device_consumers;
 #else
             const bool keep_device_output_effective = keep_device_output_only;
+            const bool write_host_output_effective =
+                !keep_device_output_only ||
+                future_consumers_any > future_device_consumers;
 #endif
             Tensor chained_output;
-            if (!ggml_fmsh_execute_mul_mat(ctx, node, entry, chained_input_ptr, keep_device_output_effective, &chained_output, &err)) {
+            if (!ggml_fmsh_execute_mul_mat(
+                    ctx, node, entry, chained_input_ptr,
+                    keep_device_output_effective, write_host_output_effective,
+                    &chained_output, &err)) {
                 ggml_fmsh_log_locked(ctx, 3, "fatal op=MUL_MAT reason=" + err);
                 return GGML_STATUS_FAILED;
             }
@@ -5094,23 +6417,24 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     "dispatch op=MUL_MAT chained_input=1 input_loc=" +
                     ggml_fmsh_tensor_loc_str(ctx, *chained_input_ptr));
                 if (chained_input_src != nullptr) {
-                    device_tensor_map.erase(chained_input_src);
+                    release_chainable_consumer(i, chained_input_src);
                 }
             }
-            if (node->ne[2] == 1 && node->ne[3] == 1) {
-                prev_device_output = chained_output;
-                prev_device_output_node = node;
-                has_prev_device_output = true;
+            if (!ctx->disable_device_input_chain && node->ne[2] == 1 && node->ne[3] == 1) {
+                const ggml_tensor * mm_chain_owner = resolve_chain_source(node);
+                set_prev_device_output(const_cast<ggml_tensor *>(mm_chain_owner), chained_output);
                 if (keep_device_output_effective) {
-                    device_tensor_map[node] = chained_output;
-                    ggml_fmsh_log_locked(ctx, 0, "dispatch op=MUL_MAT keep_device_output=1");
+                    const int retained_uses = retain_chainable_tensor(i, node, chained_output);
+                    ggml_fmsh_log_locked(
+                        ctx, 0,
+                        "dispatch op=MUL_MAT keep_device_output=1 future_device_consumers=" +
+                            std::to_string(retained_uses));
                 } else {
-                    device_tensor_map.erase(node);
+                    drop_chainable_tensor(node);
                 }
             } else {
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
-                device_tensor_map.erase(node);
+                clear_prev_device_output();
+                drop_chainable_tensor(node);
             }
             const auto t1 = std::chrono::high_resolution_clock::now();
             const double total_ms = std::chrono::duration<double, std::milli>(t1 - t0).count();
@@ -5137,8 +6461,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
                 const enum ggml_status st_cpu = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                 if (st_cpu != GGML_STATUS_SUCCESS) { return st_cpu; }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                clear_prev_device_output();
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -5169,8 +6492,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         std::chrono::duration<double, std::milli>(
                             std::chrono::high_resolution_clock::now() - t0_r).count());
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                clear_prev_device_output();
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = true;
@@ -5182,8 +6504,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
             const enum ggml_status st_r = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
             if (st_r != GGML_STATUS_SUCCESS) { return st_r; }
-            has_prev_device_output = false;
-            prev_device_output_node = nullptr;
+            clear_prev_device_output();
             device_tensor_map.erase(node);
             last_dispatched_valid = true;
             last_dispatched_zg = false;
@@ -5204,8 +6525,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                if (has_prev_device_output && same_chain_tensor(prev_device_output_node, node)) {
+                    clear_prev_device_output();
+                }
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -5234,24 +6556,24 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     // Check if upstream produced a device-resident tensor we can use as X.
                     const Tensor * split_input_override = nullptr;
                     const ggml_tensor * split_input_src = nullptr;
-                    if (node->src[0] != nullptr) {
-                        auto it_dev = device_tensor_map.find(node->src[0]);
-                        if (it_dev != device_tensor_map.end()) {
-                            split_input_override = &it_dev->second;
-                            split_input_src = node->src[0];
-                        } else if (has_prev_device_output && prev_device_output_node == node->src[0]) {
-                            split_input_override = &prev_device_output;
-                            split_input_src = node->src[0];
+                    if (!ctx->disable_device_input_chain && node->src[0] != nullptr) {
+                        if (find_device_chain_tensor(node->src[0], &split_input_override, &split_input_src)) {
+                        } else if (find_prev_device_chain_tensor(node->src[0], &split_input_override, &split_input_src)) {
                         }
                     }
 
                     // Determine if next consumer (MUL) can consume device output.
-                    ggml_tensor * split_next_consumer = nullptr;
-                    int split_next_src_idx = -1;
+                    const int split_future_device_consumers =
+                        !ctx->disable_device_input_chain ? count_future_device_consumers(i, node) : 0;
+                    const int split_future_consumers_any =
+                        !ctx->disable_device_input_chain ? count_future_consumers_any(i, node) : 0;
                     const bool split_keep_device =
+                        !ctx->disable_device_input_chain &&
                         split_entry->post_output_chunk.defined() &&
-                        find_single_future_consumer(i, node, &split_next_consumer, &split_next_src_idx) &&
-                        can_consume_from_device(split_next_consumer, split_next_src_idx);
+                        split_future_device_consumers > 0;
+                    const bool split_write_host_output =
+                        !split_keep_device ||
+                        split_future_consumers_any > split_future_device_consumers;
 
                     // Evict stale tensors sharing the post output chunk.
                     if (split_entry->post_output_chunk.defined()) {
@@ -5262,9 +6584,11 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                                     const size_t hb = ggml_nbytes(held);
                                     if (hb > 0) ggml_fmsh_evict_to_host(ctx, held, it_map->second);
                                 }
-                                if (has_prev_device_output && prev_device_output_node == held) {
-                                    has_prev_device_output = false; prev_device_output_node = nullptr;
-                                }
+                                    if (has_prev_device_output && prev_device_output_node == held) {
+                                        clear_prev_device_output();
+                                    }
+                                chainable_device_tensors.erase(held);
+                                chainable_device_remaining_uses.erase(held);
                                 it_map = device_tensor_map.erase(it_map);
                             } else { ++it_map; }
                         }
@@ -5277,31 +6601,42 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     }
                     Tensor split_chained_output;
                     if (!ggml_fmsh_execute_rmsnorm_split(ctx, node, split_entry,
-                            split_input_override, split_keep_device, &split_chained_output, &split_err)) {
+                            split_input_override, split_keep_device, split_write_host_output,
+                            &split_chained_output, &split_err)) {
                         ggml_fmsh_log_locked(ctx, 2, "fallback op=RMS_NORM reason=" + split_err);
                         if (ctx->strict_mode) { return GGML_STATUS_FAILED; }
                         const enum ggml_status st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
                         if (st != GGML_STATUS_SUCCESS) { return st; }
-                        has_prev_device_output = false;
-                        prev_device_output_node = nullptr;
+                        clear_prev_device_output();
                     } else {
+                        if (split_keep_device) {
+                            log_future_device_consumers(i, node, "rmsnorm_split");
+                        }
                         ggml_fmsh_accumulate_profile(ctx, node, split_entry->session_post,
                             std::chrono::duration<double, std::milli>(
                                 std::chrono::high_resolution_clock::now() - t0_s).count());
                         // Remove consumed input from device map.
                         if (split_input_src) {
-                            device_tensor_map.erase(split_input_src);
+                            release_chainable_consumer(i, split_input_src);
                             if (has_prev_device_output && prev_device_output_node == split_input_src) {
-                                has_prev_device_output = false; prev_device_output_node = nullptr;
+                                clear_prev_device_output();
                             }
                         }
-                        has_prev_device_output = false;
-                        prev_device_output_node = nullptr;
-                        if (split_keep_device && split_chained_output.defined()) {
-                            device_tensor_map[node] = split_chained_output;
-                            ggml_fmsh_log_locked(ctx, 0, "rmsnorm_split keep_device_output=1");
+                        if (split_chained_output.defined()) {
+                            set_prev_device_output(
+                                const_cast<ggml_tensor *>(resolve_chain_source(node)),
+                                split_chained_output);
                         } else {
-                            device_tensor_map.erase(node);
+                            clear_prev_device_output();
+                        }
+                        if (split_keep_device && split_chained_output.defined()) {
+                            const int retained_uses = retain_chainable_tensor(i, node, split_chained_output);
+                            ggml_fmsh_log_locked(
+                                ctx, 0,
+                                "rmsnorm_split keep_device_output=1 future_device_consumers=" +
+                                    std::to_string(retained_uses));
+                        } else {
+                            drop_chainable_tensor(node);
                         }
                     }
                     last_dispatched_valid = true;
@@ -5313,6 +6648,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             }
 
             // ── Greedy fused chain attempt ────────────────────────────────────
+            if (!ctx->disable_device_input_chain)
             {
                 ggml_fmsh_zg330_fused_ew_chain fchain;
                 if (try_extend_ew_chain(i, &fchain)) {
@@ -5328,26 +6664,22 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                         const ggml_tensor * fchain_input_src = nullptr;
                         if (fchain.ops[0] != ggml::fmsh::netmake::ElementwiseZgOp::SOFT_MAX &&
                             fchain.nodes[0]->src[0] != nullptr) {
-                            auto it_dev = device_tensor_map.find(fchain.nodes[0]->src[0]);
-                            if (it_dev != device_tensor_map.end()) {
-                                fchain_input_ptr = &it_dev->second;
-                                fchain_input_src = fchain.nodes[0]->src[0];
-                            } else if (has_prev_device_output &&
-                                       prev_device_output_node == fchain.nodes[0]->src[0]) {
-                                fchain_input_ptr = &prev_device_output;
-                                fchain_input_src = fchain.nodes[0]->src[0];
+                            if (find_device_chain_tensor(
+                                    fchain.nodes[0]->src[0], &fchain_input_ptr, &fchain_input_src)) {
+                            } else if (find_prev_device_chain_tensor(
+                                           fchain.nodes[0]->src[0], &fchain_input_ptr, &fchain_input_src)) {
                             }
                         }
 
                         // Determine whether to keep chain output on device.
                         const int fchain_last_idx = fchain.cgraph_indices.back();
-                        ggml_tensor * fchain_next_consumer = nullptr;
-                        int           fchain_next_src_idx  = -1;
-                        const bool fkeep_device =
-                            find_single_future_consumer(
-                                fchain_last_idx, fchain.nodes.back(),
-                                &fchain_next_consumer, &fchain_next_src_idx) &&
-                            can_consume_from_device(fchain_next_consumer, fchain_next_src_idx);
+                        const int f_future_device_consumers =
+                            count_future_device_consumers(fchain_last_idx, fchain.nodes.back());
+                        const int f_future_consumers_any =
+                            count_future_consumers_any(fchain_last_idx, fchain.nodes.back());
+                        const bool fkeep_device = f_future_device_consumers > 0;
+                        const bool fwrite_host_output =
+                            !fkeep_device || f_future_consumers_any > f_future_device_consumers;
 
                         // Evict any device tensors that alias fentry->output_chunk.
                         if (fentry->output_chunk.defined()) {
@@ -5359,15 +6691,15 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                                     if (held && held->data) {
                                         const size_t hb = ggml_nbytes(held);
                                         if (hb > 0) {
-                                            it_map->second.read(
-                                                reinterpret_cast<char *>(held->data), 0, hb);
+                                            ggml_fmsh_evict_to_host(ctx, held, it_map->second);
                                         }
                                     }
                                     if (has_prev_device_output &&
                                         prev_device_output_node == held) {
-                                        has_prev_device_output = false;
-                                        prev_device_output_node = nullptr;
+                                        clear_prev_device_output();
                                     }
+                                    chainable_device_tensors.erase(held);
+                                    chainable_device_remaining_uses.erase(held);
                                     it_map = device_tensor_map.erase(it_map);
                                 } else {
                                     ++it_map;
@@ -5380,28 +6712,34 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                             ggml_fmsh_materialize_if_device(ctx, fchain.nodes[0]->src[0], device_tensor_map);
                         }
                         for (size_t fk = 0; fk < fchain.nodes.size(); ++fk) {
-                            ggml_fmsh_materialize_if_device(ctx, fchain.nodes[fk]->src[1], device_tensor_map);
+                            if (!ggml_fmsh_is_cpy_dup_op(fchain.nodes[fk])) {
+                                ggml_fmsh_materialize_if_device(ctx, fchain.nodes[fk]->src[1], device_tensor_map);
+                            }
                         }
                         Tensor fchained_output;
                         if (ggml_fmsh_execute_fused_ew(
                                 ctx, fchain, fentry, fchain_input_ptr,
-                                fkeep_device, &fchained_output, &ferr)) {
+                                fkeep_device, fwrite_host_output, &fchained_output, &ferr)) {
                             // Consume PLDDR input.
                             if (fchain_input_src != nullptr) {
-                                device_tensor_map.erase(fchain_input_src);
+                                release_chainable_consumer(fchain_last_idx, fchain_input_src);
                                 if (has_prev_device_output &&
                                     prev_device_output_node == fchain_input_src) {
-                                    has_prev_device_output = false;
-                                    prev_device_output_node = nullptr;
+                                    clear_prev_device_output();
                                 }
                             }
 
-                            has_prev_device_output = false;
-                            prev_device_output_node = nullptr;
-                            if (fkeep_device && fchained_output.defined()) {
-                                device_tensor_map[fchain.nodes.back()] = fchained_output;
+                            if (fchained_output.defined()) {
+                                set_prev_device_output(
+                                    const_cast<ggml_tensor *>(resolve_chain_source(fchain.nodes.back())),
+                                    fchained_output);
                             } else {
-                                device_tensor_map.erase(fchain.nodes.back());
+                                clear_prev_device_output();
+                            }
+                            if (fkeep_device && fchained_output.defined()) {
+                                retain_chainable_tensor(fchain_last_idx, fchain.nodes.back(), fchained_output);
+                            } else {
+                                drop_chainable_tensor(fchain.nodes.back());
                             }
 
                             const auto t1_f = std::chrono::high_resolution_clock::now();
@@ -5443,8 +6781,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
+                if (has_prev_device_output && same_chain_tensor(prev_device_output_node, node)) {
+                    clear_prev_device_output();
+                }
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -5469,24 +6808,97 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             // RMS_NORM uses two-phase PL+scalar-sqrt execution so it cannot use input_override.
             const Tensor * chained_input_ptr = nullptr;
             const ggml_tensor * ew_chained_input_src = nullptr;
-            if (ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM &&
-                node->src[0] != nullptr) {
-                auto it_dev = device_tensor_map.find(node->src[0]);
-                if (it_dev != device_tensor_map.end()) {
-                    chained_input_ptr = &it_dev->second;
-                    ew_chained_input_src = node->src[0];
-                } else if (has_prev_device_output && prev_device_output_node == node->src[0]) {
-                    chained_input_ptr = &prev_device_output;
-                    ew_chained_input_src = node->src[0];
+            int ew_chained_input_src_idx = -1;
+            if (!ctx->disable_device_input_chain &&
+                ek != ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM) {
+                auto try_pick_chain_input = [&](const ggml_tensor * src, int src_idx) -> bool {
+                    if (src == nullptr || !can_consume_from_device(node, src_idx, resolve_chain_source(src))) {
+                        return false;
+                    }
+                    const Tensor * device_chain_tensor = nullptr;
+                    const ggml_tensor * device_chain_owner = nullptr;
+                    if (find_device_chain_tensor(src, &device_chain_tensor, &device_chain_owner)) {
+                        chained_input_ptr = device_chain_tensor;
+                        ew_chained_input_src = device_chain_owner;
+                        ew_chained_input_src_idx = src_idx;
+                        return true;
+                    }
+                    if (find_prev_device_chain_tensor(src, &device_chain_tensor, &device_chain_owner)) {
+                        chained_input_ptr = device_chain_tensor;
+                        ew_chained_input_src = device_chain_owner;
+                        ew_chained_input_src_idx = src_idx;
+                        return true;
+                    }
+                    return false;
+                };
+                (void) try_pick_chain_input(node->src[0], 0);
+                if (chained_input_ptr == nullptr) {
+                    (void) try_pick_chain_input(node->src[1], 1);
                 }
             }
 
             // Determine whether to keep output on device for the next consumer.
             ggml_tensor * ew_next_consumer = nullptr;
             int ew_next_src_idx = -1;
+            int ew_future_device_consumers = 0;
+            int ew_future_consumers_any = 0;
+            ggml_tensor * ew_qweight_consumer = nullptr;
             const bool keep_device_output_only =
-                find_single_future_consumer(i, node, &ew_next_consumer, &ew_next_src_idx) &&
-                can_consume_from_device(ew_next_consumer, ew_next_src_idx);
+                !ctx->disable_device_input_chain &&
+                (((ew_future_device_consumers = count_future_device_consumers(i, node)) > 0) ||
+                 find_future_qweight_consumer_src1(i, node, &ew_qweight_consumer));
+            ew_future_consumers_any =
+                !ctx->disable_device_input_chain ? count_future_consumers_any(i, node) : 0;
+            if (ew_qweight_consumer != nullptr && ew_future_device_consumers == 0) {
+                ew_future_device_consumers = 1;
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "future_qweight_consumer_match producer=" +
+                        std::string(ggml_op_name(node->op)) +
+                        " producer_ptr=" +
+                        std::to_string(reinterpret_cast<uintptr_t>(node)) +
+                        " consumer_ptr=" +
+                        std::to_string(reinterpret_cast<uintptr_t>(ew_qweight_consumer)));
+            }
+            if (node->op == GGML_OP_CPY) {
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "cpy_chain_probe future_device=" + std::to_string(ew_future_device_consumers) +
+                        " future_any=" + std::to_string(ew_future_consumers_any) +
+                        " src0_op=" + std::string(node->src[0] ? ggml_op_name(node->src[0]->op) : "null") +
+                        " src1_op=" + std::string(node->src[1] ? ggml_op_name(node->src[1]->op) : "null") +
+                        " resolved_owner_op=" +
+                        std::string(resolve_chain_source(node) ? ggml_op_name(resolve_chain_source(node)->op) : "null"));
+            }
+            if (node->op == GGML_OP_MUL && node->ne[0] == 1024 && node->ne[1] == 1 &&
+                node->ne[2] == 1 && node->ne[3] == 1) {
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "mul_chain_probe shape=1x1024 node_ptr=" +
+                        std::to_string(reinterpret_cast<uintptr_t>(node)) +
+                        " node_data=" +
+                        std::to_string(reinterpret_cast<uintptr_t>(node->data)) +
+                        " future_device=" + std::to_string(ew_future_device_consumers) +
+                        " future_any=" + std::to_string(ew_future_consumers_any));
+                for (int probe_j = i + 1; probe_j < std::min(i + 8, cgraph->n_nodes); ++probe_j) {
+                    ggml_tensor * probe = cgraph->nodes[probe_j];
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "mul_chain_probe_next idx=" + std::to_string(probe_j) +
+                            " op=" + std::string(ggml_op_name(probe->op)) +
+                            " ptr=" + std::to_string(reinterpret_cast<uintptr_t>(probe)) +
+                            " src0_ptr=" + std::to_string(reinterpret_cast<uintptr_t>(probe->src[0])) +
+                            " src1_ptr=" + std::to_string(reinterpret_cast<uintptr_t>(probe->src[1])) +
+                            " src0_resolved=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(resolve_chain_source(probe->src[0]))) +
+                            " src1_resolved=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(resolve_chain_source(probe->src[1]))));
+                }
+            }
+            if (keep_device_output_only) {
+                log_future_device_consumers(i, node, "elementwise");
+                (void) find_single_future_consumer(i, node, &ew_next_consumer, &ew_next_src_idx);
+            }
 
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             std::vector<float> cpu_ref_out;
@@ -5494,7 +6906,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 const bool has_device_src0 = node->src[0] != nullptr && device_tensor_map.find(node->src[0]) != device_tensor_map.end();
                 const bool has_device_src1 = node->src[1] != nullptr && device_tensor_map.find(node->src[1]) != device_tensor_map.end();
                 const bool has_device_src2 = node->src[2] != nullptr && device_tensor_map.find(node->src[2]) != device_tensor_map.end();
-                if (has_device_src0 || has_device_src1 || has_device_src2) {
+                if (!ctx->disable_device_input_chain && (has_device_src0 || has_device_src1 || has_device_src2)) {
                     ggml_fmsh_log_locked(
                         ctx, 1,
                         "debug_compare_skip op=" + std::string(ggml_op_name(node->op)) +
@@ -5510,9 +6922,9 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     if (s != node && s->data != node->data) {
                         return true;
                     }
-                    return ggml_fmsh_debug_backup_tensor(s, debug_saved, debug_seen, &dbg_err);
+                    return ggml_fmsh_debug_backup_tensor(ctx, s, debug_saved, debug_seen, &dbg_err);
                 };
-                if (!ggml_fmsh_debug_backup_tensor(node, debug_saved, debug_seen, &dbg_err) ||
+                if (!ggml_fmsh_debug_backup_tensor(ctx, node, debug_saved, debug_seen, &dbg_err) ||
                     !backup_if_alias(node->src[0]) ||
                     !backup_if_alias(node->src[1]) ||
                     !backup_if_alias(node->src[2])) {
@@ -5523,21 +6935,30 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                     return cpu_st;
                 }
                 std::string snap_err;
-                if (!ggml_fmsh_tensor_snapshot_f32(node, cpu_ref_out, &snap_err)) {
+                if (!ggml_fmsh_tensor_snapshot_f32(ctx, node, cpu_ref_out, &snap_err)) {
                     ggml_fmsh_log_locked(ctx, 2, "debug_compare_snapshot_failed op=" + std::string(ggml_op_name(node->op)) + " reason=" + snap_err);
                 }
                 if (!debug_saved.empty()) {
                     std::string restore_err;
-                    if (!ggml_fmsh_debug_restore_tensors(debug_saved, &restore_err)) {
+                    if (!ggml_fmsh_debug_restore_tensors(ctx, debug_saved, &restore_err)) {
                         ggml_fmsh_log_locked(ctx, 2, "debug_compare_restore_failed op=" + std::string(ggml_op_name(node->op)) + " reason=" + restore_err);
                         return GGML_STATUS_FAILED;
                     }
                 }
                 }
             }
-            const bool keep_device_output_effective = keep_device_output_only;
+            const bool keep_device_output_effective =
+                keep_device_output_only || should_retain_cross_graph_chain(node);
+            const bool write_host_output_effective =
+                !keep_device_output_only ||
+                !cpu_ref_out.empty() ||
+                ew_future_consumers_any > ew_future_device_consumers;
 #else
-            const bool keep_device_output_effective = keep_device_output_only;
+            const bool keep_device_output_effective =
+                keep_device_output_only || should_retain_cross_graph_chain(node);
+            const bool write_host_output_effective =
+                !keep_device_output_only ||
+                ew_future_consumers_any > ew_future_device_consumers;
 #endif
             if (entry->output_chunk.defined()) {
                 for (auto it_map = device_tensor_map.begin(); it_map != device_tensor_map.end();) {
@@ -5553,9 +6974,10 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                             ctx, 1,
                             "elementwise_output_chunk_conflict_materialize op=" + std::string(ggml_op_name(node->op)));
                         if (has_prev_device_output && prev_device_output_node == held) {
-                            has_prev_device_output = false;
-                            prev_device_output_node = nullptr;
+                            clear_prev_device_output();
                         }
+                        chainable_device_tensors.erase(held);
+                        chainable_device_remaining_uses.erase(held);
                         it_map = device_tensor_map.erase(it_map);
                     } else {
                         ++it_map;
@@ -5563,13 +6985,19 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 }
             }
             // Ensure src tensors are host-accessible before elementwise execute.
-            if (chained_input_ptr == nullptr) {
+            if (chained_input_ptr == nullptr || ew_chained_input_src_idx != 0) {
                 ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
             }
-            ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+            if (!ggml_fmsh_is_cpy_dup_op(node) &&
+                (chained_input_ptr == nullptr || ew_chained_input_src_idx != 1)) {
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+            }
             ggml_fmsh_materialize_if_device(ctx, node->src[2], device_tensor_map);
             Tensor chained_output;
-            if (!ggml_fmsh_execute_elementwise(ctx, node, entry, chained_input_ptr, keep_device_output_effective, &chained_output, &err)) {
+            if (!ggml_fmsh_execute_elementwise(
+                    ctx, node, entry, chained_input_ptr, ew_chained_input_src_idx,
+                    keep_device_output_effective, write_host_output_effective,
+                    &chained_output, &err)) {
                 ggml_fmsh_log_locked(ctx, 2, "fallback op=" + std::string(ggml_op_name(node->op)) + " reason=" + err);
                 if (err.rfind("fatal:", 0) == 0) {
                     return GGML_STATUS_FAILED;
@@ -5584,8 +7012,6 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 if (st != GGML_STATUS_SUCCESS) {
                     return st;
                 }
-                has_prev_device_output = false;
-                prev_device_output_node = nullptr;
                 device_tensor_map.erase(node);
                 last_dispatched_valid = true;
                 last_dispatched_zg = false;
@@ -5602,46 +7028,38 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
 
             // Remove consumed input from device_tensor_map.
             if (ew_chained_input_src != nullptr) {
-                device_tensor_map.erase(ew_chained_input_src);
+                release_chainable_consumer(i, ew_chained_input_src);
                 if (has_prev_device_output && prev_device_output_node == ew_chained_input_src) {
-                    has_prev_device_output = false;
-                    prev_device_output_node = nullptr;
+                    clear_prev_device_output();
                 }
             }
 
-            has_prev_device_output = false;
-            prev_device_output_node = nullptr;
-            if (keep_device_output_effective && chained_output.defined()) {
-                Tensor map_output = chained_output;
-                if (ew_next_consumer != nullptr && ew_next_src_idx == 0 &&
-                    ggml_fmsh_should_run_elementwise_zg(ctx, ew_next_consumer) &&
-                    map_output.chunk().defined()) {
-                    ggml::fmsh::netmake::ElementwiseZgOp next_kind;
-                    int64_t next_rows = 0;
-                    int64_t next_cols = 0;
-                    if (ggml_fmsh_validate_elementwise(ew_next_consumer, &next_kind, &next_rows, &next_cols) &&
-                        next_cols == entry->cols) {
-                        const int64_t next_compile_rows = ggml_fmsh_elementwise_compile_rows(next_kind, next_rows);
-                        if (next_compile_rows > 0 && next_compile_rows <= entry->compiled_rows &&
-                            next_compile_rows != entry->compiled_rows) {
-                            TensorType map_type = map_output.dtype().clone();
-                            map_type.setShape(icraft::xir::Array<int64_t>{next_compile_rows, next_cols});
-                            map_output = Tensor(map_type, map_output.chunk(), map_output.offset());
-                            ggml_fmsh_log_locked(
-                                ctx, 1,
-                                "elementwise_output_retype_for_consumer producer=" +
-                                    std::string(ggml_op_name(node->op)) +
-                                    " consumer=" + std::string(ggml_op_name(ew_next_consumer->op)) +
-                                    " rows=" + std::to_string(entry->compiled_rows) +
-                                    "->" + std::to_string(next_compile_rows) +
-                                    " cols=" + std::to_string(next_cols));
-                        }
-                    }
+            if (chained_output.defined()) {
+                set_prev_device_output(
+                    const_cast<ggml_tensor *>(resolve_chain_source(node)),
+                    chained_output);
+                if (node->op == GGML_OP_MUL && node->ne[0] == 1024 && node->ne[1] == 1 &&
+                    node->ne[2] == 1 && node->ne[3] == 1) {
+                    ggml_fmsh_log_locked(
+                        ctx, 1,
+                        "elementwise_prev_set op=MUL ptr=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(prev_device_output_node)) +
+                            " data=" +
+                            std::to_string(reinterpret_cast<uintptr_t>(
+                                prev_device_output_node != nullptr ? prev_device_output_node->data : nullptr)));
                 }
-                device_tensor_map[node] = map_output;
-                ggml_fmsh_log_locked(ctx, 0, "dispatch op=" + std::string(ggml_op_name(node->op)) + " keep_device_output=1");
             } else {
-                device_tensor_map.erase(node);
+                clear_prev_device_output();
+            }
+            if (keep_device_output_effective && chained_output.defined()) {
+                retain_chainable_tensor(i, node, chained_output);
+                ggml_fmsh_log_locked(
+                    ctx, 0,
+                    "dispatch op=" + std::string(ggml_op_name(node->op)) +
+                    " keep_device_output=1 future_device_consumers=" +
+                    std::to_string(ew_future_device_consumers));
+            } else {
+                drop_chainable_tensor(node);
             }
             last_dispatched_valid = true;
             last_dispatched_zg = true;
@@ -5659,8 +7077,7 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ctx, cgraph, i, device_tensor_map);
             if (st != GGML_STATUS_SUCCESS) return st;
             device_tensor_map.erase(node);
-            has_prev_device_output = false;
-            prev_device_output_node = nullptr;
+            clear_prev_device_output();
             last_dispatched_valid = true;
             last_dispatched_zg = true;
             continue;
@@ -5690,8 +7107,6 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 ggml_fmsh_log_locked(ctx, 2, "host dispatch failed op=" + std::string(ggml_op_name(node->op)));
                 return st;
             }
-            has_prev_device_output = false;
-            prev_device_output_node = nullptr;
             device_tensor_map.erase(node);
             last_dispatched_valid = true;
             last_dispatched_zg = false;
@@ -5714,11 +7129,68 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
         if (st != GGML_STATUS_SUCCESS) {
             return st;
         }
-        has_prev_device_output = false;
-        prev_device_output_node = nullptr;
         device_tensor_map.erase(node);
         last_dispatched_valid = true;
         last_dispatched_zg = false;
+    }
+
+    ctx->pending_prev_device_output_valid = has_prev_device_output;
+    ctx->pending_prev_device_output = has_prev_device_output ? prev_device_output : Tensor();
+    ctx->pending_prev_device_output_id =
+        !has_prev_device_output ? ggml_fmsh_chain_tensor_id()
+        : prev_device_output_node != nullptr ? ggml_fmsh_make_chain_tensor_id(prev_device_output_node)
+                                             : prev_device_output_id;
+    ctx->pending_chainable_device_tensors.clear();
+    auto append_pending_chain_tensor =
+        [&](const ggml_fmsh_pending_chain_tensor_entry & entry) {
+            if (!entry.id.valid || !entry.tensor.defined() || entry.remaining_uses == 0) {
+                return;
+            }
+            auto it_existing = std::find_if(
+                ctx->pending_chainable_device_tensors.begin(),
+                ctx->pending_chainable_device_tensors.end(),
+                [&](const ggml_fmsh_pending_chain_tensor_entry & cur) {
+                    return cur.id == entry.id;
+                });
+            if (it_existing != ctx->pending_chainable_device_tensors.end()) {
+                *it_existing = entry;
+            } else {
+                ctx->pending_chainable_device_tensors.push_back(entry);
+            }
+        };
+    for (const ggml_tensor * held : chainable_device_tensors) {
+        auto it_dev = device_tensor_map.find(held);
+        auto it_uses = chainable_device_remaining_uses.find(held);
+        if (it_dev == device_tensor_map.end() || !it_dev->second.defined()) {
+            continue;
+        }
+        if (it_uses == chainable_device_remaining_uses.end() || it_uses->second == 0) {
+            continue;
+        }
+        append_pending_chain_tensor(
+            ggml_fmsh_pending_chain_tensor_entry{
+                ggml_fmsh_make_chain_tensor_id(held),
+                it_dev->second,
+                it_uses->second,
+            });
+    }
+    for (const auto & pending : unresolved_chainable_device_tensors) {
+        append_pending_chain_tensor(pending);
+    }
+    if (has_prev_device_output) {
+        ggml_fmsh_log_locked(
+            ctx, 1,
+            "graph_compute_prev_store owner_op=" +
+                std::string(
+                    prev_device_output_node ? ggml_op_name(prev_device_output_node->op)
+                                            : ggml_op_name(ctx->pending_prev_device_output_id.op)) +
+                " owner_ptr=" +
+                std::to_string(reinterpret_cast<uintptr_t>(prev_device_output_node)) +
+                " owner_data=" +
+                std::to_string(
+                    prev_device_output_node != nullptr
+                        ? reinterpret_cast<uintptr_t>(prev_device_output_node->data)
+                        : ctx->pending_prev_device_output_id.data));
     }
 
     return GGML_STATUS_SUCCESS;
@@ -5763,12 +7235,13 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
     ctx->strict_mode = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_STRICT", false);
     ctx->enable_log = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_LOG", true);
     ctx->log_level = ggml_fmsh_get_log_level();
-    ctx->offload_cpy_dup = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_CPY_DUP", false);
+    ctx->offload_cpy_dup = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_CPY_DUP", true);
     ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", true);
     ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", true);
     ctx->rms_norm_native_sqrt = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_RMS_NORM_NATIVE_SQRT", false);
     ctx->offload_rope = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_ROPE", true);
     ctx->offload_flash_attn_ext = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_FLASH_ATTN_EXT", true);
+    ctx->disable_device_input_chain = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DISABLE_DEVICE_INPUT_CHAIN", false);
     ctx->flash_softmax_cu = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_SOFTMAX_CU", 8)));
     ctx->flash_precompile_kv_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_PRECOMPILE_KV_DEPTH", 1));
     ctx->flash_kv_bucket_max = std::max<int64_t>(1, static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_FLASH_KV_BUCKET_MAX", 8192)));
@@ -5778,9 +7251,8 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
     ctx->mul_mat_precompile_m_depth = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_PRECOMPILE_M_DEPTH", 0));
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
     ctx->debug_compare = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DEBUG_COMPARE", true);
-    ctx->debug_compare_atol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_ATOL", 1e-4);
-    ctx->debug_compare_rtol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_RTOL", 1e-3);
-    ctx->debug_compare_log_limit = ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_DEBUG_COMPARE_LOG_LIMIT", 200);
+    ctx->debug_compare_atol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_ATOL", 1e-1);
+    ctx->debug_compare_rtol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_RTOL", 1e-1);
 #endif
 
     
@@ -5935,7 +7407,7 @@ static void ggml_backend_fmsh_zg330_device_get_props(ggml_backend_dev_t dev, ggm
     props->caps = {
         /* .async                 = */ false,
         /* .host_buffer           = */ false,
-        /* .buffer_from_host_ptr  = */ true,
+        /* .buffer_from_host_ptr  = */ false,
         /* .events                = */ false,
     };
 }
@@ -5987,6 +7459,44 @@ static void ggml_fmsh_zg330_buffer_get_tensor(
     buf_ctx->chunk.read(static_cast<char *>(data), toff + offset, size);
 }
 
+static bool ggml_fmsh_zg330_buffer_cpy_tensor(
+        ggml_backend_buffer_t buffer, const struct ggml_tensor * src, struct ggml_tensor * dst) {
+    if (!buffer || !src || !dst || !ggml_is_contiguous(src) || !ggml_is_contiguous(dst)) {
+        return false;
+    }
+    const size_t bytes = ggml_nbytes(src);
+    if (bytes != ggml_nbytes(dst)) {
+        return false;
+    }
+
+    std::vector<char> tmp(bytes);
+    if (ggml_fmsh_is_zg_buffer_tensor(src, nullptr, nullptr)) {
+        MemChunk src_chunk;
+        size_t src_off = 0;
+        if (!ggml_fmsh_is_zg_buffer_tensor(src, &src_chunk, &src_off)) {
+            return false;
+        }
+        src_chunk.read(tmp.data(), src_off, bytes);
+    } else if (src->data != nullptr) {
+        std::memcpy(tmp.data(), src->data, bytes);
+    } else {
+        return false;
+    }
+
+    if (ggml_fmsh_is_zg_buffer_tensor(dst, nullptr, nullptr)) {
+        MemChunk dst_chunk;
+        size_t dst_off = 0;
+        if (!ggml_fmsh_is_zg_buffer_tensor(dst, &dst_chunk, &dst_off)) {
+            return false;
+        }
+        dst_chunk.write(dst_off, tmp.data(), bytes);
+        return true;
+    }
+
+    GGML_UNUSED(buffer);
+    return false;
+}
+
 static void ggml_fmsh_zg330_buffer_clear(ggml_backend_buffer_t buffer, uint8_t value) {
     auto * buf_ctx = static_cast<ggml_fmsh_zg330_buffer_ctx *>(buffer->context);
     if (!buf_ctx || !buf_ctx->chunk.defined()) return;
@@ -6003,24 +7513,53 @@ static void ggml_fmsh_zg330_buffer_clear(ggml_backend_buffer_t buffer, uint8_t v
 static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
         ggml_backend_buffer_type_t buft, size_t size) {
     auto * buft_ctx = static_cast<ggml_fmsh_zg330_buft_ctx *>(buft->context);
-    if (!buft_ctx || !buft_ctx->backend_ctx || !buft_ctx->backend_ctx->device_opened) {
-        return ggml_backend_cpu_buffer_type()->iface.alloc_buffer(
-                   ggml_backend_cpu_buffer_type(), size);
+    if (!buft_ctx) {
+        GGML_LOG_ERROR("%s: missing FMSH_ZG330 buffer type context\n", __func__);
+        return nullptr;
     }
+
     auto * bctx = buft_ctx->backend_ctx;
-    Device zg_dev = bctx->zg_device;
+    Device zg_dev;
+    std::string err;
+    if (bctx) {
+        if (!ggml_fmsh_open_device_if_needed(bctx, &err)) {
+            ggml_fmsh_log_locked(bctx, 3,
+                "zg_alloc_buffer_open_fail size=" + std::to_string(size) + " " + err);
+            return nullptr;
+        }
+        zg_dev = bctx->zg_device;
+    } else {
+        auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(buft_ctx->dev_ctx_ptr);
+        if (!dev_ctx) {
+            GGML_LOG_ERROR("%s: missing FMSH_ZG330 device context\n", __func__);
+            return nullptr;
+        }
+        std::lock_guard<std::mutex> lock(dev_ctx->mu);
+        if (!ggml_fmsh_open_device_context_if_needed(dev_ctx, &zg_dev, &err)) {
+            GGML_LOG_ERROR("%s: failed to open zg330 device for buffer allocation: %s\n",
+                __func__, err.c_str());
+            return nullptr;
+        }
+    }
+
     MemChunk chunk;
     try {
         chunk = zg_dev.defaultMemRegion().malloc(size, /*auto_free=*/true, /*alignment=*/4096);
     } catch (const std::exception & e) {
-        ggml_fmsh_log_locked(bctx, 2,
+        ggml_fmsh_log_locked(bctx, 3,
             std::string("zg_alloc_buffer_fail size=") + std::to_string(size) + " " + e.what());
-        return ggml_backend_cpu_buffer_type()->iface.alloc_buffer(
-                   ggml_backend_cpu_buffer_type(), size);
+        if (!bctx) {
+            GGML_LOG_ERROR("%s: zg_alloc_buffer_fail size=%zu %s\n", __func__, size, e.what());
+        }
+        return nullptr;
     }
     if (!chunk.defined()) {
-        return ggml_backend_cpu_buffer_type()->iface.alloc_buffer(
-                   ggml_backend_cpu_buffer_type(), size);
+        ggml_fmsh_log_locked(bctx, 3,
+            "zg_alloc_buffer_fail size=" + std::to_string(size) + " undefined_chunk");
+        if (!bctx) {
+            GGML_LOG_ERROR("%s: zg_alloc_buffer_fail size=%zu undefined_chunk\n", __func__, size);
+        }
+        return nullptr;
     }
     ggml_fmsh_log_locked(bctx, 1, "zg_alloc_buffer size=" + std::to_string(size));
     auto * buf_ctx = new ggml_fmsh_zg330_buffer_ctx{std::move(chunk), size};
@@ -6033,7 +7572,7 @@ static ggml_backend_buffer_t ggml_fmsh_zg330_buffer_type_alloc_buffer(
         /* .get_tensor      = */ ggml_fmsh_zg330_buffer_get_tensor,
         /* .set_tensor_2d   = */ nullptr,
         /* .get_tensor_2d   = */ nullptr,
-        /* .cpy_tensor      = */ nullptr,
+        /* .cpy_tensor      = */ ggml_fmsh_zg330_buffer_cpy_tensor,
         /* .clear           = */ ggml_fmsh_zg330_buffer_clear,
         /* .reset           = */ nullptr,
     };
@@ -6064,21 +7603,28 @@ static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(
 
 // Legacy zero-arg overload: fallback to CPU buffer type.
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_buffer_type_impl(void) {
-    return ggml_backend_cpu_buffer_type();
+    ggml_backend_dev_t dev = ggml_backend_reg_dev_get(ggml_backend_fmsh_zg330_reg(), 0);
+    auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(dev ? dev->context : nullptr);
+    if (!dev_ctx) {
+        return nullptr;
+    }
+    return ggml_backend_fmsh_zg330_buffer_type_impl(dev_ctx, dev);
 }
 
 static ggml_backend_buffer_type_t ggml_backend_fmsh_zg330_device_get_buffer_type(ggml_backend_dev_t dev) {
-    GGML_UNUSED(dev);
-    // Compute buffer and weights stay on CPU host.
-    // KV cache uses ZG DDR via the dedicated get_kv_buft proc_address interface.
-    // Model weights are uploaded to ZG DDR manually inside graph_compute via session weight_tensors.
-    return ggml_backend_cpu_buffer_type();
+    auto * dev_ctx = static_cast<ggml_fmsh_zg330_device_context *>(dev ? dev->context : nullptr);
+    if (!dev_ctx) {
+        return nullptr;
+    }
+    return ggml_backend_fmsh_zg330_buffer_type_impl(dev_ctx, dev);
 }
 
 static ggml_backend_buffer_t ggml_backend_fmsh_zg330_device_buffer_from_host_ptr(ggml_backend_dev_t dev, void * ptr, size_t size, size_t max_tensor_size) {
     GGML_UNUSED(dev);
+    GGML_UNUSED(ptr);
+    GGML_UNUSED(size);
     GGML_UNUSED(max_tensor_size);
-    return ggml_backend_cpu_buffer_from_ptr(ptr, size);
+    return nullptr;
 }
 
 static bool ggml_backend_fmsh_zg330_device_supports_op(ggml_backend_dev_t dev, const ggml_tensor * op) {

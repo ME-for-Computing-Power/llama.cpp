@@ -24,6 +24,8 @@ mkdir -p "${WORKSPACE_DIR}/.cache/deploy"
 set +e
 timeout --signal=INT "${TIMEOUT_SECONDS}" \
     docker run --network host --rm \
+        -e GGML_FMSH_ZG330_DISABLE_DEVICE_INPUT_CHAIN="${GGML_FMSH_ZG330_DISABLE_DEVICE_INPUT_CHAIN:-0}" \
+        -e GGML_FMSH_ZG330_OFFLOAD_CPY_DUP="${GGML_FMSH_ZG330_OFFLOAD_CPY_DUP:-true}" \
         -v "${WORKSPACE_DIR}:/workspace" \
         fpai-icraft:latest \
         bash -lc '
@@ -36,8 +38,8 @@ timeout --signal=INT "${TIMEOUT_SECONDS}" \
                 -m /workspace/Qwen3.5-0.8B-Q4_K_M.gguf \
                 --device FMSH_ZG330 \
                 --reasoning-budget 0 \
-                -p "Hello there" \
-                -n 10 \
+                -p "你好" \
+                -n 4 \
                 -c 1024 \
                 --no-warmup \
                 --single-turn \
