@@ -1225,9 +1225,9 @@ static bool ggml_fmsh_validate_flash_attn_ext(
         if (err) *err = "FLASH_ATTN_EXT requires dst/q type F32";
         return false;
     }
-    if ((k->type != GGML_TYPE_F16 && k->type != GGML_TYPE_F32) ||
-        (v->type != GGML_TYPE_F16 && v->type != GGML_TYPE_F32)) {
-        if (err) *err = "FLASH_ATTN_EXT requires k/v type F16 or F32";
+    if ((k->type != GGML_TYPE_F16 && k->type != GGML_TYPE_F32 && k->type != GGML_TYPE_BF16) ||
+        (v->type != GGML_TYPE_F16 && v->type != GGML_TYPE_F32 && v->type != GGML_TYPE_BF16)) {
+        if (err) *err = "FLASH_ATTN_EXT requires k/v type F16, BF16, or F32";
         return false;
     }
     if (mask != nullptr && (mask->type != GGML_TYPE_F16 && mask->type != GGML_TYPE_F32)) {
@@ -2476,6 +2476,12 @@ static inline void ggml_fmsh_write_f32_indexed(
     int64_t i2,
     int64_t i3,
     float v);
+static bool ggml_fmsh_write_f32_flat_to_staging(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * t,
+    const float * src,
+    size_t n,
+    std::string * err);
 
 static inline float ggml_fmsh_read_f32_linear(const ggml_tensor * t, size_t idx);
 static inline float ggml_fmsh_read_f32_linear(ggml_backend_fmsh_zg330_context * ctx, const ggml_tensor * t, size_t idx);
@@ -2753,20 +2759,20 @@ static bool ggml_fmsh_execute_elementwise(
             std::vector<float> out_tmp(total_elems);
             effective_output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
             ggml_fmsh_log_locked(ctx, 1, "elementwise_read_done op=" + std::string(ggml_op_name(node->op)));
-            // Fast path: contiguous F32 output — skip the per-element stride loop and
-            // memcpy the flat F32 buffer directly into the staging region.
+            // Fast path: contiguous ZG-buffer output with matching logical size.
+            // Write the flat F32 readback into staging in the node's storage dtype,
+            // avoiding the per-element indexed loop for F32/F16/BF16 tensors.
             const bool fast_readback =
-                node->type == GGML_TYPE_F32 &&
+                (node->type == GGML_TYPE_F32 || node->type == GGML_TYPE_F16 || node->type == GGML_TYPE_BF16) &&
                 ggml_is_contiguous(node) &&
+                ggml_nelements(node) == static_cast<int64_t>(total_elems) &&
                 ggml_fmsh_is_zg_buffer_tensor(node, nullptr, nullptr);
             if (fast_readback) {
                 std::string stg_err;
-                if (!ggml_fmsh_ensure_zg_staging(ctx, node, false, &stg_err)) {
+                if (!ggml_fmsh_write_f32_flat_to_staging(ctx, node, out_tmp.data(), total_elems, &stg_err)) {
                     if (err) *err = stg_err;
                     return false;
                 }
-                char * staging_base = const_cast<char *>(ggml_fmsh_host_data_for_tensor(ctx, node));
-                std::memcpy(staging_base, out_tmp.data(), total_bytes);
                 ggml_fmsh_log_locked(ctx, 1, "elementwise_fast_readback op=" + std::string(ggml_op_name(node->op)) +
                     " bytes=" + std::to_string(total_bytes));
             } else {
@@ -3374,6 +3380,49 @@ static inline void ggml_fmsh_write_f32_indexed(
     char * base = const_cast<char *>(ggml_fmsh_host_data_for_tensor(ctx, t));
     char * p = base + i0 * t->nb[0] + i1 * t->nb[1] + i2 * t->nb[2] + i3 * t->nb[3];
     *reinterpret_cast<float *>(p) = v;
+}
+
+static bool ggml_fmsh_write_f32_flat_to_staging(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * t,
+    const float * src,
+    size_t n,
+    std::string * err) {
+    if (!ctx || !t || !src) {
+        if (err) *err = "flat_write: null input";
+        return false;
+    }
+    if (!ggml_is_contiguous(t)) {
+        if (err) *err = "flat_write: tensor is not contiguous";
+        return false;
+    }
+    if (ggml_nelements(t) != static_cast<int64_t>(n)) {
+        if (err) *err = "flat_write: element count mismatch";
+        return false;
+    }
+    if (!ggml_fmsh_is_zg_buffer_tensor(t, nullptr, nullptr)) {
+        if (err) *err = "flat_write: tensor is not a ZG buffer";
+        return false;
+    }
+    if (!ggml_fmsh_ensure_zg_staging(ctx, t, false, err)) {
+        return false;
+    }
+
+    char * staging_base = const_cast<char *>(ggml_fmsh_host_data_for_tensor(ctx, t));
+    switch (t->type) {
+        case GGML_TYPE_F32:
+            std::memcpy(staging_base, src, n * sizeof(float));
+            return true;
+        case GGML_TYPE_F16:
+            ggml_fp32_to_fp16_row(src, reinterpret_cast<ggml_fp16_t *>(staging_base), static_cast<int64_t>(n));
+            return true;
+        case GGML_TYPE_BF16:
+            ggml_fp32_to_bf16_row(src, reinterpret_cast<ggml_bf16_t *>(staging_base), static_cast<int64_t>(n));
+            return true;
+        default:
+            if (err) *err = "flat_write: unsupported tensor type";
+            return false;
+    }
 }
 
 static inline float ggml_fmsh_read_f32_indexed(
@@ -4256,6 +4305,11 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                     for (int64_t d = 0; d < head_dim; ++d) {
                         in_k[static_cast<size_t>(d * kv_bucket + ikv)] = src[d];
                     }
+                } else if (k->type == GGML_TYPE_BF16) {
+                    const ggml_bf16_t * src = reinterpret_cast<const ggml_bf16_t *>(src_k_row);
+                    for (int64_t d = 0; d < head_dim; ++d) {
+                        in_k[static_cast<size_t>(d * kv_bucket + ikv)] = GGML_BF16_TO_FP32(src[d]);
+                    }
                 } else {
                     const ggml_fp16_t * src = reinterpret_cast<const ggml_fp16_t *>(src_k_row);
                     for (int64_t d = 0; d < head_dim; ++d) {
@@ -4274,6 +4328,11 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                     const float * src = reinterpret_cast<const float *>(src_v_row);
                     for (int64_t d = 0; d < value_dim; ++d) {
                         v_row[d] = src[d];
+                    }
+                } else if (v->type == GGML_TYPE_BF16) {
+                    const ggml_bf16_t * src = reinterpret_cast<const ggml_bf16_t *>(src_v_row);
+                    for (int64_t d = 0; d < value_dim; ++d) {
+                        v_row[d] = GGML_BF16_TO_FP32(src[d]);
                     }
                 } else {
                     const ggml_fp16_t * src = reinterpret_cast<const ggml_fp16_t *>(src_v_row);
@@ -4367,7 +4426,7 @@ static bool ggml_fmsh_execute_flash_attn_ext(
                         } else {
                             const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                                 std::chrono::steady_clock::now() - stable_start).count();
-                            if (elapsed_ms >= 5) {
+                            if (elapsed_ms >= 1) {
                                 break;
                             }
                         }
@@ -5088,8 +5147,8 @@ static enum ggml_status ggml_fmsh_execute_set_rows_on_device(
         return ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, node_idx);
     }
 
-    // Only F16 and F32 dst types handled on-device; others fall back.
-    if (node->type != GGML_TYPE_F16 && node->type != GGML_TYPE_F32) {
+    // Only F16, BF16, and F32 dst types handled on-device; others fall back.
+    if (node->type != GGML_TYPE_F16 && node->type != GGML_TYPE_F32 && node->type != GGML_TYPE_BF16) {
         ggml_fmsh_materialize_if_device(ctx, src0, device_tensor_map);
         ggml_fmsh_materialize_if_device(ctx, src1, device_tensor_map);
         return ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, node_idx);
@@ -5140,9 +5199,9 @@ static enum ggml_status ggml_fmsh_execute_set_rows_on_device(
     const size_t dst_elem_bytes  = ggml_type_size(node->type);
     const size_t dst_row_bytes   = static_cast<size_t>(nc) * dst_elem_bytes;
 
-    // Reusable conversion buffer for F32 → F16.
+    // Reusable conversion buffer for F32 → F16/BF16.
     std::vector<char> row_buf;
-    if (node->type == GGML_TYPE_F16) {
+    if (node->type == GGML_TYPE_F16 || node->type == GGML_TYPE_BF16) {
         row_buf.resize(dst_row_bytes);
     }
 
@@ -5176,6 +5235,10 @@ static enum ggml_status ggml_fmsh_execute_set_rows_on_device(
                 if (node->type == GGML_TYPE_F16) {
                     ggml_fp32_to_fp16_row(src_row,
                         reinterpret_cast<ggml_fp16_t *>(row_buf.data()), nc);
+                    dst_chunk.write(write_off, row_buf.data(), dst_row_bytes);
+                } else if (node->type == GGML_TYPE_BF16) {
+                    ggml_fp32_to_bf16_row(src_row,
+                        reinterpret_cast<ggml_bf16_t *>(row_buf.data()), nc);
                     dst_chunk.write(write_off, row_buf.data(), dst_row_bytes);
                 } else {
                     // F32 dst: write src row directly
