@@ -5081,18 +5081,32 @@ static enum ggml_status ggml_fmsh_execute_set_rows_on_device(
     std::vector<char> src0_staging;
     const float * src0_data = nullptr;
     {
-        auto it = device_tensor_map.find(src0);
-        if (it != device_tensor_map.end()) {
-            // src0 is device-resident (e.g. ROPE output kept on device); D2H only these rows.
-            const size_t bytes = ggml_nbytes(src0);
-            src0_staging.resize(bytes);
-            it->second.read(src0_staging.data(), 0, bytes);
-            device_tensor_map.erase(it);
-            src0_data = reinterpret_cast<const float *>(src0_staging.data());
+        // Priority 1: zg_staging_bufs may already hold fresh F32 data for src0.
+        // rope_readback (and similar readbacks) fill staging via ggml_fmsh_write_f32_indexed
+        // but do NOT clear zg_staging_bufs afterward, so the buffer is reusable here.
+        // This avoids a redundant D2H when src0 was just written back to PLDDR.
+        const char * staged_ptr = ggml_fmsh_host_data_for_tensor(ctx, src0);
+        const char * raw_ptr    = static_cast<const char *>(src0->data);
+        if (staged_ptr != raw_ptr) {
+            // Staging hit: fresh host-side F32 copy available, skip D2H.
+            src0_data = reinterpret_cast<const float *>(staged_ptr);
+            device_tensor_map.erase(src0);
             ggml_fmsh_log_locked(ctx, 1,
-                "set_rows_src0_d2h bytes=" + std::to_string(bytes));
+                "set_rows_src0_staging_hit bytes=" + std::to_string(ggml_nbytes(src0)));
         } else {
-            src0_data = reinterpret_cast<const float *>(src0->data);
+            // Priority 2: src0 is device-resident in device_tensor_map; D2H needed.
+            auto it = device_tensor_map.find(src0);
+            if (it != device_tensor_map.end()) {
+                const size_t bytes = ggml_nbytes(src0);
+                src0_staging.resize(bytes);
+                it->second.read(src0_staging.data(), 0, bytes);
+                device_tensor_map.erase(it);
+                src0_data = reinterpret_cast<const float *>(src0_staging.data());
+                ggml_fmsh_log_locked(ctx, 1,
+                    "set_rows_src0_d2h bytes=" + std::to_string(bytes));
+            } else {
+                src0_data = reinterpret_cast<const float *>(src0->data);
+            }
         }
     }
     if (!src0_data || !src1->data) {
