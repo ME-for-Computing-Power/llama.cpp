@@ -2753,14 +2753,32 @@ static bool ggml_fmsh_execute_elementwise(
             std::vector<float> out_tmp(total_elems);
             effective_output.read(reinterpret_cast<char *>(out_tmp.data()), 0, total_bytes);
             ggml_fmsh_log_locked(ctx, 1, "elementwise_read_done op=" + std::string(ggml_op_name(node->op)));
-            for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
-                for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
-                    for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
-                        const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
-                        const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
-                        for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
-                            ggml_fmsh_write_f32_indexed(
-                                ctx, node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
+            // Fast path: contiguous F32 output — skip the per-element stride loop and
+            // memcpy the flat F32 buffer directly into the staging region.
+            const bool fast_readback =
+                node->type == GGML_TYPE_F32 &&
+                ggml_is_contiguous(node) &&
+                ggml_fmsh_is_zg_buffer_tensor(node, nullptr, nullptr);
+            if (fast_readback) {
+                std::string stg_err;
+                if (!ggml_fmsh_ensure_zg_staging(ctx, node, false, &stg_err)) {
+                    if (err) *err = stg_err;
+                    return false;
+                }
+                char * staging_base = const_cast<char *>(ggml_fmsh_host_data_for_tensor(ctx, node));
+                std::memcpy(staging_base, out_tmp.data(), total_bytes);
+                ggml_fmsh_log_locked(ctx, 1, "elementwise_fast_readback op=" + std::string(ggml_op_name(node->op)) +
+                    " bytes=" + std::to_string(total_bytes));
+            } else {
+                for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
+                    for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
+                        for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
+                            const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
+                            const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(node->ne[0]);
+                            for (int64_t i0 = 0; i0 < node->ne[0]; ++i0) {
+                                ggml_fmsh_write_f32_indexed(
+                                    ctx, node, i0, i1, i2, i3, out_tmp[row_off + static_cast<size_t>(i0)]);
+                            }
                         }
                     }
                 }
