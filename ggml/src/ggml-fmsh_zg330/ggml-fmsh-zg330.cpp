@@ -36,6 +36,30 @@ namespace {
 using namespace icraft::xrt;
 namespace zg330 = icraft::xrt::zg330;
 
+// custom_op_hub register offsets for single-pass RMSNorm hardware accelerator.
+constexpr uint32_t kCopBase            = 0x400C0000U;
+constexpr uint32_t kCopRegStart        = 0x0000U;
+constexpr uint32_t kCopRegReadCfg      = 0x0004U;
+constexpr uint32_t kCopRegWriteCfg     = 0x0008U;
+constexpr uint32_t kCopRegCfg0         = 0x000CU;
+constexpr uint32_t kCopRegShape0       = 0x0010U;
+constexpr uint32_t kCopRegEps          = 0x0014U;
+constexpr uint32_t kCopRegAddrHi       = 0x0018U;
+constexpr uint32_t kCopRegHubSelW      = 0x0034U;
+constexpr uint32_t kCopRegDone         = 0x0080U;
+constexpr uint32_t kCopRegStatus       = 0x0090U;
+constexpr uint32_t kCopRegHubSelR      = 0x00ACU;
+constexpr uint32_t kCopRegVersion      = 0x00C0U;
+constexpr uint32_t kCopRegReset        = 0x01DCU;
+constexpr uint32_t kCopHubSelRmsnorm   = 1U;
+constexpr uint32_t kCopRmsnormVersion  = 0x20260611U;
+constexpr uint32_t kCopDoneMask        = 0x1U;
+constexpr uint32_t kCopBusyMask        = 0x2U;
+constexpr uint32_t kCopErrorMask       = 0x4U;
+constexpr size_t   kCopBeatBytes       = 64UL;
+constexpr size_t   kCopBf16PerBeat     = 32UL;
+constexpr int      kCopTimeoutMs       = 10000;
+
 struct ggml_fmsh_zg330_op_signature {
     uint32_t op = 0;
     uint32_t dtype = 0;
@@ -162,6 +186,14 @@ struct ggml_fmsh_zg330_rmsnorm_split_session_entry {
     ZG330Device zg_device;
     uint32_t layer_increment_pre  = 0;
     uint32_t layer_increment_post = 0;
+};
+
+struct ggml_fmsh_zg330_rmsnorm_customop_entry {
+    int64_t  cols        = 0;
+    int64_t  alloc_rows  = 0;
+    MemChunk mem_chunk;
+    MemChunk output_chunk;
+    uint64_t hit_count   = 0;
 };
 
 // ROPE NeoX session: X[N,d], theta[N,d/2] → Y[N,d]
@@ -302,6 +334,8 @@ struct ggml_backend_fmsh_zg330_context {
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_flash_attn_session_entry>> flash_attn_session_cache;
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_bf16_bridge_session_entry>> bridge_session_cache;
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_fused_ew_entry>> fused_ew_session_cache;
+    std::unordered_map<int64_t, std::unique_ptr<ggml_fmsh_zg330_rmsnorm_customop_entry>>
+        rmsnorm_customop_cache;
 
     bool strict_mode = false;
     bool enable_log = true;
@@ -313,6 +347,8 @@ struct ggml_backend_fmsh_zg330_context {
     bool offload_rope = true;
     bool disable_device_input_chain = false;
     bool rms_norm_native_sqrt = false; // false=split (pre+host_sqrt+post), true=fused+Sqrt@hostt
+    bool rms_norm_custom_op = false;
+    bool rms_norm_custom_op_verified = false;
     int64_t flash_softmax_cu = 8;
     int64_t flash_precompile_kv_depth = 1;
     int64_t flash_kv_bucket_max = 8192;
@@ -486,6 +522,22 @@ static inline uint16_t ggml_fmsh_f32_to_bf16(float f) {
     uint32_t bits;
     std::memcpy(&bits, &f, sizeof(bits));
     return static_cast<uint16_t>(bits >> 16);
+}
+
+static inline uint32_t ggml_fmsh_float_to_u32(float f) {
+    uint32_t bits;
+    std::memcpy(&bits, &f, sizeof(bits));
+    return bits;
+}
+
+static void ggml_fmsh_log_locked(ggml_backend_fmsh_zg330_context * ctx, int level, const std::string & msg);
+
+static bool ggml_fmsh_rmsnorm_customop_cols_ok(ggml_backend_fmsh_zg330_context * ctx, int64_t cols) {
+    if (cols == 1024 || cols == 256) {
+        return true;
+    }
+    ggml_fmsh_log_locked(ctx, 2, "rmsnorm_customop_skip reason=unsupported_cols cols=" + std::to_string(cols));
+    return false;
 }
 
 static int64_t ggml_fmsh_node_rows(const ggml_tensor * t) {
@@ -822,7 +874,7 @@ static bool ggml_fmsh_quant_weights_enabled() {
 // M bucket cap, cached once for the context-less planning path.
 static int64_t ggml_fmsh_mul_mat_m_bucket_max_env() {
     static const int64_t cap = std::max<int64_t>(1,
-        static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_M_BUCKET_MAX", 512)));
+        static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_MUL_MAT_M_BUCKET_MAX", 1)));
     return cap;
 }
 
@@ -2807,6 +2859,227 @@ static bool ggml_fmsh_execute_elementwise(
     }
 }
 
+// Single-pass RMS_NORM via custom_op_hub hardware (bypasses icraft compiler).
+static bool ggml_fmsh_execute_rmsnorm_customop(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    int64_t rows, int64_t cols,
+    const Tensor * input_override,
+    bool keep_device_output,
+    bool write_host_output,
+    Tensor * chained_output,
+    std::string * err) {
+    if (!node || !node->data || !node->src[0] || !node->src[0]->data) {
+        if (err) *err = "rmsnorm_customop: tensor data is null";
+        return false;
+    }
+    try {
+        // A. Hardware probe (once, cached in rms_norm_custom_op_verified).
+        if (!ctx->rms_norm_custom_op_verified) {
+            if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+                return false;
+            }
+            auto & reg = ctx->zg_device.defaultRegRegion();
+            reg.write(kCopBase + kCopRegHubSelW, kCopHubSelRmsnorm, false);
+            uint32_t sel_readback = static_cast<uint32_t>(
+                reg.read(kCopBase + kCopRegHubSelR, false));
+            if (sel_readback != kCopHubSelRmsnorm) {
+                if (err) *err = "rmsnorm_customop: hub select readback mismatch sel=" + std::to_string(sel_readback);
+                return false;
+            }
+            uint32_t ver = static_cast<uint32_t>(
+                reg.read(kCopBase + kCopRegVersion, false));
+            if (ver != kCopRmsnormVersion) {
+                if (err) *err = "rmsnorm_customop: version mismatch got=0x" +
+                    ([](uint32_t v) { char buf[16]; std::snprintf(buf, sizeof(buf), "%08x", v); return std::string(buf); })(ver) +
+                    " expected=0x" +
+                    ([](uint32_t v) { char buf[16]; std::snprintf(buf, sizeof(buf), "%08x", v); return std::string(buf); })(kCopRmsnormVersion);
+                return false;
+            }
+            ctx->rms_norm_custom_op_verified = true;
+            ggml_fmsh_log_locked(ctx, 1, "rmsnorm_customop_verified version=0x" +
+                ([](uint32_t v) { char buf[16]; std::snprintf(buf, sizeof(buf), "%08x", v); return std::string(buf); })(ver));
+        }
+
+        // B. PLDDR memory allocation (cached by cols, realloc on row growth).
+        const uint32_t rsize_beats = static_cast<uint32_t>(cols / static_cast<int64_t>(kCopBf16PerBeat));
+        const uint32_t wsize_beats = rsize_beats; // BF16 output
+        const size_t input_bytes  = static_cast<size_t>(rows) * static_cast<size_t>(rsize_beats) * kCopBeatBytes;
+        const size_t output_bytes = static_cast<size_t>(rows) * static_cast<size_t>(wsize_beats) * kCopBeatBytes;
+        const size_t total_bytes  = input_bytes + output_bytes;
+
+        // Use a single shared chunk (keyed by cols=0) to keep the allocation
+        // at the lowest possible PLDDR address and avoid address-dependent
+        // hardware DMA issues observed with cols=128 at higher addresses.
+        auto & cache_entry_ptr = ctx->rmsnorm_customop_cache[0];
+        if (!cache_entry_ptr) {
+            cache_entry_ptr = std::make_unique<ggml_fmsh_zg330_rmsnorm_customop_entry>();
+            cache_entry_ptr->cols = 0;
+        }
+        auto * centry = cache_entry_ptr.get();
+        centry->hit_count++;
+
+        if (!centry->mem_chunk.defined() || static_cast<size_t>(centry->alloc_rows) < total_bytes) {
+            if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+                return false;
+            }
+            // Pre-allocate for worst case: max supported cols * reasonable max rows.
+            const size_t prealloc = std::max(total_bytes, static_cast<size_t>(1024 / 32) * 64 * 64 * 2);
+            centry->mem_chunk = ctx->zg_device.defaultMemRegion().malloc(prealloc, true, 4096);
+            centry->alloc_rows = static_cast<int64_t>(prealloc);
+            ggml_fmsh_log_locked(ctx, 0, "rmsnorm_customop_alloc cols=" + std::to_string(cols) +
+                " rows=" + std::to_string(rows) + " bytes=" + std::to_string(total_bytes));
+        }
+
+        // C. Data preparation: F32→BF16 conversion and DMA write.
+        const ggml_tensor * src0 = node->src[0];
+        const size_t act_elems = static_cast<size_t>(rows) * static_cast<size_t>(cols);
+        std::vector<uint16_t> in_bf16(act_elems);
+        if (input_override != nullptr) {
+            std::vector<float> d2h_buf(act_elems);
+            input_override->read(reinterpret_cast<char *>(d2h_buf.data()), 0, act_elems * sizeof(float));
+            for (size_t idx = 0; idx < act_elems; ++idx) {
+                in_bf16[idx] = ggml_fmsh_f32_to_bf16(d2h_buf[idx]);
+            }
+        } else {
+            for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
+                for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
+                    for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
+                        const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
+                        const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
+                        for (int64_t i0 = 0; i0 < cols; ++i0) {
+                            in_bf16[row_off + static_cast<size_t>(i0)] =
+                                ggml_fmsh_f32_to_bf16(ggml_fmsh_read_f32_broadcast(ctx, src0, i0, i1, i2, i3));
+                        }
+                    }
+                }
+            }
+        }
+
+        centry->mem_chunk.write(0, reinterpret_cast<char *>(in_bf16.data()), input_bytes);
+
+        // Compute physical addresses.
+        uint32_t mem_addr = centry->mem_chunk->begin.addr();
+        uint32_t src_addr = mem_addr;
+        uint32_t dst_addr = mem_addr + static_cast<uint32_t>(input_bytes);
+
+        uint32_t reg_read_cfg  = (rsize_beats << 16) | (src_addr & 0xFFFFU);
+        uint32_t reg_write_cfg = (wsize_beats << 16) | (dst_addr & 0xFFFFU);
+        uint32_t reg_addr_hi   = ((dst_addr >> 16) << 16) | (src_addr >> 16);
+
+        // Stale state detection and reset.
+        auto & reg = ctx->zg_device.defaultRegRegion();
+
+        // Re-assert hub select and unconditionally reset before every launch.
+        reg.write(kCopBase + kCopRegHubSelW, kCopHubSelRmsnorm, false);
+        reg.write(kCopBase + kCopRegReset, 1U, false);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        reg.write(kCopBase + kCopRegReset, 0U, false);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+        // Write registers and start.
+        float eps = 0.0f;
+        std::memcpy(&eps, node->op_params, sizeof(float));
+
+        reg.write(kCopBase + kCopRegAddrHi,   reg_addr_hi,   false);
+        reg.write(kCopBase + kCopRegReadCfg,  reg_read_cfg,  false);
+        reg.write(kCopBase + kCopRegWriteCfg, reg_write_cfg, false);
+        reg.write(kCopBase + kCopRegCfg0,     2U,            false); // BF16 output + precise_rsqrt
+        reg.write(kCopBase + kCopRegShape0,   static_cast<uint32_t>(rows), false);
+        reg.write(kCopBase + kCopRegEps,      ggml_fmsh_float_to_u32(eps), false);
+        reg.write(kCopBase + kCopRegStart,    1U,            false);
+
+        // D. Poll for completion.
+        auto t_start = std::chrono::steady_clock::now();
+        for (;;) {
+            uint32_t done   = static_cast<uint32_t>(reg.read(kCopBase + kCopRegDone, false));
+            uint32_t status = static_cast<uint32_t>(reg.read(kCopBase + kCopRegStatus, false));
+            if ((status & kCopErrorMask) != 0U) {
+                reg.write(kCopBase + kCopRegReset, 1U, false);
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                reg.write(kCopBase + kCopRegReset, 0U, false);
+                if (err) *err = "rmsnorm_customop: hardware error status=0x" +
+                    ([](uint32_t v) { char buf[16]; std::snprintf(buf, sizeof(buf), "%08x", v); return std::string(buf); })(status);
+                return false;
+            }
+            if ((done & kCopDoneMask) != 0U) {
+                break;
+            }
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::steady_clock::now() - t_start).count();
+            if (elapsed > kCopTimeoutMs) {
+                reg.write(kCopBase + kCopRegReset, 1U, false);
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                reg.write(kCopBase + kCopRegReset, 0U, false);
+                if (err) *err = "rmsnorm_customop: timeout after " + std::to_string(elapsed) + "ms";
+                return false;
+            }
+        }
+
+        // Read back BF16 output and convert to F32.
+        std::vector<uint8_t> out_raw(output_bytes);
+        centry->mem_chunk.read(reinterpret_cast<char *>(out_raw.data()), input_bytes, output_bytes);
+
+        // Reset hardware after readback to clear internal state before next invocation.
+        reg.write(kCopBase + kCopRegReset, 1U, false);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        reg.write(kCopBase + kCopRegReset, 0U, false);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+        const uint16_t * out_bf16 = reinterpret_cast<const uint16_t *>(out_raw.data());
+        const size_t out_elems = static_cast<size_t>(rows) * static_cast<size_t>(cols);
+        std::vector<float> out_f32(out_elems);
+        for (size_t idx = 0; idx < out_elems; ++idx) {
+            uint32_t tmp = static_cast<uint32_t>(out_bf16[idx]) << 16;
+            std::memcpy(&out_f32[idx], &tmp, sizeof(float));
+        }
+
+        if (write_host_output) {
+            for (int64_t i3 = 0; i3 < node->ne[3]; ++i3) {
+                for (int64_t i2 = 0; i2 < node->ne[2]; ++i2) {
+                    for (int64_t i1 = 0; i1 < node->ne[1]; ++i1) {
+                        const int64_t row = ((i3 * node->ne[2]) + i2) * node->ne[1] + i1;
+                        const size_t row_off = static_cast<size_t>(row) * static_cast<size_t>(cols);
+                        for (int64_t i0 = 0; i0 < cols; ++i0) {
+                            ggml_fmsh_write_f32_indexed(ctx, node, i0, i1, i2, i3,
+                                out_f32[row_off + static_cast<size_t>(i0)]);
+                        }
+                    }
+                }
+            }
+            std::string sync_err;
+            if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "rmsnorm_customop_readback", &sync_err)) {
+                if (err) *err = sync_err;
+                return false;
+            }
+        }
+
+        if (keep_device_output && chained_output != nullptr) {
+            const size_t f32_bytes = out_elems * sizeof(float);
+            if (!centry->output_chunk.defined() || centry->output_chunk->byte_size < f32_bytes) {
+                centry->output_chunk = ctx->zg_device.defaultMemRegion().malloc(f32_bytes, true, 4096);
+            }
+            centry->output_chunk.write(0, reinterpret_cast<char *>(out_f32.data()), f32_bytes);
+            icraft::xir::TensorType ttype(
+                icraft::xir::FloatType::FP32(),
+                icraft::xir::Array<int64_t>{static_cast<int64_t>(out_elems)},
+                icraft::xir::Layout());
+            *chained_output = Tensor(ttype, centry->output_chunk, 0);
+        } else if (chained_output != nullptr) {
+            *chained_output = Tensor();
+        }
+
+        ggml_fmsh_log_locked(ctx, 1, "rmsnorm_customop_done rows=" + std::to_string(rows) +
+            " cols=" + std::to_string(cols) + " hits=" + std::to_string(centry->hit_count) +
+            " keep_device=" + std::to_string(keep_device_output ? 1 : 0) +
+            " write_host=" + std::to_string(write_host_output ? 1 : 0));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) *err = std::string("rmsnorm_customop: ") + e.what();
+        return false;
+    }
+}
+
 // Two-phase RMS_NORM execution: PL computes r² per row, host does scalar sqrt, PL applies X*r_inv.
 // X is written once into a shared buffer used by both pre and post networks.
 static bool ggml_fmsh_execute_rmsnorm_split(
@@ -4658,22 +4931,33 @@ static void ggml_fmsh_materialize_if_device(
     MemChunk zg_chunk;
     size_t   zg_off = 0;
     if (ggml_fmsh_is_zg_buffer_tensor(t, &zg_chunk, &zg_off)) {
-        // t->data is a ZG DDR physical address — D2H into staging buffer keyed by root tensor.
-        // We do NOT modify t->data here; callers that need host access should
-        // check zg_staging_bufs and swap root->data around the CPU call.
         const ggml_tensor * root = t;
         while (root->view_src) root = root->view_src;
         auto & staging = ctx->zg_staging_bufs[root];
-        // Only D2H the full root tensor once per graph_compute; subsequent views share it.
         if (staging.empty()) {
             const size_t root_bytes = ggml_nbytes(root);
             staging.resize(root_bytes);
-            MemChunk rc; size_t ro = 0;
-            ggml_fmsh_is_zg_buffer_tensor(root, &rc, &ro);
-            rc.read(staging.data(), ro, root_bytes);
-            ggml_fmsh_log_locked(ctx, 1,
-                "materialize_zg_to_staging bytes=" + std::to_string(root_bytes) +
-                " op_src=" + std::string(ggml_op_name(t->op)));
+            if (t == root && it->second.defined()) {
+                const size_t live_bytes = ggml_fmsh_tensor_live_bytes_f32(it->second);
+                const size_t read_bytes = std::min(root_bytes, live_bytes);
+                if (read_bytes > 0) {
+                    it->second.read(staging.data(), 0, read_bytes);
+                }
+                if (read_bytes < root_bytes) {
+                    std::memset(staging.data() + read_bytes, 0, root_bytes - read_bytes);
+                }
+                ggml_fmsh_log_locked(ctx, 1,
+                    "materialize_zg_from_clone bytes=" + std::to_string(read_bytes) +
+                    " root_bytes=" + std::to_string(root_bytes) +
+                    " op_src=" + std::string(ggml_op_name(t->op)));
+            } else {
+                MemChunk rc; size_t ro = 0;
+                ggml_fmsh_is_zg_buffer_tensor(root, &rc, &ro);
+                rc.read(staging.data(), ro, root_bytes);
+                ggml_fmsh_log_locked(ctx, 1,
+                    "materialize_zg_to_staging bytes=" + std::to_string(root_bytes) +
+                    " op_src=" + std::string(ggml_op_name(t->op)));
+            }
         }
     } else if (t->data != nullptr) {
         // t->data is a real host pointer (compute buffer): write directly.
@@ -4902,6 +5186,8 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
         ctx->qweight_session_cache.clear();
         ctx->elementwise_session_cache.clear();
         ctx->rmsnorm_split_session_cache.clear();
+        ctx->rmsnorm_customop_cache.clear();
+        ctx->rms_norm_custom_op_verified = false;
         ctx->rope_session_cache.clear();
         ctx->flash_attn_session_cache.clear();
         ctx->bridge_session_cache.clear();
@@ -5333,6 +5619,14 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             if (consumer->op == GGML_OP_MUL_MAT && src_idx == 1 &&
                 (ggml_fmsh_can_run_mul_mat_zg(consumer) || ggml_fmsh_is_quant_weight_mul_mat(consumer)) &&
                 consumer->ne[2] == 1 && consumer->ne[3] == 1) {
+                const int64_t cm = consumer->src[1] ? consumer->src[1]->ne[1] : 1;
+                if (cm > 1) {
+                    int64_t cb = 1;
+                    while (cb < cm) cb <<= 1;
+                    if (cb > ctx->mul_mat_m_bucket_max) {
+                        return false;
+                    }
+                }
                 return true;
             }
             // ROPE can consume device-resident src[0].
@@ -6634,8 +6928,130 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
                 " rows=" + std::to_string(erows) +
                 " cols=" + std::to_string(ecols));
 
-            // ── RMS_NORM two-phase split path (no Sqrt on PL) ─────────────────
+            // ── RMS_NORM: custom_op_hub single-pass path ─────────────────────
             if (ek == ggml::fmsh::netmake::ElementwiseZgOp::RMS_NORM && !ctx->rms_norm_native_sqrt) {
+                if (ctx->rms_norm_custom_op &&
+                    ggml_fmsh_rmsnorm_customop_cols_ok(ctx, ecols)) {
+
+                    // Input chaining: check for device-resident src[0].
+                    const Tensor * cop_input_override = nullptr;
+                    const ggml_tensor * cop_input_src = nullptr;
+                    if (!ctx->disable_device_input_chain && node->src[0] != nullptr) {
+                        if (find_device_chain_tensor(node->src[0], &cop_input_override, &cop_input_src)) {
+                        } else if (find_prev_device_chain_tensor(node->src[0], &cop_input_override, &cop_input_src)) {
+                        }
+                    }
+
+                    // Output chaining: check future consumers.
+                    const int cop_future_device = !ctx->disable_device_input_chain
+                        ? count_future_device_consumers(i, node) : 0;
+                    const int cop_future_any = !ctx->disable_device_input_chain
+                        ? count_future_consumers_any(i, node) : 0;
+                    const bool cop_keep_device = !ctx->disable_device_input_chain && cop_future_device > 0;
+                    const bool cop_write_host = !cop_keep_device ||
+                        cop_future_any > cop_future_device;
+
+                    // Evict stale tensors sharing the custom-op output chunk.
+                    auto & cop_cache_ptr = ctx->rmsnorm_customop_cache[0];
+                    if (cop_cache_ptr && cop_cache_ptr->output_chunk.defined()) {
+                        for (auto it_map = device_tensor_map.begin(); it_map != device_tensor_map.end();) {
+                            if (it_map->second.defined() && it_map->second.chunk() == cop_cache_ptr->output_chunk) {
+                                const ggml_tensor * held = it_map->first;
+                                if (held && held->data) {
+                                    const size_t hb = ggml_nbytes(held);
+                                    if (hb > 0) ggml_fmsh_evict_to_host(ctx, held, it_map->second);
+                                }
+                                if (has_prev_device_output && prev_device_output_node == held) {
+                                    clear_prev_device_output();
+                                }
+                                chainable_device_tensors.erase(held);
+                                chainable_device_remaining_uses.erase(held);
+                                it_map = device_tensor_map.erase(it_map);
+                            } else { ++it_map; }
+                        }
+                    }
+
+                    // Materialize src[0] only if no input chain.
+                    if (cop_input_override == nullptr) {
+                        ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                    }
+
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+                    std::vector<float> cop_cpu_ref;
+                    if (ctx->debug_compare) {
+                        std::vector<ggml_fmsh_debug_saved_tensor> cop_debug_saved;
+                        std::unordered_set<ggml_tensor *> cop_debug_seen;
+                        std::string cop_dbg_err;
+                        const auto cop_backup_if_alias = [&](ggml_tensor * s) -> bool {
+                            if (s == nullptr || s->data == nullptr || node->data == nullptr) return true;
+                            if (s != node && s->data != node->data) return true;
+                            return ggml_fmsh_debug_backup_tensor(ctx, s, cop_debug_saved, cop_debug_seen, &cop_dbg_err);
+                        };
+                        if (!ggml_fmsh_debug_backup_tensor(ctx, node, cop_debug_saved, cop_debug_seen, &cop_dbg_err) ||
+                            !cop_backup_if_alias(node->src[0])) {
+                            ggml_fmsh_log_locked(ctx, 2, "debug_compare_backup_failed op=RMS_NORM_CUSTOMOP reason=" + cop_dbg_err);
+                        }
+                        const enum ggml_status cpu_st = ggml_fmsh_compute_cpu_node_with_zg_redirect(ctx, cgraph, i);
+                        if (cpu_st != GGML_STATUS_SUCCESS) { return cpu_st; }
+                        std::string cop_snap_err;
+                        if (!ggml_fmsh_tensor_snapshot_f32(ctx, node, cop_cpu_ref, &cop_snap_err)) {
+                            ggml_fmsh_log_locked(ctx, 2, "debug_compare_snapshot_failed op=RMS_NORM_CUSTOMOP reason=" + cop_snap_err);
+                        }
+                        if (!cop_debug_saved.empty()) {
+                            std::string cop_restore_err;
+                            if (!ggml_fmsh_debug_restore_tensors(ctx, cop_debug_saved, &cop_restore_err)) {
+                                ggml_fmsh_log_locked(ctx, 2, "debug_compare_restore_failed op=RMS_NORM_CUSTOMOP reason=" + cop_restore_err);
+                                return GGML_STATUS_FAILED;
+                            }
+                        }
+                    }
+#endif
+
+                    Tensor cop_chained_output;
+                    std::string cop_err;
+                    if (!ggml_fmsh_execute_rmsnorm_customop(ctx, node, erows, ecols,
+                            cop_input_override, cop_keep_device, cop_write_host,
+                            &cop_chained_output, &cop_err)) {
+                        ggml_fmsh_log_locked(ctx, 3, "fatal op=RMS_NORM_CUSTOMOP reason=" + cop_err);
+                        return GGML_STATUS_FAILED;
+                    }
+
+#ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
+                    if (!cop_cpu_ref.empty()) {
+                        ggml_fmsh_debug_compare_and_log(ctx, node, cop_cpu_ref, i);
+                    }
+#endif
+
+                    // Consume input chain.
+                    if (cop_input_src != nullptr) {
+                        release_chainable_consumer(i, cop_input_src);
+                        if (has_prev_device_output && prev_device_output_node == cop_input_src) {
+                            clear_prev_device_output();
+                        }
+                    }
+
+                    // Register output chain.
+                    if (cop_chained_output.defined()) {
+                        set_prev_device_output(
+                            const_cast<ggml_tensor *>(resolve_chain_source(node)),
+                            cop_chained_output);
+                    } else {
+                        clear_prev_device_output();
+                    }
+                    if (cop_keep_device && cop_chained_output.defined()) {
+                        const int retained = retain_chainable_tensor(i, node, cop_chained_output);
+                        ggml_fmsh_log_locked(ctx, 0,
+                            "rmsnorm_customop keep_device_output=1 future_device_consumers=" +
+                            std::to_string(retained));
+                    } else {
+                        drop_chainable_tensor(node);
+                    }
+                    last_dispatched_valid = true;
+                    last_dispatched_zg = true;
+                    continue;
+                }
+
+                // ── RMS_NORM two-phase split path (no Sqrt on PL) ────────────
                 bool split_created = false;
                 std::string split_err;
                 ggml_fmsh_zg330_rmsnorm_split_session_entry * split_entry =
@@ -7334,6 +7750,7 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
     ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", true);
     ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", true);
     ctx->rms_norm_native_sqrt = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_RMS_NORM_NATIVE_SQRT", false);
+    ctx->rms_norm_custom_op = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_RMS_NORM_CUSTOM_OP", true);
     ctx->offload_rope = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_ROPE", true);
     ctx->offload_flash_attn_ext = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_FLASH_ATTN_EXT", true);
     ctx->disable_device_input_chain = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DISABLE_DEVICE_INPUT_CHAIN", false);
@@ -7392,6 +7809,7 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(ggml_fmsh_zg330_device_c
             " offload_soft_max=" + std::to_string(ctx->offload_soft_max ? 1 : 0) +
             " offload_rms_norm=" + std::to_string(ctx->offload_rms_norm ? 1 : 0) +
             " rms_norm_native_sqrt=" + std::to_string(ctx->rms_norm_native_sqrt ? 1 : 0) +
+            " rms_norm_custom_op=" + std::to_string(ctx->rms_norm_custom_op ? 1 : 0) +
             " offload_flash_attn_ext=" + std::to_string(ctx->offload_flash_attn_ext ? 1 : 0) +
             " flash_softmax_cu=" + std::to_string(ctx->flash_softmax_cu) +
             " flash_precompile_kv_depth=" + std::to_string(ctx->flash_precompile_kv_depth) +

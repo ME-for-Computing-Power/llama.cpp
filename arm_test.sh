@@ -34,11 +34,12 @@ timeout --signal=INT "${TIMEOUT_SECONDS}" \
         export LD_LIBRARY_PATH='${REMOTE_DIR}/bin:/ModelzooDeps/aarch64/Dynamic/lib:\${LD_LIBRARY_PATH:-}'
         export GGML_FMSH_ZG330_LOG=1
         export GGML_FMSH_ZG330_CACHE_DIR='${REMOTE_DIR}/.cache/deploy'
+        export GGML_FMSH_ZG330_RMS_NORM_CUSTOM_OP=${GGML_FMSH_ZG330_RMS_NORM_CUSTOM_OP:-1}
         stdbuf -oL -eL ./llama-cli \
             -m '${REMOTE_DIR}/Qwen3.5-0.8B-Q4_K_M.gguf' \
             --device FMSH_ZG330 \
             --reasoning-budget 0 \
-            -p 'Hello there' \
+            -p '介绍你自己' \
             -n 10 \
             -c 1100 \
             --no-warmup \
