@@ -357,7 +357,7 @@ struct ggml_backend_fmsh_zg330_context {
     // Weights are dequantized once to F32 (tf32 NPU path) and kept resident on device;
     // M is bucketed (next pow2, capped) so the set of compiled matmul_MxKxN shapes is bounded.
     bool    offload_quant_weights = true;
-    int64_t mul_mat_m_bucket_max = 1;          // cap for M bucketing (1 = decode-only)
+    int64_t mul_mat_m_bucket_max = 512;        // cap for M bucketing (1 = decode-only)
     int64_t mul_mat_n_chunk = 16384;           // split N into chunks (0 = no split)
     int64_t mul_mat_precompile_m_depth = 0;    // speculatively precompile next pow2 M buckets
     uint64_t mul_mat_qweight_offloaded = 0;
@@ -1718,7 +1718,7 @@ static bool ggml_fmsh_forward_synced(
                 } else {
                     const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                         std::chrono::steady_clock::now() - stable_start).count();
-                    if (elapsed_ms >= 5) {
+                    if (elapsed_ms >= 50) {
                         break;
                     }
                 }
@@ -1866,20 +1866,20 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
             std::memcpy(input_a.data().cptr(), a_host.data(),
                         a_host.size() * sizeof(float));
 
-            // --- weight B: F32 [k, n_this], dequant+transpose, updated on device each call ---
-            // The session is shared by shape (11 sessions). The device weight tensor is
-            // allocated once per session (first call) and OVERWRITTEN with the current
-            // layer's weight before each forward(). This avoids per-src0 session OOM
-            // (64MB per session × 196 = 12GB) while keeping forward() synchronous
-            // (device-resident weight → no host DMA → NPU starts immediately → sync).
+            // --- weight B: F32 [k, n_this], dequant+transpose, cached per src0 pointer ---
+            // Session is shared by shape, but each layer's dequantized weight is cached
+            // on device DDR keyed by (src0_data + col_off). After the first call for a
+            // given layer, no dequant or DMA is needed — forward() uses the cached tensor.
             Tensor dynamic_weight;
             Tensor * weight_tensor = nullptr;
-            // Find or allocate the shared device weight tensor for this subnet.
-            // sn.weights[0] is the shared device tensor (key=0 means "shared").
-            if (!sn.weights.empty()) {
-                weight_tensor = &sn.weights[0].tensor;
+            const uintptr_t w_key = reinterpret_cast<uintptr_t>(src0_data + sn.col_off * src0->nb[1]);
+            for (auto & cached : sn.weights) {
+                if (cached.key == w_key) {
+                    weight_tensor = &cached.tensor;
+                    break;
+                }
             }
-            {
+            if (!weight_tensor) {
                 const size_t wbytes =
                     static_cast<size_t>(k) * static_cast<size_t>(sn.n_this) * sizeof(float);
                 std::vector<float> host_w(static_cast<size_t>(k) * static_cast<size_t>(sn.n_this));
@@ -1891,35 +1891,35 @@ static bool ggml_fmsh_execute_qweight_mul_mat(
                         host_w[static_cast<size_t>(j) * sn.n_this + i] = row_buf[j];
                     }
                 }
-                if (!weight_tensor) {
-                    // First call: allocate device tensor and upload weight.
-                    Tensor new_weight(sn.input_type_b.clone());
-                    if (ctx->device_opened) {
+                Tensor new_weight(sn.input_type_b.clone());
+                if (ctx->device_opened) {
+                    try {
                         new_weight.mallocOn(ctx->zg_device.defaultMemRegion());
                         new_weight.write(0, reinterpret_cast<char *>(host_w.data()), wbytes);
-                    } else {
+                    } catch (...) {
+                        ggml_fmsh_log_locked(ctx, 2, "qweight_cache_oom k=" + std::to_string(k) +
+                            " n=" + std::to_string(sn.n_this) +
+                            " resident=" + std::to_string(ctx->mul_mat_qweight_bytes_resident / (1024 * 1024)) + "MiB");
+                        new_weight = Tensor(sn.input_type_b.clone());
                         new_weight.mallocOn(HostDevice::MemRegion());
                         std::memcpy(new_weight.data().cptr(), host_w.data(), wbytes);
                     }
-                    sn.weights.push_back({0, std::move(new_weight)}); // key=0: shared
-                    weight_tensor = &sn.weights.back().tensor;
-                    ctx->mul_mat_qweight_bytes_resident += wbytes;
                 } else {
-                    // Subsequent calls: overwrite device tensor with current layer's weight.
-                    weight_tensor->write(0, reinterpret_cast<char *>(host_w.data()), wbytes);
+                    new_weight.mallocOn(HostDevice::MemRegion());
+                    std::memcpy(new_weight.data().cptr(), host_w.data(), wbytes);
                 }
-                // Debug: log src0 pointer and first weight value to verify correct weight.
-                {
-                    static std::atomic<int> s_w_log{8};
-                    if (s_w_log.fetch_sub(1, std::memory_order_relaxed) > 0) {
-                        ggml_fmsh_log_locked(ctx, 1, "qweight_w_sample src0=" +
-                            std::to_string(reinterpret_cast<uintptr_t>(src0->data)) +
-                            " k=" + std::to_string(k) + " n=" + std::to_string(sn.n_this) +
-                            " w[0]=" + std::to_string(host_w[0]) +
-                            " w[1]=" + std::to_string(host_w[1]));
-                    }
-                }
-            } // host_w freed here
+                sn.weights.push_back({w_key, std::move(new_weight)});
+                weight_tensor = &sn.weights.back().tensor;
+                ctx->mul_mat_qweight_bytes_resident += wbytes;
+                ggml_fmsh_log_locked(ctx, 1, "qweight_cache_miss src0=" +
+                    std::to_string(reinterpret_cast<uintptr_t>(src0->data)) +
+                    " k=" + std::to_string(k) + " n=" + std::to_string(sn.n_this) +
+                    " resident=" + std::to_string(ctx->mul_mat_qweight_bytes_resident / (1024 * 1024)) + "MiB");
+            } else {
+                ggml_fmsh_log_locked(ctx, 1, "qweight_cache_hit src0=" +
+                    std::to_string(reinterpret_cast<uintptr_t>(src0->data)) +
+                    " k=" + std::to_string(k) + " n=" + std::to_string(sn.n_this));
+            }
 
             // --- forward + scatter F32 output back into dst ---
             // With device-resident weight (bound at session creation), forward() is
@@ -4397,12 +4397,14 @@ static bool ggml_fmsh_execute_mul_mat(
                             }
                         }
                     }
-                    std::string sync_err;
-                    if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "mul_mat_readback", &sync_err)) {
-                        if (err) *err = sync_err;
-                        return false;
-                    }
                 }
+            }
+        }
+        if (write_host_output) {
+            std::string sync_err;
+            if (!ggml_fmsh_sync_zg_staging_to_device(ctx, node, "mul_mat_readback", &sync_err)) {
+                if (err) *err = sync_err;
+                return false;
             }
         }
         return true;
