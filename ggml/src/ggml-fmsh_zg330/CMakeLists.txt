@@ -20,6 +20,13 @@ find_package(icraft-zg330backend REQUIRED)
 
 ggml_add_backend_library(${TARGET_NAME}
                          ggml-fmsh-zg330.cpp
+                         ggml-fmsh-zg330-utils.cpp
+                         ggml-fmsh-zg330-matmul.cpp
+                         ggml-fmsh-zg330-elementwise.cpp
+                         ggml-fmsh-zg330-flash-attn.cpp
+                         ggml-fmsh-zg330-graph.cpp
+                         ggml-fmsh-zg330-backend.cpp
+                         ggml-fmsh-zg330-internal.h
                          ggml-fmsh-zg330-netmake.cpp
                          ggml-fmsh-zg330-netmake.h
                          ../../include/ggml-fmsh-zg330.h)

@@ -147,3 +147,4 @@ poetry.toml
 a.out.*
 
 /icraft_include
+/rmsnorm_cpp_demo
