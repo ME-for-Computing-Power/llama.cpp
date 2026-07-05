@@ -288,6 +288,13 @@ onnx.save(model, out_path)
     run_system_checked(cmd);
 }
 
+static IcraftArtifacts write_icraft_compile_toml_generic(
+    const std::filesystem::path & work_dir,
+    const std::string & net_name,
+    const std::filesystem::path & onnx_path,
+    const std::vector<std::vector<int64_t>> & input_shapes,
+    const std::string & qdtype);
+
 static IcraftArtifacts write_icraft_compile_toml_for_zg_matmul(
     const std::filesystem::path & work_dir,
     const std::string & net_name,
@@ -295,72 +302,15 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_matmul(
     int64_t m,
     int64_t k,
     int64_t n) {
-    (void) n;
-    ensure_dir(work_dir);
-
-    const std::filesystem::path toml_path = work_dir / (net_name + ".toml");
-    const std::string jr = "./.cache/" + net_name + "_ZG/";
-
-    const auto parsed_json = jr + net_name + "_parsed.json";
-    const auto parsed_raw  = jr + net_name + "_parsed.raw";
-    const auto opt_json    = jr + net_name + "_optimized.json";
-    const auto opt_raw     = jr + net_name + "_optimized.raw";
-    const auto quant_json  = jr + net_name + "_quantized.json";
-    const auto quant_raw   = jr + net_name + "_quantized.raw";
-    const auto adap_json   = jr + net_name + "_adapted.json";
-    const auto adap_raw    = jr + net_name + "_adapted.raw";
-
-    std::ofstream ofs(toml_path);
-    if (!ofs) {
-        throw std::runtime_error("failed to write toml: " + toml_path.string());
-    }
-
-    ofs << "[parse]\n"
-        << "net_name = " << quote_for_toml(net_name) << "\n"
-        << "framework = \"Onnx\"\n"
-        << "network = " << quote_for_toml(onnx_path.filename().string()) << "\n"
-        << "jr_path = " << quote_for_toml(jr) << "\n"
-        << "target = \"zhuge\"\n"
-        << "inputs = [[" << m << "," << k << "],[" << k << "," << n << "]]\n"
-        << "inputs_layout = \"FD;FD\"\n"
-        << "inputs_dtype = \"fp32;fp32\"\n"
-        << "pre_method = \"nop;nop\"\n"
-        << "pre_mean = \"nop;nop\"\n"
-        << "pre_scale = \"nop;nop\"\n"
-        << "channel_swap = \"nop;nop\"\n\n"
-        << "[optimize]\n"
-        << "json = " << quote_for_toml(parsed_json) << "\n"
-        << "raw = " << quote_for_toml(parsed_raw) << "\n"
-        << "jr_path = " << quote_for_toml(jr) << "\n\n"
-        << "[quantize]\n"
-        << "json = " << quote_for_toml(opt_json) << "\n"
-        << "raw = " << quote_for_toml(opt_raw) << "\n"
-        << "jr_path = " << quote_for_toml(jr) << "\n"
-        << "target = \"zhuge\"\n"
-        << "qdtype = \"tf32\"\n"
-        << "forward_mode = \"image\"\n\n"
-        << "[adapt]\n"
-        << "json = " << quote_for_toml(quant_json) << "\n"
-        << "raw = " << quote_for_toml(quant_raw) << "\n"
-        << "jr_path = " << quote_for_toml(jr) << "\n\n"
-        << "[generate]\n"
-        << "json = " << quote_for_toml(adap_json) << "\n"
-        << "raw = " << quote_for_toml(adap_raw) << "\n"
-        << "jr_path = " << quote_for_toml(jr) << "\n";
-
-    IcraftArtifacts a;
-    a.work_dir = work_dir;
-    a.toml_path = toml_path;
-    a.json_path = work_dir / ".cache" / (net_name + "_ZG.json");
-    a.raw_path  = work_dir / ".cache" / (net_name + "_ZG.raw");
-    return a;
+    return write_icraft_compile_toml_generic(work_dir, net_name, onnx_path, {{m, k}, {k, n}}, "tf32");
 }
 
-static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
+static IcraftArtifacts write_icraft_compile_toml_generic(
     const std::filesystem::path & work_dir,
     const std::string & net_name,
     const std::filesystem::path & onnx_path,
-    const std::vector<std::vector<int64_t>> & input_shapes) {
+    const std::vector<std::vector<int64_t>> & input_shapes,
+    const std::string & qdtype) {
     ensure_dir(work_dir);
 
     const std::filesystem::path toml_path = work_dir / (net_name + ".toml");
@@ -429,7 +379,7 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
         << "raw = " << quote_for_toml(opt_raw) << "\n"
         << "jr_path = " << quote_for_toml(jr) << "\n"
         << "target = \"zhuge\"\n"
-        << "qdtype = \"tf32\"\n"
+        << "qdtype = " << quote_for_toml(qdtype) << "\n"
         << "forward_mode = \"image\"\n\n"
         << "[adapt]\n"
         << "json = " << quote_for_toml(quant_json) << "\n"
@@ -448,6 +398,14 @@ static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
     return a;
 }
 
+static IcraftArtifacts write_icraft_compile_toml_for_zg_elementwise(
+    const std::filesystem::path & work_dir,
+    const std::string & net_name,
+    const std::filesystem::path & onnx_path,
+    const std::vector<std::vector<int64_t>> & input_shapes) {
+    return write_icraft_compile_toml_generic(work_dir, net_name, onnx_path, input_shapes, "tf32");
+}
+
 static void run_icraft_compile(const IcraftArtifacts & artifacts) {
     const std::string cmd =
         "cd " + quote_for_sh(artifacts.work_dir.string()) +
@@ -455,7 +413,9 @@ static void run_icraft_compile(const IcraftArtifacts & artifacts) {
     run_system_checked(cmd);
 }
 
-static std::pair<std::filesystem::path, std::filesystem::path> find_generated_zg_json_raw(
+} // namespace
+
+std::pair<std::filesystem::path, std::filesystem::path> find_generated_zg_json_raw(
     const std::filesystem::path & work_dir,
     const std::string & net_name) {
     const std::filesystem::path cache_root = work_dir / ".cache";
@@ -486,8 +446,6 @@ static std::pair<std::filesystem::path, std::filesystem::path> find_generated_zg
 
     throw std::runtime_error("cannot find generated *_ZG.json/raw under: " + cache_root.string());
 }
-
-} // namespace
 
 void preload_matmul_zg_cache(const std::filesystem::path & work_root) {
     ensure_dir(work_root);
@@ -706,6 +664,40 @@ ElementwiseZgNetworkBundle get_or_compile_elementwise_zg_network(
     out.network = std::move(network);
     out.ram_cache_hit = false;
     out.compiled_now = true;
+    return out;
+}
+
+ConstMatmulZgNetworkBundle load_prebaked_const_matmul_zg_network(
+    const std::filesystem::path & work_root,
+    int64_t m,
+    int64_t k,
+    int64_t n,
+    const std::string & net_name_prefix) {
+    ConstMatmulZgNetworkBundle out;
+    if (m <= 0 || k <= 0 || n <= 0 || net_name_prefix.empty()) {
+        return out;
+    }
+
+    const auto root_abs = std::filesystem::weakly_canonical(work_root);
+    const std::string net_name =
+        net_name_prefix + "_" + std::to_string(m) + "x" + std::to_string(k) + "x" + std::to_string(n);
+    const std::filesystem::path work_dir = root_abs / net_name;
+
+    try {
+        auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
+        auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
+        // Lazy load: only the small activation crosses host RAM per call; the
+        // (potentially multi-hundred-MB) baked weight is not fully materialized
+        // on the host here. `Session::apply()` still deploys it to device memory.
+        network.lazyLoadParamsFromFile(raw_path.string());
+
+        out.net_name = net_name;
+        out.network = std::move(network);
+        out.raw_path = raw_path;
+        out.found = true;
+    } catch (...) {
+        out.found = false;
+    }
     return out;
 }
 

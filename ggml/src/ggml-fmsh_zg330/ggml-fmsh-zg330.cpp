@@ -86,6 +86,23 @@ struct ggml_fmsh_zg330_elementwise_session_entry {
     std::vector<Tensor> input_tensors;
 };
 
+// Single, dedicated, never-evicted session for the LM-head/unembedding constant
+// matmul. Deliberately not a cache/map entry: there is exactly one such session
+// for the process lifetime (see zg330-unembedding-velvety-bonbon.md "Session
+// storage" decision) — a bucket/multi-shape design was explicitly rejected.
+struct ggml_fmsh_zg330_unembed_session_entry {
+    bool usable = false; // true once bundle found + Session created + apply() succeeded
+    int64_t m = 0;
+    int64_t k = 0;
+    int64_t n = 0;
+    ggml::fmsh::netmake::ConstMatmulZgNetworkBundle bundle;
+    Session session;
+    TensorType input_type_a;
+    Tensor input_tensor_a;
+    bool input_tensor_a_ready = false;
+    uint64_t raw_file_bytes = 0;
+};
+
 struct ggml_backend_fmsh_zg330_context {
     ggml_backend_t cpu_backend = nullptr;
 
@@ -98,6 +115,25 @@ struct ggml_backend_fmsh_zg330_context {
     bool offload_cpy_dup = false;
     bool offload_soft_max = false;
     bool offload_rms_norm = false;
+    bool disable_elementwise = false;
+
+    bool offload_unembed = false;
+    int64_t unembed_m = 1;
+    std::filesystem::path unembed_cache_dir;
+    std::string unembed_tensor_name_override;
+    std::unique_ptr<ggml_fmsh_zg330_unembed_session_entry> unembed_session;
+
+    struct unembed_stage_perf {
+        uint64_t calls = 0;
+        uint64_t exact_m_hits = 0;
+        uint64_t fallback_not_baked = 0;
+        uint64_t fallback_m_mismatch = 0;
+        double gather_ms = 0.0;
+        double device_memcpy_ms = 0.0;
+        double device_hard_ms = 0.0;
+        double unpack_ms = 0.0;
+        double total_ms = 0.0;
+    } unembed_perf;
 
     std::filesystem::path cache_dir;
     std::filesystem::path log_file;
@@ -332,6 +368,13 @@ static bool ggml_fmsh_map_elementwise_op(
     }
 }
 
+// Identifies the LM-head/unembedding constant matmul (e.g. `token_embd.weight`
+// tied embedding). Reads its own env vars directly (not via ctx) because the
+// device-level `supports_op` callback below has no ggml_backend_fmsh_zg330_context
+// available; the same predicate is reused, unchanged, from graph_compute where a
+// ctx does exist, so both call sites stay consistent by construction.
+static bool ggml_fmsh_is_lm_head_mul_mat(const ggml_tensor * node);
+
 static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     if (ggml_fmsh_is_meta_op(op)) {
         return true;
@@ -348,6 +391,10 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
     if (op->src[0] == nullptr || op->src[1] == nullptr) {
         return false;
     }
+    if (ggml_fmsh_is_lm_head_mul_mat(op)) {
+        // Bypass the F32-only rejection below for this one identified, quantized-weight op.
+        return op->type == GGML_TYPE_F32 && op->src[1]->type == GGML_TYPE_F32;
+    }
     if (op->type != GGML_TYPE_F32 || op->src[0]->type != GGML_TYPE_F32 || op->src[1]->type != GGML_TYPE_F32) {
         return false;
     }
@@ -357,6 +404,14 @@ static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
 static bool ggml_fmsh_should_run_elementwise_zg(
     const ggml_backend_fmsh_zg330_context * ctx,
     const ggml_tensor * op) {
+    // Diagnostic-only escape hatch (default off, no effect on normal behavior):
+    // this branch has no pre-baked ADD/MUL/SCALE net cache yet on some hosts,
+    // and compile-on-miss is retried on every single occurrence with no
+    // negative-caching, which is prohibitively slow on ARM (which cannot
+    // icraft compile at all). Set to force all elementwise ops to CPU.
+    if (ctx->disable_elementwise) {
+        return false;
+    }
     if (op->op == GGML_OP_SOFT_MAX) {
         return ctx->offload_soft_max;
     }
@@ -395,6 +450,36 @@ static bool ggml_fmsh_can_run_mul_mat_zg(const ggml_tensor * node) {
         return false;
     }
     return ggml_is_contiguous(src0) && ggml_is_contiguous(src1) && ggml_is_contiguous(node);
+}
+
+static bool ggml_fmsh_is_lm_head_mul_mat(const ggml_tensor * node) {
+    if (node == nullptr || node->op != GGML_OP_MUL_MAT) {
+        return false;
+    }
+    if (!ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_UNEMBED", false)) {
+        return false;
+    }
+    const ggml_tensor * src0 = node->src[0];
+    const ggml_tensor * src1 = node->src[1];
+    if (src0 == nullptr || src1 == nullptr) {
+        return false;
+    }
+    // Leaf weight: not a view, not the output of another op (matches a GGUF-loaded tensor).
+    if (src0->op != GGML_OP_NONE || src0->view_src != nullptr) {
+        return false;
+    }
+    if (!ggml_is_quantized(src0->type)) {
+        return false;
+    }
+    const char * name = ggml_get_name(src0);
+    if (name == nullptr || name[0] == '\0') {
+        return false;
+    }
+    const char * override_name = std::getenv("GGML_FMSH_ZG330_UNEMBED_TENSOR_NAME");
+    if (override_name != nullptr && override_name[0] != '\0') {
+        return std::strcmp(name, override_name) == 0;
+    }
+    return std::strcmp(name, "token_embd.weight") == 0 || std::strcmp(name, "output.weight") == 0;
 }
 
 static std::string ggml_fmsh_get_device_url() {
@@ -666,6 +751,165 @@ static ggml_fmsh_zg330_elementwise_session_entry * ggml_fmsh_get_or_create_eleme
             *err = e.what();
         }
         return nullptr;
+    }
+}
+
+// Load-only: creates the single, process-lifetime unembed session on first call.
+// Never compiles. Fails soft (returns nullptr, sets *err) if the pre-baked artifact
+// for (m,k,n) is missing or the device/session setup throws — callers must CPU-fallback.
+// Subsequent calls (regardless of outcome) just return the cached result, so a missing
+// artifact is only ever looked up once per process.
+static ggml_fmsh_zg330_unembed_session_entry * ggml_fmsh_get_or_create_unembed_session(
+    ggml_backend_fmsh_zg330_context * ctx,
+    int64_t m,
+    int64_t k,
+    int64_t n,
+    std::string * err) {
+    if (ctx->unembed_session) {
+        if (!ctx->unembed_session->usable && err) {
+            *err = "unembed prebaked network unavailable (checked once, cached miss)";
+        }
+        return ctx->unembed_session->usable ? ctx->unembed_session.get() : nullptr;
+    }
+
+    auto entry = std::make_unique<ggml_fmsh_zg330_unembed_session_entry>();
+    entry->m = m;
+    entry->k = k;
+    entry->n = n;
+
+    try {
+        entry->bundle = ggml::fmsh::netmake::load_prebaked_const_matmul_zg_network(
+            ctx->unembed_cache_dir, m, k, n, "unembed");
+        if (!entry->bundle.found) {
+            if (err) {
+                *err = "prebaked unembed network not found for shape " +
+                       std::to_string(m) + "x" + std::to_string(k) + "x" + std::to_string(n) +
+                       " under " + ctx->unembed_cache_dir.string();
+            }
+            ctx->unembed_session = std::move(entry);
+            return nullptr;
+        }
+
+        if (!ggml_fmsh_open_device_if_needed(ctx, err)) {
+            ctx->unembed_session = std::move(entry);
+            return nullptr;
+        }
+
+        Session session = Session::Create<zg330::ZG330Backend, HostBackend>(
+            entry->bundle.network.view(0), {ctx->zg_device, HostDevice::Default()});
+        session.enableTimeProfile(true);
+        session.apply();
+
+        entry->session = std::move(session);
+        entry->input_type_a = entry->bundle.network.inputs()[0].tensorType().clone();
+
+        std::error_code ec;
+        const auto raw_bytes = std::filesystem::file_size(entry->bundle.raw_path, ec);
+        entry->raw_file_bytes = ec ? 0 : static_cast<uint64_t>(raw_bytes);
+        entry->usable = true;
+
+        ggml_fmsh_zg330_unembed_session_entry * ptr = entry.get();
+        ctx->unembed_session = std::move(entry);
+        return ptr;
+    } catch (const std::exception & e) {
+        if (err) {
+            *err = e.what();
+        }
+        ctx->unembed_session = std::move(entry);
+        return nullptr;
+    }
+}
+
+// Executes the LM-head constant matmul on the already-created, exact-shape-matched
+// unembed session. Packs src1's M rows (gather_ms), issues exactly one
+// session.forward({input_a}) call, reads back M*n floats (unpack_ms). Device
+// memcpy/hard time comes from session.timeProfileResults() — the only confirmed
+// timing surface icraft exposes.
+static bool ggml_fmsh_execute_unembed(
+    ggml_backend_fmsh_zg330_context * ctx,
+    ggml_tensor * node,
+    ggml_fmsh_zg330_unembed_session_entry * entry,
+    std::string * err) {
+    const ggml_tensor * src1 = node->src[1];
+    if (!src1 || src1->data == nullptr || node->data == nullptr) {
+        if (err) *err = "unembed tensor data is null";
+        return false;
+    }
+    try {
+        if (!entry->input_tensor_a_ready) {
+            entry->input_tensor_a = Tensor(entry->input_type_a.clone());
+            entry->input_tensor_a.mallocOn(HostDevice::MemRegion());
+            entry->input_tensor_a_ready = true;
+        }
+
+        const auto tg0 = std::chrono::high_resolution_clock::now();
+        float * a_dst = reinterpret_cast<float *>(entry->input_tensor_a.data().cptr());
+        for (int64_t row = 0; row < entry->m; ++row) {
+            const char * a_src_row = static_cast<const char *>(src1->data) + row * src1->nb[1];
+            float * a_row_dst = a_dst + row * entry->k;
+            if (src1->nb[0] == static_cast<size_t>(sizeof(float))) {
+                std::memcpy(a_row_dst, a_src_row, static_cast<size_t>(entry->k * sizeof(float)));
+            } else {
+                for (int64_t col = 0; col < entry->k; ++col) {
+                    float v = 0.0f;
+                    std::memcpy(&v, a_src_row + col * src1->nb[0], sizeof(float));
+                    a_row_dst[col] = v;
+                }
+            }
+        }
+        const auto tg1 = std::chrono::high_resolution_clock::now();
+
+        auto outputs = entry->session.forward({entry->input_tensor_a});
+        if (outputs.empty()) {
+            if (err) *err = "unembed session.forward returned empty output";
+            return false;
+        }
+
+        const auto tu0 = std::chrono::high_resolution_clock::now();
+        const size_t out_elems = static_cast<size_t>(entry->m * entry->n);
+        std::vector<float> out_tmp(out_elems);
+        outputs[0].read(reinterpret_cast<char *>(out_tmp.data()), 0, out_elems * sizeof(float));
+        for (int64_t row = 0; row < entry->m; ++row) {
+            char * dst_row = static_cast<char *>(node->data) + row * node->nb[1];
+            const float * src_row = out_tmp.data() + row * entry->n;
+            if (node->nb[0] == static_cast<size_t>(sizeof(float))) {
+                std::memcpy(dst_row, src_row, static_cast<size_t>(entry->n * sizeof(float)));
+            } else {
+                for (int64_t col = 0; col < entry->n; ++col) {
+                    std::memcpy(dst_row + col * node->nb[0], &src_row[col], sizeof(float));
+                }
+            }
+        }
+        const auto tu1 = std::chrono::high_resolution_clock::now();
+
+        const double gather_ms = std::chrono::duration<double, std::milli>(tg1 - tg0).count();
+        const double unpack_ms = std::chrono::duration<double, std::milli>(tu1 - tu0).count();
+
+        double device_memcpy_ms = 0.0;
+        double device_hard_ms = 0.0;
+        for (const auto & kv : entry->session.timeProfileResults()) {
+            device_memcpy_ms += std::get<1>(kv.second);
+            device_hard_ms += std::get<2>(kv.second);
+        }
+
+        auto & p = ctx->unembed_perf;
+        p.exact_m_hits++;
+        p.gather_ms += gather_ms;
+        p.unpack_ms += unpack_ms;
+        p.device_memcpy_ms += device_memcpy_ms;
+        p.device_hard_ms += device_hard_ms;
+
+        ggml_fmsh_log_locked(
+            ctx, 0,
+            "unembed_dispatch m_actual=" + std::to_string(entry->m) + " matched=true" +
+            " gather_ms=" + std::to_string(gather_ms) +
+            " device_memcpy_ms=" + std::to_string(device_memcpy_ms) +
+            " device_hard_ms=" + std::to_string(device_hard_ms) +
+            " unpack_ms=" + std::to_string(unpack_ms));
+        return true;
+    } catch (const std::exception & e) {
+        if (err) *err = e.what();
+        return false;
     }
 }
 
@@ -1468,6 +1712,28 @@ static void ggml_backend_fmsh_zg330_free(ggml_backend_t backend) {
             " batched_hit_rate_pct=" + std::to_string(bmm_hit) +
             " chained_input_hits=" + std::to_string(ctx->mul_mat_device_input_chain) +
             " memcpy_ratio_pct=" + std::to_string(memcpy_ratio));
+        if (ctx->offload_unembed) {
+            const auto & up = ctx->unembed_perf;
+            const auto avg = [](double sum, uint64_t n) { return n > 0 ? sum / static_cast<double>(n) : 0.0; };
+            ggml_fmsh_log_locked(
+                ctx, 1,
+                "unembed_stage_summary calls=" + std::to_string(up.calls) +
+                " exact_m_hits=" + std::to_string(up.exact_m_hits) +
+                " avg_gather_ms=" + std::to_string(avg(up.gather_ms, up.exact_m_hits)) +
+                " avg_device_memcpy_ms=" + std::to_string(avg(up.device_memcpy_ms, up.exact_m_hits)) +
+                " avg_device_hard_ms=" + std::to_string(avg(up.device_hard_ms, up.exact_m_hits)) +
+                " avg_unpack_ms=" + std::to_string(avg(up.unpack_ms, up.exact_m_hits)) +
+                " avg_total_ms=" + std::to_string(avg(up.total_ms, up.exact_m_hits)) +
+                " fallback_not_baked=" + std::to_string(up.fallback_not_baked) +
+                " fallback_m_mismatch=" + std::to_string(up.fallback_m_mismatch));
+            if (ctx->unembed_session && ctx->unembed_session->usable) {
+                // Device-side artifact size, a documented proxy for on-device residency —
+                // real host-RAM verification is external (see arm_test.sh VmRSS gate).
+                ggml_fmsh_log_locked(
+                    ctx, 1,
+                    "resident_summary raw_file_bytes=" + std::to_string(ctx->unembed_session->raw_file_bytes));
+            }
+        }
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
         ggml_fmsh_log_locked(
             ctx, 1,
@@ -1594,6 +1860,74 @@ static enum ggml_status ggml_backend_fmsh_zg330_graph_compute(ggml_backend_t bac
             if (ggml_fmsh_is_batched_mul_mat(node)) {
                 ctx->batched_mul_mat_total++;
             }
+
+            if (ggml_fmsh_is_lm_head_mul_mat(node)) {
+                ctx->unembed_perf.calls++;
+                const auto tu0 = std::chrono::high_resolution_clock::now();
+                const ggml_tensor * src0u = node->src[0];
+                const ggml_tensor * src1u = node->src[1];
+                std::string uerr;
+                bool uok = false;
+                if (src0u == nullptr || src1u == nullptr || node->type != GGML_TYPE_F32 || src1u->type != GGML_TYPE_F32) {
+                    uerr = "unembed: unsupported dtype";
+                } else if (src0u->ne[2] != 1 || src0u->ne[3] != 1 || src1u->ne[2] != 1 || src1u->ne[3] != 1) {
+                    uerr = "unembed: batched shapes unsupported (single fixed [m,k]->[m,n] session only)";
+                } else if (!ggml_is_contiguous(src1u) || !ggml_is_contiguous(node)) {
+                    uerr = "unembed: non-contiguous src1/dst unsupported";
+                } else {
+                    const int64_t k = src0u->ne[0];
+                    const int64_t n = src0u->ne[1];
+                    const int64_t m_actual = src1u->ne[1];
+                    ggml_fmsh_zg330_unembed_session_entry * uentry =
+                        ggml_fmsh_get_or_create_unembed_session(ctx, ctx->unembed_m, k, n, &uerr);
+                    if (!uentry) {
+                        ctx->unembed_perf.fallback_not_baked++;
+                    } else if (m_actual != uentry->m) {
+                        ctx->unembed_perf.fallback_m_mismatch++;
+                        uerr = "unembed: m_actual(" + std::to_string(m_actual) + ") != unembed_m(" +
+                               std::to_string(uentry->m) + ")";
+                        ggml_fmsh_log_locked(
+                            ctx, 1, "unembed_dispatch m_actual=" + std::to_string(m_actual) + " matched=false");
+                    } else {
+                        uok = ggml_fmsh_execute_unembed(ctx, node, uentry, &uerr);
+                        if (!uok) {
+                            ctx->unembed_perf.fallback_m_mismatch++;
+                        }
+                    }
+                }
+
+                if (uok) {
+                    const auto tu1 = std::chrono::high_resolution_clock::now();
+                    ctx->unembed_perf.total_ms += std::chrono::duration<double, std::milli>(tu1 - tu0).count();
+                    ctx->mul_mat_offloaded++;
+                    has_prev_device_output = false;
+                    prev_device_output_node = nullptr;
+                    device_tensor_map.erase(node);
+                    last_dispatched_valid = true;
+                    last_dispatched_zg = true;
+                    continue;
+                }
+
+                // Per design: any miss here (not baked, m mismatch, forward() exception, ...) is a
+                // soft CPU fallback for this single node — this op isn't routed to FMSH at all when
+                // GGML_FMSH_ZG330_OFFLOAD_UNEMBED is off, so a graceful miss is strictly safer than a
+                // new hard-failure surface for the whole graph.
+                ggml_fmsh_log_locked(ctx, 1, "fallback op=MUL_MAT(unembed) reason=" + uerr);
+                ggml_fmsh_materialize_if_device(ctx, node->src[0], device_tensor_map);
+                ggml_fmsh_materialize_if_device(ctx, node->src[1], device_tensor_map);
+                const enum ggml_status ust = ggml_fmsh_compute_cpu_node(ctx, cgraph, i);
+                if (ust != GGML_STATUS_SUCCESS) {
+                    return ust;
+                }
+                ctx->mul_mat_fallback++;
+                has_prev_device_output = false;
+                prev_device_output_node = nullptr;
+                device_tensor_map.erase(node);
+                last_dispatched_valid = true;
+                last_dispatched_zg = false;
+                continue;
+            }
+
             if (!ggml_fmsh_can_run_mul_mat_zg(node)) {
                 ggml_fmsh_log_locked(
                     ctx, 3,
@@ -1974,6 +2308,7 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
     ctx->offload_cpy_dup = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_CPY_DUP", false);
     ctx->offload_soft_max = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_SOFT_MAX", false);
     ctx->offload_rms_norm = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_RMS_NORM", false);
+    ctx->disable_elementwise = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DISABLE_ELEMENTWISE", false);
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
     ctx->debug_compare = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_DEBUG_COMPARE", true);
     ctx->debug_compare_atol = ggml_fmsh_get_env_double("GGML_FMSH_ZG330_DEBUG_COMPARE_ATOL", 1e-4);
@@ -1987,6 +2322,19 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
     std::error_code ec;
     std::filesystem::create_directories(ctx->cache_dir, ec);
     ctx->log_file = ctx->cache_dir / "backend.log";
+
+    ctx->offload_unembed = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_OFFLOAD_UNEMBED", false);
+    ctx->unembed_m = static_cast<int64_t>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_UNEMBED_M", 1));
+    {
+        const char * unembed_cache_dir = std::getenv("GGML_FMSH_ZG330_UNEMBED_CACHE_DIR");
+        ctx->unembed_cache_dir = unembed_cache_dir && unembed_cache_dir[0]
+            ? std::filesystem::path(unembed_cache_dir)
+            : ctx->cache_dir;
+    }
+    {
+        const char * unembed_tensor_name = std::getenv("GGML_FMSH_ZG330_UNEMBED_TENSOR_NAME");
+        ctx->unembed_tensor_name_override = unembed_tensor_name && unembed_tensor_name[0] ? unembed_tensor_name : "";
+    }
 
 
 
@@ -2022,6 +2370,10 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
             " offload_cpy_dup=" + std::to_string(ctx->offload_cpy_dup ? 1 : 0) +
             " offload_soft_max=" + std::to_string(ctx->offload_soft_max ? 1 : 0) +
             " offload_rms_norm=" + std::to_string(ctx->offload_rms_norm ? 1 : 0) +
+            " offload_unembed=" + std::to_string(ctx->offload_unembed ? 1 : 0) +
+            " unembed_m=" + std::to_string(ctx->unembed_m) +
+            " unembed_cache_dir=" + ctx->unembed_cache_dir.string() +
+            " unembed_tensor_name_override=" + (ctx->unembed_tensor_name_override.empty() ? "(default)" : ctx->unembed_tensor_name_override) +
 #ifdef GGML_FMSH_ZG330_DEBUG_COMPARE
             " debug_compare=" + std::to_string(ctx->debug_compare ? 1 : 0) +
             " debug_compare_atol=" + std::to_string(ctx->debug_compare_atol) +
