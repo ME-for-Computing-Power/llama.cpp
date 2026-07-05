@@ -23,6 +23,7 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
@@ -105,6 +106,15 @@ struct ggml_fmsh_zg330_unembed_session_entry {
 
 struct ggml_backend_fmsh_zg330_context {
     ggml_backend_t cpu_backend = nullptr;
+    // cpu_backend is a private ggml_backend_cpu_init() instance, separate from
+    // llama_context's own backend_cpu. llama_context::graph_compute() attaches
+    // its multi-threaded threadpool only to its own backend_cpu on every call;
+    // it never touches this one. The only other path (ggml_backend_set_n_threads
+    // via llama_set_n_threads()) is only ever called by llama-bench, not
+    // llama-cli. Left unconfigured, cpu_backend runs every intercepted node
+    // (i.e. almost the whole graph) single-threaded. Set explicitly at backend
+    // creation instead of relying on either of those paths.
+    int n_cpu_threads = 0;
 
     std::unordered_map<std::string, std::unique_ptr<ggml_fmsh_zg330_session_entry>> session_cache;
     std::unordered_map<ggml_fmsh_zg330_op_signature, std::unique_ptr<ggml_fmsh_zg330_elementwise_session_entry>, ggml_fmsh_zg330_op_signature_hash> elementwise_session_cache;
@@ -376,29 +386,23 @@ static bool ggml_fmsh_map_elementwise_op(
 static bool ggml_fmsh_is_lm_head_mul_mat(const ggml_tensor * node);
 
 static bool ggml_fmsh_is_supported_op(const ggml_tensor * op) {
-    if (ggml_fmsh_is_meta_op(op)) {
-        return true;
-    }
-    if (ggml_fmsh_is_elementwise_zg_op(op)) {
-        return true;
-    }
-    if (ggml_fmsh_is_host_dispatch_op(op)) {
-        return true;
-    }
+    // This backend is scoped to exactly one op: the LM-head/unembedding const
+    // matmul. Every other op (including the meta/elementwise/host-dispatch ops
+    // this backend used to also claim) returns unsupported here, so ggml's
+    // scheduler assigns them to its own backend_cpu directly instead of
+    // routing them through this backend's private, per-node cpu_backend
+    // round trip (see ggml_fmsh_compute_cpu_node) — that per-node dispatch
+    // paid a full threadpool sync for every tiny op with no benefit.
     if (op->op != GGML_OP_MUL_MAT) {
         return false;
     }
     if (op->src[0] == nullptr || op->src[1] == nullptr) {
         return false;
     }
-    if (ggml_fmsh_is_lm_head_mul_mat(op)) {
-        // Bypass the F32-only rejection below for this one identified, quantized-weight op.
-        return op->type == GGML_TYPE_F32 && op->src[1]->type == GGML_TYPE_F32;
-    }
-    if (op->type != GGML_TYPE_F32 || op->src[0]->type != GGML_TYPE_F32 || op->src[1]->type != GGML_TYPE_F32) {
+    if (!ggml_fmsh_is_lm_head_mul_mat(op)) {
         return false;
     }
-    return ggml_is_contiguous(op->src[0]) && ggml_is_contiguous(op->src[1]) && ggml_is_contiguous(op);
+    return op->type == GGML_TYPE_F32 && op->src[1]->type == GGML_TYPE_F32;
 }
 
 static bool ggml_fmsh_should_run_elementwise_zg(
@@ -2302,6 +2306,16 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
         return nullptr;
     }
 
+    {
+        unsigned hw = std::thread::hardware_concurrency();
+        uint64_t default_threads = hw > 0 ? (hw <= 4 ? hw : hw / 2) : 4;
+        ctx->n_cpu_threads = static_cast<int>(ggml_fmsh_get_env_u64("GGML_FMSH_ZG330_CPU_THREADS", default_threads));
+        if (ctx->n_cpu_threads < 1) {
+            ctx->n_cpu_threads = 1;
+        }
+        ggml_backend_cpu_set_n_threads(ctx->cpu_backend, ctx->n_cpu_threads);
+    }
+
     ctx->strict_mode = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_STRICT", false);
     ctx->enable_log = ggml_fmsh_get_env_bool("GGML_FMSH_ZG330_LOG", true);
     ctx->log_level = ggml_fmsh_get_log_level();
@@ -2367,6 +2381,7 @@ static ggml_backend_t ggml_backend_fmsh_zg330_init_impl(void) {
             ctx, 1,
             "backend init strict=" + std::to_string(ctx->strict_mode ? 1 : 0) +
             " log_level=" + std::to_string(ctx->log_level) +
+            " n_cpu_threads=" + std::to_string(ctx->n_cpu_threads) +
             " offload_cpy_dup=" + std::to_string(ctx->offload_cpy_dup ? 1 : 0) +
             " offload_soft_max=" + std::to_string(ctx->offload_soft_max ? 1 : 0) +
             " offload_rms_norm=" + std::to_string(ctx->offload_rms_norm ? 1 : 0) +
