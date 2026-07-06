@@ -7,6 +7,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 namespace ggml::fmsh::netmake {
 
 namespace {
@@ -683,22 +688,109 @@ ConstMatmulZgNetworkBundle load_prebaked_const_matmul_zg_network(
         net_name_prefix + "_" + std::to_string(m) + "x" + std::to_string(k) + "x" + std::to_string(n);
     const std::filesystem::path work_dir = root_abs / net_name;
 
+    // Map the raw params file ourselves (instead of Network::lazyLoadParamsFromFile,
+    // which opens/mmaps internally and never exposes the pointer) so that after
+    // Session::apply() has copied the weight into device PLDDR, we can
+    // madvise(MADV_DONTNEED) this specific mapping and evict it from the host page
+    // cache — see evict_prebaked_const_matmul_host_cache(). The Network object still
+    // owns unmapping it at destruction time (its dtor calls munmap on this pointer).
+    int fd = -1;
+    void * addr = MAP_FAILED;
+    uint64_t file_size = 0;
     try {
         auto [json_path, raw_path] = find_generated_zg_json_raw(work_dir, net_name);
         auto network = icraft::xir::Network::CreateFromJsonFile(json_path.string());
-        // Lazy load: only the small activation crosses host RAM per call; the
-        // (potentially multi-hundred-MB) baked weight is not fully materialized
-        // on the host here. `Session::apply()` still deploys it to device memory.
-        network.lazyLoadParamsFromFile(raw_path.string());
+
+        fd = ::open(raw_path.string().c_str(), O_RDONLY);
+        if (fd < 0) {
+            throw std::runtime_error("failed to open raw params file: " + raw_path.string());
+        }
+        struct stat st{};
+        if (::fstat(fd, &st) != 0 || st.st_size <= 0) {
+            throw std::runtime_error("failed to stat raw params file: " + raw_path.string());
+        }
+        file_size = static_cast<uint64_t>(st.st_size);
+
+        addr = ::mmap(nullptr, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
+        if (addr == MAP_FAILED) {
+            throw std::runtime_error("mmap failed for raw params file: " + raw_path.string());
+        }
+        // fd is no longer needed once mmap'd; the mapping keeps the file alive.
+        ::close(fd);
+        fd = -1;
+
+        network.lazyLoadParams(static_cast<char *>(addr), file_size, /*calc_md5=*/false);
 
         out.net_name = net_name;
         out.network = std::move(network);
         out.raw_path = raw_path;
+        out.mmap_addr = addr;
+        out.mmap_size = file_size;
         out.found = true;
     } catch (...) {
+        if (addr != MAP_FAILED && addr != nullptr) {
+            ::munmap(addr, file_size);
+        }
+        if (fd >= 0) {
+            ::close(fd);
+        }
+        out = ConstMatmulZgNetworkBundle{};
         out.found = false;
     }
     return out;
+}
+
+bool evict_prebaked_const_matmul_host_cache(ConstMatmulZgNetworkBundle & bundle) {
+    if (bundle.mmap_addr == nullptr || bundle.mmap_size == 0) {
+        return false;
+    }
+    const int rc = ::madvise(bundle.mmap_addr, bundle.mmap_size, MADV_DONTNEED);
+    return rc == 0;
+}
+
+bool find_prebaked_const_matmul_dims(
+    const std::filesystem::path & work_root,
+    const std::string & net_name_prefix,
+    int64_t m,
+    int64_t * out_k,
+    int64_t * out_n) {
+    if (net_name_prefix.empty() || m <= 0 || !out_k || !out_n) {
+        return false;
+    }
+    std::error_code ec;
+    const auto root_abs = std::filesystem::weakly_canonical(work_root, ec);
+    if (ec || !std::filesystem::exists(root_abs)) {
+        return false;
+    }
+
+    const std::string prefix = net_name_prefix + "_" + std::to_string(m) + "x";
+    for (const auto & de : std::filesystem::directory_iterator(root_abs, ec)) {
+        if (ec || !de.is_directory()) {
+            continue;
+        }
+        const auto dir_name = de.path().filename().string();
+        if (dir_name.rfind(prefix, 0) != 0) {
+            continue;
+        }
+        const std::string dims = dir_name.substr(prefix.size());
+        const size_t p = dims.find('x');
+        if (p == std::string::npos) {
+            continue;
+        }
+        try {
+            const int64_t kk = std::stoll(dims.substr(0, p));
+            const int64_t nn = std::stoll(dims.substr(p + 1));
+            if (kk <= 0 || nn <= 0) {
+                continue;
+            }
+            *out_k = kk;
+            *out_n = nn;
+            return true;
+        } catch (...) {
+            continue;
+        }
+    }
+    return false;
 }
 
 } // namespace ggml::fmsh::netmake

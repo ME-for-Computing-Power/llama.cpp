@@ -804,6 +804,17 @@ static ggml_fmsh_zg330_unembed_session_entry * ggml_fmsh_get_or_create_unembed_s
         session.enableTimeProfile(true);
         session.apply();
 
+        // apply() is the last point the backend reads the mmap'd raw params file on
+        // the host side (weight is now resident in device PLDDR) — evict the mapping
+        // from the host page cache so it doesn't inflate this process's VmRSS for the
+        // rest of its lifetime (see project memory: session/network kept for the
+        // process lifetime, so without this the mapping's pages never get dropped).
+        const bool evicted = ggml::fmsh::netmake::evict_prebaked_const_matmul_host_cache(entry->bundle);
+        ggml_fmsh_log_locked(ctx, 1,
+            "unembed_host_cache_evict addr=" + std::to_string(reinterpret_cast<uintptr_t>(entry->bundle.mmap_addr)) +
+            " bytes=" + std::to_string(entry->bundle.mmap_size) +
+            " ok=" + std::string(evicted ? "1" : "0"));
+
         entry->session = std::move(session);
         entry->input_type_a = entry->bundle.network.inputs()[0].tensorType().clone();
 

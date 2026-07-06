@@ -43,6 +43,16 @@ struct ConstMatmulZgNetworkBundle {
     icraft::xir::Network network;
     std::filesystem::path raw_path; // for resident_summary logging (stat() proxy, not host RSS)
     bool found = false;
+
+    // Manually mmap'd backing for `network`'s lazily-loaded params (see
+    // load_prebaked_const_matmul_zg_network). Ownership of the *mapping*
+    // itself still belongs to `network` (its destructor munmap()s it); this
+    // is only exposed so evict_prebaked_const_matmul_host_cache() can advise
+    // the kernel to drop the resident pages once Session::apply() has copied
+    // them to device memory, instead of paying host RAM for the mapping's
+    // full lifetime.
+    void * mmap_addr = nullptr;
+    uint64_t mmap_size = 0;
 };
 
 enum class ElementwiseZgOp : uint32_t {
@@ -95,5 +105,29 @@ ConstMatmulZgNetworkBundle load_prebaked_const_matmul_zg_network(
     int64_t k,
     int64_t n,
     const std::string & net_name_prefix);
+
+// Drops the host page-cache pages backing `bundle.mmap_addr` via
+// madvise(MADV_DONTNEED). Call only after the network has been fully
+// deployed (Session::apply() returned), since that is the last point the
+// backend reads from the mmap'd file on the host side. Safe no-op if the
+// bundle wasn't produced by load_prebaked_const_matmul_zg_network. Returns
+// true if madvise() was actually issued and succeeded.
+bool evict_prebaked_const_matmul_host_cache(ConstMatmulZgNetworkBundle & bundle);
+
+// Discovers the (k, n) shape of a pre-baked constant-weight matmul artifact
+// for a given `net_name_prefix` and `m`, by scanning `work_root` for a
+// directory named `<net_name_prefix>_<m>x<k>x<n>` (the layout produced by
+// load_prebaked_const_matmul_zg_network / the offline bake script). Used to
+// eagerly deploy the network (Session::apply()) at backend-init time —
+// before m/k/n are known from a live MUL_MAT node — so the one-time host
+// page-cache spike from apply()'s DMA upload lands before the model's own
+// weights get faulted in by the first graph_compute, instead of stacking on
+// top of them. Returns false if no matching directory is found.
+bool find_prebaked_const_matmul_dims(
+    const std::filesystem::path & work_root,
+    const std::string & net_name_prefix,
+    int64_t m,
+    int64_t * out_k,
+    int64_t * out_n);
 
 } // namespace ggml::fmsh::netmake
